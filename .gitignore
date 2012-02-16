@@ -1,0 +1,22 @@
+#Compiled source
+
+*.com
+*.class
+*.exe
+*.o
+*.dll
+
+#Packages
+*.7z
+*.dmg
+*.gz
+*.tar
+*.zip
+*.rar
+*.jar
+
+#Sysfiles
+Thumbs.db
+Icon?
+ehthumbs.db
+.DS_Store*
