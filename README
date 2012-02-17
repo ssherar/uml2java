@@ -1,0 +1,31 @@
+Feature List
+	•	Create a new blank document
+	•	Automatic resize/scroll of canvas
+	•	Add a class rectangle
+		o	Move
+		o	Resize
+		o	Delete
+		o	Add and delete methods/attributes
+		o	Automatic resizing
+	•	Labeling
+		o	Moving/creating/deleting
+		o	Add on relationships
+		o	Add on Canvas
+	•	Relationship
+		o	Add/Delete
+		o	Modify type
+		o	Add cardinalities
+		o	Change direction
+	•	Management
+		o	Save
+		o	Load
+		o	Export
+			•	Image
+			•	Code
+		o	Print
+		o	Undo/Redo
+		o	Right Click Functionality
+
+
+Extra feature
+•	Modify direction of arrows manually modify appearance
