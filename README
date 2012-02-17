@@ -7,7 +7,7 @@ Feature List
 		o	Delete
 		o	Add and delete methods/attributes
 		o	Automatic resizing
-	•	Labeling
+	•	Labelling
 		o	Moving/creating/deleting
 		o	Add on relationships
 		o	Add on Canvas
@@ -27,5 +27,7 @@ Feature List
 		o	Right Click Functionality
 
 
-Extra feature
+Possible extra features
 •	Modify direction of arrows manually modify appearance
+• Change font and font size
+• Support for abstract/static/final in diagrams
