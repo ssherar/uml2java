@@ -6,10 +6,14 @@ public abstract class DocumentElement implements java.io.Serializable {
 
 	
 	private static final long serialVersionUID = -253995425441515922L;
-	private Point position;
+	protected Point position;
 	
 	protected DocumentElement() {
 		
+	}
+	
+	public Point getPosition() {
+		return position;
 	}
 	
 	public abstract void move(Point newPos);
