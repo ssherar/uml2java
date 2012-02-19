@@ -1,0 +1,45 @@
+Okay, as we now have a nice stub of a class diagram, I thought I might get into writing a simple description of what is going on. 
+I'm doing this for several reasons: 
+
+	- It will help us stay on track during coding
+	- Hopefully, Lee will have an idea of what's going on
+	- It might help during documentation writing
+	
+Basically, the program is split into two parts - the GUI and the model. This design corresponds to the Model-View-Controller
+architecture with the GUI being the view. I'll say more about the controller part later but let's look at the model first.
+
+When the application starts, a new MainFrame is constructed. This will launch the GUI. The model won't be constructed until
+the user clicks on "New" or "Open". When that happens, a new DocumentManager is constructed and stored in the frame. The 
+DocumentManager will create a new DocumentModel, either a blank one or by loading it from a file selected by the user.
+This is very easy to do, as long as all classes in our model implement the Serializable interface (this is why they have fields
+like serialVersionUID all over the place). Once the model is complete, it is passed back to the GUI by the DocumentManager.
+
+Hopefully the DocumentModel class is self-explanatory, so let's move on to other classes. The model is made up of several
+DocumentElements. This is an abstract class extended by ClassRectangle, Relationship and TextLabel. These all have attributes
+relating to their position and size on the canvas, as well as useful stuff for the code exporter. For Attributes, I'm thinking the 
+user would simply type in the name (e.g. toString() : void) and the getPropertiesFromName() method would set all its boolean values
+accordingly. The ClassRectangle can contain another ClassRectangle as its superclass - for use by the code exporter when inheriting
+fields. The TextField can either be floating in space or attached to a Relationship.
+
+I'm still unsure as to how moving arrows around could be done; we'll have to discuss that. Another question is the link between
+classes and relationships as these will determine how the code exporter handles class instances inside other classes. 
+
+The key thing to consider now is the view-controller part of the design. I came up with a rough idea last night: the Canvas class
+in the gui package (which extends JPanel) would contain an ArrayList of objects of a special ModelLink class (perhaps a child of
+ModelLink depending on what DocumentElement it links to). Whenever the canvas is painted, it would go through this ArrayList, querying
+each ModelLink in turn for position and dimension info and painting them. This makes it easy to implement bring to front/back 
+functionality if we decide to, as all it would take is swap elements in this ArrayList. In addition, each Link would have a set of
+x and y coordinate ranges that correspond to their clickable area on the canvas. A global MouseListener added to the Canvas could
+again query Links in turn until it finds one that corresponds to the user's click. It would simply send the event to this Link which
+would update the model's attributes accordingly.
+
+Now maybe there is a better and easier way to do this and maybe we'll find that implementation of this idea is impossible but I'm
+just putting it out there so you can think about it. One possible problem I can think of is how, for example, we can differentiate
+between a click on a class rectangle and a click on an attribute / method. Perhaps if we could find a way to "select" elements?
+
+Right, I'm probably going into too much detail here but this is basically what got designed and thought of between midnight and 4AM
+today. Sam, if you see something I've forgotten to put here, feel free to add it. Also, if you've got any ideas, thoughts or 
+criticisms about any of this, share them.
+
+NOTE: There is functionality that hasn't been thought about yet (undos/redos, exports, GUI gimmicks). This is fine, as long as we 
+get the model working properly, these things shouldn't be too difficult to add later on.
