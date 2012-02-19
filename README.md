@@ -6,7 +6,7 @@
 
 ## Feature List:
 
-### Main Feature List
+### Main Feature List:
 
 * Create a new blank document
 * Automatic resize/scroll of canvas
