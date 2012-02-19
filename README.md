@@ -4,7 +4,7 @@
 
 [Invitation to the Class Diagram](http://www.lucidchart.com/invitations/accept/4f414c98-cac0-46f3-8b3d-2c370abeb66a)
 
-## Feature List
+## Feature List:
 
 ### Main Feature List
 
