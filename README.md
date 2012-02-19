@@ -3,6 +3,7 @@
 ## Links
 
 [Invitation to the Class Diagram](http://www.lucidchart.com/invitations/accept/4f414c98-cac0-46f3-8b3d-2c370abeb66a)
+[Invitation to Interfacing Class Diagram] (http://www.lucidchart.com/invitations/accept/4f416ec7-8bfc-4c0e-a2bf-3e120a5acd28)
 
 ## Feature List
 
