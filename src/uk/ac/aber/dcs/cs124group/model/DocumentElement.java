@@ -7,6 +7,7 @@ public abstract class DocumentElement implements java.io.Serializable {
 	
 	private static final long serialVersionUID = -253995425441515922L;
 	protected Point position;
+	private boolean exists = true;
 	
 	protected DocumentElement() {
 		
@@ -16,7 +17,16 @@ public abstract class DocumentElement implements java.io.Serializable {
 		return position;
 	}
 	
+	public boolean exists() {
+		return exists;
+	}
+	
+	public void markForRemoval() {
+		exists = false;
+	}
+	
 	public abstract void move(Point newPos);
+	
 	
 
 }

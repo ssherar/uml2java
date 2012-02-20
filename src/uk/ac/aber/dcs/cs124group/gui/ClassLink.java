@@ -6,31 +6,37 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 public class ClassLink extends ModelLink {
 	
-	private ClassRectangle currentClass;
 	
-	public void ClassLink(ClassRectangle c) {
-		this.currentClass = c;
+	
+	public ClassLink(ClassRectangle c) {
+		this.linkedElement = c;
 	}
 	
 	public int getWidth() {
-		return this.currentClass.getSize().width;
+		return ((ClassRectangle)this.linkedElement).getSize().width;
 	}
 	
 	public int getHeight() {
-		return this.currentClass.getSize().height;
+		return ((ClassRectangle)this.linkedElement).getSize().height;
 	}
 	
 	public Point getPosition() {
-		return this.currentClass.getPosition();
+		return ((ClassRectangle)this.linkedElement).getPosition();
 	}
 	
 	public String[] getDataFields() {
-		//Placesetter...
+		//TODO define
 		return new String[1];
 	}
 	
 	public String[] getMethods() {
+		//TODO define
 		return new String[1];
+	}
+	
+	@Override //We need the overriden method to be called in ClassRectangle
+	public void markForRemoval() {
+		((ClassRectangle) linkedElement).markForRemoval();
 	}
 
 	@Override
@@ -53,7 +59,7 @@ public class ClassLink extends ModelLink {
 	
 	@Override
 	public void calculateRange() {
-		
+		//TODO define
 	}
 
 }

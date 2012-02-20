@@ -14,6 +14,8 @@ public class DocumentPreferences implements Serializable {
 	private int fontSize;
 	private Dimension canvasDefaultSize;
 	
+	//TODO define no-arg constructor setting predefined defaults
+	
 
 	public void setFont(Font f) {
 		font = f;
