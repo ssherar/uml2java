@@ -50,5 +50,10 @@ public class ClassLink extends ModelLink {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void calculateRange() {
+		
+	}
 
 }

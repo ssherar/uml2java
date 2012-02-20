@@ -25,4 +25,5 @@ public abstract class ModelLink {
 	public abstract void processActionEvent(ActionEvent e);
 	public abstract void processMouseEvent(MouseEvent e);
 	public abstract void processKeyEvent(KeyEvent e);
+	protected abstract void calculateRange();
 }
