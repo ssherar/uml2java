@@ -9,7 +9,9 @@ public class Exporter {
 	
 	private DocumentModel model;
 	private String outputDirectory;
-	private ArrayList<File> outputFiles; 
+	private ArrayList<File> outputFiles;
+	private final const String NL = "\n";
+	private final const String TB = "\t";
 	
 	
 	private Scanner fileCreator;
