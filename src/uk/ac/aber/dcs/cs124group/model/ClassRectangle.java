@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.model;
 
-import java.awt.*;
+import java.awt.Point;
+import java.awt.Dimension;
 import java.util.ArrayList;
 
 public class ClassRectangle extends DocumentElement {
@@ -16,6 +17,30 @@ public class ClassRectangle extends DocumentElement {
 	
 	private boolean isAbstract = false;
 	private boolean isFinal = false;
+	
+	public ClassRectangle(Point p) {
+		position = p;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ArrayList<Relationship> getRelationships() {
+		return relationships;
+	}
+
+	public void setRelationships(ArrayList<Relationship> relationships) {
+		this.relationships = relationships;
+	}
+
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
 
 	public boolean isAbstract() {
 		return isAbstract;
@@ -31,10 +56,6 @@ public class ClassRectangle extends DocumentElement {
 
 	public void setFinal(boolean isFinal) {
 		this.isFinal = isFinal;
-	}
-
-	public ClassRectangle(Point p) {
-		position = p;
 	}
 
 	@Override
@@ -68,12 +89,5 @@ public class ClassRectangle extends DocumentElement {
 		return visibility;
 	}
 	
-	@Override
-	public void markForRemoval() {
-		super.markForRemoval();
-		for (int i = 0; i < relationships.size(); i++) {
-			relationships.get(i).markForRemoval();
-		}
-	}
 
 }
