@@ -1,65 +1,43 @@
 package uk.ac.aber.dcs.cs124group.model;
 
-import java.awt.*;
-import java.util.Hashtable;
 import java.util.*;
 
-public class Attribute extends DocumentElement {
+public class Attribute implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
 	private IVisibility visibility;
 	private AttributeType type;
 	
+	private String representation; //e.g. +addElement(element : Element) : void
 	private String name;
-	private Hashtable<String, String> args;
+	private ArrayList<String> args;
 	private String returnType = "void";
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
 	private boolean flagFinal = false;
 	
-	public void Atrribute(AttributeType type, IVisibility visibility) {
-		this.visibility = visibility;
-		this.type = type;
+	public void Atrribute(String representation) {
+		this.representation = representation;
+		initializeFields();		
 	}
 	
-	
-	public void addArg(String key, String value) {
-		if(this.isInArray(key)) {
-			this.editArg(key, value);
-		} else {
-			this.args.put(key,value);
-		}
-	}
-	
-	public void editArg(String key, String value) {
-		if(this.isInArray(key)) {
-			this.args.put(key, value);
-		} else {
-			this.addArg(key ,value);
-		}
-	}
-	
-	public void removeArg(String key) {
-		if(this.isInArray(key)) this.args.remove(key);
-	}
-	
-	
-
-	@Override
-	public void move(Point newPos) {
-		
-
-	}
 	
 	/** Block of Get/Set */
-
+	public String getRepresentation() {
+		return representation;
+	}
+	
+	public void setRepresentation(String representation) {
+		this.representation = representation;
+	}
+	
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
+	private void setName(String name) {
 		this.name = name;
 	}
 
@@ -67,7 +45,7 @@ public class Attribute extends DocumentElement {
 		return returnType;
 	}
 
-	public void setReturnType(String returnType) {
+	private void setReturnType(String returnType) {
 		this.returnType = returnType;
 	}
 
@@ -75,7 +53,7 @@ public class Attribute extends DocumentElement {
 		return flagStatic;
 	}
 
-	public void setFlagStatic(boolean flagStatic) {
+	private void setFlagStatic(boolean flagStatic) {
 		this.flagStatic = flagStatic;
 	}
 
@@ -83,7 +61,7 @@ public class Attribute extends DocumentElement {
 		return flagAbstract;
 	}
 
-	public void setFlagAbstract(boolean flagAbstract) {
+	private void setFlagAbstract(boolean flagAbstract) {
 		this.flagAbstract = flagAbstract;
 	}
 
@@ -91,7 +69,7 @@ public class Attribute extends DocumentElement {
 		return flagTransient;
 	}
 
-	public void setFlagTransient(boolean flagTransient) {
+	private void setFlagTransient(boolean flagTransient) {
 		this.flagTransient = flagTransient;
 	}
 
@@ -99,7 +77,7 @@ public class Attribute extends DocumentElement {
 		return flagFinal;
 	}
 
-	public void setFlagFinal(boolean flagFinal) {
+	private void setFlagFinal(boolean flagFinal) {
 		this.flagFinal = flagFinal;
 	}
 
@@ -107,7 +85,7 @@ public class Attribute extends DocumentElement {
 		return visibility;
 	}
 
-	public void setVisibility(IVisibility visibility) {
+	private void setVisibility(IVisibility visibility) {
 		this.visibility = visibility;
 	}
 
@@ -115,14 +93,13 @@ public class Attribute extends DocumentElement {
 		return type;
 	}
 
-	public void setType(AttributeType type) {
+	private void setType(AttributeType type) {
 		this.type = type;
 	}
 	
-	/**Private methods */
 	
-	private boolean isInArray(String key) {
-		return (args.get(key) == null) ? false : true;
+	public void initializeFields() {
+		//TODO define
 	}
 	
 	

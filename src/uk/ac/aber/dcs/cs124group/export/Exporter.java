@@ -10,8 +10,8 @@ public class Exporter {
 	private DocumentModel model;
 	private String outputDirectory;
 	private ArrayList<File> outputFiles;
-	private final const String NL = "\n";
-	private final const String TB = "\t";
+	private final String NL = "\n";
+	private final String TB = "\t";
 	
 	
 	private Scanner fileCreator;
@@ -50,7 +50,9 @@ public class Exporter {
 		
 		contents.concat("class "); //can amend this to include interface and enums etc if we decide to implement them
 		
-		for (int i = 0; r.getRelationships().size(); i++)
+		for (int i = 0; i < r.getRelationships().size(); i++) {
+			
+		}
 		
 		
 		

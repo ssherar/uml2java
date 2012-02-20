@@ -34,12 +34,8 @@ public class ClassRectangle extends DocumentElement {
 		return relationships;
 	}
 
-	public void setRelationships(ArrayList<Relationship> relationships) {
-		this.relationships = relationships;
-	}
-
-	public void setSize(Dimension size) {
-		this.size = size;
+	public void addRelationship(Relationship r) {
+		relationships.add(r);
 	}
 
 	public boolean isAbstract() {
