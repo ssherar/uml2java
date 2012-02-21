@@ -12,7 +12,7 @@ public class DocumentModel implements java.io.Serializable {
 	private static final long serialVersionUID = -7136489795698324976L;
 	
 	private DocumentPreferences preferences;
-	private ArrayList<DocumentElement> elements;
+	private ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
 	private String fileName;
 	
 	public DocumentModel() {

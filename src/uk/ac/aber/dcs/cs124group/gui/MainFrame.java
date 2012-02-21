@@ -49,7 +49,6 @@ public class MainFrame extends JFrame implements WindowListener {
 		setVisible(true);
 		this.setMinimumSize(new Dimension(1024,600));
 		
-		
 	    
 	}
 	

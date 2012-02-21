@@ -21,9 +21,17 @@ public class Canvas extends JPanel {
 	}
 	
 	public void paintComponent(Graphics gg) {
+		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
 		
-		ArrayList<DocumentElement> elements = manager.getDrawableElements();
+		ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
+		try {
+			elements = manager.getDrawableElements();
+		}
+		catch (NullPointerException ex) {
+			return;
+		}
+		
 		for(int i = 0; i < elements.size(); i++) {
 			DocumentElement e = elements.get(i);
 			if(e instanceof ClassRectangle) {
