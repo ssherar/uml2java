@@ -143,6 +143,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		mode = ListeningMode.LISTEN_TO_ALL;
 		document.addElement(new ClassRectangle(p));
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
+		canvas.repaint();
 	}
 	
 	private void openAboutWindow() {
