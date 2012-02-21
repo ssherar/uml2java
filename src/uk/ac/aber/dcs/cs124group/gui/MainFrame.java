@@ -29,9 +29,9 @@ public class MainFrame extends JFrame implements WindowListener {
 		} catch (Exception e) {
 			
 		}
-	    canvas = new Canvas();
+	    canvas = new Canvas(manager);
 	    JScrollPane scroll = new JScrollPane(canvas);
-	    sideBar = new SideBar();
+	    sideBar = new SideBar(manager);
 	    menu = new MenuBar(manager);
 	    toolbar = new ToolBar();
 	    status = new StatusBar();
