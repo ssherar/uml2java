@@ -5,15 +5,15 @@ import java.awt.*;
 
 public class SideBar extends JPanel {
 	
-	private final int SIDE_PADDING = 0;
-	private final int TOP_PADDING = 20;
+	private final int SIDE_PADDING = 10;
+	private final int TOP_PADDING = 10;
 	private final int VERT_PADDING = 5;
 	private JButton newClass, newRelationship, newTextLabel, export;
 	private SpringLayout layout;
 	
 	public SideBar() {
 		super();
-		this.setPreferredSize(new Dimension(153, 786));
+		this.setPreferredSize(new Dimension(138, 786));
 		layout = new SpringLayout();
 		this.setLayout(layout);
 		
