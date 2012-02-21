@@ -4,6 +4,23 @@ import java.awt.event.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
 		MouseMotionListener, MouseListener {
+	
+	private MainFrame window;
+	private Canvas canvas;
+	private MenuBar menuBar;
+	private SideBar sideBar;
+	private StatusBar status;
+	private ToolBar toolBar;
+	
+	public Manager() {
+		window = new MainFrame(this);
+		canvas = window.getCanvas();
+		menuBar = window.getMenu();
+		sideBar = window.getSideBar();
+		status = window.getStatus();
+		toolBar = window.getToolbar();
+	}
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
