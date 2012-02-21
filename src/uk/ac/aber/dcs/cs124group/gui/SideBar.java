@@ -10,9 +10,11 @@ public class SideBar extends JPanel {
 	private final int VERT_PADDING = 5;
 	private JButton newClass, newRelationship, newTextLabel, export;
 	private SpringLayout layout;
+	private Manager manager;
 	
-	public SideBar() {
+	public SideBar(Manager manager) {
 		super();
+		this.manager = manager;
 		this.setPreferredSize(new Dimension(138, 786));
 		layout = new SpringLayout();
 		this.setLayout(layout);
@@ -21,6 +23,11 @@ public class SideBar extends JPanel {
 		newRelationship = new JButton("New Relationship");
 		newTextLabel = new JButton("New label");
 		export = new JButton("Export to Java...");
+		
+		newClass.addActionListener(manager);
+		newRelationship.addActionListener(manager);
+		newTextLabel.addActionListener(manager);
+		export.addActionListener(manager);
 		
 		newClass.setPreferredSize(newRelationship.getPreferredSize());
 		newTextLabel.setPreferredSize(newRelationship.getPreferredSize());
