@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124group.gui;
+package uk.ac.aber.dcs.cs124group.model;
 
 public enum ElementPaintState {
 	DEFAULT,
