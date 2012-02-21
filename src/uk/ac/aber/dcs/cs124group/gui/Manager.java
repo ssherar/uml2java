@@ -1,14 +1,6 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
 		MouseMotionListener, MouseListener {
@@ -83,8 +75,13 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getActionCommand() == "Exit") {
-			System.exit(0);
+			exit();
 		}
+	}
+	
+	public void exit() {
+		//TODO check for unsaved changes, display "do you want to save" if necessary
+		System.exit(0);
 	}
 
 }
