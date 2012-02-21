@@ -18,7 +18,7 @@ public class Attribute implements java.io.Serializable {
 	private boolean flagTransient = false;
 	private boolean flagFinal = false;
 	
-	public void Atrribute(String representation) {
+	public void Attribute(String representation) {
 		this.representation = representation;
 		initializeFields();		
 	}

@@ -13,6 +13,7 @@ public class Exporter {
 	private final String NL = "\n";
 	private final String TB = "\t";
 	
+	private ArrayList<DocumentElement> importDocumentModel = model.getElements(); 
 	
 	private Scanner fileCreator;
 	
@@ -26,7 +27,6 @@ public class Exporter {
 	}
 	
 	public void exportCode() {
-		
 		
 	}
 	
@@ -50,17 +50,26 @@ public class Exporter {
 		
 		contents.concat("class "); //can amend this to include interface and enums etc if we decide to implement them
 		
-		for (int i = 0; i < r.getRelationships().size(); i++) {
+		contents.concat(r.getName());
+		
+		contents.concat(" {" + NL);
+		
+		for (int j = 0; j > r.getAttributes().size(); j++){
+			r.getAttributes().get(j).
+		}
+		
+
+		
+/* This section will do the extends and implements section need more information from the Relationship class to do this		
+		for (int i = 0; i > r.getRelationships().size(); i++){
+		
+			switch (r.getRelationships().get(i)){
+			
+			}
 			
 		}
 		
-		
-		
-		
-		
-		
-		
-		
+*/		
 		
 		return null;
 	}
