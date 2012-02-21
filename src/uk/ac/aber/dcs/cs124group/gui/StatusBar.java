@@ -6,7 +6,7 @@ import java.awt.*;
 
 public class StatusBar extends JPanel {
 	
-	private JLabel textLabel = new JLabel();
+	private JLabel textLabel = new JLabel(" Welcome!");
 	
 	public StatusBar() {
 		setLayout(new GridLayout(1,1,5,0));	
