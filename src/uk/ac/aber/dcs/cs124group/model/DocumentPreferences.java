@@ -25,16 +25,8 @@ public class DocumentPreferences implements Serializable {
 		return font;
 	}
 	
-	public void setFontSize(int s) {
-		fontSize = s;
-	}
-	
-	public int getFontSize() {
-		return fontSize;
-	}
-	
-	public void setCanvasDefaultSize(int width, int height) {
-		canvasDefaultSize.setSize(width, height);
+	public void setCanvasDefaultSize(Dimension newSize) {
+		canvasDefaultSize = newSize;
 	}
 	
 	public int getCanvasDefaultWidth() {
