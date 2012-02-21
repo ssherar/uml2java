@@ -15,8 +15,13 @@ public class MainFrame extends JFrame implements WindowListener {
 	private MenuBar menu;
 	private ToolBar toolbar;
 	private StatusBar status;
+	private Manager manager;
 	
-	public MainFrame() {  
+	public MainFrame() {
+		
+		addWindowListener(this);
+		
+		/** Layout the GUI */
 		try {
 			UIManager.setLookAndFeel(
 					UIManager.getSystemLookAndFeelClassName());
@@ -61,6 +66,9 @@ public class MainFrame extends JFrame implements WindowListener {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 		this.setMinimumSize(new Dimension(1024,768));
+		
+		//Dummy code
+		manager = new Manager();
 	    
 	}
 
@@ -70,6 +78,7 @@ public class MainFrame extends JFrame implements WindowListener {
 		
 	}
 
+	/** Unwanted methods */
 	@Override
 	public void windowDeactivated(WindowEvent e) {
 		
