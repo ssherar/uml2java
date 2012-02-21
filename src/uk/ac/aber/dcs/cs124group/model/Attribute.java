@@ -16,6 +16,8 @@ public class Attribute implements java.io.Serializable {
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
+	private boolean flagSyncronised = false;
+	private boolean flagVolatile = false;
 	private boolean flagFinal = false;
 	
 	public void Attribute(String representation) {
@@ -73,6 +75,22 @@ public class Attribute implements java.io.Serializable {
 		this.flagTransient = flagTransient;
 	}
 
+	private boolean isFlagVolatile(){
+		return flagVolatile;
+	}
+	
+	private void setFlagVolatile(boolean flagVolatile){
+		this.flagTransient = flagVolatile;
+	}
+	
+	private boolean isFlagSyncronised(){
+		return flagSyncronised;
+	}
+	
+	private void setFlagSyncronised(boolean flagSyncronised){
+		this.flagSyncronised = flagSyncronised;
+	}
+	
 	public boolean isFlagFinal() {
 		return flagFinal;
 	}
