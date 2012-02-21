@@ -123,6 +123,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, 0/*TODO: get from toolbar*/));
 		preferences.setCanvasDefaultSize(canvas.getSize());
 		
+		status.setText("Opened a brand new class diagram");
+		
 	}
 	
 	private void openAboutWindow() {
@@ -134,6 +136,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 		aboutWindow.add(new JPanel() {
 			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				g.drawString("This program is being developed by Sam Sherar, Daniel Maly and Lee Smith.", 50, 150);
 				g.drawString("You are advised to stay well away from it until it is finished.", 50, 165);
 				g.setFont(new Font("Arial Black", Font.PLAIN, 50));
