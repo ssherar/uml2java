@@ -72,11 +72,6 @@ public class Exporter {
 					contents.concat("static ");
 				}
 				
-				if (r.getAttributes().get(j).isFlagAbstract()){
-					contents.concat("abstract ");
-				}
-				
-				if (r.getAttributes().get(j))
 			}
 		}
 
