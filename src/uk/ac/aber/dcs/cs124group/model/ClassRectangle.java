@@ -14,6 +14,7 @@ public class ClassRectangle extends DocumentElement {
 	private IVisibility visibility = IVisibility.PUBLIC;
 	
 	private ArrayList<Relationship> relationships;
+	private ArrayList<Attribute> attributes;
 	
 	private boolean isAbstract = false;
 	private boolean isFinal = false;
@@ -28,6 +29,10 @@ public class ClassRectangle extends DocumentElement {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public ArrayList<Attribute> getAttributes() {
+		return this.attributes;
 	}
 
 	public ArrayList<Relationship> getRelationships() {
