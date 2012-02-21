@@ -11,12 +11,22 @@ public class MainFrame extends JFrame {
 	private Canvas canvas;
 	private MenuBar menu;
 	
-	public MainFrame() {   
+	public MainFrame() {  
+		try {
+			UIManager.setLookAndFeel(
+					UIManager.getSystemLookAndFeelClassName());
+		} catch (Exception e) {
+			
+		}
 	    canvas = new Canvas();
+	    JScrollPane scroll = new JScrollPane(canvas);
 	    sideBar = new SideBar();
 	    menu = new MenuBar();
+	    
+	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    
 	    add(sideBar, BorderLayout.WEST);
-		add(canvas, BorderLayout.CENTER);
+		add(scroll, BorderLayout.CENTER);
 		
 		setJMenuBar(menu);
 		
