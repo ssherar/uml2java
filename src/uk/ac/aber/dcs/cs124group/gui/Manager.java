@@ -82,7 +82,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
-
+		if(e.getActionCommand() == "Exit") {
+			System.exit(0);
+		}
 	}
 
 }
