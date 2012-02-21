@@ -47,4 +47,12 @@ public class ToolBar extends JToolBar {
 		return (String) (fontList.getSelectedItem());	
 	}
 	
+	public int getFontSize() {
+		return (Integer) (fontSize.getValue());
+	}
+	
+	public int getZoom() {
+		return zoom.getValue();
+	}
+	
 }

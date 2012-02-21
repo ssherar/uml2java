@@ -11,11 +11,8 @@ public class DocumentPreferences implements Serializable {
 	private static final long serialVersionUID = 8524925453344749559L;
 	
 	private Font font;
-	private int fontSize;
 	private Dimension canvasDefaultSize;
-	
-	//TODO define no-arg constructor setting predefined defaults
-	
+		
 
 	public void setFont(Font f) {
 		font = f;

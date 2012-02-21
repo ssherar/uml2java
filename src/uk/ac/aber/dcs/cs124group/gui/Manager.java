@@ -120,7 +120,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		window.setTitle("Unsaved class diagram - " + PROGRAM_NAME);
 		
 		DocumentPreferences preferences = document.getPreferences();
-		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, 0/*TODO: get from toolbar*/));
+		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize()));
 		preferences.setCanvasDefaultSize(canvas.getSize());
 		
 		status.setText("Opened a brand new class diagram");
