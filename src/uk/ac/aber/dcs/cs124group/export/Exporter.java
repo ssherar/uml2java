@@ -52,10 +52,18 @@ public class Exporter {
 		
 		contents.concat(r.getName());
 		
-		contents.concat(" {" + NL);
+		contents.concat(" {" + NL + NL + TB);
 		
 		for (int j = 0; j > r.getAttributes().size(); j++){
-			r.getAttributes().get(j).
+			switch (r.getAttributes().get(j).getVisibility()){
+			case PUBLIC:
+				contents.concat("public");
+			case PRIVATE:
+				contents.concat("private");
+			case PROTECTED:
+				contents.concat("protected");
+			
+			}
 		}
 		
 
