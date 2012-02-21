@@ -76,6 +76,26 @@ public class MainFrame extends JFrame implements WindowListener {
 		this.manager = manager;
 	}
 
+	public SideBar getSideBar() {
+		return sideBar;
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
+	}
+
+	public MenuBar getMenu() {
+		return menu;
+	}
+
+	public ToolBar getToolbar() {
+		return toolbar;
+	}
+
+	public StatusBar getStatus() {
+		return status;
+	}
+
 	@Override
 	public void windowClosing(WindowEvent e) {
 		manager.exit();
