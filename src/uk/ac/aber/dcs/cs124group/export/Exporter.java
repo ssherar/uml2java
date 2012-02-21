@@ -10,6 +10,7 @@ public class Exporter {
 	private DocumentModel model;
 	private String outputDirectory;
 	private ArrayList<File> outputFiles;
+	// private ArrayList<String> fileNames;
 	private final String NL = "\n";
 	private final String TB = "\t";
 
@@ -28,10 +29,12 @@ public class Exporter {
 	}
 
 	public void exportCode() {
-
+		
 	}
 
 	private String createClassFileContents(ClassRectangle r) {
+		// fileNames.add(r.getName()+".java");
+
 		String contents = "";
 
 		switch (r.getVisibility()) {
@@ -45,18 +48,50 @@ public class Exporter {
 			contents = "package ";
 		}
 
-		if (r.isAbstract()) {
+		if (r.isAbstract() && !r.isFinal()) {
 			contents.concat("abstract ");
+		}
+
+		if (r.isStatic()) {
+			contents.concat("static ");
 		}
 
 		contents.concat("class "); // can amend this to include interface and
 									// enums etc if we decide to implement them
 
-		contents.concat(r.getName());
+		contents.concat(r.getName() + " ");
 
-		contents.concat(" {" + NL + NL);
+		String eXtends = "";
+		String iMplements = "";
 
-		for (int j = 0; j > r.getAttributes().size(); j++) {
+		for (int l = 0; l > r.getRelationships().size() - 1; l++) {
+			switch (r.getRelationships().get(l).getType()) {
+			case IMPLEMENTS:
+				iMplements.concat(r.getRelationships().get(l).getGoingTo()
+						.getName()
+						+ " ");
+			case INHERITANCE:
+				eXtends.concat(r.getRelationships().get(l).getGoingTo()
+						.getName()
+						+ " ");
+			}
+		}
+
+		if (!eXtends.isEmpty()) {
+			contents.concat("extends " + eXtends);
+		}
+		if (!iMplements.isEmpty()) {
+			contents.concat("implements " + iMplements);
+		}
+
+		contents.concat("{" + NL + NL);
+
+		// --------------------Attributes/Fields----------------------------
+		for (int j = 0; j > r.getAttributes().size() - 1; j++) {
+
+			boolean isAttributeFinal = false;
+			boolean isMethodAbstract = false;
+
 			switch (r.getAttributes().get(j).getType()) {
 			case DATA_FIELD:
 				switch (r.getAttributes().get(j).getVisibility()) {
@@ -71,23 +106,86 @@ public class Exporter {
 				if (r.getAttributes().get(j).isFlagStatic()) {
 					contents.concat("static ");
 				}
-				
-			}
-		}
 
-		/*
-		 * This section will do the extends and implements section need more
-		 * information from the Relationship class to do this for (int i = 0; i
-		 * > r.getRelationships().size(); i++){
-		 * 
-		 * switch (r.getRelationships().get(i)){
-		 * 
-		 * }
-		 * 
-		 * }
-		 */
+				if (r.getAttributes().get(j).isFlagFinal()) {
+					contents.concat("final ");
+					isAttributeFinal = true;
+				}
+
+				if (r.getAttributes().get(j).isFlagTransient()) {
+					contents.concat("transistent ");
+				}
+
+				if (r.getAttributes().get(j).isFlagVolatile()) {
+					contents.concat("volatile ");
+				}
+
+				contents.concat(r.getAttributes().get(j).getType().toString());
+
+				if (isAttributeFinal) {
+					contents.concat(r.getAttributes().get(j).getName()
+							.toUpperCase()
+							+ ";");
+				} else {
+					contents.concat(r.getAttributes().get(j).getName() + ";");
+				}
+
+				// ------------------------Methods---------------------------
+			case METHOD:
+				switch (r.getAttributes().get(j).getVisibility()) {
+				case PUBLIC:
+					contents.concat(TB + "public ");
+				case PRIVATE:
+					contents.concat(TB + "private ");
+				case PROTECTED:
+					contents.concat(TB + "protected ");
+				}
+
+				if (r.getAttributes().get(j).isFlagAbstract()) {
+					contents.concat("abstract");
+					isMethodAbstract = true;
+				}
+
+				if (r.getAttributes().get(j).isFlagStatic()) {
+					contents.concat("static ");
+				}
+
+				if (r.getAttributes().get(j).isFlagFinal()) {
+					contents.concat("final ");
+				}
+
+				if (r.getAttributes().get(j).isFlagSyncronised()) {
+					contents.concat("syncronized ");
+				}
+
+				contents.concat(r.getAttributes().get(j).getReturnType() + " ");
+
+				contents.concat(r.getAttributes().get(j).getName() + "(");
+
+				int numOfArgs = r.getAttributes().get(j).getArgs().size();
+
+				for (int k = 0; k > numOfArgs - 1; k++) {
+					contents.concat(r.getAttributes().get(j).getArgs().get(k));
+					if (k < numOfArgs - 2) {
+						contents.concat(", ");
+					}
+				}
+				contents.concat(")");
+				if (isMethodAbstract) {
+					contents.concat(";");
+				} else {
+					if (r.getAttributes().get(j).getReturnType() != "void") {
+						contents.concat("{" + NL + TB + TB + "return null;"
+								+ NL + TB + "}");
+					} else {
+						contents.concat("{" + NL + NL + TB + "}");
+					}
+				}
+
+			}
+			contents.concat("}");
+		}
 
 		return null;
 	}
-
 }

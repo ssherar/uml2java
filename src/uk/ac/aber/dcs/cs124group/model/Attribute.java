@@ -25,8 +25,16 @@ public class Attribute implements java.io.Serializable {
 		initializeFields();		
 	}
 	
+	public void addArgsElement(String argType, String argName){
+		args.add(argType + " " + argName);
+	}
 	
 	/** Block of Get/Set */
+	
+	public ArrayList<String> getArgs(){
+		return args;
+	}
+	
 	public String getRepresentation() {
 		return representation;
 	}
@@ -75,7 +83,7 @@ public class Attribute implements java.io.Serializable {
 		this.flagTransient = flagTransient;
 	}
 
-	private boolean isFlagVolatile(){
+	public boolean isFlagVolatile(){
 		return flagVolatile;
 	}
 	
@@ -83,7 +91,7 @@ public class Attribute implements java.io.Serializable {
 		this.flagTransient = flagVolatile;
 	}
 	
-	private boolean isFlagSyncronised(){
+	public boolean isFlagSyncronised(){
 		return flagSyncronised;
 	}
 	

@@ -18,7 +18,7 @@ public class ClassRectangle extends DocumentElement {
 	
 	private boolean isAbstract = false;
 	private boolean isFinal = false;
-	
+	private boolean isStatic = false;	
 	public ClassRectangle(Point p) {
 		position = p;
 	}
@@ -59,6 +59,14 @@ public class ClassRectangle extends DocumentElement {
 		this.isFinal = isFinal;
 	}
 
+	public boolean isStatic(){
+		return isStatic;
+	}
+	
+	public void setStatic(boolean isStatic){
+		this.isStatic = isStatic;
+	}
+	
 	@Override
 	public void move(Point newPos) {
 		position = newPos;
