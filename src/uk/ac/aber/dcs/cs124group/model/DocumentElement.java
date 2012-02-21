@@ -8,7 +8,6 @@ public abstract class DocumentElement implements java.io.Serializable {
 	private static final long serialVersionUID = -253995425441515922L;
 	protected Point position;
 	private transient ElementPaintState paintState = ElementPaintState.DEFAULT;
-	private String fileName;
 	
 	protected DocumentElement() {
 		
@@ -26,13 +25,6 @@ public abstract class DocumentElement implements java.io.Serializable {
 		return paintState;
 	}
 	
-	public void setFileName(String f) {
-		fileName = f;
-	}
-	
-	public String getFileName() {
-		return fileName;
-	}
 	
 	public abstract void move(Point newPos);
 	
