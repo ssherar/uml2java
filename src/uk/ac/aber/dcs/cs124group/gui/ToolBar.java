@@ -32,7 +32,4 @@ public class ToolBar extends JToolBar {
 		return (String) (fontList.getSelectedItem());	
 	}
 	
-	public String getFontName() {
-		return (String) (fontList.getSelectedItem());
-	}
 }

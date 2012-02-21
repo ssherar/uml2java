@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs124group.gui;
 import java.awt.event.*;
 import java.awt.*;
 import java.util.*;
+import javax.swing.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
@@ -109,6 +110,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else if(c.equals("New")) {
 			openNewDocument();
 		}
+		else if(c.equals("About")) {
+			openAboutWindow();
+		}
 	}
 	
 	private void openNewDocument() {
@@ -119,6 +123,25 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, 0/*TODO: get from toolbar*/));
 		preferences.setCanvasDefaultSize(canvas.getSize());
 		
+	}
+	
+	private void openAboutWindow() {
+		JFrame aboutWindow = new JFrame("About " + PROGRAM_NAME);
+		aboutWindow.setSize(450,250);
+		aboutWindow.setMaximumSize(new Dimension(450,250));
+		aboutWindow.setLocationRelativeTo(window);
+		aboutWindow.setVisible(true);
+		
+		aboutWindow.add(new JPanel() {
+			public void paintComponent(Graphics g) {
+				g.drawString("This program is being developed by Sam Sherar, Daniel Maly and Lee Smith.", 50, 150);
+				g.drawString("You are advised to stay well away from it until it is finished.", 50, 165);
+				g.setFont(new Font("Arial Black", Font.PLAIN, 50));
+				g.drawString("UML2JAVA", 50,50);
+			}
+		});
+		
+		aboutWindow.setSize(450,250);
 	}
 	
 	public void exit() {
