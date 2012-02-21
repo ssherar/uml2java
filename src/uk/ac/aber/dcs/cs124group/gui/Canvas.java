@@ -11,7 +11,7 @@ public class Canvas extends JPanel {
 		
 		super();
 		this.setBackground(Color.white);
-		this.setPreferredSize(new Dimension(624,400));
+		//this.setPreferredSize(new Dimension(624,600));
 		// TODO Auto-generated constructor stub
 	}
 }
