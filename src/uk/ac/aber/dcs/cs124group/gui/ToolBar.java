@@ -5,10 +5,13 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ToolBar extends JToolBar {
-	String[] fonts = {"Arial", "Helvetica", "Trebuchet MS", "Courier New"};
-	JComboBox fontList;
-	JSpinner fontSize;
-	JSlider zoom;
+	
+	private String[] fonts = {"Arial", "Helvetica", "Trebuchet MS", "Courier New"};
+	private JComboBox fontList;
+	private JSpinner fontSize;
+	private JSlider zoom;
+	private JLabel zoomLabel = new JLabel("Zoom: ");
+	
 	public ToolBar() {
 		SpringLayout layout = new SpringLayout();
 		this.setPreferredSize(new Dimension(0, 30));
@@ -36,10 +39,16 @@ public class ToolBar extends JToolBar {
 		zoom.setMajorTickSpacing(50);
 		zoom.setMinorTickSpacing(25);
 		zoom.setPaintTicks(true);
-		layout.putConstraint(SpringLayout.WEST, zoom, 0, SpringLayout.EAST, fontSize);
+		//layout.putConstraint(SpringLayout.WEST, zoom, 0, SpringLayout.EAST, fontSize);
+		layout.putConstraint(SpringLayout.EAST, zoom, 2, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, zoom, 0, SpringLayout.NORTH, this);
 		
 		this.add(zoom);
+		
+		layout.putConstraint(SpringLayout.NORTH, zoomLabel, 5, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.EAST, zoomLabel, -9, SpringLayout.WEST, zoom);
+		
+		this.add(zoomLabel);
 		
 	}
 	
