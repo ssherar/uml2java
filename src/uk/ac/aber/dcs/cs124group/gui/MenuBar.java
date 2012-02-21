@@ -1,16 +1,19 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
 import javax.swing.*;
-
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.awt.event.*;
 
 public class MenuBar extends JMenuBar {
 	
-	private JMenu file = new JMenu("File"), edit = new JMenu("Edit"), canvas = new JMenu("Canvas"), export = new JMenu("Export"), help = new JMenu("Help");
+	private JMenu file = new JMenu("File"), 
+			      edit = new JMenu("Edit"), 
+			      canvas = new JMenu("Canvas"), 
+			      export = new JMenu("Export"), 
+			      help = new JMenu("Help");
 	private LinkedList<JMenuItem> fileItems, editItems, canvasItems, exportItems, helpItems;
-	private Manager manager = new Manager();
+	private Manager manager;
 	
 	public MenuBar() {
 		super();

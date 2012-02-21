@@ -17,7 +17,8 @@ public class MainFrame extends JFrame implements WindowListener {
 	private StatusBar status;
 	private Manager manager;
 	
-	public MainFrame() {
+	public MainFrame(Manager manager) {
+		this.manager = manager;
 		
 		addWindowListener(this);
 		
@@ -67,9 +68,12 @@ public class MainFrame extends JFrame implements WindowListener {
 		setVisible(true);
 		this.setMinimumSize(new Dimension(1024,600));
 		
-		//Dummy code
-		manager = new Manager();
+		
 	    
+	}
+	
+	public void setManager(Manager manager) {
+		this.manager = manager;
 	}
 
 	@Override
