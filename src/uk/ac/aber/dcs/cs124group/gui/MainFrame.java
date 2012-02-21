@@ -35,28 +35,9 @@ public class MainFrame extends JFrame implements WindowListener {
 	    toolbar = new ToolBar();
 	    status = new StatusBar();
 	    
-	    JPanel contentPane = new JPanel(new GridBagLayout());
-	    //contentPane.setPreferredSize(new Dimension(624,768));
-	    GridBagConstraints c = new GridBagConstraints();
-	    c.fill = GridBagConstraints.HORIZONTAL;
-	    c.gridwidth = GridBagConstraints.REMAINDER;
-	    c.gridx = 0;
-	    c.gridy = 0;
-	    c.weightx = 1.0;
-	    contentPane.add(toolbar, c);
-	    
-	    c.fill = GridBagConstraints.BOTH;
-	    c.gridheight = GridBagConstraints.REMAINDER;
-	    c.gridx = 0;
-	    c.gridy = 1;
-	    c.weightx = c.weighty = 1.0;
-	    contentPane.add(scroll,c);
-	    
-	    
-	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    
 	    add(sideBar, BorderLayout.WEST);
-		add(contentPane, BorderLayout.CENTER);
+		add(canvas, BorderLayout.CENTER);
+		add(toolbar, BorderLayout.NORTH);
 		add(status, BorderLayout.SOUTH);
 		
 		setJMenuBar(menu);
