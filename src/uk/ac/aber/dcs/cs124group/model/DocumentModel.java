@@ -41,7 +41,7 @@ public class DocumentModel implements java.io.Serializable {
 	}
 	
 	public void addElement(DocumentElement r) {
-		elements.add(r);
+		elements.add(0, r);
 	}
 	
 	public void removeClass(DocumentElement r) {

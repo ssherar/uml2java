@@ -20,6 +20,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	
 	private DocumentModel document;
 	
+	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
+	
 	public Manager() {
 		window = new MainFrame(this);
 		window.setTitle(PROGRAM_NAME);
@@ -29,6 +31,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		sideBar = window.getSideBar();
 		status = window.getStatus();
 		toolBar = window.getToolbar();
+		
+		openNewDocument();
+		status.setText("Welcome!");
 	}
 	
 	public ArrayList<DocumentElement> getDrawableElements() {
@@ -56,6 +61,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
+		if(mode == ListeningMode.PLACING_CLASS) {
+			addNewClass(new Point(e.getX(), e.getY()));
+		}
 
 	}
 
@@ -113,6 +121,10 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else if(c.equals("About")) {
 			openAboutWindow();
 		}
+		else if(c.equals("New Class")); {
+			mode = ListeningMode.PLACING_CLASS;
+			status.setText("Click on the canvas to place your new class");
+		}
 	}
 	
 	private void openNewDocument() {
@@ -125,6 +137,12 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 		status.setText("Opened a brand new class diagram");
 		
+	}
+	
+	private void addNewClass(Point p) {
+		mode = ListeningMode.LISTEN_TO_ALL;
+		document.addElement(new ClassRectangle(p));
+		status.setText("New class rectangle created at " + p.x + "," + p.y);
 	}
 	
 	private void openAboutWindow() {
