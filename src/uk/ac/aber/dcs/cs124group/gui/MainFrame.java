@@ -65,7 +65,7 @@ public class MainFrame extends JFrame implements WindowListener {
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
-		this.setMinimumSize(new Dimension(1024,768));
+		this.setMinimumSize(new Dimension(1024,600));
 		
 		//Dummy code
 		manager = new Manager();
