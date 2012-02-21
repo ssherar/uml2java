@@ -121,10 +121,17 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else if(c.equals("About")) {
 			openAboutWindow();
 		}
-		else if(c.equals("New Class")); {
+		else if(c.equals("New Class")) {
 			mode = ListeningMode.PLACING_CLASS;
 			status.setText("Click on the canvas to place your new class");
 		}
+		else if(c.equals("Save")) {
+			save();
+		}
+		else if(c.equals("Save as...")) {
+			saveAs();
+		}
+		
 	}
 	
 	private void openNewDocument() {
@@ -164,6 +171,18 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		});
 		
 		aboutWindow.setSize(450,250);
+	}
+	
+	private void save() {
+		if(document.getFileName() == "") {
+			saveAs();
+		} else {
+			
+		}
+	}
+	
+	private void saveAs() {
+		
 	}
 	
 	public void exit() {
