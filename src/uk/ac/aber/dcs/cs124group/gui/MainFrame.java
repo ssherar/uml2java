@@ -32,7 +32,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    canvas = new Canvas();
 	    JScrollPane scroll = new JScrollPane(canvas);
 	    sideBar = new SideBar();
-	    menu = new MenuBar();
+	    menu = new MenuBar(manager);
 	    toolbar = new ToolBar();
 	    status = new StatusBar();
 	    

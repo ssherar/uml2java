@@ -15,8 +15,10 @@ public class MenuBar extends JMenuBar {
 	private LinkedList<JMenuItem> fileItems, editItems, canvasItems, exportItems, helpItems;
 	private Manager manager;
 	
-	public MenuBar() {
+	public MenuBar(Manager manager) {
 		super();
+		this.manager = manager;
+		
 		this.add(file);
 		this.add(edit);
 		this.add(canvas);

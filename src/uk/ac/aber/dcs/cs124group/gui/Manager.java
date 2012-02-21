@@ -1,9 +1,14 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.event.*;
+import java.awt.*;
+import java.util.*;
+import uk.ac.aber.dcs.cs124group.model.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
 		MouseMotionListener, MouseListener {
+	
+	public static final String PROGRAM_NAME = "UML2Java";
 	
 	private MainFrame window;
 	private Canvas canvas;
@@ -12,8 +17,12 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	private StatusBar status;
 	private ToolBar toolBar;
 	
+	private DocumentModel document;
+	
 	public Manager() {
 		window = new MainFrame(this);
+		window.setTitle(PROGRAM_NAME);
+		
 		canvas = window.getCanvas();
 		menuBar = window.getMenu();
 		sideBar = window.getSideBar();
@@ -21,6 +30,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		toolBar = window.getToolbar();
 	}
 	
+	public ArrayList<DocumentElement> getDrawableElements() {
+		return document.getElements();
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -90,10 +102,23 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getActionCommand() == "Exit") {
+		String c = e.getActionCommand();
+		if(c.equals("Exit")) {
 			exit();
 		}
+		else if(c.equals("New")) {
+			openNewDocument();
+		}
+	}
+	
+	private void openNewDocument() {
+		document = new DocumentModel();
+		window.setTitle("Unsaved class diagram - " + PROGRAM_NAME);
+		
+		DocumentPreferences preferences = document.getPreferences();
+		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, 0/*TODO: get from toolbar*/));
+		preferences.setCanvasDefaultSize(canvas.getSize());
+		
 	}
 	
 	public void exit() {

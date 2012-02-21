@@ -13,4 +13,8 @@ public class ToolBar extends JToolBar {
 		fontList = new JComboBox(fonts);
 		this.add(fontList, BorderLayout.WEST);
 	}
+	
+	public String getFontName() {
+		return (String) (fontList.getSelectedItem());
+	}
 }
