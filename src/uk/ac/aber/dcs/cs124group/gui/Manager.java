@@ -39,7 +39,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		toolBar = window.getToolbar();
 		
 		openNewDocument();
-		resizeCanvas(new Dimension(500,500));
+		canvas.setNewSize(new Dimension(500,500));
 		status.setText("Welcome!");
 	}
 	
@@ -157,6 +157,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 		DocumentPreferences preferences = document.getPreferences();
 		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize()));
+		canvas.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize()));
 		preferences.setCanvasDefaultSize(canvas.getSize());
 		
 		status.setText("Opened a brand new class diagram");
@@ -223,7 +224,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(this.document);
 			out.close();
+			status.setText("Document saved successfully");
 		} catch(Exception e) {
+			status.setText("Could not write your document into the file. Sorry!");
 			System.out.println(e.getStackTrace());
 		}
 	}
@@ -242,23 +245,25 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 				for(int i = 0; i < getDrawableElements().size(); i++) {
 					getDrawableElements().get(i).setPaintState(ElementPaintState.DEFAULT);
 				}
+				canvas.setNewSize(document.getPreferences().getCanvasDefaultSize());
+				canvas.setFont(document.getPreferences().getFont());
+				toolBar.overrideFont(document.getPreferences().getFont());
+				canvas.setZoomFactor(1);
 				canvas.repaint();
+				status.setText("File " + openFile + " opened successfully");
+				window.setTitle(openFile + " - " + PROGRAM_NAME);
 			} catch(Exception e) {
-				
+				status.setText("Could not open file " + openFile);
 			}
+			
 		}
 	}
 	
-	private void resizeCanvas(Dimension d) {
-		canvas.setMinimumSize(d);
-		canvas.setPreferredSize(d);
-		canvas.setMaximumSize(d);
-	}
-	
+
 	public void exit() {
 		if(this.edited) {
 			Object[] options = {"Save", "Don't Save", "Cancel"};
-			int n = JOptionPane.showOptionDialog(window, "You have edited something! Would you like to:", "Warning!", 
+			int n = JOptionPane.showOptionDialog(window, "Would you like to save your changes? Any unsaved changes will be lost.", "Warning!", 
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
 					null, options, options[2]);
 			if(n != 2 || n != JOptionPane.CANCEL_OPTION) {

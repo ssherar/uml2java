@@ -34,4 +34,9 @@ public class DocumentPreferences implements Serializable {
 		return canvasDefaultSize.height;
 	}
 
+	public Dimension getCanvasDefaultSize() {
+		// TODO Auto-generated method stub
+		return canvasDefaultSize;
+	}
+
 }

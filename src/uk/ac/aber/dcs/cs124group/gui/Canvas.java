@@ -53,7 +53,7 @@ public class Canvas extends JPanel {
 				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		g.setRenderingHint(
 				RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_DEFAULT);
+				RenderingHints.VALUE_RENDER_QUALITY);
 				
 		
 		ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
@@ -109,5 +109,11 @@ public class Canvas extends JPanel {
 	
 	private void drawTextLabel(Graphics2D g, TextLabel t) {
 		
+	}
+	
+	public void setNewSize(Dimension d) {
+		setMaximumSize(d);
+		setMinimumSize(d);
+		setPreferredSize(d);
 	}
 }

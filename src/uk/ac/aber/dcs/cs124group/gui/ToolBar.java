@@ -29,7 +29,7 @@ public class ToolBar extends JToolBar {
 		this.add(fontList);
 		
 		fontSize = new JSpinner();
-		fontSize.setValue(10);
+		fontSize.setValue(11);
 		
 		layout.putConstraint(SpringLayout.WEST, fontSize, 5, SpringLayout.EAST, fontList);
 		layout.putConstraint(SpringLayout.NORTH, fontSize, 5, SpringLayout.NORTH, this);
@@ -67,6 +67,11 @@ public class ToolBar extends JToolBar {
 	
 	public int getZoom() {
 		return zoom.getValue();
+	}
+	
+	public void overrideFont(Font f) {
+		fontList.setSelectedItem(f.getFontName());
+		fontSize.setValue(f.getSize());
 	}
 	
 }
