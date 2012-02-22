@@ -2,8 +2,6 @@ package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.event.*;
 import java.awt.*;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -234,7 +232,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		JFileChooser fc = new JFileChooser();
 		int retVal = fc.showOpenDialog(null);
 		
-		/** Bringing in new file, but not display... */
 		if(retVal == JFileChooser.APPROVE_OPTION) {
 			File openFile = fc.getSelectedFile();
 			try {
@@ -242,6 +239,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 				FileInputStream fos = new FileInputStream(openFile.getPath());
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel)in.readObject();
+				for(int i = 0; i < getDrawableElements().size(); i++) {
+					getDrawableElements().get(i).setPaintState(ElementPaintState.DEFAULT);
+				}
 				canvas.repaint();
 			} catch(Exception e) {
 				

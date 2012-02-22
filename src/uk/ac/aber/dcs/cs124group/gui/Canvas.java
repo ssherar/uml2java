@@ -61,7 +61,7 @@ public class Canvas extends JPanel {
 			elements = manager.getDrawableElements();
 		}
 		catch (NullPointerException ex) {
-			return;
+			System.out.println("Could not draw anything");
 		}
 		
 		for(int i = 0; i < elements.size(); i++) {
@@ -80,6 +80,7 @@ public class Canvas extends JPanel {
 	}
 	
 	private void drawClassRectangle(Graphics2D g, ClassRectangle c) {
+
 		FontMetrics metrics = g.getFontMetrics();
 		
 		if(c.getPaintState() == ElementPaintState.DEFAULT) {
