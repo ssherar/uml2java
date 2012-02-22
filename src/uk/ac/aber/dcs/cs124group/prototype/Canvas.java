@@ -1,5 +1,7 @@
 package uk.ac.aber.dcs.cs124group.prototype;
 import java.awt.*;
+import java.util.regex.*;
+import java.awt.event.*;
 import java.util.*;
 import javax.swing.*;
 
@@ -53,6 +55,8 @@ public class Canvas extends JPanel {
 	public void setEditing(int i) {
 		edit = null;
 		edit = new JTextField(8);
+		edit.addFocusListener(h);
+		edit.addKeyListener(h);
 		//find offset;
 		int o = i * 25;
 		edit.setBounds(0, o, 400, 20);
@@ -60,5 +64,9 @@ public class Canvas extends JPanel {
 		this.remove(this.vars.get(i));
 		this.add(edit);
 		repaint();
+	}
+	
+	public JLabel getVar(int i) {
+		return vars.get(i);
 	}
 }
