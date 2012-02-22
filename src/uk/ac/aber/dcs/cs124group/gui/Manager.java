@@ -118,9 +118,14 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
-		canvas.setZoomFactor(((JSlider)e.getSource()).getValue() / 100.0);
-		status.setText("Zoom factor is " + canvas.getZoomFactor());
-		canvas.repaint();
+		if(e.getSource() instanceof JSlider) {
+			canvas.setZoomFactor(((JSlider)e.getSource()).getValue() / 100.0);
+			status.setText("Zoom factor is " + canvas.getZoomFactor());
+			canvas.repaint();
+		}
+		else if (e.getSource() instanceof JSpinner) {
+			changeFont();
+		}
 	}
 
 	@Override
@@ -147,6 +152,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 		else if(c.equals("Open...")) {
 			openExisting();
+		}
+		else if(c.equals("fonts") || c.equals("fontsize")) {
+			changeFont();
 		}
 		
 	}
@@ -257,6 +265,14 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			}
 			
 		}
+	}
+	
+	private void changeFont() {
+		Font font = new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize());
+		document.getPreferences().setFont(font);
+		canvas.setFont(font);
+		canvas.repaint();
+		status.setText("Font changed to " + font);
 	}
 	
 
