@@ -1,13 +1,16 @@
 package uk.ac.aber.dcs.cs124group.model;
 
-import java.awt.Point;
-import java.awt.Dimension;
+import java.awt.*;
+
+import javax.swing.*;
 import java.util.ArrayList;
 
 public class ClassRectangle extends DocumentElement {
 
 	private static final long serialVersionUID = 249568855144662119L;
 	private static final Dimension DEFAULT_RECTANGLE_SIZE = new Dimension(150,100);
+	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
+	
 	
 	private String name = "NewClass";
 	private Dimension size;
@@ -22,7 +25,7 @@ public class ClassRectangle extends DocumentElement {
 	private boolean isStatic = false;	
 	public ClassRectangle(Point p) {
 		position = p;
-		size = DEFAULT_RECTANGLE_SIZE;
+		setPreferredSize(DEFAULT_RECTANGLE_SIZE);
 	}
 
 	public String getName() {
@@ -75,13 +78,8 @@ public class ClassRectangle extends DocumentElement {
 		//TODO act upon this new information accordingly...
 	}
 	
-	public void resize(Dimension newSize) {
-		this.size = newSize;
-		//TODO act upon this new information accordingly...
-	}
-	
 	public Dimension getSize() {
-		return this.size;
+		return this.getPreferredSize();
 	}
 	
 	public void setSuperClass(ClassRectangle c) {
@@ -98,6 +96,48 @@ public class ClassRectangle extends DocumentElement {
 	
 	public IVisibility getVisibility() {
 		return visibility;
+	}
+	
+
+	public void paintComponent(Graphics gg) {
+		super.paintComponent(gg);
+		Graphics2D g = (Graphics2D) gg;
+		Font f = this.getFont();
+		g.setFont(f);
+		g.scale(this.getZoomFactor(), this.getZoomFactor());
+		g.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
+		g.setRenderingHint(
+				RenderingHints.KEY_ANTIALIASING, 
+				RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(
+				RenderingHints.KEY_FRACTIONALMETRICS,
+				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
+		g.setRenderingHint(
+				RenderingHints.KEY_RENDERING,
+				RenderingHints.VALUE_RENDER_QUALITY);
+		
+		FontMetrics metrics = g.getFontMetrics();
+		
+		int width = getPreferredSize().width;
+		int height = getPreferredSize().height;
+		
+		if(getPaintState() == ElementPaintState.DEFAULT) {
+	
+			
+			g.drawRoundRect(0, 0, width - 1 , height - 1, 10, 10);
+			g.setColor(RECTANGLE_BACKGROUND);
+			g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
+			
+			int nameFieldHeight = 2 + metrics.getHeight();
+			g.setColor(Color.BLACK);
+			g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
+			
+			int nameStartPointX = (width - metrics.stringWidth(name)) / 2;
+			int nameStartPointY = metrics.getAscent() + metrics.getDescent();
+			g.drawString(name, nameStartPointX, nameStartPointY);
+		}
 	}
 	
 

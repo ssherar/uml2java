@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.ArrayList;
+import javax.swing.*;
 import java.awt.Font;
 
 public class DocumentModel implements java.io.Serializable {

@@ -17,6 +17,7 @@ public class Canvas extends JPanel {
 	public Canvas(Manager manager) {
 		this.manager = manager;
 		this.setBackground(Color.WHITE);
+		this.setLayout(null);
 		
 		this.addMouseMotionListener(manager);
 		this.addMouseListener(manager);
@@ -26,6 +27,7 @@ public class Canvas extends JPanel {
 	
 	public void setZoomFactor(double zoomFactor) {
 		this.zoomFactor = zoomFactor;
+		
 	}
 	
 	public double getZoomFactor() {
@@ -65,50 +67,17 @@ public class Canvas extends JPanel {
 		
 		for(int i = 0; i < elements.size(); i++) {
 			DocumentElement e = elements.get(i);
-			if(e instanceof ClassRectangle) {
-				drawClassRectangle(g, (ClassRectangle) e);
-			}
-			else if (e instanceof Relationship) {
+			if (e instanceof Relationship) {
 				drawRelationship(g, (Relationship) e);
 			}
-			else if (e instanceof TextLabel) {
-				drawTextLabel(g, (TextLabel) e);
-			}
-		}
-		
-	}
-	
-	private void drawClassRectangle(Graphics2D g, ClassRectangle c) {
 
-		FontMetrics metrics = g.getFontMetrics();
-		
-		if(c.getPaintState() == ElementPaintState.DEFAULT) {
-			
-			g.drawRoundRect(c.getPosition().x, c.getPosition().y,
-			        c.getSize().width, c.getSize().height, 10, 10);
-			g.setColor(RECTANGLE_BACKGROUND);
-			g.fillRoundRect(c.getPosition().x + 1, c.getPosition().y + 1,
-					        c.getSize().width - 1, c.getSize().height - 1, 10, 10);
-			
-			int nameFieldHeight = 2 + metrics.getHeight();
-			g.setColor(Color.BLACK);
-			g.drawLine(c.getPosition().x, c.getPosition().y + nameFieldHeight, 
-					   c.getPosition().x + c.getSize().width, c.getPosition().y + nameFieldHeight);
-			
-			int nameStartPointX = (c.getSize().width - metrics.stringWidth(c.getName())) / 2;
-			int nameStartPointY = metrics.getAscent() + metrics.getDescent();
-			g.drawString(c.getName(), c.getPosition().x + nameStartPointX, c.getPosition().y + nameStartPointY);
 		}
 		
 	}
-	
+			
 	private void drawRelationship(Graphics2D g, Relationship r) {
 		
-	}
-	
-	private void drawTextLabel(Graphics2D g, TextLabel t) {
-		
-	}
+	}	
 	
 	public void setNewSize(Dimension d) {
 		setMaximumSize(d);
