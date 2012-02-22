@@ -209,8 +209,10 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 	private void saveAs() {
+		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
 		int retVal = fc.showSaveDialog(null);
+		setWaitCursor(false);
 		
 		if(retVal == JFileChooser.APPROVE_OPTION) {
 			File saveFile = fc.getSelectedFile();
@@ -240,8 +242,10 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 	private void openExisting() {
+		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
 		int retVal = fc.showOpenDialog(null);
+		setWaitCursor(false);
 		
 		if(retVal == JFileChooser.APPROVE_OPTION) {
 			File openFile = fc.getSelectedFile();
@@ -268,11 +272,25 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 	private void changeFont() {
+		setWaitCursor(true);
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize());
 		document.getPreferences().setFont(font);
 		canvas.setFont(font);
 		canvas.repaint();
 		status.setText("Font changed to " + font);
+		setWaitCursor(false);
+	}
+	
+	private void setWaitCursor(boolean value) {
+		if(value) {
+			try {
+				window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			}
+			catch (Exception e) {
+				window.setCursor(Cursor.getDefaultCursor());
+			}
+		}
+		else window.setCursor(Cursor.getDefaultCursor());
 	}
 	
 
