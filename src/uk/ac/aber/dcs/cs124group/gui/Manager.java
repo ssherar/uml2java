@@ -119,9 +119,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		if(e.getSource() instanceof JSlider) {
-			canvas.setZoomFactor(((JSlider)e.getSource()).getValue() / 100.0);
-			status.setText("Zoom factor is " + canvas.getZoomFactor());
-			canvas.repaint();
+			changeZoom(((JSlider)e.getSource()).getValue() / 100.0);
+			
 		}
 		else if (e.getSource() instanceof JSpinner) {
 			changeFont();
@@ -161,6 +160,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	
 	private void openNewDocument() {
 		document = new DocumentModel();
+		canvas.removeAll();
 		window.setTitle("Unsaved class diagram - " + PROGRAM_NAME);
 		
 		DocumentPreferences preferences = document.getPreferences();
@@ -174,11 +174,20 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	
 	private void addNewClass(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
-		document.addElement(new ClassRectangle(p));
+		ClassRectangle c = new ClassRectangle(p);
+		document.addElement(c);
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
+		
+		canvas.add(c);
+		Insets insets = canvas.getInsets();
+		Dimension cSize = c.getPreferredSize();
+		c.setBounds(p.x + insets.left, p.y + insets.top, cSize.width, cSize.height);
+		c.repaint();
+		
 		canvas.repaint();
 		this.edited = true;
 	}
+	
 	
 	private void openAboutWindow() {
 		JFrame aboutWindow = new JFrame("About " + PROGRAM_NAME);
@@ -208,6 +217,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 	}
 	
+	
 	private void saveAs() {
 		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
@@ -228,6 +238,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 	}
 	
+	
 	private void serialise(String fileName) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
@@ -240,6 +251,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			System.out.println(e.getStackTrace());
 		}
 	}
+	
 	
 	private void openExisting() {
 		setWaitCursor(true);
@@ -260,7 +272,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 				canvas.setNewSize(document.getPreferences().getCanvasDefaultSize());
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
-				canvas.setZoomFactor(1);
+				canvas.setZoomFactor(document.getPreferences().getZoomLevel()); //TODO: fixme, JSlider will not have updated
 				canvas.repaint();
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
@@ -271,15 +283,38 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 	}
 	
+	
 	private void changeFont() {
 		setWaitCursor(true);
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize());
 		document.getPreferences().setFont(font);
+		
+		ArrayList<DocumentElement> elements = document.getElements();
+		for(int i = 0; i < elements.size(); i++) {
+			elements.get(i).setFont(font);
+			elements.get(i).repaint();
+		}
+		
 		canvas.setFont(font);
 		canvas.repaint();
 		status.setText("Font changed to " + font);
 		setWaitCursor(false);
 	}
+	
+	
+	private void changeZoom (double zoom) {
+		ArrayList<DocumentElement> elements = document.getElements();
+		for(int i = 0; i < elements.size(); i++) {
+			elements.get(i).setZoomFactor(zoom);
+			elements.get(i).repaint();
+		}
+		canvas.setZoomFactor(zoom);
+		status.setText("Zoom factor is " + canvas.getZoomFactor());
+		canvas.repaint();
+		
+		document.getPreferences().setZoomLevel(zoom);
+	}
+	
 	
 	private void setWaitCursor(boolean value) {
 		if(value) {

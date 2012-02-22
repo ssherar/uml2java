@@ -12,6 +12,7 @@ public class DocumentPreferences implements Serializable {
 	
 	private Font font;
 	private Dimension canvasDefaultSize;
+	private double zoomLevel = 1;
 		
 
 	public void setFont(Font f) {
@@ -26,13 +27,15 @@ public class DocumentPreferences implements Serializable {
 		canvasDefaultSize = newSize;
 	}
 	
-	public int getCanvasDefaultWidth() {
-		return canvasDefaultSize.width;
-	}
 	
-	public int getCanvasDefaultHeight() {
-		return canvasDefaultSize.height;
+	public double getZoomLevel() {
+		return zoomLevel;
 	}
+
+	public void setZoomLevel(double zoomLevel) {
+		this.zoomLevel = zoomLevel;
+	}
+
 
 	public Dimension getCanvasDefaultSize() {
 		// TODO Auto-generated method stub
