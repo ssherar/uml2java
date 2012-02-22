@@ -8,10 +8,12 @@ import java.util.*;
 
 public class Canvas extends JPanel {
 	
+	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
+	
 	private Manager manager;
 	
 	private double zoomFactor;
-	private Font font = new Font("Arial", Font.PLAIN, 10);
+	private Font font = new Font("Arial", Font.PLAIN, 14);
 	
 	public Canvas(Manager manager) {
 		this.manager = manager;
@@ -35,6 +37,9 @@ public class Canvas extends JPanel {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
 		g.setFont(font);
+		g.setRenderingHint(
+		        RenderingHints.KEY_TEXT_ANTIALIASING,
+		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
 		
 		ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
 		try {
@@ -63,11 +68,21 @@ public class Canvas extends JPanel {
 		FontMetrics metrics = g.getFontMetrics();
 		
 		if(c.getPaintState() == ElementPaintState.DEFAULT) {
+			
 			g.drawRoundRect(c.getPosition().x, c.getPosition().y,
-					        c.getSize().width, c.getSize().height, 10, 10);
+			        c.getSize().width, c.getSize().height, 10, 10);
+			g.setColor(RECTANGLE_BACKGROUND);
+			g.fillRoundRect(c.getPosition().x + 1, c.getPosition().y + 1,
+					        c.getSize().width - 1, c.getSize().height - 1, 10, 10);
+			
 			int nameFieldHeight = 2 + metrics.getHeight();
+			g.setColor(Color.BLACK);
 			g.drawLine(c.getPosition().x, c.getPosition().y + nameFieldHeight, 
 					   c.getPosition().x + c.getSize().width, c.getPosition().y + nameFieldHeight);
+			
+			int nameStartPointX = (c.getSize().width - metrics.stringWidth(c.getName())) / 2;
+			int nameStartPointY = metrics.getAscent() + metrics.getDescent();
+			g.drawString(c.getName(), c.getPosition().x + nameStartPointX, c.getPosition().y + nameStartPointY);
 		}
 		
 	}
