@@ -15,7 +15,6 @@ public class SideBar extends JPanel {
 	public SideBar(Manager manager) {
 		super();
 		this.manager = manager;
-		this.setPreferredSize(new Dimension(138, 786));
 		layout = new SpringLayout();
 		this.setLayout(layout);
 		
@@ -49,5 +48,7 @@ public class SideBar extends JPanel {
 		this.add(newRelationship);
 		this.add(newTextLabel);
 		this.add(export);
+		
+		this.setPreferredSize(new Dimension(newRelationship.getPreferredSize().width + 20, 786));
 	}
 }
