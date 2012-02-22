@@ -7,8 +7,9 @@ import java.util.ArrayList;
 public class ClassRectangle extends DocumentElement {
 
 	private static final long serialVersionUID = 249568855144662119L;
+	private static final Dimension DEFAULT_RECTANGLE_SIZE = new Dimension(150,100);
 	
-	private String name;
+	private String name = "NewClass";
 	private Dimension size;
 	private ClassRectangle superClass = null;
 	private IVisibility visibility = IVisibility.PUBLIC;
@@ -21,6 +22,7 @@ public class ClassRectangle extends DocumentElement {
 	private boolean isStatic = false;	
 	public ClassRectangle(Point p) {
 		position = p;
+		size = DEFAULT_RECTANGLE_SIZE;
 	}
 
 	public String getName() {

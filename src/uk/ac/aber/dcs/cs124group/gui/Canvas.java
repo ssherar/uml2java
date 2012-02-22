@@ -10,6 +10,9 @@ public class Canvas extends JPanel {
 	
 	private Manager manager;
 	
+	private double zoomFactor;
+	private Font font = new Font("Arial", Font.PLAIN, 10);
+	
 	public Canvas(Manager manager) {
 		this.manager = manager;
 		this.setBackground(Color.WHITE);
@@ -20,9 +23,18 @@ public class Canvas extends JPanel {
 		//this.setPreferredSize(new Dimension(624,600));
 	}
 	
+	public void setZoomFactor(double zoomFactor) {
+		this.zoomFactor = zoomFactor;
+	}
+	
+	public void setFont(Font font) {
+		this.font = font;
+	}
+	
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
+		g.setFont(font);
 		
 		ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
 		try {
@@ -48,6 +60,15 @@ public class Canvas extends JPanel {
 	}
 	
 	private void drawClassRectangle(Graphics2D g, ClassRectangle c) {
+		FontMetrics metrics = g.getFontMetrics();
+		
+		if(c.getPaintState() == ElementPaintState.DEFAULT) {
+			g.drawRoundRect(c.getPosition().x, c.getPosition().y,
+					        c.getSize().width, c.getSize().height, 10, 10);
+			int nameFieldHeight = 2 + metrics.getHeight();
+			g.drawLine(c.getPosition().x, c.getPosition().y + nameFieldHeight, 
+					   c.getPosition().x + c.getSize().width, c.getPosition().y + nameFieldHeight);
+		}
 		
 	}
 	
