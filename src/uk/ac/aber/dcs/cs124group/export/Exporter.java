@@ -87,7 +87,7 @@ public class Exporter {
 		contents.concat("{" + NL + NL);
 
 		// --------------------Attributes/Fields----------------------------
-		for (int j = 0; j > r.getAttributes().size() - 1; j++) {
+		for (int j = 0; j <= r.getAttributes().size() - 1; j++) {
 
 			boolean isAttributeFinal = false;
 			boolean isMethodAbstract = false;
@@ -164,7 +164,7 @@ public class Exporter {
 
 				int numOfArgs = r.getAttributes().get(j).getArgs().size();
 
-				for (int k = 0; k > numOfArgs - 1; k++) {
+				for (int k = 0; k <= numOfArgs - 1; k++) {
 					contents.concat(r.getAttributes().get(j).getArgs().get(k));
 					if (k < numOfArgs - 2) {
 						contents.concat(", ");
