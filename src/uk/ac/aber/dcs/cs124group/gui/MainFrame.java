@@ -37,7 +37,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    status = new StatusBar();
 	    
 	    add(sideBar, BorderLayout.WEST);
-		add(canvas, BorderLayout.CENTER);
+		add(scroll, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.NORTH);
 		add(status, BorderLayout.SOUTH);
 		
