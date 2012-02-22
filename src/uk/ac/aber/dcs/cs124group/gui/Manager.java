@@ -2,13 +2,18 @@ package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.event.*;
 import java.awt.*;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import java.io.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
-		MouseMotionListener, MouseListener {
+		MouseMotionListener, MouseListener, ChangeListener {
 	
 	public static final String PROGRAM_NAME = "UML2Java";
 	
@@ -34,6 +39,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		toolBar = window.getToolbar();
 		
 		openNewDocument();
+		resizeCanvas(canvas.getSize());
 		status.setText("Welcome!");
 	}
 	
@@ -106,8 +112,15 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 
 	@Override
 	public void itemStateChanged(ItemEvent e) {
-		// TODO Auto-generated method stub
+		//TODO implement
 
+	}
+	
+	@Override
+	public void stateChanged(ChangeEvent e) {
+		canvas.setZoomFactor(((JSlider)e.getSource()).getValue() / 100.0);
+		status.setText("Zoom factor is " + canvas.getZoomFactor());
+		canvas.repaint();
 	}
 
 	@Override
@@ -210,9 +223,16 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 	}
 	
+	private void resizeCanvas(Dimension d) {
+		canvas.setMinimumSize(d);
+		canvas.setMaximumSize(d);
+	}
+	
 	public void exit() {
 		//TODO check for unsaved changes, display "do you want to save" if necessary
 		System.exit(0);
 	}
+
+
 
 }

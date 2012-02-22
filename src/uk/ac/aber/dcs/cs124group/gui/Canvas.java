@@ -12,8 +12,8 @@ public class Canvas extends JPanel {
 	
 	private Manager manager;
 	
-	private double zoomFactor;
-	private Font font = new Font("Arial", Font.PLAIN, 14);
+	private double zoomFactor = 1;
+	private Font font = new Font("Arial", Font.PLAIN, 12);
 	
 	public Canvas(Manager manager) {
 		this.manager = manager;
@@ -29,6 +29,10 @@ public class Canvas extends JPanel {
 		this.zoomFactor = zoomFactor;
 	}
 	
+	public double getZoomFactor() {
+		return zoomFactor;
+	}
+	
 	public void setFont(Font font) {
 		this.font = font;
 	}
@@ -37,6 +41,7 @@ public class Canvas extends JPanel {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
 		g.setFont(font);
+		g.scale(zoomFactor, zoomFactor);
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);

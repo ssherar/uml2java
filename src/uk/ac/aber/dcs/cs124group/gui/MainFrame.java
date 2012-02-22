@@ -33,7 +33,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    JScrollPane scroll = new JScrollPane(canvas);
 	    sideBar = new SideBar(manager);
 	    menu = new MenuBar(manager);
-	    toolbar = new ToolBar();
+	    toolbar = new ToolBar(manager);
 	    status = new StatusBar();
 	    
 	    add(sideBar, BorderLayout.WEST);

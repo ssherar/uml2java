@@ -12,7 +12,11 @@ public class ToolBar extends JToolBar {
 	private JSlider zoom;
 	private JLabel zoomLabel = new JLabel("Zoom: ");
 	
-	public ToolBar() {
+	private Manager manager;
+	
+	public ToolBar(Manager manager) {
+		this.manager = manager;
+		
 		SpringLayout layout = new SpringLayout();
 		this.setPreferredSize(new Dimension(0, 30));
 		this.setLayout(layout);
@@ -39,6 +43,7 @@ public class ToolBar extends JToolBar {
 		zoom.setMajorTickSpacing(50);
 		zoom.setMinorTickSpacing(25);
 		zoom.setPaintTicks(true);
+		zoom.addChangeListener(manager);
 		//layout.putConstraint(SpringLayout.WEST, zoom, 0, SpringLayout.EAST, fontSize);
 		layout.putConstraint(SpringLayout.EAST, zoom, 2, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, zoom, 0, SpringLayout.NORTH, this);
