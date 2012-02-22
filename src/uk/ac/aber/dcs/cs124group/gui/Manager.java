@@ -39,7 +39,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		toolBar = window.getToolbar();
 		
 		openNewDocument();
-		resizeCanvas(canvas.getSize());
+		resizeCanvas(new Dimension(500,500));
 		status.setText("Welcome!");
 	}
 	

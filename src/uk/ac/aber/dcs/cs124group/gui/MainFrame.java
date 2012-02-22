@@ -29,15 +29,28 @@ public class MainFrame extends JFrame implements WindowListener {
 		} catch (Exception e) {
 			
 		}
+		
+		JPanel dummyPanel = new JPanel();
+		
+		
+		
 	    canvas = new Canvas(manager);
 	    JScrollPane scroll = new JScrollPane(canvas);
+	    
+	    dummyPanel.setBackground(Color.GRAY);
+	    dummyPanel.setLayout(null);
+	    dummyPanel.add(scroll);
+	    Dimension size = scroll.getPreferredSize();
+	    Insets insets = dummyPanel.getInsets();
+	    scroll.setBounds(insets.left, insets.top, size.width, size.height);
+	    
 	    sideBar = new SideBar(manager);
 	    menu = new MenuBar(manager);
 	    toolbar = new ToolBar(manager);
 	    status = new StatusBar();
 	    
 	    add(sideBar, BorderLayout.WEST);
-		add(scroll, BorderLayout.CENTER);
+	    add(dummyPanel, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.NORTH);
 		add(status, BorderLayout.SOUTH);
 		

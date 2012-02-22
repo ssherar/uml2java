@@ -22,7 +22,7 @@ public class Canvas extends JPanel {
 		this.addMouseMotionListener(manager);
 		this.addMouseListener(manager);
 		this.addKeyListener(manager);
-		//this.setPreferredSize(new Dimension(624,600));
+		this.setPreferredSize(new Dimension(924,700));
 	}
 	
 	public void setZoomFactor(double zoomFactor) {
