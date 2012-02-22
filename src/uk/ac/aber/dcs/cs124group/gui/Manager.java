@@ -41,6 +41,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		openNewDocument();
 		canvas.setNewSize(new Dimension(500,500));
 		status.setText("Welcome!");
+		
+		changeFont();
 	}
 	
 	public ArrayList<DocumentElement> getDrawableElements() {
@@ -184,6 +186,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	private void addNewClass(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		ClassRectangle c = new ClassRectangle(p);
+		c.setFont(document.getPreferences().getFont());
 		document.addElement(c);
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
 		
@@ -201,6 +204,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	private void addNewLabel(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabel l = new TextLabel(p);
+		l.setFont(document.getPreferences().getFont());
 		document.addElement(l);
 		status.setText("New label created at " + p.x + "," + p.y);
 		

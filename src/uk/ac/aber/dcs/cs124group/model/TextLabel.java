@@ -15,7 +15,7 @@ public class TextLabel extends DocumentElement {
 		this.setBackground(Color.RED); //debug statement, obv
 		this.setOpaque(true);
 		
-		this.setPreferredSize(new Dimension(48,18));
+		this.setPreferredSize(new Dimension(53,18));
 		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
 		//textArea.setPreferredSize(this.getPreferredSize());
 	}
@@ -32,19 +32,22 @@ public class TextLabel extends DocumentElement {
 	
 	public void setText(String text) {
 		this.text = text;
-
-		int width = metrics.stringWidth(this.text);
-		this.setPreferredSize(new Dimension(width + 1,metrics.getHeight() + 1));
-		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
-		
-		
+		resizeToText();		
 	}
 	
 	public void setFont(Font f) {
 		super.setFont(f);
-		if(metrics != null) {
-			setText(text);
+		if(this.getGraphics() != null && metrics != null) {
+			resizeToText();
 		}
+	}
+	
+	private void resizeToText() {
+		
+		metrics = this.getGraphics().getFontMetrics();
+		int width = metrics.stringWidth(this.text);
+		this.setPreferredSize(new Dimension((int) (1.1 * width + 1),metrics.getHeight()));
+		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
 	}
 
 	@Override
