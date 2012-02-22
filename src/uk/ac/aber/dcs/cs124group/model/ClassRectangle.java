@@ -22,10 +22,12 @@ public class ClassRectangle extends DocumentElement {
 	
 	private boolean isAbstract = false;
 	private boolean isFinal = false;
-	private boolean isStatic = false;	
+	private boolean isStatic = false;
+	
 	public ClassRectangle(Point p) {
-		position = p;
+		setPosition(p);
 		setPreferredSize(DEFAULT_RECTANGLE_SIZE);
+		this.setOpaque(false);
 	}
 
 	public String getName() {
@@ -74,7 +76,7 @@ public class ClassRectangle extends DocumentElement {
 	
 	@Override
 	public void move(Point newPos) {
-		position = newPos;
+		setPosition(newPos);
 		//TODO act upon this new information accordingly...
 	}
 	

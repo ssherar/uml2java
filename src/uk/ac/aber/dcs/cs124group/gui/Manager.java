@@ -71,6 +71,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		if(mode == ListeningMode.PLACING_CLASS) {
 			addNewClass(new Point((int)((1/canvas.getZoomFactor())*e.getX()), (int)((1/canvas.getZoomFactor())*e.getY())));
 		}
+		else if (mode == ListeningMode.PLACING_TEXT) {
+			addNewLabel(new Point((int)((1/canvas.getZoomFactor())*e.getX()), (int)((1/canvas.getZoomFactor())*e.getY())));
+		}
 
 	}
 
@@ -143,6 +146,10 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			mode = ListeningMode.PLACING_CLASS;
 			status.setText("Click on the canvas to place your new class");
 		}
+		else if(c.equals("New label")) {
+			mode = ListeningMode.PLACING_TEXT;
+			status.setText("Click on the canvas to place your label");
+		}
 		else if(c.equals("Save")) {
 			save();
 		}
@@ -158,6 +165,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 	}
 	
+	
 	private void openNewDocument() {
 		document = new DocumentModel();
 		canvas.removeAll();
@@ -172,6 +180,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 	}
 	
+	
 	private void addNewClass(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		ClassRectangle c = new ClassRectangle(p);
@@ -183,6 +192,23 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		Dimension cSize = c.getPreferredSize();
 		c.setBounds(p.x + insets.left, p.y + insets.top, cSize.width, cSize.height);
 		c.repaint();
+		
+		canvas.repaint();
+		this.edited = true;
+	}
+	
+	
+	private void addNewLabel(Point p) {
+		mode = ListeningMode.LISTEN_TO_ALL;
+		TextLabel l = new TextLabel(p);
+		document.addElement(l);
+		status.setText("New label created at " + p.x + "," + p.y);
+		
+		canvas.add(l);
+		Insets insets = canvas.getInsets();
+		Dimension lSize = l.getPreferredSize();
+		l.setBounds(p.x + insets.left, p.y + insets.top, lSize.width, lSize.height);
+		l.repaint();
 		
 		canvas.repaint();
 		this.edited = true;
@@ -208,6 +234,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 		aboutWindow.setSize(450,250);
 	}
+	
 	
 	private void save() {
 		if(document.getFileName() == null) {
@@ -329,6 +356,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 
+	
 	public void exit() {
 		if(this.edited) {
 			Object[] options = {"Save", "Don't Save", "Cancel"};

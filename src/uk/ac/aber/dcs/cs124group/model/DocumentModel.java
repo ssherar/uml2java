@@ -45,12 +45,8 @@ public class DocumentModel implements java.io.Serializable {
 		elements.add(r);
 	}
 	
-	public void removeClass(DocumentElement r) {
+	public void removeElement(DocumentElement r) {
 		elements.remove(r);
-	}
-	
-	public void removeUnlinkedElements() {
-		//TODO define purge
 	}
 
 }
