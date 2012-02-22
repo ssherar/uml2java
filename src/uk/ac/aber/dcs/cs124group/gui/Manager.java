@@ -4,6 +4,7 @@ import java.awt.event.*;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import java.io.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
@@ -174,15 +175,39 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 	private void save() {
-		if(document.getFileName() == "") {
+		if(document.getFileName() == null) {
 			saveAs();
 		} else {
-			
+			serialise(document.getFileName());
 		}
 	}
 	
 	private void saveAs() {
+		JFileChooser fc = new JFileChooser();
+		int retVal = fc.showSaveDialog(null);
 		
+		if(retVal == JFileChooser.APPROVE_OPTION) {
+			File saveFile = fc.getSelectedFile();
+			try {
+				if(saveFile.isFile()) saveFile.createNewFile();
+			} catch (Exception e) {
+				
+			}
+			serialise(saveFile.getAbsoluteFile().getPath());
+			document.setFileName(saveFile.getAbsoluteFile().getPath());
+		}
+		
+	}
+	
+	private void serialise(String fileName) {
+		try {
+			FileOutputStream fos = new FileOutputStream(fileName);
+			ObjectOutputStream out = new ObjectOutputStream(fos);
+			out.writeObject(this.document);
+			out.close();
+		} catch(Exception e) {
+			System.out.println(e.getStackTrace());
+		}
 	}
 	
 	public void exit() {
