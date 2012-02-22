@@ -4,11 +4,17 @@ import uk.ac.aber.dcs.cs124group.gui.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 import java.util.*;
 import java.io.*;
+import java.awt.Graphics;
+import java.awt.image.*;
+
+import javax.imageio.IIOException;
+import javax.imageio.ImageIO;
 
 public class Exporter {
 
 	private DocumentModel model;
 	private String outputDirectory;
+	private Canvas canvas;
 	private ArrayList<File> outputFiles;
 	// private ArrayList<String> fileNames;
 	private final String NL = "\n";
@@ -24,8 +30,20 @@ public class Exporter {
 		this.model = model;
 	}
 
-	public void exportImage() {
-
+	public void exportImage(Canvas c) throws IIOException {
+		
+		BufferedImage bi = new BufferedImage(c.getSize().width, c.getSize().height, BufferedImage.TYPE_INT_ARGB); 
+		Graphics g = bi.createGraphics();
+		c.paint(g);  //this == JComponent
+		g.dispose();
+		
+		try{
+			ImageIO.write(bi,"png",new File("test.png"));
+		}
+		catch (Exception e) {
+			
+		}
+		
 	}
 
 	public void exportCode() {
@@ -64,7 +82,7 @@ public class Exporter {
 		String eXtends = "";
 		String iMplements = "";
 
-		for (int l = 0; l > r.getRelationships().size() - 1; l++) {
+		for (int l = 0; l <= r.getRelationships().size() - 1; l++) {
 			switch (r.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
 				iMplements.concat(r.getRelationships().get(l).getGoingTo()

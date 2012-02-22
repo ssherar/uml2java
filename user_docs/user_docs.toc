@@ -1,0 +1,4 @@
+\contentsline {section}{\numberline {1}File Menu}{1}
+\contentsline {subsection}{\numberline {1.1}Create new Class Diagram}{1}
+\contentsline {subsection}{\numberline {1.2}Open an existing diagram}{1}
+\contentsline {subsection}{\numberline {1.3}Saving a diagram}{1}
