@@ -53,7 +53,7 @@ public class Canvas extends JPanel {
 				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
 		g.setRenderingHint(
 				RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
+				RenderingHints.VALUE_RENDER_DEFAULT);
 				
 		
 		ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();

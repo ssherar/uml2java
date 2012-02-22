@@ -39,7 +39,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		toolBar = window.getToolbar();
 		
 		openNewDocument();
-		resizeCanvas(canvas.getSize());
+		resizeCanvas(new Dimension(1000,1000));
+		//resizeCanvas(canvas.getSize());
 		status.setText("Welcome!");
 	}
 	
@@ -69,7 +70,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(mode == ListeningMode.PLACING_CLASS) {
-			addNewClass(new Point(e.getX(), e.getY()));
+			addNewClass(new Point((int)((1/canvas.getZoomFactor())*e.getX()), (int)((1/canvas.getZoomFactor())*e.getY())));
 		}
 
 	}
@@ -225,6 +226,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	
 	private void resizeCanvas(Dimension d) {
 		canvas.setMinimumSize(d);
+		canvas.setPreferredSize(d);
 		canvas.setMaximumSize(d);
 	}
 	
