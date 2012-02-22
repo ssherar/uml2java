@@ -28,6 +28,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
 	
+	private boolean edited = false;
+	
 	public Manager() {
 		window = new MainFrame(this);
 		window.setTitle(PROGRAM_NAME);
@@ -145,6 +147,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else if(c.equals("Save as...")) {
 			saveAs();
 		}
+		else if(c.equals("Open...")) {
+			openExisting();
+		}
 		
 	}
 	
@@ -165,6 +170,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		document.addElement(new ClassRectangle(p));
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
 		canvas.repaint();
+		this.edited = true;
 	}
 	
 	private void openAboutWindow() {
@@ -208,6 +214,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			}
 			serialise(saveFile.getAbsoluteFile().getPath());
 			document.setFileName(saveFile.getAbsoluteFile().getPath());
+			
 		}
 		
 	}
@@ -223,6 +230,25 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 	}
 	
+	private void openExisting() {
+		JFileChooser fc = new JFileChooser();
+		int retVal = fc.showOpenDialog(null);
+		
+		/** Bringing in new file, but not display... */
+		if(retVal == JFileChooser.APPROVE_OPTION) {
+			File openFile = fc.getSelectedFile();
+			try {
+				document = null;
+				FileInputStream fos = new FileInputStream(openFile.getPath());
+				ObjectInputStream in = new ObjectInputStream(fos);
+				document = (DocumentModel)in.readObject();
+				canvas.repaint();
+			} catch(Exception e) {
+				
+			}
+		}
+	}
+	
 	private void resizeCanvas(Dimension d) {
 		canvas.setMinimumSize(d);
 		canvas.setPreferredSize(d);
@@ -230,10 +256,22 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 	public void exit() {
-		//TODO check for unsaved changes, display "do you want to save" if necessary
-		System.exit(0);
+		if(this.edited) {
+			Object[] options = {"Save", "Don't Save", "Cancel"};
+			int n = JOptionPane.showOptionDialog(window, "You have edited something! Would you like to:", "Warning!", 
+					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
+					null, options, options[2]);
+			if(n != 2 || n != JOptionPane.CANCEL_OPTION) {
+				if(n == 0) {
+					save();
+					System.exit(0);
+				} else if(n == 1) {
+					System.exit(0);
+				}
+			}
+		} else {
+			System.exit(0);
+		}
 	}
-
-
 
 }
