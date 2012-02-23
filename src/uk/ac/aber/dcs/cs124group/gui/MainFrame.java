@@ -49,8 +49,8 @@ public class MainFrame extends JFrame implements WindowListener {
 	    scroll.setBounds(insets.left, insets.top, size.width, size.height);
 	    
 	    // TODO: Debugging scrollbars
-	    //scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-	    //scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+	    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 	    
 	    
 	    

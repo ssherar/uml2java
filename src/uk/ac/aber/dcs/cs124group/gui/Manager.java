@@ -80,7 +80,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		status.setText("Editing a label! When finished, please press ENTER to commit.");
 		// Move the element to be edited
 		// Clean up on Aisle #3
-		currentEdited = null;
 		currentEdited = label;
 		canvas.remove(currentEdited);
 			
@@ -92,13 +91,11 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		int canvasWidth = canvas.getPreferredSize().width;
 		int canvasHeight = canvas.getPreferredSize().height;
 		
-		labelTextArea.setBounds(x, y, canvasWidth - x, canvasHeight - y);
-		
+		labelTextArea.setPreferredSize(new Dimension(canvasWidth - x, canvasHeight - y));
+		labelTextArea.setLocation(new Point(x,y));
 		labelTextArea.setName("EditingCanvasLabel");
 		labelTextArea.setOpaque(false);
 		
-
-		labelTextArea.setSize(labelTextArea.getWidth()+30, labelTextArea.getHeight()+5);
 		labelTextArea.setFont(document.getPreferences().getFont());
 		labelTextArea.setText(currentEdited.getText());
 		labelTextArea.addKeyListener(this);
