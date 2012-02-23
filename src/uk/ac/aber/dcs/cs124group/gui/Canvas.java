@@ -4,6 +4,7 @@ import java.awt.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 import javax.swing.*;
+
 import java.util.*;
 
 public class Canvas extends JPanel {
@@ -27,7 +28,12 @@ public class Canvas extends JPanel {
 		
 		// TODO debugging scrollpanel
 		//this.setPreferredSize(new Dimension(800,600));
-		this.setPreferredSize(new Dimension(2000,2000));
+		SwingUtilities.invokeLater(new Runnable() {
+	         public void run() {
+	        	 setPreferredSize(new Dimension(2000,2000));
+	         }
+	      });
+		
 	}
 	
 	public void setZoomFactor(double zoomFactor) {

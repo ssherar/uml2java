@@ -31,27 +31,18 @@ public class MainFrame extends JFrame implements WindowListener {
 		}
 		
 		JPanel dummyPanel = new JPanel();
-		
+		add(dummyPanel);
 		
 		
 	    canvas = new Canvas(manager);
 	    JScrollPane scroll = new JScrollPane();
 	    scroll.setViewportView(canvas);
-	    scroll.setPreferredSize(new Dimension(924,700));
-	    
+	    scroll.setPreferredSize(new Dimension(900,800));
+		canvas.setPreferredSize(new Dimension(2000,2000));
 	    
 	    dummyPanel.setBackground(Color.GRAY);
-	    dummyPanel.setLayout(null);
-	    dummyPanel.add(scroll);
-	    
-	    Dimension size = scroll.getPreferredSize();
-	    Insets insets = dummyPanel.getInsets();
-	    scroll.setBounds(insets.left, insets.top, size.width, size.height);
-	    
-	    // TODO: Debugging scrollbars
-	    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    
+	    dummyPanel.setLayout(new DiagramLayout());
+	    dummyPanel.add(scroll);   
 	    
 	    
 	    sideBar = new SideBar(manager);
@@ -60,7 +51,6 @@ public class MainFrame extends JFrame implements WindowListener {
 	    status = new StatusBar();
 	    
 	    add(sideBar, BorderLayout.WEST);
-	    add(dummyPanel, BorderLayout.CENTER);
 		add(toolbar, BorderLayout.NORTH);
 		add(status, BorderLayout.SOUTH);
 		
@@ -71,7 +61,7 @@ public class MainFrame extends JFrame implements WindowListener {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 		this.setMinimumSize(new Dimension(1024,600));
-		
+
 	    
 	}
 	

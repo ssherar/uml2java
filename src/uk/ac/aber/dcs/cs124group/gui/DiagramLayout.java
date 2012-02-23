@@ -29,12 +29,13 @@ public class DiagramLayout implements LayoutManager {
 
 	@Override
 	public Dimension minimumLayoutSize(Container c) {
-		return c.getPreferredSize();
+		return c.getSize();
 	}
 
 	@Override
 	public Dimension preferredLayoutSize(Container c) {
-		return c.getPreferredSize();
+		Dimension s = c.getSize();
+		return s;
 	}
 	
 	

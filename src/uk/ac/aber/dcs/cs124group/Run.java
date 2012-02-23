@@ -1,11 +1,18 @@
 package uk.ac.aber.dcs.cs124group;
+import javax.swing.SwingUtilities;
+
 import uk.ac.aber.dcs.cs124group.gui.Manager;
 
 public class Run {
 
 	/** Launches the program */
 	public static void main(String[] args) {
-		Manager manager = new Manager();
+		SwingUtilities.invokeLater(new Runnable() {
+	         public void run() {
+	            new Manager();
+	         }
+	      });
+	   }
 	}
 
-}
+
