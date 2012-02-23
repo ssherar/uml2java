@@ -12,7 +12,7 @@ public class TextLabel extends DocumentElement {
 	public TextLabel(Point p) {
 		setPosition(p);
 		
-		this.setBackground(Color.RED); //debug statement, obv
+		//this.setBackground(Color.RED); //debug statement, obv
 		this.setOpaque(true);
 		
 		this.setPreferredSize(new Dimension(56,12));
@@ -35,7 +35,7 @@ public class TextLabel extends DocumentElement {
 	
 	public void setText(String text) {
 		this.text = text;
-		//resizeToText();		
+		resizeToText();		
 	}
 	
 	public String getText() {
@@ -45,19 +45,23 @@ public class TextLabel extends DocumentElement {
 	public void setFont(Font f) {
 		super.setFont(f);
 		if(this.getGraphics() != null && metrics != null) {
-			//resizeToText();
+			resizeToText();
 		}
 	}
 	
 	@Override
 	public void setZoomFactor(double zoom) {
 		super.setZoomFactor(zoom);
-		//resizeToText();
+		resizeToText();
 	}
 	
 	private void resizeToText() {
-		
-		metrics = this.getGraphics().getFontMetrics();
+		try {
+			metrics = this.getGraphics().getFontMetrics();
+		}
+		catch (NullPointerException ex) {
+			
+		}
 		int width = metrics.stringWidth(this.text);
 		this.setPreferredSize(new Dimension(
 				(int) (this.getZoomFactor() * 1.1 * width + 1), 
