@@ -62,31 +62,46 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		if(e.getComponent().getName() == "CanvasLabel") {
-			if(e.getClickCount() == 2 && !e.isConsumed() && !isEditingLabel()) {
+			if(e.getClickCount() == 2 && !e.isConsumed() && mode == ListeningMode.LISTEN_TO_ALL) {
 				e.consume();
-				editingLabel = true;
-				status.setText("Editing a label! When finished, please press ENTER to commit.");
-				int index = this.findLabel(e.getComponent());
-				if(index > -1) {
-					// Move the element to be edited
-					// Clean up on Aisle #3
-					currentEdited = null;
-					currentEdited = (TextLabel)document.getElements().get(index);
-					canvas.remove(currentEdited);
-					
-					JTextArea labelTextArea = new JTextArea();
-					labelTextArea.setBounds(currentEdited.getBounds());
-					labelTextArea.setName("EditingCanvasLabel");
-					// TODO: change it so it autoexpands while typing
-					labelTextArea.setSize(labelTextArea.getWidth()+30, labelTextArea.getHeight()+5);
-					labelTextArea.setFont(document.getPreferences().getFont());
-					labelTextArea.setText(currentEdited.getText());
-					labelTextArea.addKeyListener(this);
-					canvas.add(labelTextArea);
-					canvas.repaint();
+				TextLabel l = (TextLabel)(e.getComponent());
+				if(l != null) {
+					mode = ListeningMode.EDITING_TEXT;
+					enableLabelEdit(l);
 				}
+				
 			}
 		}
+	}
+	
+	private void enableLabelEdit(TextLabel label) {
+		status.setText("Editing a label! When finished, please press ENTER to commit.");
+		// Move the element to be edited
+		// Clean up on Aisle #3
+		currentEdited = null;
+		currentEdited = label;
+		canvas.remove(currentEdited);
+			
+		JTextArea labelTextArea = new JTextArea();
+		
+		int x = label.getPosition().x;
+		int y = label.getPosition().y;
+		
+		int canvasWidth = canvas.getPreferredSize().width;
+		int canvasHeight = canvas.getPreferredSize().height;
+		
+		labelTextArea.setBounds(x, y, canvasWidth - x, canvasHeight - y);
+		
+		labelTextArea.setName("EditingCanvasLabel");
+		
+
+		labelTextArea.setSize(labelTextArea.getWidth()+30, labelTextArea.getHeight()+5);
+		labelTextArea.setFont(document.getPreferences().getFont());
+		labelTextArea.setText(currentEdited.getText());
+		labelTextArea.addKeyListener(this);
+		canvas.add(labelTextArea);
+		canvas.repaint();
+		
 	}
 
 	@Override
@@ -143,7 +158,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			currentEdited.setText(tmp.getText());
 			canvas.add(currentEdited);
 			canvas.repaint();
-			editingLabel = false;
+			mode = ListeningMode.LISTEN_TO_ALL;
 			status.setText("Label modified successfully!");
 		}
 	}
@@ -410,17 +425,17 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else window.setCursor(Cursor.getDefaultCursor());
 	}
 	
-	private int findLabel(Component l) {
+	private TextLabel findLabel(Component l) {
 		ArrayList<DocumentElement> e = this.document.getElements();
 		for(int i = 0; i < e.size(); i++) {
 			// Only want components...
-			if(!(e.get(i) instanceof Relationship)) {
+			if((e.get(i) instanceof TextLabel)) {
 				if(l.equals(e.get(i))) {
-					return i;
+					return (TextLabel) e.get(i);
 				}
 			}
 		}
-		return -1;
+		return null;
 	}
 	
 	public boolean isEditingLabel() {
