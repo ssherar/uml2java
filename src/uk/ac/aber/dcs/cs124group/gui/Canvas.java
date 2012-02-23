@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.*;
+
 import uk.ac.aber.dcs.cs124group.model.*;
 import javax.swing.*;
 import java.util.*;
@@ -13,6 +14,7 @@ public class Canvas extends JPanel {
 	
 	private double zoomFactor = 1;
 	private Font font = new Font("Arial", Font.PLAIN, 12);
+
 	
 	public Canvas(Manager manager) {
 		this.manager = manager;
@@ -22,7 +24,10 @@ public class Canvas extends JPanel {
 		this.addMouseMotionListener(manager);
 		this.addMouseListener(manager);
 		this.addKeyListener(manager);
-		this.setPreferredSize(new Dimension(924,700));
+		
+		// TODO debugging scrollpanel
+		//this.setPreferredSize(new Dimension(924,700));
+		this.setPreferredSize(new Dimension(2000,2000));
 	}
 	
 	public void setZoomFactor(double zoomFactor) {
@@ -84,4 +89,12 @@ public class Canvas extends JPanel {
 		setMinimumSize(d);
 		setPreferredSize(d);
 	}
-}
+	
+	@Override
+	public Component add(Component c){
+		
+		super.add(c);
+		this.setComponentZOrder(c, 0);
+		return c;
+	}
+ }

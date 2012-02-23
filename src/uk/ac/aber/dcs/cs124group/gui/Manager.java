@@ -19,6 +19,8 @@ import uk.ac.aber.dcs.cs124group.export.*;
 public class Manager implements ActionListener, ItemListener, KeyListener,
 		MouseMotionListener, MouseListener, ChangeListener {
 	
+	private boolean inDebug = true;
+	
 	public static final String PROGRAM_NAME = "UML2Java";
 	
 	private MainFrame window;
@@ -82,7 +84,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		currentEdited = label;
 		canvas.remove(currentEdited);
 			
-		JTextArea labelTextArea = new JTextArea();
+		final JTextArea labelTextArea = new JTextArea();
 		
 		int x = label.getPosition().x;
 		int y = label.getPosition().y;
@@ -93,12 +95,21 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		labelTextArea.setBounds(x, y, canvasWidth - x, canvasHeight - y);
 		
 		labelTextArea.setName("EditingCanvasLabel");
+		labelTextArea.setOpaque(false);
 		
 
 		labelTextArea.setSize(labelTextArea.getWidth()+30, labelTextArea.getHeight()+5);
 		labelTextArea.setFont(document.getPreferences().getFont());
 		labelTextArea.setText(currentEdited.getText());
 		labelTextArea.addKeyListener(this);
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				labelTextArea.requestFocus();
+				labelTextArea.selectAll();
+			}
+			
+		});
 		canvas.add(labelTextArea);
 		canvas.repaint();
 		
@@ -154,6 +165,11 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		// TODO Auto-generated method stub
 		if(e.getComponent().getName() == "EditingCanvasLabel" && e.getKeyCode() == e.VK_ENTER) {
 			JTextArea tmp = (JTextArea) e.getComponent();
+			if(tmp.getText().length() < 1) {
+				status.setText("A label cannot be set to nothing. To delete please Right Click and click Delete.");
+				e.consume();
+				return;
+			}
 			canvas.remove(tmp);
 			currentEdited.setText(tmp.getText());
 			canvas.add(currentEdited);
@@ -443,7 +459,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 	
 	public void exit() {
-		if(this.edited) {
+		
+		if(this.edited && !this.inDebug) {
 			Object[] options = {"Save", "Don't Save", "Cancel"};
 			int n = JOptionPane.showOptionDialog(window, "Would you like to save your changes? Any unsaved changes will be lost.", "Warning!", 
 					JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE,
