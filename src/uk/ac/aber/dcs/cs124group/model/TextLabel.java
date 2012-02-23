@@ -15,19 +15,22 @@ public class TextLabel extends DocumentElement {
 		this.setBackground(Color.RED); //debug statement, obv
 		this.setOpaque(true);
 		
-		this.setPreferredSize(new Dimension(53,18));
+		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
 		//textArea.setPreferredSize(this.getPreferredSize());
 	}
 	
-	public void paintComponent(Graphics g) {
-		super.paintComponent(g);
+	public void paintComponent(Graphics d) {
+		super.paintComponent(d);
+		Graphics2D g = (Graphics2D) d;
+		g.scale(this.getZoomFactor(), this.getZoomFactor());
 		g.setFont(getFont());
 		metrics = g.getFontMetrics();
 		
-
-		
-		g.drawString(text, 0, metrics.getHeight() - 1);
+		int textX = 0;
+		double scaleY = this.getZoomFactor() < 1 ? 2 : 2 * this.getZoomFactor();
+		int textY = (int) ((this.getPreferredSize().height + metrics.getAscent()) / scaleY);
+		g.drawString(text, textX, textY);
 	}
 	
 	public void setText(String text) {
@@ -42,11 +45,19 @@ public class TextLabel extends DocumentElement {
 		}
 	}
 	
+	@Override
+	public void setZoomFactor(double zoom) {
+		super.setZoomFactor(zoom);
+		resizeToText();
+	}
+	
 	private void resizeToText() {
 		
 		metrics = this.getGraphics().getFontMetrics();
 		int width = metrics.stringWidth(this.text);
-		this.setPreferredSize(new Dimension((int) (1.1 * width + 1),metrics.getHeight()));
+		this.setPreferredSize(new Dimension(
+				(int) (this.getZoomFactor() * 1.1 * width + 1), 
+				(int) (this.getZoomFactor() * metrics.getAscent())));
 		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
 	}
 
