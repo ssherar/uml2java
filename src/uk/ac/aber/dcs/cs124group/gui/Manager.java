@@ -156,8 +156,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		status.setMousePos(e.getX(), e.getY());
 	}
 
 	@Override
