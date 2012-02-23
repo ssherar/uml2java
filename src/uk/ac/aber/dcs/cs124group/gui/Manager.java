@@ -298,7 +298,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel)in.readObject();
 				for(int i = 0; i < getDrawableElements().size(); i++) {
-					getDrawableElements().get(i).setPaintState(ElementPaintState.DEFAULT);
+					DocumentElement e = getDrawableElements().get(i);
+					e.setPaintState(ElementPaintState.DEFAULT);
+					canvas.add(e);
 				}
 				canvas.setNewSize(document.getPreferences().getCanvasDefaultSize());
 				canvas.setFont(document.getPreferences().getFont());
