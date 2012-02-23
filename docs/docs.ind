@@ -1,0 +1,35 @@
+\begin{theindex}
+{\bfseries\hfil A \hfil}\nopagebreak
+
+  \item Adding to diagram
+    \subitem Add new Class \dotfill 6
+    \subitem Add new Relationship \dotfill 7
+
+  \indexspace
+{\bfseries\hfil C \hfil}\nopagebreak
+
+  \item Canvas Settings
+    \subitem Fit to Diagram \dotfill 5
+    \subitem Resize \dotfill 4
+
+  \indexspace
+{\bfseries\hfil E \hfil}\nopagebreak
+
+  \item Edit
+    \subitem Redo \dotfill 4
+    \subitem Undo \dotfill 4
+  \item Exporting
+    \subitem Code \dotfill 5
+    \subitem Image \dotfill 5
+
+  \indexspace
+{\bfseries\hfil F \hfil}\nopagebreak
+
+  \item File
+    \subitem Create new diagram \dotfill 3
+    \subitem Exiting UML2Java \dotfill 4
+    \subitem Open existing diagram \dotfill 3
+    \subitem Printing a diagram \dotfill 4
+    \subitem Save a Diagram \dotfill 3
+
+\end{theindex}
