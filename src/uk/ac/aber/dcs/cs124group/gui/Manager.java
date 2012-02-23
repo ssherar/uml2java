@@ -1,14 +1,20 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.event.*;
+import java.awt.image.BufferedImage;
 import java.awt.*;
 import java.util.*;
+
+import javax.imageio.IIOException;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import java.io.*;
+
 import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.export.*;
 
 public class Manager implements ActionListener, ItemListener, KeyListener,
 		MouseMotionListener, MouseListener, ChangeListener {
@@ -203,7 +209,20 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else if(c.equals("fonts") || c.equals("fontsize")) {
 			changeFont();
 		}
+		else if(c.equals("Image")){
+			exportImage();
+		}
 		
+	}
+	
+	public void exportImage(){
+		Exporter exp = new Exporter(canvas);
+		try {
+			exp.exportImage();Ex
+		} catch (IIOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	private void openNewDocument() {

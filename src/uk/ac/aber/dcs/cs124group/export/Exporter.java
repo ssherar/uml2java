@@ -29,12 +29,18 @@ public class Exporter {
 		this.outputDirectory = outputDirectory;
 		this.model = model;
 	}
+	
+	
 
-	public void exportImage(Canvas c) throws IIOException {
+	public Exporter(Canvas c) {
+		this.canvas = c;
+	}
+
+	public void exportImage() throws IIOException {
 		
-		BufferedImage bi = new BufferedImage(c.getSize().width, c.getSize().height, BufferedImage.TYPE_INT_ARGB); 
+		BufferedImage bi = new BufferedImage(canvas.getSize().width, canvas.getSize().height, BufferedImage.TYPE_INT_ARGB); 
 		Graphics g = bi.createGraphics();
-		c.paint(g);  //this == JComponent
+		canvas.paint(g);  //this == JComponent
 		g.dispose();
 		
 		try{
