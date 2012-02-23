@@ -106,7 +106,7 @@ public class ClassRectangle extends DocumentElement {
 		Graphics2D g = (Graphics2D) gg;
 		Font f = this.getFont();
 		g.setFont(f);
-		g.scale(this.getZoomFactor(), this.getZoomFactor());
+		
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
