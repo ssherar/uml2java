@@ -35,11 +35,15 @@ public class MainFrame extends JFrame implements WindowListener {
 		
 		
 	    canvas = new Canvas(manager);
-	    JScrollPane scroll = new JScrollPane(canvas);
+	    JScrollPane scroll = new JScrollPane();
+	    scroll.setViewportView(canvas);
+	    scroll.setPreferredSize(new Dimension(924,700));
+	    
 	    
 	    dummyPanel.setBackground(Color.GRAY);
 	    dummyPanel.setLayout(null);
 	    dummyPanel.add(scroll);
+	    
 	    Dimension size = scroll.getPreferredSize();
 	    Insets insets = dummyPanel.getInsets();
 	    scroll.setBounds(insets.left, insets.top, size.width, size.height);
@@ -47,7 +51,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    // TODO: Debugging scrollbars
 	    scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 	    scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-	    scroll.setSize(new Dimension(924,700));
+	    
 	    
 	    
 	    sideBar = new SideBar(manager);

@@ -8,7 +8,7 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 
 	
 	private static final long serialVersionUID = -253995425441515922L;
-	private Point position;
+	private Point location;
 	private transient ElementPaintState paintState = ElementPaintState.DEFAULT;
 	private Font font;
 	private double zoomFactor = 1;
@@ -34,15 +34,17 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 		
 		int width = getPreferredSize().width;
 		int height = getPreferredSize().height;
-		this.setBounds(position.x, position.y, (int)(zoomFactor * width), (int)(zoomFactor * height));
+		this.setBounds(location.x, location.y, (int)(zoomFactor * width), (int)(zoomFactor * height));
 	}
 	
-	public void setPosition(Point p) {
-		position = p;
+	@Override
+	public void setLocation(Point p) {
+		location = p;
 	}
 
-	public Point getPosition() {
-		return position;
+	@Override
+	public Point getLocation() {
+		return location;
 	}
 	
 	public void setPaintState(ElementPaintState paintState) {
@@ -53,6 +55,7 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 		return paintState;
 	}
 	
+	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
