@@ -9,11 +9,11 @@ import javax.swing.*;
 public class Canvas extends JPanel {
 	
 	private ArrayList<JLabel> vars;
-	private JTextField edit;
-	private JLabel editing = new JLabel();
-	private JLabel var;
+	private JTextArea edit;
+	private int currentEdit;
 	private int offset = 0;
 	private Handler h = new Handler(this);
+	private boolean editing = false;
 	
 	public Canvas() {
 		setLayout(null);
@@ -32,8 +32,8 @@ public class Canvas extends JPanel {
 	
 	private void createVar(String uml) {
 		JLabel tmp = new JLabel(uml);
-		tmp.setBounds(0, offset, 400, 20);
-		offset += 25;
+		tmp.setBounds((int)(Math.random() *500), (int)(Math.random()*500) , 400, 20);
+		//offset += 25;
 		tmp.addMouseListener(h);
 		this.add(tmp);
 		this.vars.add(tmp);
@@ -48,18 +48,28 @@ public class Canvas extends JPanel {
 		return -1;
 	}
 	
+	public int findLabel(Rectangle r) {
+		for(int i = 0; i < vars.size(); i++) {
+			JLabel tmp = (JLabel)vars.get(i);
+			if(r.equals(tmp.getBounds())) return i;
+		}
+		return -1;
+	}
+	
 	public void setVislibility(int i, boolean v) {
 		vars.get(i).setVisible(v);
 	}
 	
 	public void setEditing(int i) {
+		editing = true;
 		edit = null;
-		edit = new JTextField(8);
+		edit = new JTextArea();
 		edit.addFocusListener(h);
 		edit.addKeyListener(h);
-		//find offset;
-		int o = i * 25;
-		edit.setBounds(0, o, 400, 20);
+		
+		currentEdit = i;
+		
+		edit.setBounds(this.vars.get(i).getBounds());
 		edit.setText(this.vars.get(i).getText());
 		this.remove(this.vars.get(i));
 		this.add(edit);
@@ -68,5 +78,13 @@ public class Canvas extends JPanel {
 	
 	public JLabel getVar(int i) {
 		return vars.get(i);
+	}
+	
+	public boolean isEditing() {
+		return this.editing;
+	}
+	
+	public void finishEditing() {
+		editing = false;
 	}
 }

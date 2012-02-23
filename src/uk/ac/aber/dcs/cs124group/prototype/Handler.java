@@ -15,12 +15,11 @@ public class Handler implements MouseListener, FocusListener, KeyListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
-		if(arg0.getClickCount() == 2 && !arg0.isConsumed()) {
+		if(arg0.getClickCount() == 2 && !arg0.isConsumed() && !canvas.isEditing()) {
 			arg0.consume();
 			
 			int ret = canvas.findLabel((JLabel)arg0.getSource());
 			if(ret != -1) {
-				//canvas.setVislibility(ret, false);
 				canvas.setEditing(ret);
 			}
 		}
@@ -68,15 +67,16 @@ public class Handler implements MouseListener, FocusListener, KeyListener {
 		// TODO Auto-generated method stub
 		if(e.getKeyCode() == e.VK_ENTER) {
 			Pattern p = Pattern.compile("^[+#-] [a-z].[a-zA-Z]* \\: [A-Za-z]*( [=] [a-zA-Z0-9]{0,9})?$");
-			JTextField tmp = (JTextField) e.getComponent();
+			JTextArea tmp = (JTextArea) e.getComponent();
 			Matcher m = p.matcher(tmp.getText());
 			while(m.find()) {
-				int i = tmp.getY() / 25;
+				int i = canvas.findLabel(tmp.getBounds());
 				canvas.remove(tmp);
 				JLabel modified = canvas.getVar(i);
 				modified.setText(tmp.getText());
 				canvas.add(modified);
 				canvas.repaint();
+				canvas.finishEditing();
 			}
 		}
 	}
