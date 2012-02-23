@@ -35,20 +35,24 @@ public class TextLabel extends DocumentElement {
 	
 	public void setText(String text) {
 		this.text = text;
-		resizeToText();		
+		//resizeToText();		
+	}
+	
+	public String getText() {
+		return this.text;
 	}
 	
 	public void setFont(Font f) {
 		super.setFont(f);
 		if(this.getGraphics() != null && metrics != null) {
-			resizeToText();
+			//resizeToText();
 		}
 	}
 	
 	@Override
 	public void setZoomFactor(double zoom) {
 		super.setZoomFactor(zoom);
-		resizeToText();
+		//resizeToText();
 	}
 	
 	private void resizeToText() {

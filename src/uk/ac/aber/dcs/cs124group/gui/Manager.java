@@ -27,6 +27,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
 	
 	private boolean edited = false;
+	private boolean editingLabel = false;
+	private TextLabel currentEdited;
+	//private JTextArea labelTextArea;
 	
 	public Manager() {
 		window = new MainFrame(this);
@@ -52,7 +55,32 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-
+		if(e.getComponent().getName() == "CanvasLabel") {
+			if(e.getClickCount() == 2 && !e.isConsumed() && !isEditingLabel()) {
+				e.consume();
+				editingLabel = true;
+				status.setText("Editing a label! When finished, please press ENTER to commit.");
+				int index = this.findLabel(e.getComponent());
+				if(index > -1) {
+					// Move the element to be edited
+					// Clean up on Aisle #3
+					currentEdited = null;
+					currentEdited = (TextLabel)document.getElements().get(index);
+					canvas.remove(currentEdited);
+					
+					JTextArea labelTextArea = new JTextArea();
+					labelTextArea.setBounds(currentEdited.getBounds());
+					labelTextArea.setName("EditingCanvasLabel");
+					// TODO: change it so it autoexpands while typing
+					labelTextArea.setSize(labelTextArea.getWidth()+30, labelTextArea.getHeight()+5);
+					labelTextArea.setFont(document.getPreferences().getFont());
+					labelTextArea.setText(currentEdited.getText());
+					labelTextArea.addKeyListener(this);
+					canvas.add(labelTextArea);
+					canvas.repaint();
+				}
+			}
+		}
 	}
 
 	@Override
@@ -75,6 +103,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 		else if (mode == ListeningMode.PLACING_TEXT) {
 			addNewLabel(new Point((int)((1/canvas.getZoomFactor())*e.getX()), (int)((1/canvas.getZoomFactor())*e.getY())));
+		} else {
+			//Editing text...
+			
 		}
 
 	}
@@ -100,7 +131,15 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	@Override
 	public void keyPressed(KeyEvent e) {
 		// TODO Auto-generated method stub
-
+		if(e.getComponent().getName() == "EditingCanvasLabel" && e.getKeyCode() == e.VK_ENTER) {
+			JTextArea tmp = (JTextArea) e.getComponent();
+			canvas.remove(tmp);
+			currentEdited.setText(tmp.getText());
+			canvas.add(currentEdited);
+			canvas.repaint();
+			editingLabel = false;
+			status.setText("Label modified successfully!");
+		}
 	}
 
 	@Override
@@ -167,7 +206,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 	}
 	
-	
 	private void openNewDocument() {
 		document = new DocumentModel();
 		canvas.removeAll();
@@ -181,7 +219,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		status.setText("Opened a brand new class diagram");
 		
 	}
-	
 	
 	private void addNewClass(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
@@ -200,11 +237,12 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		this.edited = true;
 	}
 	
-	
 	private void addNewLabel(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabel l = new TextLabel(p);
 		l.setFont(document.getPreferences().getFont());
+		l.setName("CanvasLabel");
+		l.addMouseListener(this);
 		document.addElement(l);
 		status.setText("New label created at " + p.x + "," + p.y);
 		
@@ -217,7 +255,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		canvas.repaint();
 		this.edited = true;
 	}
-	
 	
 	private void openAboutWindow() {
 		JFrame aboutWindow = new JFrame("About " + PROGRAM_NAME);
@@ -239,7 +276,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		aboutWindow.setSize(450,250);
 	}
 	
-	
 	private void save() {
 		if(document.getFileName() == null) {
 			saveAs();
@@ -247,7 +283,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			serialise(document.getFileName());
 		}
 	}
-	
 	
 	private void saveAs() {
 		setWaitCursor(true);
@@ -269,7 +304,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		
 	}
 	
-	
 	private void serialise(String fileName) {
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
@@ -282,7 +316,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			System.out.println(e.getStackTrace());
 		}
 	}
-	
 	
 	private void openExisting() {
 		setWaitCursor(true);
@@ -316,7 +349,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		}
 	}
 	
-	
 	private void changeFont() {
 		setWaitCursor(true);
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN, toolBar.getFontSize());
@@ -334,7 +366,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		setWaitCursor(false);
 	}
 	
-	
 	private void changeZoom (double zoom) {
 		ArrayList<DocumentElement> elements = document.getElements();
 		for(int i = 0; i < elements.size(); i++) {
@@ -348,7 +379,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		document.getPreferences().setZoomLevel(zoom);
 	}
 	
-	
 	private void setWaitCursor(boolean value) {
 		if(value) {
 			try {
@@ -361,7 +391,22 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else window.setCursor(Cursor.getDefaultCursor());
 	}
 	
-
+	private int findLabel(Component l) {
+		ArrayList<DocumentElement> e = this.document.getElements();
+		for(int i = 0; i < e.size(); i++) {
+			// Only want components...
+			if(!(e.get(i) instanceof Relationship)) {
+				if(l.equals(e.get(i))) {
+					return i;
+				}
+			}
+		}
+		return -1;
+	}
+	
+	public boolean isEditingLabel() {
+		return this.editingLabel;
+	}
 	
 	public void exit() {
 		if(this.edited) {
