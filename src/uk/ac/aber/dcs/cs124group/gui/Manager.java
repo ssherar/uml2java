@@ -233,7 +233,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	public void exportImage(){
 		Exporter exp = new Exporter(canvas);
 		try {
-			exp.exportImage();Ex
+			exp.exportImage();
 		} catch (IIOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
