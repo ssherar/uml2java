@@ -14,9 +14,18 @@ public class TextLabel extends DocumentElement {
 		
 		//this.setBackground(Color.RED); //debug statement, obv
 		this.setOpaque(true);
-		
 		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				metrics = getGraphics().getFontMetrics();
+				resizeToText();
+			}
+			
+		});
 		//textArea.setPreferredSize(this.getPreferredSize());
 	}
 	
