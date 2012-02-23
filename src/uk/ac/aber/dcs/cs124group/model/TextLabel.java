@@ -10,17 +10,16 @@ public class TextLabel extends DocumentElement {
 	private FontMetrics metrics;
 	
 	public TextLabel(Point p) {
-		setPosition(p);
+		setLocation(p);
 		
 		//this.setBackground(Color.RED); //debug statement, obv
 		this.setOpaque(true);
 		this.setPreferredSize(new Dimension(56,12));
-		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
+		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				metrics = getGraphics().getFontMetrics();
 				resizeToText();
 			}
@@ -74,8 +73,8 @@ public class TextLabel extends DocumentElement {
 		int width = metrics.stringWidth(this.text);
 		this.setPreferredSize(new Dimension(
 				(int) (this.getZoomFactor() * 1.1 * width + 1), 
-				(int) (this.getZoomFactor() * metrics.getAscent())));
-		this.setBounds(getPosition().x, getPosition().y, getPreferredSize().width, getPreferredSize().height);
+				(int) (this.getZoomFactor() * metrics.getHeight())));
+		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 	}
 
 	@Override

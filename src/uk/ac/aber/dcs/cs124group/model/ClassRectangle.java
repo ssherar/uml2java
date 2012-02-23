@@ -25,7 +25,7 @@ public class ClassRectangle extends DocumentElement {
 	private boolean isStatic = false;
 	
 	public ClassRectangle(Point p) {
-		setPosition(p);
+		setLocation(p);
 		setPreferredSize(DEFAULT_RECTANGLE_SIZE);
 		this.setOpaque(false);
 	}
@@ -76,7 +76,7 @@ public class ClassRectangle extends DocumentElement {
 	
 	@Override
 	public void move(Point newPos) {
-		setPosition(newPos);
+		setLocation(newPos);
 		//TODO act upon this new information accordingly...
 	}
 	

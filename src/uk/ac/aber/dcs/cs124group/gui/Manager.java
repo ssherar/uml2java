@@ -50,7 +50,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		toolBar = window.getToolbar();
 		
 		openNewDocument();
-		canvas.setNewSize(new Dimension(500,500));
+		canvas.setPreferredSize(new Dimension(500,500));
 		status.setText("Welcome!");
 		
 		changeFont();
@@ -86,8 +86,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			
 		final JTextArea labelTextArea = new JTextArea();
 		
-		int x = label.getPosition().x;
-		int y = label.getPosition().y;
+		int x = label.getLocation().x;
+		int y = label.getLocation().y;
 		
 		int canvasWidth = canvas.getPreferredSize().width;
 		int canvasHeight = canvas.getPreferredSize().height;
@@ -278,9 +278,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
 		
 		canvas.add(c);
-		Insets insets = canvas.getInsets();
-		Dimension cSize = c.getPreferredSize();
-		c.setBounds(p.x + insets.left, p.y + insets.top, cSize.width, cSize.height);
 		c.repaint();
 		
 		canvas.repaint();
@@ -297,9 +294,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		status.setText("New label created at " + p.x + "," + p.y);
 		
 		canvas.add(l);
-		Insets insets = canvas.getInsets();
-		Dimension lSize = l.getPreferredSize();
-		l.setBounds(p.x + insets.left, p.y + insets.top, lSize.width, lSize.height);
 		l.repaint();
 		
 		canvas.repaint();
@@ -385,7 +379,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 					e.setPaintState(ElementPaintState.DEFAULT);
 					canvas.add(e);
 				}
-				canvas.setNewSize(document.getPreferences().getCanvasDefaultSize());
+				canvas.setPreferredSize(document.getPreferences().getCanvasDefaultSize());
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 				canvas.setZoomFactor(document.getPreferences().getZoomLevel()); //TODO: fixme, JSlider will not have updated
@@ -439,19 +433,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			}
 		}
 		else window.setCursor(Cursor.getDefaultCursor());
-	}
-	
-	private TextLabel findLabel(Component l) {
-		ArrayList<DocumentElement> e = this.document.getElements();
-		for(int i = 0; i < e.size(); i++) {
-			// Only want components...
-			if((e.get(i) instanceof TextLabel)) {
-				if(l.equals(e.get(i))) {
-					return (TextLabel) e.get(i);
-				}
-			}
-		}
-		return null;
 	}
 	
 	public boolean isEditingLabel() {

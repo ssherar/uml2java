@@ -19,14 +19,14 @@ public class Canvas extends JPanel {
 	public Canvas(Manager manager) {
 		this.manager = manager;
 		this.setBackground(Color.WHITE);
-		this.setLayout(null);
+		this.setLayout(new DiagramLayout());
 		
 		this.addMouseMotionListener(manager);
 		this.addMouseListener(manager);
 		this.addKeyListener(manager);
 		
 		// TODO debugging scrollpanel
-		//this.setPreferredSize(new Dimension(924,700));
+		//this.setPreferredSize(new Dimension(800,600));
 		this.setPreferredSize(new Dimension(2000,2000));
 	}
 	
@@ -84,11 +84,6 @@ public class Canvas extends JPanel {
 		
 	}	
 	
-	public void setNewSize(Dimension d) {
-		setMaximumSize(d);
-		setMinimumSize(d);
-		setPreferredSize(d);
-	}
 	
 	@Override
 	public Component add(Component c){
