@@ -21,7 +21,7 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 	private boolean flagVolatile = false;
 	private boolean flagFinal = false;
 	
-	public Attribute(Point p, String representation) {
+	public Attribute(Point p, String representation, AttributeType type) {
 		super(p);
 		this.representation = representation;
 		initializeFields();		

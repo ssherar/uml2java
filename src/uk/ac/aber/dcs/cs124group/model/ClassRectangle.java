@@ -168,9 +168,9 @@ public class ClassRectangle extends DocumentElement {
 			
 		}
 	}
-	
+		
 	public Point getNextDataFieldPoint() {
-		return new Point(0,30);
+		return new Point(3,30);
 	}
 	
 	public Point getNextMethodPoint() {
@@ -222,15 +222,28 @@ public class ClassRectangle extends DocumentElement {
 				//TODO: implement
 			}
 			if(c.equals("Add data field")) {
-				Attribute newDataField = new Attribute(((ClassRectangle)diagram).getNextDataFieldPoint(), "- dataField : Type");
+				Attribute newDataField = new Attribute(
+						((ClassRectangle)diagram).getNextDataFieldPoint(), 
+						"- dataField : Type",
+						AttributeType.DATA_FIELD);
 				newDataField.repaint();
 				diagram.add(newDataField);
 				diagram.revalidate();
 				diagram.repaint();
-				this.mode = ListeningMode.EDITING_TEXT; //TODO: Fixme (this is where magic stops working)
+				this.mode = ListeningMode.EDITING_TEXT; 
 				this.enableLabelEdit(newDataField);
 			}
 			if(c.equals("Add method")) {
+				Attribute newMethod = new Attribute(
+						((ClassRectangle)diagram).getNextMethodPoint(), 
+						"+ metod(args : ArgType) : ReturnType",
+						AttributeType.METHOD);
+				newMethod.repaint();
+				diagram.add(newMethod);
+				diagram.revalidate();
+				diagram.repaint();
+				this.mode = ListeningMode.EDITING_TEXT; 
+				this.enableLabelEdit(newMethod);
 				
 			}
 			if(c.equals("Remove")) {

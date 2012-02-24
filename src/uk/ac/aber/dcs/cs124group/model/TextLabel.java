@@ -17,9 +17,7 @@ public class TextLabel extends DocumentElement {
 		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		this.setName("label");
-
 		this.resizeToText();
-		//textArea.setPreferredSize(this.getPreferredSize());
 	}
 	
 	public void paintComponent(Graphics d) {
@@ -71,7 +69,12 @@ public class TextLabel extends DocumentElement {
 			
 			@Override
 			public void run() {
-				metrics = getGraphics().getFontMetrics();
+				try {
+					metrics = getGraphics().getFontMetrics();
+				}
+				catch(NullPointerException ex) {
+					return;
+				}
 				int width = metrics.stringWidth(text);
 				setPreferredSize(new Dimension(
 						(int) (getZoomFactor() * 1.1 * width + 1), 

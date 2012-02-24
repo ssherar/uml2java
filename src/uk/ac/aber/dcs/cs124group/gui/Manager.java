@@ -170,7 +170,6 @@ public class Manager extends DiagramListener implements ActionListener, ChangeLi
 		try {
 			exp.exportImage();
 		} catch (IIOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
