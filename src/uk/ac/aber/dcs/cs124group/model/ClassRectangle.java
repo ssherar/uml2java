@@ -247,7 +247,7 @@ public class ClassRectangle extends DocumentElement {
 				
 			}
 			if(c.equals("Remove")) {
-				//TODO: work out how to remove stuff
+				diagram.setVisible(false);
 			}
 			
 		}

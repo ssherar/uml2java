@@ -268,6 +268,7 @@ public class Manager extends DiagramListener implements ActionListener, ChangeLi
 	}
 	
 	private void serialise(String fileName) {
+		document.cleanUp();
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
 			ObjectOutputStream out = new ObjectOutputStream(fos);

@@ -48,5 +48,13 @@ public class DocumentModel implements java.io.Serializable {
 	public void removeElement(DocumentElement r) {
 		elements.remove(r);
 	}
+	
+	public void cleanUp() {
+		for(int i = 0; i < elements.size(); i++) {
+			if(!elements.get(i).isVisible()) {
+				elements.remove(i);
+			}
+		}
+	}
 
 }
