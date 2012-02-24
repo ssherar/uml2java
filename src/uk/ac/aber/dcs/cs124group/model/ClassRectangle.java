@@ -36,6 +36,14 @@ public class ClassRectangle extends DocumentElement {
 		name = new TextLabel(new Point(0,0)); //TODO: Fixme
 		this.add(name);
 		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				name.setLocation(new Point((getPreferredSize().width - name.getPreferredSize().width) / 2, 0));
+			}
+		});
+		name.setAlignmentInParent(JTextField.CENTER);
+		
+		
 		DiagramListener listener = new DiagramListener(this);
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
