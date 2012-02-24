@@ -6,16 +6,16 @@ import javax.swing.*;
 public class TextLabel extends DocumentElement {
 
 	private static final long serialVersionUID = -7388262736446472023L;
-	private String text = "New label";
+	private String text = "Double-click to edit";
 	private FontMetrics metrics;
 	
 	public TextLabel(Point p) {
 		setLocation(p);
 		
-		//this.setBackground(Color.RED); //debug statement, obv
-		this.setOpaque(true);
+		this.setOpaque(false);
 		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
+		this.setName("label");
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override

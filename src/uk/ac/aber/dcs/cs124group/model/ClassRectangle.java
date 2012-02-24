@@ -1,9 +1,11 @@
 package uk.ac.aber.dcs.cs124group.model;
 
-import java.awt.*;
+import uk.ac.aber.dcs.cs124group.gui.*;
 
+import java.awt.*;
 import javax.swing.*;
 import java.util.ArrayList;
+
 
 public class ClassRectangle extends DocumentElement {
 
@@ -12,7 +14,7 @@ public class ClassRectangle extends DocumentElement {
 	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
 	
 	
-	private String name = "NewClass";
+	private TextLabel name;
 	private Dimension size;
 	private ClassRectangle superClass = null;
 	private IVisibility visibility = IVisibility.PUBLIC;
@@ -25,17 +27,28 @@ public class ClassRectangle extends DocumentElement {
 	private boolean isStatic = false;
 	
 	public ClassRectangle(Point p) {
-		setLocation(p);
-		setPreferredSize(DEFAULT_RECTANGLE_SIZE);
+		this.setLocation(p);
+		this.setPreferredSize(DEFAULT_RECTANGLE_SIZE);
 		this.setOpaque(false);
+		this.setLayout(new DiagramLayout());
+		
+		
+		name = new TextLabel(new Point(0,0)); //TODO: Fixme
+		this.add(name);
+		
+		DiagramListener listener = new DiagramListener(this);
+		this.addMouseListener(listener);
+		this.addKeyListener(listener);
+		this.addMouseMotionListener(listener);
+		this.name.addMouseListener(listener);
 	}
 
 	public String getName() {
-		return name;
+		return this.name.getText();
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name.setText(name);
 	}
 	
 	public ArrayList<Attribute> getAttributes() {
@@ -132,13 +145,10 @@ public class ClassRectangle extends DocumentElement {
 			g.setColor(RECTANGLE_BACKGROUND);
 			g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
 			
-			int nameFieldHeight = 2 + metrics.getHeight();
+			int nameFieldHeight = name.getPreferredSize().height;
 			g.setColor(Color.BLACK);
 			g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
 			
-			int nameStartPointX = (width - metrics.stringWidth(name)) / 2;
-			int nameStartPointY = metrics.getAscent() + metrics.getDescent();
-			g.drawString(name, nameStartPointX, nameStartPointY);
 		}
 	}
 	

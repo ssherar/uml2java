@@ -19,7 +19,7 @@ public class ToolBar extends JToolBar {
 		this.manager = manager;
 		
 		SpringLayout layout = new SpringLayout();
-		this.setPreferredSize(new Dimension(0, 30));
+		
 		this.setLayout(layout);
 		
 		fontList = new JComboBox(fonts);
@@ -84,7 +84,7 @@ public class ToolBar extends JToolBar {
 		layout.putConstraint(SpringLayout.EAST, zoomLabel, -9, SpringLayout.WEST, zoom);
 		
 		this.add(zoomLabel);
-		
+		this.setPreferredSize(new Dimension(0, zoom.getPreferredSize().height));
 	}
 	
 	public String getFontName() {

@@ -3,12 +3,15 @@ package uk.ac.aber.dcs.cs124group.gui;
 import java.awt.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
+
 import javax.swing.*;
 
 import java.util.*;
 
 public class Canvas extends JPanel {
-		
+	
+	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
+	
 	private Manager manager;
 	
 	private double zoomFactor = 1;

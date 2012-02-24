@@ -16,7 +16,7 @@ import java.io.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.export.*;
 
-public class Manager implements ActionListener, ItemListener, KeyListener,
+public class Manager extends DiagramListener implements ActionListener, KeyListener,
 		MouseMotionListener, MouseListener, ChangeListener {
 	
 	private boolean inDebug = true;
@@ -31,9 +31,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	private ToolBar toolBar;
 	
 	private DocumentModel document;
-	
-	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
-	
+		
 	private boolean edited = false;
 	private TextLabel currentEdited;
 	
@@ -41,7 +39,9 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		window = new MainFrame(this);
 		window.setTitle(PROGRAM_NAME);
 		
+		this.assignTo(window.getCanvas());
 		canvas = window.getCanvas();
+		
 		menuBar = window.getMenu();
 		sideBar = window.getSideBar();
 		status = window.getStatus();
@@ -60,7 +60,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getComponent().getName() == "CanvasLabel") {
+		super.mouseClicked(e);
+		/*if(e.getComponent().getName() == "CanvasLabel") {
 			if(e.getClickCount() == 2 && !e.isConsumed() && mode == ListeningMode.LISTEN_TO_ALL) {
 				e.consume();
 				TextLabel l = (TextLabel)(e.getComponent());
@@ -70,59 +71,24 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 				}
 				
 			}
-		}
+		}*/
 	}
 	
-	private void enableLabelEdit(TextLabel label) {
-		status.setText("Editing a label! When finished, please press ENTER to commit.");
-
-		currentEdited = label;
-		canvas.remove(currentEdited);
-			
-		final JTextArea labelTextArea = new JTextArea();
-		
-		int x = label.getLocation().x;
-		int y = label.getLocation().y;
-		
-		int canvasWidth = canvas.getPreferredSize().width;
-		int canvasHeight = canvas.getPreferredSize().height;
-		
-		labelTextArea.setPreferredSize(new Dimension(canvasWidth - x, canvasHeight - y));
-		labelTextArea.setLocation(new Point(x,y));
-		labelTextArea.setName("EditingCanvasLabel");
-		labelTextArea.setOpaque(false);
-		
-		labelTextArea.setFont(document.getPreferences().getFont());
-		labelTextArea.setText(currentEdited.getText());
-		labelTextArea.addKeyListener(this);
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				labelTextArea.requestFocus();
-				labelTextArea.selectAll();
-			}
-			
-		});
-		canvas.add(labelTextArea);
-		canvas.repaint();
+	@Override
+	protected void enableLabelEdit(TextLabel label) {
+		super.enableLabelEdit(label);
 		
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		super.mousePressed(e);
 		if(mode == ListeningMode.PLACING_CLASS) {
 			addNewClass(new Point((int)((1/canvas.getZoomFactor())*e.getX()), (int)((1/canvas.getZoomFactor())*e.getY())));
 		}
@@ -136,58 +102,31 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
+		super.mouseDragged(e);
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
+		super.mouseMoved(e);
 		status.setMousePos(e.getX(), e.getY());
 	}
 
 	@Override
 	public void keyPressed(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if(e.getComponent().getName() == "EditingCanvasLabel" && e.getKeyCode() == e.VK_ENTER) {
-			JTextArea tmp = (JTextArea) e.getComponent();
-			if(tmp.getText().length() < 1) {
-				status.setText("A label cannot be set to nothing. To delete please Right Click and click Delete.");
-				e.consume();
-				return;
-			}
-			canvas.remove(tmp);
-			currentEdited.setText(tmp.getText());
-			canvas.add(currentEdited);
-			canvas.repaint();
-			mode = ListeningMode.LISTEN_TO_ALL;
-			status.setText("Label modified successfully!");
-		}
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
+		super.keyPressed(e);
 
 	}
 
 	@Override
-	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void keyReleased(KeyEvent e) {}
 
 	@Override
-	public void itemStateChanged(ItemEvent e) {
-		//TODO implement
-
-	}
+	public void keyTyped(KeyEvent e) {}
 	
 	@Override
 	public void stateChanged(ChangeEvent e) {
@@ -281,7 +220,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabel l = new TextLabel(p);
 		l.setFont(document.getPreferences().getFont());
-		l.setName("CanvasLabel");
+		l.setName("label");
 		l.addMouseListener(this);
 		document.addElement(l);
 		status.setText("New label created at " + p.x + "," + p.y);
@@ -429,7 +368,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 		else window.setCursor(Cursor.getDefaultCursor());
 	}
 	
-	
+
 	public void exit() {
 		
 		if(this.edited && !this.inDebug) {

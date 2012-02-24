@@ -122,6 +122,7 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 			
 		});
 		diagram.add(labelTextArea);
+		diagram.revalidate();
 		diagram.repaint();
 	}
 
