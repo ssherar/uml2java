@@ -10,7 +10,7 @@ import javax.swing.*;
 public class DiagramListener implements KeyListener, MouseMotionListener, MouseListener {
 	
 	protected ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
-	private JPanel diagram;
+	protected JPanel diagram;
 	private TextLabel currentEdited;
 	
 	public DiagramListener() {
@@ -24,10 +24,6 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 	protected void assignTo(JPanel panel) {
 		this.diagram = panel;
 	}
-	
-
-
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) {

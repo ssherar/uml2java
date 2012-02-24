@@ -17,15 +17,8 @@ public class TextLabel extends DocumentElement {
 		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		this.setName("label");
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				metrics = getGraphics().getFontMetrics();
-				resizeToText();
-			}
-			
-		});
+
+		this.resizeToText();
 		//textArea.setPreferredSize(this.getPreferredSize());
 	}
 	
@@ -73,17 +66,22 @@ public class TextLabel extends DocumentElement {
 	}
 	
 	private void resizeToText() {
-		try {
-			metrics = this.getGraphics().getFontMetrics();
-		}
-		catch (NullPointerException ex) {
+		
+		SwingUtilities.invokeLater(new Runnable() {
 			
-		}
-		int width = metrics.stringWidth(this.text);
-		this.setPreferredSize(new Dimension(
-				(int) (this.getZoomFactor() * 1.1 * width + 1), 
-				(int) (this.getZoomFactor() * metrics.getHeight())));
-		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
+			@Override
+			public void run() {
+				metrics = getGraphics().getFontMetrics();
+				int width = metrics.stringWidth(text);
+				setPreferredSize(new Dimension(
+						(int) (getZoomFactor() * 1.1 * width + 1), 
+						(int) (getZoomFactor() * metrics.getHeight())));
+				setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
+			}
+			
+		});
+		
+
 	}
 
 	@Override

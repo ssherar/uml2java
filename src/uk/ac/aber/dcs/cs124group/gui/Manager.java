@@ -16,8 +16,7 @@ import java.io.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.export.*;
 
-public class Manager extends DiagramListener implements ActionListener, KeyListener,
-		MouseMotionListener, MouseListener, ChangeListener {
+public class Manager extends DiagramListener implements ActionListener, ChangeListener {
 	
 	private boolean inDebug = true;
 	

@@ -3,6 +3,8 @@ package uk.ac.aber.dcs.cs124group.model;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
@@ -48,13 +50,14 @@ public class ClassRectangle extends DocumentElement {
 		name.setAlignmentInParent(JTextField.CENTER);
 		
 		
-		DiagramListener listener = new DiagramListener(this);
+		RectangleListener listener = new RectangleListener(this);
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
 		this.addMouseMotionListener(listener);
 		this.name.addMouseListener(listener);
 		
-		this.setComponentPopupMenu(new RectanglePopupMenu());
+		RectanglePopupMenu popupMenu = new RectanglePopupMenu(listener);
+		this.setComponentPopupMenu(popupMenu);
 	}
 
 	public String getClassName() {
@@ -166,13 +169,33 @@ public class ClassRectangle extends DocumentElement {
 		}
 	}
 	
+	public Point getNextDataFieldPoint() {
+		return new Point(0,30);
+	}
+	
+	public Point getNextMethodPoint() {
+		return new Point(0,60);
+	}
+	
 	private class RectanglePopupMenu extends JPopupMenu {
 		
-		public RectanglePopupMenu() {
+		private RectangleListener listener;
+		
+		public RectanglePopupMenu(RectangleListener listener) {
+			
+			this.listener = listener;
+			
 			JMenuItem addRelationship = new JMenuItem("Add relationship");
+			addRelationship.addActionListener(listener);
+			
 			JMenuItem addDataField = new JMenuItem("Add data field");
+			addDataField.addActionListener(listener);
+			
 			JMenuItem addMethod = new JMenuItem("Add method");
+			addMethod.addActionListener(listener);
+			
 			JMenuItem remove = new JMenuItem("Remove");
+			remove.addActionListener(listener);
 			remove.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 			
 			
@@ -180,14 +203,40 @@ public class ClassRectangle extends DocumentElement {
 			add(addDataField);
 			add(addMethod);
 			add(remove);
+
+			
 		}
 	}
 	
 	/** Defines class rectangle specific operations */
-	private class RectangleListener extends DiagramListener {
+	private class RectangleListener extends DiagramListener implements ActionListener {
 		
 		public RectangleListener(ClassRectangle c) {
 			this.assignTo(c);
+		}
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String c = e.getActionCommand();
+			if(c.equals("Add relationship")) {
+				//TODO: implement
+			}
+			if(c.equals("Add data field")) {
+				Attribute newDataField = new Attribute(((ClassRectangle)diagram).getNextDataFieldPoint(), "- dataField : Type");
+				newDataField.repaint();
+				diagram.add(newDataField);
+				diagram.revalidate();
+				diagram.repaint();
+				this.mode = ListeningMode.EDITING_TEXT; //TODO: Fixme (this is where magic stops working)
+				this.enableLabelEdit(newDataField);
+			}
+			if(c.equals("Add method")) {
+				
+			}
+			if(c.equals("Remove")) {
+				//TODO: work out how to remove stuff
+			}
+			
 		}
 		
 	}
