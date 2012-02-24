@@ -5,7 +5,9 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 import java.util.*;
 import java.io.*;
+import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.*;
 
 import javax.imageio.IIOException;
@@ -41,6 +43,7 @@ public class Exporter {
 		BufferedImage bi = new BufferedImage(canvas.getSize().width,
 				canvas.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
+
 		canvas.paint(g); // this == JComponent
 		g.dispose();
 
@@ -62,29 +65,18 @@ public class Exporter {
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
 			File saveFile = fcImage.getSelectedFile();
 
-			if (saveFile.isFile()) {
-				Object[] options = { "Overwrite", "Cancel" };
-				int n = JOptionPane.showOptionDialog(null,
-						"File Already Exists, Overwrite?", "Warning!",
-						JOptionPane.OK_CANCEL_OPTION,
-						JOptionPane.WARNING_MESSAGE, null, options, options[1]);
-				if (n != JOptionPane.CANCEL_OPTION){
-					try {
-						if (fcImage.getFileFilter() == png) {
-							ImageIO.write(bi, "png", new File(saveFile + ".png"));
-						} else if (fcImage.getFileFilter() == jpg) {
-							ImageIO.write(bi, "jpg", new File(saveFile + ".jpg"));
-						} else if (fcImage.getFileFilter() == gif) {
-							ImageIO.write(bi, "gif", new File(saveFile + ".gif"));
-						}
-					} catch (Exception e) {
-					}
+			try {
+				if (fcImage.getFileFilter() == png) {
+					ImageIO.write(bi, "png", new File(saveFile + ".png"));
+				} else if (fcImage.getFileFilter() == jpg) {
+					ImageIO.write(bi, "jpg", new File(saveFile + ".jpg"));
+				} else if (fcImage.getFileFilter() == gif) {
+					ImageIO.write(bi, "gif", new File(saveFile + ".gif"));
 				}
+			} catch (Exception e) {
 			}
 		}
 	}
-
-	
 
 	private void serialise(String path) {
 		// TODO Auto-generated method stub
