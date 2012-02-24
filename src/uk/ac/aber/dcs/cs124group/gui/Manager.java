@@ -255,6 +255,7 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 	private void openNewDocument() {
 		document = new DocumentModel();
 		canvas.removeAll();
+		canvas.repaint();
 		window.setTitle("Unsaved class diagram - " + PROGRAM_NAME);
 		
 		DocumentPreferences preferences = document.getPreferences();
@@ -367,6 +368,8 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 			File openFile = fc.getSelectedFile();
 			try {
 				document = null;
+				canvas.removeAll();
+				canvas.repaint();
 				FileInputStream fos = new FileInputStream(openFile.getPath());
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel)in.readObject();
@@ -379,7 +382,6 @@ public class Manager implements ActionListener, ItemListener, KeyListener,
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 				canvas.setZoomFactor(document.getPreferences().getZoomLevel()); //TODO: fixme, JSlider will not have updated
-				canvas.repaint();
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
 			} catch(Exception e) {
