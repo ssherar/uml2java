@@ -23,8 +23,7 @@ public class Manager extends DiagramListener implements ActionListener,
 	private boolean inDebug = true;
 
 	public static final String PROGRAM_NAME = "UML2Java";
-	public final String REGEX_ATTRIB = "^[+#-] [a-z].[a-zA-Z]* \\: [A-Za-z]*( [=] [a-zA-Z0-9]{0,9})?$";
-	public final String REGEX_METHOD = "^[+#-] [a-z].[a-zA-Z]*\\(([a-z].[a-zA-Z]*(\\[\\])? \\: [A-Za-z]*(, )?)*\\)( \\: [a-zA-Z]*)?$";
+
 	
 	private MainFrame window;
 	private Canvas canvas;
@@ -375,17 +374,6 @@ public class Manager extends DiagramListener implements ActionListener,
 			window.setCursor(Cursor.getDefaultCursor());
 	}
 	
-	public boolean checkAttribute(String var) {
-		Pattern p = Pattern.compile(REGEX_ATTRIB);
-		Matcher m = p.matcher(var);
-		return m.find();
-	}
-	
-	public boolean checkMethod(String var) {
-		Pattern p = Pattern.compile(REGEX_METHOD);
-		Matcher m = p.matcher(var);
-		return m.find();
-	}
 
 	public void exit() {
 

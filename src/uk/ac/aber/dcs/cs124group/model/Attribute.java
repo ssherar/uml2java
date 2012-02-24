@@ -2,11 +2,15 @@ package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.*;
 import java.awt.Point;
+import java.util.regex.*;
 
 public class Attribute extends TextLabel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
+	private final String REGEX_ATTRIB = "^[+#-] [a-z].[a-zA-Z]* \\: [A-Za-z]*( [=] [a-zA-Z0-9]{0,9})?$";
+	private final String REGEX_METHOD = "^[+#-] [a-z].[a-zA-Z]*\\(([a-z].[a-zA-Z]*(\\[\\])? \\: [A-Za-z]*(, )?)*\\)( \\: [a-zA-Z]*)?$";
+	
 	private IVisibility visibility;
 	private AttributeType type;
 	
@@ -36,6 +40,18 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 	public void setText(String text) {
 		super.setText(text);
 		initializeFields();
+	}
+	
+	public boolean checkAttribute(String var) {
+		Pattern p = Pattern.compile(REGEX_ATTRIB);
+		Matcher m = p.matcher(var);
+		return m.find();
+	}
+	
+	public boolean checkMethod(String var) {
+		Pattern p = Pattern.compile(REGEX_METHOD);
+		Matcher m = p.matcher(var);
+		return m.find();
 	}
 	
 	/** Block of Get/Set */
