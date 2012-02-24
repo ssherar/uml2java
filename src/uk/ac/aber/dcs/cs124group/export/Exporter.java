@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs124group.export;
 
 import uk.ac.aber.dcs.cs124group.gui.*;
 import uk.ac.aber.dcs.cs124group.model.*;
+
 import java.util.*;
 import java.io.*;
 import java.awt.Graphics;
@@ -15,8 +16,8 @@ public class Exporter {
 	private DocumentModel model;
 	private String outputDirectory;
 	private Canvas canvas;
-	private ArrayList<File> outputFiles;
-	// private ArrayList<String> fileNames;
+	private ArrayList<String> outputFiles;
+	private ArrayList<String> fileNames;
 	private final String NL = "\n";
 	private final String TB = "\t";
 
@@ -29,36 +30,49 @@ public class Exporter {
 		this.outputDirectory = outputDirectory;
 		this.model = model;
 	}
-	
-	
 
 	public Exporter(Canvas c) {
 		this.canvas = c;
 	}
 
 	public void exportImage() throws IIOException {
-		
-		BufferedImage bi = new BufferedImage(canvas.getSize().width, canvas.getSize().height, BufferedImage.TYPE_INT_ARGB); 
+
+		BufferedImage bi = new BufferedImage(canvas.getSize().width,
+				canvas.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
-		canvas.paint(g);  //this == JComponent
+		canvas.paint(g); // this == JComponent
 		g.dispose();
-		
-		try{
-			ImageIO.write(bi,"png",new File("test.png"));
+
+		try {
+			ImageIO.write(bi, "png", new File("test.png"));
+		} catch (Exception e) {
+
 		}
-		catch (Exception e) {
-			
-		}
-		
+
 	}
 
-	public void exportCode() {
-		
+	public void exportCode() throws IOException {
+		for (int i = 0; i < model.getElements().size(); i++) {
+			if (model.getElements().get(i).equals(ClassRectangle.class)) {
+				fileNames.add(model.getElements().get(i).getName() + ".java");
+				outputFiles.add(createClassFileContents((ClassRectangle) model
+						.getElements().get(i)));
+			}
+		}
+		for (int j = 0; j < fileNames.size(); j++) {
+			File f;
+			f = new File(fileNames.get(j));
+			if (!f.exists()) {
+				f.createNewFile();
+				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
+						new FileOutputStream(fileNames.get(j))));
+				fileOut.println(outputFiles.get(j));
+				fileOut.close();
+			}
+		}
 	}
 
 	private String createClassFileContents(ClassRectangle r) {
-		// fileNames.add(r.getName()+".java");
-
 		String contents = "";
 
 		switch (r.getVisibility()) {
@@ -209,7 +223,7 @@ public class Exporter {
 			}
 			contents.concat("}");
 		}
+		return contents;
 
-		return null;
 	}
 }
