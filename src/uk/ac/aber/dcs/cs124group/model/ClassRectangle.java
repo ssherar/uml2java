@@ -3,7 +3,11 @@ package uk.ac.aber.dcs.cs124group.model;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
 import java.awt.*;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.*;
+
 import java.util.ArrayList;
 
 
@@ -49,6 +53,8 @@ public class ClassRectangle extends DocumentElement {
 		this.addKeyListener(listener);
 		this.addMouseMotionListener(listener);
 		this.name.addMouseListener(listener);
+		
+		this.setComponentPopupMenu(new RectanglePopupMenu());
 	}
 
 	public String getClassName() {
@@ -160,5 +166,30 @@ public class ClassRectangle extends DocumentElement {
 		}
 	}
 	
+	private class RectanglePopupMenu extends JPopupMenu {
+		
+		public RectanglePopupMenu() {
+			JMenuItem addRelationship = new JMenuItem("Add relationship");
+			JMenuItem addDataField = new JMenuItem("Add data field");
+			JMenuItem addMethod = new JMenuItem("Add method");
+			JMenuItem remove = new JMenuItem("Remove");
+			remove.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+			
+			
+			add(addRelationship);
+			add(addDataField);
+			add(addMethod);
+			add(remove);
+		}
+	}
+	
+	/** Defines class rectangle specific operations */
+	private class RectangleListener extends DiagramListener {
+		
+		public RectangleListener(ClassRectangle c) {
+			this.assignTo(c);
+		}
+		
+	}
 
 }

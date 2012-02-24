@@ -10,7 +10,6 @@ import java.util.*;
 
 public class Canvas extends JPanel {
 	
-	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
 	
 	private Manager manager;
 	
