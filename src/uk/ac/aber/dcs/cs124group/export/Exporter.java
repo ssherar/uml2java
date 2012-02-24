@@ -11,6 +11,7 @@ import java.awt.image.*;
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Exporter {
@@ -27,10 +28,8 @@ public class Exporter {
 	// private ArrayList<DocumentElement> importDocumentModel = model
 	// .getElements();
 
-	public Exporter(String outputDirectory, DocumentModel model) {
-		this.outputDirectory = outputDirectory;
+	public Exporter(DocumentModel model) {
 		this.model = model;
-
 	}
 
 	public Exporter(Canvas c) {
@@ -45,22 +44,47 @@ public class Exporter {
 		canvas.paint(g); // this == JComponent
 		g.dispose();
 
-		JFileChooser fc = new JFileChooser();
+		JFileChooser fcImage = new JFileChooser();
+		fcImage.setAcceptAllFileFilterUsed(false);
 
-		int fcReturnVal = fc.showSaveDialog(null);
+		FileNameExtensionFilter png = new FileNameExtensionFilter("PNG Image",
+				"png");
+		FileNameExtensionFilter jpg = new FileNameExtensionFilter("JPEG Image",
+				"jpg");
+		FileNameExtensionFilter gif = new FileNameExtensionFilter("GIF Image",
+				"gif");
+		fcImage.addChoosableFileFilter(png);
+		fcImage.addChoosableFileFilter(jpg);
+		fcImage.addChoosableFileFilter(gif);
+
+		int fcReturnVal = fcImage.showSaveDialog(null);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-			File saveFile = fc.getSelectedFile();
+			File saveFile = fcImage.getSelectedFile();
 
-			try {
-				ImageIO.write(bi, "png", new File(saveFile + ".png"));
-			} catch (Exception e) {
-
+			if (saveFile.isFile()) {
+				Object[] options = { "Overwrite", "Cancel" };
+				int n = JOptionPane.showOptionDialog(null,
+						"File Already Exists, Overwrite?", "Warning!",
+						JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, options, options[1]);
+				if (n != JOptionPane.CANCEL_OPTION){
+					try {
+						if (fcImage.getFileFilter() == png) {
+							ImageIO.write(bi, "png", new File(saveFile + ".png"));
+						} else if (fcImage.getFileFilter() == jpg) {
+							ImageIO.write(bi, "jpg", new File(saveFile + ".jpg"));
+						} else if (fcImage.getFileFilter() == gif) {
+							ImageIO.write(bi, "gif", new File(saveFile + ".gif"));
+						}
+					} catch (Exception e) {
+					}
+				}
 			}
-
 		}
-
 	}
+
+	
 
 	private void serialise(String path) {
 		// TODO Auto-generated method stub
@@ -75,17 +99,31 @@ public class Exporter {
 						.getElements().get(i)));
 			}
 		}
-		for (int j = 0; j < fileNames.size(); j++) {
-			File f;
-			f = new File(fileNames.get(j));
-			if (!f.exists()) {
-				f.createNewFile();
-				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
-						new FileOutputStream(fileNames.get(j))));
-				fileOut.println(outputFiles.get(j));
-				fileOut.close();
+
+		JFileChooser fcCode = new JFileChooser();
+		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fcCode.setAcceptAllFileFilterUsed(false);
+
+		File chosenDirectory = fcCode.getCurrentDirectory();
+
+		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
+
+		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
+			System.out.println(fileNames.size());
+			for (int j = fileNames.size() - 1; j >= 0; j--) {
+				File f;
+				f = new File(fileNames.get(j));
+				if (!f.exists()) {
+					f.createNewFile();
+					PrintWriter fileOut = new PrintWriter(
+							new OutputStreamWriter(new FileOutputStream(
+									chosenDirectory + fileNames.get(j))));
+					fileOut.println(outputFiles.get(j));
+					fileOut.close();
+				}
 			}
 		}
+
 	}
 
 	private String createClassFileContents(ClassRectangle r) {
