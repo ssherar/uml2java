@@ -26,18 +26,19 @@ public class Exporter {
 	private final String NL = "\n";
 	private final String TB = "\t";
 	private String imageSaveLocation;
+	private Manager manager;
 
-	// private ArrayList<DocumentElement> importDocumentModel = model
-	// .getElements();
 
-	public Exporter(DocumentModel model) {
+	public Exporter(DocumentModel model, Manager manager) {
 		this.model = model;
+		this.manager = manager;
 	}
 
-	public Exporter(Canvas c) {
-		this.canvas = c;
-
+	public Exporter(Canvas c, Manager manager) {
+		this.canvas  = c;
+		this.manager = manager;
 	}
+	
 
 	public void exportImage() throws IIOException {
 		BufferedImage bi = new BufferedImage(canvas.getSize().width,
@@ -47,8 +48,10 @@ public class Exporter {
 		canvas.paint(g); // this == JComponent
 		g.dispose();
 
+		manager.setWaitCursor(true);
 		JFileChooser fcImage = new JFileChooser();
 		fcImage.setAcceptAllFileFilterUsed(false);
+		manager.setWaitCursor(false);
 
 		FileNameExtensionFilter png = new FileNameExtensionFilter("PNG Image",
 				"png");
@@ -92,6 +95,7 @@ public class Exporter {
 			}
 		}
 
+		manager.setWaitCursor(true);
 		JFileChooser fcCode = new JFileChooser();
 		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fcCode.setAcceptAllFileFilterUsed(false);
@@ -99,6 +103,7 @@ public class Exporter {
 		File chosenDirectory = fcCode.getCurrentDirectory();
 
 		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
+		manager.setWaitCursor(false);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
 			System.out.println(fileNames.size());

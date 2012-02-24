@@ -219,7 +219,7 @@ public class ClassRectangle extends DocumentElement {
 		public void actionPerformed(ActionEvent e) {
 			String c = e.getActionCommand();
 			if(c.equals("Add relationship")) {
-				//TODO: implement
+				//TODO: Implement
 			}
 			if(c.equals("Add data field")) {
 				Attribute newDataField = new Attribute(
@@ -236,7 +236,7 @@ public class ClassRectangle extends DocumentElement {
 			if(c.equals("Add method")) {
 				Attribute newMethod = new Attribute(
 						((ClassRectangle)diagram).getNextMethodPoint(), 
-						"+ metod(args : ArgType) : ReturnType",
+						"+ method(args : ArgType) : ReturnType",
 						AttributeType.METHOD);
 				newMethod.repaint();
 				diagram.add(newMethod);

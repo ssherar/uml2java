@@ -162,14 +162,14 @@ public class Manager extends DiagramListener implements ActionListener,
 		} else if (c.equals("fonts") || c.equals("fontsize")) {
 			changeFont();
 		} else if (c.equals("Image")) {
-			Exporter exp = new Exporter(canvas);
+			Exporter exp = new Exporter(canvas, this);
 			try {
 				exp.exportImage();
 			} catch (IIOException e1) {
 				e1.printStackTrace();
 			}
 		} else if (c.equals("Code")) {
-			Exporter exp = new Exporter(document);
+			Exporter exp = new Exporter(document, this);
 			try {
 				exp.exportCode();
 			} catch (IOException e1) {
@@ -364,7 +364,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		document.getPreferences().setZoomLevel(zoom);
 	}
 
-	private void setWaitCursor(boolean value) {
+	public void setWaitCursor(boolean value) {
 		if (value) {
 			try {
 				window.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));

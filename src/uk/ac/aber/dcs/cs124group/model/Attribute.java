@@ -32,6 +32,12 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 		args.add(argType + " " + argName);
 	}
 	
+	@Override
+	public void setText(String text) {
+		super.setText(text);
+		initializeFields();
+	}
+	
 	/** Block of Get/Set */
 	
 	public ArrayList<String> getArgs(){
@@ -127,7 +133,7 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 	}
 	
 	
-	public void initializeFields() {
+	private void initializeFields() {
 		//TODO define
 	}
 	
