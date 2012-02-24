@@ -10,9 +10,12 @@ import java.awt.image.*;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Exporter {
 
+	
 	private DocumentModel model;
 	private String outputDirectory;
 	private Canvas canvas;
@@ -20,23 +23,24 @@ public class Exporter {
 	private ArrayList<String> fileNames;
 	private final String NL = "\n";
 	private final String TB = "\t";
+	private String imageSaveLocation;
+	//private ArrayList<DocumentElement> importDocumentModel = model
+	//		.getElements();
 
-	private ArrayList<DocumentElement> importDocumentModel = model
-			.getElements();
-
-	private Scanner fileCreator;
 
 	public Exporter(String outputDirectory, DocumentModel model) {
 		this.outputDirectory = outputDirectory;
 		this.model = model;
+		
 	}
 
 	public Exporter(Canvas c) {
 		this.canvas = c;
+		
+		
 	}
 
 	public void exportImage() throws IIOException {
-
 		BufferedImage bi = new BufferedImage(canvas.getSize().width,
 				canvas.getSize().height, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
@@ -44,11 +48,34 @@ public class Exporter {
 		g.dispose();
 
 		try {
-			ImageIO.write(bi, "png", new File("test.png"));
+			JFileChooser fc = new JFileChooser();
+			//FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG, GIF, PNG Images", "jpg", "gif", "png");
+			//fc.addChoosableFileFilter(filter);
+			
+			int retVal = fc.showSaveDialog(null);
+			
+			if(retVal == JFileChooser.APPROVE_OPTION) {
+				File saveFile = fc.getSelectedFile();
+				
+				
+				try {
+					if(saveFile.isFile()) saveFile.createNewFile();
+				} catch (Exception e) {
+					
+				}
+				imageSaveLocation = saveFile.getAbsoluteFile().getPath();
+				
+			}
+			
+			ImageIO.write(bi, ".png", new File(imageSaveLocation + ".png"));
 		} catch (Exception e) {
 
 		}
+	}
 
+	private void serialise(String path) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	public void exportCode() throws IOException {
