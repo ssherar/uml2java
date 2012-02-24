@@ -110,7 +110,8 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 		labelTextArea.setName("EditingDiagramLabel");
 		labelTextArea.setOpaque(false);
 		
-		//labelTextArea.setFont(document.getPreferences().getFont()); TODO: Fixme
+		
+		labelTextArea.setFont(diagram.getFont());
 		labelTextArea.setText(currentEdited.getText());
 		labelTextArea.addKeyListener(this);
 		SwingUtilities.invokeLater(new Runnable() {
