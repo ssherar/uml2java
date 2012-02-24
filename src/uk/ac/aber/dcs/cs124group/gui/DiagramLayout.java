@@ -10,10 +10,8 @@ public class DiagramLayout implements LayoutManager {
 	public void layoutContainer(Container canvas) {
 		
 		int numberOfElements = canvas.getComponentCount();
-		
 		Insets insets = canvas.getInsets();
 		
-		//for(int i = numberOfElements - 1; i >= 0; i--) {
 		for(int i = 0; i < numberOfElements; i++) {
 			Component c = canvas.getComponent(i);
 			Dimension d = c.getPreferredSize();
@@ -21,9 +19,7 @@ public class DiagramLayout implements LayoutManager {
 			
 			c.setBounds(p.x + insets.left, p.y + insets.right, d.width, d.height);
 		}
-		
-		
-		
+			
 
 	}
 
@@ -38,9 +34,6 @@ public class DiagramLayout implements LayoutManager {
 		return s;
 	}
 	
-	
-	
-
 
 	/* Unwanted methods */
 	@Override

@@ -23,4 +23,11 @@ So, here is the summary of the changes so far:
 TODOs relating to this change:
 - Have JSlider adjust itself when loading a document with custom zoom.
 
-That is all.  
+
+
+The "DiagramListener" change
+
+As you may have noticed, a new wild class appeared in the code - DiagramListener. What's more, our faithful Manager
+extends it! So what's this all about?
+
+Well, we need something to listen to ClassRectangles. It can't be the same manager because, well, it's already listenin
