@@ -1,8 +1,9 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.*;
+import java.awt.Point;
 
-public class Attribute implements java.io.Serializable {
+public class Attribute extends TextLabel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
@@ -10,7 +11,7 @@ public class Attribute implements java.io.Serializable {
 	private AttributeType type;
 	
 	private String representation; //e.g. +addElement(element : Element) : void
-	private String name;
+	private String attributeName;
 	private ArrayList<String> args;
 	private String returnType = "void";
 	private boolean flagStatic = false;
@@ -20,7 +21,8 @@ public class Attribute implements java.io.Serializable {
 	private boolean flagVolatile = false;
 	private boolean flagFinal = false;
 	
-	public void Attribute(String representation) {
+	public Attribute(String representation) {
+		super(new Point(0,0));
 		this.representation = representation;
 		initializeFields();		
 	}
@@ -43,12 +45,12 @@ public class Attribute implements java.io.Serializable {
 		this.representation = representation;
 	}
 	
-	public String getName() {
-		return name;
+	public String getAttributeName() {
+		return attributeName;
 	}
 
-	private void setName(String name) {
-		this.name = name;
+	private void setAttributeName(String name) {
+		this.attributeName = name;
 	}
 
 	public String getReturnType() {

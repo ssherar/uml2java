@@ -31,16 +31,21 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		if(e.getComponent().getName().equals("label")) {
-			if(e.getClickCount() == 2 && !e.isConsumed() && mode == ListeningMode.LISTEN_TO_ALL) {
-				e.consume();
-				TextLabel l = (TextLabel)(e.getComponent());
-				if(l != null) {
-					mode = ListeningMode.EDITING_TEXT;
-					enableLabelEdit(l);
-				}
+		if(e.getComponent() != null) {
+			if(e.getComponent() instanceof TextLabel) {
+				if(e.getClickCount() == 2 && !e.isConsumed() && mode == ListeningMode.LISTEN_TO_ALL) {
+					e.consume();
+					TextLabel l = (TextLabel)(e.getComponent());
+					if(l != null) {
+						mode = ListeningMode.EDITING_TEXT;
+						enableLabelEdit(l);
+					}
 				
+				}
 			}
+		}
+		else {
+			//TODO: Validate text edit
 		}
 		
 	}
@@ -71,19 +76,14 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 	@Override 
 	public void keyPressed(KeyEvent e) {
 		if(e.getComponent().getName() == "EditingDiagramLabel" && e.getKeyCode() == KeyEvent.VK_ENTER) {
-			JTextArea tmp = (JTextArea) e.getComponent();
-			if(tmp.getText().length() < 1) {
+			exitLabelEdit((JTextArea) e.getComponent());
+			/*if(tmp.getText().length() < 1) {
 				//status.setText("A label cannot be set to nothing. To delete please Right Click and click Delete."); TODO: Fixme
 				e.consume();
 				return;
 			}
-			System.out.println("t");
-			diagram.remove(tmp);
-			currentEdited.setText(tmp.getText());
-			diagram.add(currentEdited);
-			diagram.repaint();
-			mode = ListeningMode.LISTEN_TO_ALL;
-			//status.setText("Label modified successfully!"); TODO: Fixme
+
+			//status.setText("Label modified successfully!"); TODO: Fixme*/
 		}
 		
 	}
@@ -129,6 +129,15 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 		diagram.add(labelTextArea);
 		diagram.revalidate();
 		diagram.repaint();
+	}
+	
+	protected void exitLabelEdit(JTextArea a) {
+		diagram.remove(a);
+		currentEdited.setText(a.getText());
+		diagram.add(currentEdited);
+		diagram.repaint();
+		mode = ListeningMode.LISTEN_TO_ALL;
+		
 	}
 
 }

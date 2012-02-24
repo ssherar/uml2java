@@ -8,6 +8,7 @@ public class TextLabel extends DocumentElement {
 	private static final long serialVersionUID = -7388262736446472023L;
 	private String text = "Double-click to edit";
 	private FontMetrics metrics;
+	private int alignmentInParent = JTextField.LEFT;
 	
 	public TextLabel(Point p) {
 		setLocation(p);
@@ -41,6 +42,14 @@ public class TextLabel extends DocumentElement {
 		g.drawString(text, textX, textY);
 	}
 	
+	public int getAlignmentInParent() {
+		return alignmentInParent;
+	}
+
+	public void setAlignmentInParent(int alignmentInParent) {
+		this.alignmentInParent = alignmentInParent;
+	}
+
 	public void setText(String text) {
 		this.text = text;
 		resizeToText();		

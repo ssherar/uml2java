@@ -51,7 +51,7 @@ public class ClassRectangle extends DocumentElement {
 		this.name.addMouseListener(listener);
 	}
 
-	public String getName() {
+	public String getClassName() {
 		return this.name.getText();
 	}
 

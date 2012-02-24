@@ -61,17 +61,6 @@ public class Manager extends DiagramListener implements ActionListener, KeyListe
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
-		/*if(e.getComponent().getName() == "CanvasLabel") {
-			if(e.getClickCount() == 2 && !e.isConsumed() && mode == ListeningMode.LISTEN_TO_ALL) {
-				e.consume();
-				TextLabel l = (TextLabel)(e.getComponent());
-				if(l != null) {
-					mode = ListeningMode.EDITING_TEXT;
-					enableLabelEdit(l);
-				}
-				
-			}
-		}*/
 	}
 	
 	@Override

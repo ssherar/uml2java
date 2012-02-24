@@ -124,7 +124,7 @@ public class Exporter {
 		contents.concat("class "); // can amend this to include interface and
 									// enums etc if we decide to implement them
 
-		contents.concat(r.getName() + " ");
+		contents.concat(r.getClassName() + " ");
 
 		String eXtends = "";
 		String iMplements = "";
@@ -188,11 +188,11 @@ public class Exporter {
 				contents.concat(r.getAttributes().get(j).getType().toString());
 
 				if (isAttributeFinal) {
-					contents.concat(r.getAttributes().get(j).getName()
+					contents.concat(r.getAttributes().get(j).getAttributeName()
 							.toUpperCase()
 							+ ";");
 				} else {
-					contents.concat(r.getAttributes().get(j).getName() + ";");
+					contents.concat(r.getAttributes().get(j).getAttributeName() + ";");
 				}
 
 				// ------------------------Methods---------------------------
@@ -225,7 +225,7 @@ public class Exporter {
 
 				contents.concat(r.getAttributes().get(j).getReturnType() + " ");
 
-				contents.concat(r.getAttributes().get(j).getName() + "(");
+				contents.concat(r.getAttributes().get(j).getAttributeName() + "(");
 
 				int numOfArgs = r.getAttributes().get(j).getArgs().size();
 
