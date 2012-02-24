@@ -8,7 +8,7 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
-	private final String REGEX_ATTRIB = "^[+#-] [a-z].[a-zA-Z]* \\: [A-Za-z]*( [=] [a-zA-Z0-9]{0,9})?$";
+	private final String REGEX_ATTRIB = "^([+#-]) ([a-z].[a-zA-Z]*) \\: ([A-Za-z])*( [=] [a-zA-Z0-9]{1,9})?$";
 	private final String REGEX_METHOD = "^[+#-] [a-z].[a-zA-Z]*\\(([a-z].[a-zA-Z]*(\\[\\])? \\: [A-Za-z]*(, )?)*\\)( \\: [a-zA-Z]*)?$";
 	
 	private IVisibility visibility;
@@ -18,6 +18,7 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 	private String attributeName;
 	private ArrayList<String> args;
 	private String returnType = "void";
+	private String attribDefault = null;
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
@@ -42,16 +43,16 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 		initializeFields();
 	}
 	
-	public boolean checkAttribute(String var) {
+	public Matcher checkAttribute(String var) {
 		Pattern p = Pattern.compile(REGEX_ATTRIB);
 		Matcher m = p.matcher(var);
-		return m.find();
+		return m;
 	}
 	
-	public boolean checkMethod(String var) {
+	public Matcher checkMethod(String var) {
 		Pattern p = Pattern.compile(REGEX_METHOD);
 		Matcher m = p.matcher(var);
-		return m.find();
+		return m;
 	}
 	
 	/** Block of Get/Set */
@@ -150,7 +151,28 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 	
 	
 	private void initializeFields() {
-		//TODO define
+		String uml = super.getText();
+		Matcher attrib = this.checkAttribute(uml);
+		Matcher method = this.checkMethod(uml);
+		
+		if(attrib.find()) {
+			this.type = AttributeType.DATA_FIELD;
+			// I love my awkward ternary operators! 
+			/*this.visibility = (attrib.group(0) == "+") ? IVisibility.PUBLIC : ((attrib.group(0) == "-") ? IVisibility.PRIVATE : ((attrib.group(0) == "~") ? IVisibility.PACKAGE : IVisibility.PROTECTED));
+			this*/
+		} else if(method.find()) {
+			this.type = AttributeType.METHOD;
+		} else {
+			//not valid
+		}
+	}
+
+	public String getAttribDefault() {
+		return attribDefault;
+	}
+
+	public void setAttribDefault(String attribDefault) {
+		this.attribDefault = attribDefault;
 	}
 	
 	
