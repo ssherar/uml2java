@@ -27,6 +27,8 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 	
 
 
+
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getComponent().getName().equals("label")) {
@@ -109,9 +111,11 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 		labelTextArea.setLocation(new Point(x,y));
 		labelTextArea.setName("EditingDiagramLabel");
 		labelTextArea.setOpaque(false);
-		
-		
 		labelTextArea.setFont(diagram.getFont());
+		labelTextArea.setLineWrap(true);
+		labelTextArea.setWrapStyleWord(true);
+		
+		//labelTextArea.setFont(document.getPreferences().getFont()); TODO: Fixme
 		labelTextArea.setText(currentEdited.getText());
 		labelTextArea.addKeyListener(this);
 		SwingUtilities.invokeLater(new Runnable() {
