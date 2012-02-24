@@ -15,7 +15,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Exporter {
 
-	
 	private DocumentModel model;
 	private String outputDirectory;
 	private Canvas canvas;
@@ -24,20 +23,19 @@ public class Exporter {
 	private final String NL = "\n";
 	private final String TB = "\t";
 	private String imageSaveLocation;
-	//private ArrayList<DocumentElement> importDocumentModel = model
-	//		.getElements();
 
+	// private ArrayList<DocumentElement> importDocumentModel = model
+	// .getElements();
 
 	public Exporter(String outputDirectory, DocumentModel model) {
 		this.outputDirectory = outputDirectory;
 		this.model = model;
-		
+
 	}
 
 	public Exporter(Canvas c) {
 		this.canvas = c;
-		
-		
+
 	}
 
 	public void exportImage() throws IIOException {
@@ -47,35 +45,26 @@ public class Exporter {
 		canvas.paint(g); // this == JComponent
 		g.dispose();
 
-		try {
-			JFileChooser fc = new JFileChooser();
-			//FileNameExtensionFilter filter = new FileNameExtensionFilter("JPG, GIF, PNG Images", "jpg", "gif", "png");
-			//fc.addChoosableFileFilter(filter);
-			
-			int retVal = fc.showSaveDialog(null);
-			
-			if(retVal == JFileChooser.APPROVE_OPTION) {
-				File saveFile = fc.getSelectedFile();
-				
-				
-				try {
-					if(saveFile.isFile()) saveFile.createNewFile();
-				} catch (Exception e) {
-					
-				}
-				imageSaveLocation = saveFile.getAbsoluteFile().getPath();
-				
+		JFileChooser fc = new JFileChooser();
+
+		int fcReturnVal = fc.showSaveDialog(null);
+
+		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
+			File saveFile = fc.getSelectedFile();
+
+			try {
+				ImageIO.write(bi, "png", new File(saveFile + ".png"));
+			} catch (Exception e) {
+
 			}
-			
-			ImageIO.write(bi, ".png", new File(imageSaveLocation + ".png"));
-		} catch (Exception e) {
 
 		}
+
 	}
 
 	private void serialise(String path) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public void exportCode() throws IOException {
@@ -192,7 +181,8 @@ public class Exporter {
 							.toUpperCase()
 							+ ";");
 				} else {
-					contents.concat(r.getAttributes().get(j).getAttributeName() + ";");
+					contents.concat(r.getAttributes().get(j).getAttributeName()
+							+ ";");
 				}
 
 				// ------------------------Methods---------------------------
@@ -225,7 +215,8 @@ public class Exporter {
 
 				contents.concat(r.getAttributes().get(j).getReturnType() + " ");
 
-				contents.concat(r.getAttributes().get(j).getAttributeName() + "(");
+				contents.concat(r.getAttributes().get(j).getAttributeName()
+						+ "(");
 
 				int numOfArgs = r.getAttributes().get(j).getArgs().size();
 
