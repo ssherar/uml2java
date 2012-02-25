@@ -14,24 +14,11 @@ public class DocumentModel implements java.io.Serializable {
 	
 	private DocumentPreferences preferences;
 	private ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
-	private String fileName;
 	
 	public DocumentModel() {
 		preferences = new DocumentPreferences();
 	}
 	
-	public DocumentModel(String filename) {
-		this.fileName = fileName;
-		preferences = new DocumentPreferences();
-	}
-	
-	public void setFileName(String filename) {
-		this.fileName = fileName;
-	}
-	
-	public String getFileName() {
-		return fileName;
-	}
 	
 	public DocumentPreferences getPreferences() {
 		return preferences;

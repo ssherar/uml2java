@@ -18,6 +18,7 @@ public class TextLabel extends DocumentElement {
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		this.setName("label");
 		this.resizeToText();
+		this.setLayout(null);
 	}
 	
 	public void paintComponent(Graphics d) {

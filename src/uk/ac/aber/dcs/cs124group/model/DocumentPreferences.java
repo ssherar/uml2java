@@ -13,7 +13,16 @@ public class DocumentPreferences implements Serializable {
 	private Font font;
 	private Dimension canvasDefaultSize;
 	private double zoomLevel = 1;
+	private String filename;
 		
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
 
 	public void setFont(Font f) {
 		font = f;

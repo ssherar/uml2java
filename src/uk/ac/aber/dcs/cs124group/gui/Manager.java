@@ -11,6 +11,8 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import java.io.*;
 
@@ -23,6 +25,7 @@ public class Manager extends DiagramListener implements ActionListener,
 	private boolean inDebug = true;
 
 	public static final String PROGRAM_NAME = "UML2Java";
+	public static final String FILE_EXTENSION = "umlj";
 
 	
 	private MainFrame window;
@@ -168,6 +171,7 @@ public class Manager extends DiagramListener implements ActionListener,
 				e1.printStackTrace();
 			}
 		} else if (c.equals("Code")) {
+			document.cleanUp();
 			Exporter exp = new Exporter(document, this);
 			try {
 				exp.exportCode();
@@ -214,7 +218,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		TextLabel l = new TextLabel(p);
 		l.setFont(document.getPreferences().getFont());
 		l.setName("label");
-		l.addMouseListener(this);
+		//l.addMouseListener(this);
 		document.addElement(l);
 		status.setText("New label created at " + p.x + "," + p.y);
 
@@ -250,29 +254,31 @@ public class Manager extends DiagramListener implements ActionListener,
 	}
 
 	private void save() {
-		if (document.getFileName() == null) {
+		if (document.getPreferences().getFilename() == null) {
 			saveAs();
 		} else {
-			serialise(document.getFileName());
+			serialise(document.getPreferences().getFilename());
 		}
 	}
 
 	private void saveAs() {
 		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
+		fc.addChoosableFileFilter(new FileNameExtensionFilter(PROGRAM_NAME + " diagram (*." +FILE_EXTENSION+ ")", FILE_EXTENSION));
 		int retVal = fc.showSaveDialog(null);
 		setWaitCursor(false);
 
 		if (retVal == JFileChooser.APPROVE_OPTION) {
-			File saveFile = fc.getSelectedFile();
+			File saveFile = new File(fc.getSelectedFile().getAbsolutePath() + "." + FILE_EXTENSION);
 			try {
 				if (saveFile.isFile())
 					saveFile.createNewFile();
 			} catch (Exception e) {
 
 			}
+			document.getPreferences().setFilename(saveFile.getAbsoluteFile().getPath());
 			serialise(saveFile.getAbsoluteFile().getPath());
-			document.setFileName(saveFile.getAbsoluteFile().getPath());
+			
 
 		}
 
@@ -295,6 +301,20 @@ public class Manager extends DiagramListener implements ActionListener,
 	private void openExisting() {
 		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
+		/*fc.setFileFilter(new FileFilter() {
+			@Override
+			public boolean accept(File f) {
+				return(f.getName().contains(FILE_EXTENSION) || f.isDirectory());
+			}
+
+			@Override
+			public String getDescription() {
+				return null;
+			}
+		});*/
+		fc.addChoosableFileFilter(new FileNameExtensionFilter(PROGRAM_NAME + " diagram (*." +FILE_EXTENSION+ ")", FILE_EXTENSION));
+		fc.setAcceptAllFileFilterUsed(false);
+		
 		int retVal = fc.showOpenDialog(null);
 		setWaitCursor(false);
 
@@ -321,8 +341,8 @@ public class Manager extends DiagramListener implements ActionListener,
 																				// JSlider
 																				// will
 																				// not
-																				// have
-																				// updated
+																				// have updated
+				
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
 			} catch (Exception e) {

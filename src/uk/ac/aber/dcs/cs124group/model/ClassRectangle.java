@@ -307,7 +307,7 @@ public class ClassRectangle extends DocumentElement {
 	}
 	
 	/** Defines class rectangle specific operations */
-	private class RectangleListener extends DiagramListener implements ActionListener {
+	private class RectangleListener extends DiagramListener implements ActionListener, java.io.Serializable {
 		
 		public RectangleListener(ClassRectangle c) {
 			this.assignTo(c);
