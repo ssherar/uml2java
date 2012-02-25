@@ -58,20 +58,9 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 
-	@SuppressWarnings("null")
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		//TODO: move into RectangleListener
-		if (e.getComponent() != null){
-			//System.out.println(e.getComponent());
-			if(e.getComponent() instanceof ClassRectangle){
-				ClassRectangle moving = (ClassRectangle) e.getComponent();												
-				moving.move(e.getPoint());
-				diagram.revalidate();
-				
-			}
-		}
-		diagram.repaint();
+
 	}
 
 	@Override
