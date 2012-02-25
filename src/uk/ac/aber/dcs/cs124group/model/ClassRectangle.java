@@ -379,6 +379,7 @@ public class ClassRectangle extends DocumentElement {
 				ClassRectangle moving = (ClassRectangle) e.getComponent();	
 				System.out.println("Moving");
 				moving.setBounds(r.getBounds());
+				moving.setLocation(r.getLocation());
 			}
 			diagram.repaint();
 		}
