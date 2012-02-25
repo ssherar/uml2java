@@ -31,6 +31,7 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 		this.representation = representation;
 		initializeFields();		
 		this.setText(representation);
+		this.type = type;
 	}
 	
 	public void addArgsElement(String argType, String argName){

@@ -12,6 +12,8 @@ public class DiagramLayout implements LayoutManager {
 		int numberOfElements = canvas.getComponentCount();
 		Insets insets = canvas.getInsets();
 		
+		
+		
 		for(int i = 0; i < numberOfElements; i++) {
 			Component c = canvas.getComponent(i);
 			Dimension d = c.getPreferredSize();

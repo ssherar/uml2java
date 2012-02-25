@@ -19,9 +19,7 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 	
 	public void setFont(Font font) {
 		this.font = font;
-		for(int i = 0; i < this.getComponentCount(); i++) {
-			this.getComponent(i).setFont(font);
-		}
+		
 	}
 	
 	public Font getFont() {

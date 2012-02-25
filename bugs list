@@ -1,0 +1,9 @@
+Known bugs:
+
+Clicking on elements under zoom doesn't fit into the coordinate system
+ScrollPane size is not dynamic
+StatusBar is not updated from anywhere except the manager
+the "edited" field is not updated from anywhere except the manager
+Class Rectangles don't support word wrapping
+After editing, Attributes revert to default font
+Name label of class rectangle doesn't reposition correctly

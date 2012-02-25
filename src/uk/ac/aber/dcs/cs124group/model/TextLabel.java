@@ -65,27 +65,39 @@ public class TextLabel extends DocumentElement {
 	
 	private void resizeToText() {
 		
-		SwingUtilities.invokeLater(new Runnable() {
-			
-			@Override
-			public void run() {
-				try {
-					metrics = getGraphics().getFontMetrics();
-				}
-				catch(NullPointerException ex) {
-					return;
-				}
-				int width = metrics.stringWidth(text);
-				setPreferredSize(new Dimension(
-						(int) (getZoomFactor() * 1.1 * width + 1), 
-						(int) (getZoomFactor() * metrics.getHeight())));
-				setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
-			}
-			
-		});
+		try {
+			metrics = getGraphics().getFontMetrics();
+			int width = metrics.stringWidth(text);
+			setPreferredSize(new Dimension(
+					(int) (getZoomFactor() * 1.1 * width + 1), 
+					(int) (getZoomFactor() * metrics.getHeight())));
+			getParent().doLayout();
+		}
+		catch(NullPointerException ex) {
 		
+			SwingUtilities.invokeLater(new Runnable() {
+			
+				@Override
+				public void run() {
+					try {
+						metrics = getGraphics().getFontMetrics();
+					}
+					catch(NullPointerException ex) {
+						return;
+					}
+					int width = metrics.stringWidth(text);
+					setPreferredSize(new Dimension(
+							(int) (getZoomFactor() * 1.1 * width + 1), 
+							(int) (getZoomFactor() * metrics.getHeight())));
+					getParent().doLayout();
+				}
+			
+			});
+		}
 
 	}
+	
+
 
 	@Override
 	public void move(Point newPos) {

@@ -39,7 +39,7 @@ public class ToolBar extends JToolBar {
 			}
 			
 			public Comparable getMaximum() {
-				return 50;
+				return 20;
 			}
 			
 			/* Fix a bug in Java allowing the Spinner to exceed minimum / maximum by 1 and stop working*/

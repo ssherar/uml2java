@@ -61,6 +61,7 @@ public class DiagramListener implements KeyListener, MouseMotionListener, MouseL
 	@SuppressWarnings("null")
 	@Override
 	public void mouseDragged(MouseEvent e) {
+		//TODO: move into RectangleListener
 		if (e.getComponent() != null){
 			//System.out.println(e.getComponent());
 			if(e.getComponent() instanceof ClassRectangle){
