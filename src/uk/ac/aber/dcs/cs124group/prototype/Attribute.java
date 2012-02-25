@@ -9,8 +9,9 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
-	private final String REGEX_ATTRIB = "^([+#-]) ([a-z].[a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
-	private final String REGEX_METHOD = "^[+#-] [a-z].[a-zA-Z]*\\(([a-z].[a-zA-Z]*(\\[\\])? \\: [A-Za-z]*(, )?)*\\)( \\: [a-zA-Z]*)?$";
+	private final String REGEX_ATTRIB = "^([+#-]) ([a-z][a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
+	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-z][a-zA-Z]*)\\((.*)\\)(( \\: [a-zA-Z]*)?)$";
+	private final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([A-Za-z0-9]*)";
 	
 	private IVisibility visibility;
 	private AttributeType type;
@@ -52,8 +53,8 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 		return m;
 	}
 	
-	public Matcher checkMethod(String var) {
-		Pattern p = Pattern.compile(REGEX_METHOD);
+	public Matcher checkMethodShell(String var) {
+		Pattern p = Pattern.compile(REGEX_METHOD_SHELL);
 		Matcher m = p.matcher(var);
 		return m;
 	}
@@ -155,12 +156,10 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 	
 	private void initializeFields() {
 		String uml = this.representation;//super.getText();
-		Pattern p;
 		Matcher m;
 		
 		if(this.type == AttributeType.DATA_FIELD) {
-			p = Pattern.compile(REGEX_ATTRIB);
-			m = p.matcher(uml);
+			m = this.checkAttribute(uml);
 			if(m.find()) {
 				System.out.println("Attribute:");
 				System.out.println(m.group(0));
@@ -169,13 +168,24 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 				System.out.println(m.group(3));
 			}
 		} else if(this.type == AttributeType.METHOD) {
-			p = Pattern.compile(REGEX_METHOD);
-			m = p.matcher(uml);
+			m = this.checkMethodShell(uml);
 			if(m.find()) {
 				System.out.println("Method:");
 				System.out.println(m.group(0));
+				if(m.group(3) != null) {
+					Matcher args = this.checkArguements(m.group(3));
+					while(args.find()) {
+						System.out.println(args.group(1) + " = " + args.group(2));
+					}
+				}
 			}
 		}
+	}
+	
+	public Matcher checkArguements(String var) {
+		Pattern p = Pattern.compile(REGEX_METHOD_ARGS);
+		Matcher m = p.matcher(var);
+		return m;
 	}
 
 	public String getAttribDefault() {
