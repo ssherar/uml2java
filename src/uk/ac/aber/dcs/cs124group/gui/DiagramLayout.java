@@ -2,7 +2,7 @@ package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.*;
 
-public class DiagramLayout implements LayoutManager {
+public class DiagramLayout implements LayoutManager, java.io.Serializable {
 
 
 

@@ -288,7 +288,7 @@ public class Manager extends DiagramListener implements ActionListener,
 			status.setText("Document saved successfully");
 		} catch (Exception e) {
 			status.setText("Could not write your document into the file. Sorry!");
-			System.out.println(e.getStackTrace());
+			e.printStackTrace();
 		}
 	}
 

@@ -7,7 +7,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class DiagramListener implements KeyListener, MouseMotionListener, MouseListener {
+public class DiagramListener implements KeyListener, MouseMotionListener, MouseListener, java.io.Serializable {
 	
 	protected ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
 	protected JPanel diagram;

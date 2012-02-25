@@ -262,7 +262,7 @@ public class ClassRectangle extends DocumentElement {
 	
 	/** Calculates the location of the next method label from the top of the rectangle down to the method specified by the argument.
 	 * 
-	 * @param afterMethodNumber		The index at which a new method label is to be inserted. 
+	 * @param afterMethodNumber		The index at which a new method label is to be inserted minus one. 
 	 * @return 						The Point at which it is safe to insert a new method label below the one specified by the argument.
 	 */
 	public Point getNextMethodPoint(int afterMethodNumber) {
