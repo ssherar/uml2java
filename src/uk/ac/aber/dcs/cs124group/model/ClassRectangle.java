@@ -180,7 +180,7 @@ public class ClassRectangle extends DocumentElement {
 	}
 
 	private void repositionAttributes() {
-
+		this.cleanUp();
 		for(int i = 0; dataFields != null && i < dataFields.size(); i++) {
 			Attribute a = dataFields.get(i);
 			a.setLocation(this.getNextDataFieldPoint(i));
@@ -191,6 +191,18 @@ public class ClassRectangle extends DocumentElement {
 			a.setLocation(this.getNextMethodPoint(i));
 		}
 
+	}
+	
+	public void cleanUp() {
+		for(int i = 0; dataFields != null && i < dataFields.size(); i++) {
+			if(!dataFields.get(i).isVisible())
+				dataFields.remove(i);
+		}
+
+		for(int i = 0; methods != null && i < methods.size(); i++) {
+			if(!methods.get(i).isVisible())
+				methods.remove(i);
+		}
 	}
 
 

@@ -16,6 +16,7 @@ public class TextLabel extends DocumentElement {
 	private FontMetrics metrics;
 	private int alignmentInParent = JTextField.LEFT;
 	private Container suspendedParent;
+	private JTextArea replacement;
 	
 	public TextLabel(Point p) {
 		setLocation(p);
@@ -144,10 +145,12 @@ public class TextLabel extends DocumentElement {
 		suspendedParent.add(labelTextArea);
 		((JPanel)(suspendedParent)).revalidate();
 		suspendedParent.repaint();
+		
+		replacement = labelTextArea;
 	}
 	
 	public void exitEdit() {
-		JTextArea a = (JTextArea) suspendedParent.getComponentAt(this.getLocation());
+		JTextArea a = replacement;
 		suspendedParent.remove(a);
 		if(a.getText() == null) {
 			this.setVisible(false);
@@ -181,6 +184,7 @@ public class TextLabel extends DocumentElement {
 		public void keyPressed(KeyEvent e) {
 			if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				diagram.exitEdit();
+				this.setMode(ListeningMode.LISTEN_TO_ALL);
 			}
 			
 		}
