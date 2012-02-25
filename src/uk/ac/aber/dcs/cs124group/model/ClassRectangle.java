@@ -152,7 +152,7 @@ public class ClassRectangle extends DocumentElement {
 				this.dataFields.add((Attribute) c);
 			else this.methods.add((Attribute)c);
 		}
-		this.repositionAttributes();
+		if(!(c instanceof JTextArea))this.repositionAttributes();
 		return this;
 	}
 
@@ -163,8 +163,7 @@ public class ClassRectangle extends DocumentElement {
 			if(((Attribute) c).getType() == AttributeType.DATA_FIELD)
 				this.dataFields.remove((Attribute) c);
 			else this.methods.remove((Attribute)c);
-		}	
-		this.repositionAttributes();
+		}
 	}
 
 	@Override

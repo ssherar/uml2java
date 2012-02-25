@@ -130,6 +130,7 @@ public class TextLabel extends DocumentElement {
 		labelTextArea.setFont(this.getFont());
 		labelTextArea.setLineWrap(true);
 		labelTextArea.setWrapStyleWord(true);
+		labelTextArea.repaint();
 		
 		//labelTextArea.setFont(document.getPreferences().getFont()); TODO: Fixme
 		labelTextArea.setText(this.getText());
