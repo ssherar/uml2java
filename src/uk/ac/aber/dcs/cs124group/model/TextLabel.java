@@ -99,11 +99,4 @@ public class TextLabel extends DocumentElement {
 	}
 	
 
-
-	@Override
-	public void move(Point newPos) {
-		
-
-	}
-
 }

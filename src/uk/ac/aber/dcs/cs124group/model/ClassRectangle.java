@@ -120,12 +120,6 @@ public class ClassRectangle extends DocumentElement {
 		this.isStatic = isStatic;
 	}
 
-	@Override
-	public void move(Point newPos) {
-		setLocation(newPos);
-		//TODO act upon this new information accordingly...
-	}
-
 	public Dimension getSize() {
 		return this.getPreferredSize();
 	}
@@ -221,20 +215,16 @@ public class ClassRectangle extends DocumentElement {
 		int width = getPreferredSize().width;
 		int height = getPreferredSize().height;
 
-		if(getPaintState() == ElementPaintState.DEFAULT) {
+		g.drawRoundRect(0, 0, width - 1 , height - 1, 10, 10);
+		g.setColor(RECTANGLE_BACKGROUND);
+		g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
 
+		int nameFieldHeight = name.getPreferredSize().height;
+		g.setColor(Color.BLACK);
+		g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
 
-			g.drawRoundRect(0, 0, width - 1 , height - 1, 10, 10);
-			g.setColor(RECTANGLE_BACKGROUND);
-			g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
+		g.drawLine(0, this.getSeparatorCoordinate(), width - 1, this.getSeparatorCoordinate());
 
-			int nameFieldHeight = name.getPreferredSize().height;
-			g.setColor(Color.BLACK);
-			g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
-
-			g.drawLine(0, this.getSeparatorCoordinate(), width - 1, this.getSeparatorCoordinate());
-
-		}
 	}
 
 	private int getSeparatorCoordinate() {
@@ -310,13 +300,10 @@ public class ClassRectangle extends DocumentElement {
 	/** Defines class rectangle specific operations */
 	private class RectangleListener extends DiagramListener implements ActionListener, java.io.Serializable {
 		
-		Component selectedClass;
-		Point mouseCurrent;
-		boolean dragging;
+		private Point startingMousePosition;
 		
 		public RectangleListener(ClassRectangle c) {
 			this.assignTo(c);
-			dragging = false;
 		}
 
 		@Override
@@ -356,30 +343,27 @@ public class ClassRectangle extends DocumentElement {
 
 		}
 		public void mousePressed(MouseEvent e){
-			System.out.println("Mouse Pressed");
-			dragging = true;
-			System.out.println(dragging);
-			selectedClass = e.getComponent();
-			mouseCurrent = e.getPoint();
+			((ClassRectangle) diagram).setPaintState(ElementPaintState.SELECTED);
 
 		}
 		
 		public void mouseReleased(MouseEvent e){
-			System.out.print("Mouse Released");
-			dragging = false;
+			mode = ListeningMode.LISTEN_TO_ALL;
 		}
 
 		public void mouseDragged(MouseEvent e){
-			if (dragging){
-				Rectangle r = selectedClass.getBounds();
-                r.x += e.getX() - mouseCurrent.x;  
-                r.y += e.getY() - mouseCurrent.y;
+			if(mode != ListeningMode.DRAGGING && ((ClassRectangle) diagram).getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
+				mode = ListeningMode.DRAGGING;
+				startingMousePosition = e.getPoint();
+			}
+			
+			if (mode == ListeningMode.DRAGGING){
+				Rectangle r = diagram.getBounds();
+                r.x += e.getX() - startingMousePosition.x;  
+                r.y += e.getY() - startingMousePosition.y;
                 r.setBounds(r);
-                System.out.println(r);
-				ClassRectangle moving = (ClassRectangle) e.getComponent();	
-				System.out.println("Moving");
-				moving.setBounds(r.getBounds());
-				moving.setLocation(r.getLocation());
+				diagram.setLocation(r.getLocation());
+				diagram.getParent().doLayout();
 			}
 			diagram.repaint();
 		}
