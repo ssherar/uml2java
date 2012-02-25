@@ -3,22 +3,26 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.util.*;
 import java.awt.Point;
 import java.util.regex.*;
+import uk.ac.aber.dcs.cs124group.model.*;
 
 public class Attribute extends TextLabel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
-	private final String REGEX_ATTRIB = "^([+#-]) ([a-z].[a-zA-Z]*) \\: ([A-Za-z])*( [=] [a-zA-Z0-9]{1,9})?$";
-	private final String REGEX_METHOD = "^[+#-] [a-z].[a-zA-Z]*\\(([a-z].[a-zA-Z]*(\\[\\])? \\: [A-Za-z]*(, )?)*\\)( \\: [a-zA-Z]*)?$";
+	private final String REGEX_ATTRIB = "^([+#-]) ([a-z][a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
+	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-z][a-zA-Z]*)\\((.*)\\)(( \\: [a-zA-Z]*)?)$";
+	private final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([A-Za-z0-9]*)";
 	
 	private IVisibility visibility;
 	private AttributeType type;
 	
 	private String representation; //e.g. +addElement(element : Element) : void
 	private String attributeName;
+	// TODO needs to be either hashtables/map<String, String>
 	private ArrayList<String> args;
 	private String returnType = "void";
 	private String attribDefault = null;
+	private String attributeType = null;
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
@@ -28,19 +32,21 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 	
 	public Attribute(Point p, String representation, AttributeType type) {
 		super(p);
+		args = new ArrayList<String>();
 		this.representation = representation;
+		this.type = type;
 		initializeFields();		
 		this.setText(representation);
-		this.type = type;
 	}
 	
 	public void addArgsElement(String argType, String argName){
 		args.add(argType + " " + argName);
 	}
 	
-	@Override
+	//@Override
 	public void setText(String text) {
 		super.setText(text);
+		this.representation = text;
 		initializeFields();
 	}
 	
@@ -50,8 +56,8 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 		return m;
 	}
 	
-	public Matcher checkMethod(String var) {
-		Pattern p = Pattern.compile(REGEX_METHOD);
+	public Matcher checkMethodShell(String var) {
+		Pattern p = Pattern.compile(REGEX_METHOD_SHELL);
 		Matcher m = p.matcher(var);
 		return m;
 	}
@@ -146,26 +152,53 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 		return type;
 	}
 
-	private void setType(AttributeType type) {
+	public void setType(AttributeType type) {
 		this.type = type;
+	}
+	
+	private void checkVisibility(String var) {
+		if(var.equals("+")) this.visibility = IVisibility.PUBLIC;
+		else if(var.equals("-")) this.visibility = IVisibility.PRIVATE;
+		else if(var.equals("#")) this.visibility = IVisibility.PROTECTED;
+		else this.visibility = IVisibility.PACKAGE;
 	}
 	
 	
 	private void initializeFields() {
-		String uml = super.getText();
-		Matcher attrib = this.checkAttribute(uml);
-		Matcher method = this.checkMethod(uml);
+		String uml = this.representation;
+		Matcher m;
 		
-		if(attrib.find()) {
-			this.type = AttributeType.DATA_FIELD;
-			// I love my awkward ternary operators! 
-			/*this.visibility = (attrib.group(0) == "+") ? IVisibility.PUBLIC : ((attrib.group(0) == "-") ? IVisibility.PRIVATE : ((attrib.group(0) == "~") ? IVisibility.PACKAGE : IVisibility.PROTECTED));
-			this*/
-		} else if(method.find()) {
-			this.type = AttributeType.METHOD;
-		} else {
-			//not valid
+		if(this.type == AttributeType.DATA_FIELD) {
+			m = this.checkAttribute(uml);
+			if(m.find()) {
+				// Attribute has 3 main variables and 4th is optional
+				this.checkVisibility(m.group(1));
+				this.attributeName = m.group(2);
+				this.attributeType = m.group(3);
+				if(!m.group(4).equals(null)) {
+					this.attribDefault = m.group(4).substring(3);
+				}
+			}
+		} else if(this.type == AttributeType.METHOD) {
+			m = this.checkMethodShell(uml);
+			if(m.find()) {
+				this.checkVisibility(m.group(1));
+				this.attributeName = m.group(2);
+				if(m.group(3) != null) {
+					Matcher args = this.checkArguements(m.group(3));
+					while(args.find()) {
+						this.addArgsElement(args.group(3),args.group(1));
+					}
+				}
+				this.returnType = m.group(4).substring(3);
+			}
 		}
+	}
+	
+	public Matcher checkArguements(String var) {
+		Pattern p = Pattern.compile(REGEX_METHOD_ARGS);
+		Matcher m = p.matcher(var);
+		return m;
 	}
 
 	public String getAttribDefault() {

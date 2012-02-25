@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.regex.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 
-public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
+public class Attribute extends TextLabel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
@@ -18,9 +18,11 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 	
 	private String representation; //e.g. +addElement(element : Element) : void
 	private String attributeName;
+	// TODO needs to be either hashtables/map<String, String>
 	private ArrayList<String> args;
 	private String returnType = "void";
 	private String attribDefault = null;
+	private String attributeType = null;
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
@@ -29,10 +31,11 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 	private boolean flagFinal = false;
 	
 	public Attribute(Point p, String representation, AttributeType type) {
-		//super(p);
+		super(p);
+		args = new ArrayList<String>();
 		this.representation = representation;
 		this.type = type;
-		//initializeFields();		
+		initializeFields();		
 		this.setText(representation);
 	}
 	
@@ -42,7 +45,7 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 	
 	//@Override
 	public void setText(String text) {
-		//super.setText(text);
+		super.setText(text);
 		this.representation = text;
 		initializeFields();
 	}
@@ -153,31 +156,41 @@ public class Attribute /*extends TextLabel*/ implements java.io.Serializable {
 		this.type = type;
 	}
 	
+	private void checkVisibility(String var) {
+		if(var.equals("+")) this.visibility = IVisibility.PUBLIC;
+		else if(var.equals("-")) this.visibility = IVisibility.PRIVATE;
+		else if(var.equals("#")) this.visibility = IVisibility.PROTECTED;
+		else this.visibility = IVisibility.PACKAGE;
+	}
+	
 	
 	private void initializeFields() {
-		String uml = this.representation;//super.getText();
+		String uml = this.representation;
 		Matcher m;
 		
 		if(this.type == AttributeType.DATA_FIELD) {
 			m = this.checkAttribute(uml);
 			if(m.find()) {
-				System.out.println("Attribute:");
-				System.out.println(m.group(0));
-				System.out.println(m.group(1));
-				System.out.println(m.group(2));
-				System.out.println(m.group(3));
+				// Attribute has 3 main variables and 4th is optional
+				this.checkVisibility(m.group(1));
+				this.attributeName = m.group(2);
+				this.attributeType = m.group(3);
+				if(!m.group(4).equals(null)) {
+					this.attribDefault = m.group(4).substring(3);
+				}
 			}
 		} else if(this.type == AttributeType.METHOD) {
 			m = this.checkMethodShell(uml);
 			if(m.find()) {
-				System.out.println("Method:");
-				System.out.println(m.group(0));
+				this.checkVisibility(m.group(1));
+				this.attributeName = m.group(2);
 				if(m.group(3) != null) {
 					Matcher args = this.checkArguements(m.group(3));
 					while(args.find()) {
-						System.out.println(args.group(1) + " = " + args.group(2));
+						this.addArgsElement(args.group(3),args.group(1));
 					}
 				}
+				this.returnType = m.group(4).substring(3);
 			}
 		}
 	}

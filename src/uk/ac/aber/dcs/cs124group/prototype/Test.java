@@ -4,7 +4,7 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 public class Test {
 	public static void main(String[] args) {
-		Attribute a = new Attribute(new Point(0,0), "+ hello : String", AttributeType.DATA_FIELD);
+		Attribute a = new Attribute(new Point(0,0), "+ hello : String = Hello", AttributeType.DATA_FIELD);
 		a.setType(AttributeType.METHOD);
 		a.setText("+ method(arg : String, pow : Int) : void");
 	}
