@@ -152,7 +152,7 @@ public class TextLabel extends DocumentElement {
 	public void exitEdit() {
 		JTextArea a = replacement;
 		suspendedParent.remove(a);
-		if(a.getText() == null) {
+		if(a.getText().length() < 1) {
 			this.setVisible(false);
 			return;
 		}
