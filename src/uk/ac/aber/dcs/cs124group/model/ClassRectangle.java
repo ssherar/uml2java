@@ -221,20 +221,16 @@ public class ClassRectangle extends DocumentElement {
 		int width = getPreferredSize().width;
 		int height = getPreferredSize().height;
 
-		if(getPaintState() == ElementPaintState.DEFAULT) {
+		g.drawRoundRect(0, 0, width - 1 , height - 1, 10, 10);
+		g.setColor(RECTANGLE_BACKGROUND);
+		g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
 
+		int nameFieldHeight = name.getPreferredSize().height;
+		g.setColor(Color.BLACK);
+		g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
 
-			g.drawRoundRect(0, 0, width - 1 , height - 1, 10, 10);
-			g.setColor(RECTANGLE_BACKGROUND);
-			g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
+		g.drawLine(0, this.getSeparatorCoordinate(), width - 1, this.getSeparatorCoordinate());
 
-			int nameFieldHeight = name.getPreferredSize().height;
-			g.setColor(Color.BLACK);
-			g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
-
-			g.drawLine(0, this.getSeparatorCoordinate(), width - 1, this.getSeparatorCoordinate());
-
-		}
 	}
 
 	private int getSeparatorCoordinate() {
@@ -310,7 +306,7 @@ public class ClassRectangle extends DocumentElement {
 	/** Defines class rectangle specific operations */
 	private class RectangleListener extends DiagramListener implements ActionListener, java.io.Serializable {
 		
-		private Point mouseCurrent;
+		private Point startingMousePosition;
 		
 		public RectangleListener(ClassRectangle c) {
 			this.assignTo(c);
@@ -353,7 +349,7 @@ public class ClassRectangle extends DocumentElement {
 
 		}
 		public void mousePressed(MouseEvent e){
-			
+			((ClassRectangle) diagram).setPaintState(ElementPaintState.SELECTED);
 
 		}
 		
@@ -364,13 +360,13 @@ public class ClassRectangle extends DocumentElement {
 		public void mouseDragged(MouseEvent e){
 			if(mode != ListeningMode.DRAGGING && ((ClassRectangle) diagram).getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
 				mode = ListeningMode.DRAGGING;
-				mouseCurrent = e.getPoint();
+				startingMousePosition = e.getPoint();
 			}
 			
 			if (mode == ListeningMode.DRAGGING){
 				Rectangle r = diagram.getBounds();
-                r.x += e.getX() - mouseCurrent.x;  
-                r.y += e.getY() - mouseCurrent.y;
+                r.x += e.getX() - startingMousePosition.x;  
+                r.y += e.getY() - startingMousePosition.y;
                 r.setBounds(r);
 				diagram.setLocation(r.getLocation());
 				diagram.getParent().doLayout();
