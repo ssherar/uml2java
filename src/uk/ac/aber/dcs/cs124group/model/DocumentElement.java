@@ -16,11 +16,13 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 		
 	}
 	
+	@Override
 	public void setFont(Font font) {
 		this.font = font;
 		
 	}
 	
+	@Override
 	public Font getFont() {
 		return font;
 	}
@@ -35,6 +37,7 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 		int width = getPreferredSize().width;
 		int height = getPreferredSize().height;
 		this.setBounds(this.getLocation().x, this.getLocation().y, (int)(zoomFactor * width), (int)(zoomFactor * height));
+
 	}
 	
 
@@ -52,8 +55,7 @@ public abstract class DocumentElement extends JPanel implements java.io.Serializ
 		super.paintComponent(g);
 	}
 	
-	
-	public abstract void move(Point newPos);
+
 	
 	
 

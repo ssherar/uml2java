@@ -120,12 +120,6 @@ public class ClassRectangle extends DocumentElement {
 		this.isStatic = isStatic;
 	}
 
-	@Override
-	public void move(Point newPos) {
-		setLocation(newPos);
-		//TODO act upon this new information accordingly...
-	}
-
 	public Dimension getSize() {
 		return this.getPreferredSize();
 	}

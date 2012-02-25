@@ -19,13 +19,6 @@ public class Relationship extends DocumentElement {
 	
 	
 
-	@Override
-	public void move(Point newPos) {
-		
-
-	}
-
-
 
 	public RelationshipType getType() {
 		return type;
