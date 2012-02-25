@@ -170,18 +170,18 @@ public class Attribute extends TextLabel implements java.io.Serializable {
 		
 		if(this.type == AttributeType.DATA_FIELD) {
 			m = this.checkAttribute(uml);
-			if(m.find()) {
+			if(m.find() && m.groupCount() > 0) {
 				// Attribute has 3 main variables and 4th is optional
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				this.attributeType = m.group(3);
-				if(!m.group(4).equals(null)) {
+				if(m.groupCount() == 5 && m.group(4) == null) {
 					this.attribDefault = m.group(4).substring(3);
 				}
 			}
 		} else if(this.type == AttributeType.METHOD) {
 			m = this.checkMethodShell(uml);
-			if(m.find()) {
+			if(m.find() && m.groupCount() > 0) {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				if(m.group(3) != null) {
