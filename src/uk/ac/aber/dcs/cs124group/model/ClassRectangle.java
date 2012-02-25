@@ -7,7 +7,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
@@ -300,10 +303,12 @@ public class ClassRectangle extends DocumentElement {
 	/** Defines class rectangle specific operations */
 	private class RectangleListener extends DiagramListener implements ActionListener, java.io.Serializable {
 		
+		
+		private ClassRectangle diagram;
 		private Point startingMousePosition;
 		
 		public RectangleListener(ClassRectangle c) {
-			this.assignTo(c);
+			this.diagram = c;
 		}
 
 		@Override
@@ -321,20 +326,20 @@ public class ClassRectangle extends DocumentElement {
 				diagram.add(newDataField);
 				diagram.revalidate();
 				diagram.repaint();
-				this.mode = ListeningMode.EDITING_TEXT; 
-				this.enableLabelEdit(newDataField);
+				this.setMode(ListeningMode.EDITING_TEXT); 
+				newDataField.enableEdit();
 			}
 			if(c.equals("Add method")) {
 				Attribute newMethod = new Attribute(
-						((ClassRectangle)diagram).getNextMethodPoint(-1), 
+						diagram.getNextMethodPoint(-1), 
 						"+ method(args : ArgType) : ReturnType",
 						AttributeType.METHOD);
 				newMethod.repaint();
 				diagram.add(newMethod);
 				diagram.revalidate();
 				diagram.repaint();
-				this.mode = ListeningMode.EDITING_TEXT; 
-				this.enableLabelEdit(newMethod);
+				this.setMode(ListeningMode.EDITING_TEXT); 
+				newMethod.enableEdit();
 
 			}
 			if(c.equals("Remove")) {
@@ -342,22 +347,23 @@ public class ClassRectangle extends DocumentElement {
 			}
 
 		}
+
 		public void mousePressed(MouseEvent e){
-			((ClassRectangle) diagram).setPaintState(ElementPaintState.SELECTED);
+			diagram.setPaintState(ElementPaintState.SELECTED);
 
 		}
 		
 		public void mouseReleased(MouseEvent e){
-			mode = ListeningMode.LISTEN_TO_ALL;
+			this.setMode(ListeningMode.LISTEN_TO_ALL);
 		}
 
 		public void mouseDragged(MouseEvent e){
-			if(mode != ListeningMode.DRAGGING && ((ClassRectangle) diagram).getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
-				mode = ListeningMode.DRAGGING;
+			if(this.getMode() != ListeningMode.DRAGGING && diagram.getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
+				this.setMode(ListeningMode.DRAGGING);
 				startingMousePosition = e.getPoint();
 			}
 			
-			if (mode == ListeningMode.DRAGGING){
+			if (this.getMode() == ListeningMode.DRAGGING){
 				Rectangle r = diagram.getBounds();
                 r.x += e.getX() - startingMousePosition.x;  
                 r.y += e.getY() - startingMousePosition.y;
@@ -367,6 +373,7 @@ public class ClassRectangle extends DocumentElement {
 			}
 			diagram.repaint();
 		}
+
 	}
 
 }

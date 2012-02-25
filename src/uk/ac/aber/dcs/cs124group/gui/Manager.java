@@ -23,6 +23,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		ChangeListener {
 
 	private boolean inDebug = true;
+	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
 
 	public static final String PROGRAM_NAME = "UML2Java";
 	public static final String FILE_EXTENSION = "umlj";
@@ -44,7 +45,6 @@ public class Manager extends DiagramListener implements ActionListener,
 		window = new MainFrame(this);
 		window.setTitle(PROGRAM_NAME);
 
-		this.assignTo(window.getCanvas());
 		canvas = window.getCanvas();
 
 		menuBar = window.getMenu();
@@ -63,28 +63,9 @@ public class Manager extends DiagramListener implements ActionListener,
 		return document.getElements();
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		super.mouseClicked(e);
-	}
-
-	@Override
-	protected void enableLabelEdit(TextLabel label) {
-		super.enableLabelEdit(label);
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		super.mousePressed(e);
 		if (mode == ListeningMode.PLACING_CLASS) {
 			addNewClass(new Point(
 					(int) ((1 / canvas.getZoomFactor()) * e.getX()),
@@ -100,35 +81,18 @@ public class Manager extends DiagramListener implements ActionListener,
 
 	}
 
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		super.mouseDragged(e);
 
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		super.mouseMoved(e);
 		status.setMousePos(e.getX(), e.getY());
 	}
 
-	@Override
-	public void keyPressed(KeyEvent e) {
-		super.keyPressed(e);
 
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-	}
-
-	@Override
-	public void keyTyped(KeyEvent e) {
-	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
@@ -301,17 +265,7 @@ public class Manager extends DiagramListener implements ActionListener,
 	private void openExisting() {
 		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
-		/*fc.setFileFilter(new FileFilter() {
-			@Override
-			public boolean accept(File f) {
-				return(f.getName().contains(FILE_EXTENSION) || f.isDirectory());
-			}
 
-			@Override
-			public String getDescription() {
-				return null;
-			}
-		});*/
 		fc.addChoosableFileFilter(new FileNameExtensionFilter(PROGRAM_NAME + " diagram (*." +FILE_EXTENSION+ ")", FILE_EXTENSION));
 		fc.setAcceptAllFileFilterUsed(false);
 		
@@ -413,5 +367,6 @@ public class Manager extends DiagramListener implements ActionListener,
 			System.exit(0);
 		}
 	}
+
 
 }
