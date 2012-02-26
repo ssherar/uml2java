@@ -5,9 +5,18 @@ import java.awt.event.MouseEvent;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 
+/**
+ * An all-purpose listener controlling labels (this includes attributes and cardinalities). Is added as a listener to LabelViews.
+ * @authors Daniel Maly, Sam Sherar, Lee Smith
+ */
 public class LabelController extends DiagramListener {
+	
+	/** The label model this controller is assigned to. */
 	private TextLabelModel model;
 	
+	/** Constructs a controller for the specified label. 
+	 * @param m The TextLabelModel to be controlled by this object.
+	 */
 	public LabelController(TextLabelModel m) {
 		this.model = m;
 	}

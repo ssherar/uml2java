@@ -48,7 +48,6 @@ public class DocumentPreferences extends Observable implements Serializable {
 
 
 	public Dimension getCanvasDefaultSize() {
-		// TODO Auto-generated method stub
 		return canvasDefaultSize;
 	}
 

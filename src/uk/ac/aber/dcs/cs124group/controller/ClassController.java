@@ -8,14 +8,26 @@ import java.awt.event.MouseEvent;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 
+/**
+ * An all-purpose listener controlling class models. Is added as a listener to ClassRectangles.
+ * @authors Daniel Maly, Sam Sherar, Lee Smith
+ *
+ */
 public class ClassController extends DiagramListener implements ActionListener {
 	
+	/** The class model this controller is assigned to. */
 	private ClassModel model;
+	
+	/** A reference point for mouse dragging. */
 	private Point startingMousePosition;
 	
+	/** Constructs a controller for the specified class model. 
+	 * @param c The model this controller will be assigned to.
+	 */
 	public ClassController(ClassModel c) {
 		this.model = c;
 	}
+
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
@@ -38,15 +50,18 @@ public class ClassController extends DiagramListener implements ActionListener {
 
 	}
 	
+	@Override
 	public void mousePressed(MouseEvent e){
 		model.setPaintState(ElementPaintState.SELECTED);
 
 	}
 	
+	@Override
 	public void mouseReleased(MouseEvent e){
 		this.setMode(ListeningMode.LISTEN_TO_ALL);
 	}
 
+	@Override
 	public void mouseDragged(MouseEvent e){
 		if(this.getMode() != ListeningMode.DRAGGING && model.getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
 			this.setMode(ListeningMode.DRAGGING);
