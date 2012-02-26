@@ -321,6 +321,7 @@ public class ClassRectangle extends DocumentElement {
 						((ClassRectangle)diagram).getNextDataFieldPoint(-1), 
 						"- dataField : Type",
 						AttributeType.DATA_FIELD);
+				newDataField.setFont(this.diagram.getFont());
 				newDataField.repaint();
 				diagram.add(newDataField);
 				diagram.revalidate();
@@ -333,6 +334,7 @@ public class ClassRectangle extends DocumentElement {
 						diagram.getNextMethodPoint(-1), 
 						"+ method(args : ArgType) : ReturnType",
 						AttributeType.METHOD);
+				newMethod.setFont(this.diagram.getFont());
 				newMethod.repaint();
 				diagram.add(newMethod);
 				diagram.revalidate();
@@ -346,7 +348,7 @@ public class ClassRectangle extends DocumentElement {
 			}
 
 		}
-
+		
 		public void mousePressed(MouseEvent e){
 			diagram.setPaintState(ElementPaintState.SELECTED);
 

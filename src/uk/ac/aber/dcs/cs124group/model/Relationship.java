@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.awt.Point;
+import java.util.ArrayList;
 
 public class Relationship extends DocumentElement {
 
@@ -11,6 +12,8 @@ public class Relationship extends DocumentElement {
 	private ClassRectangle goingFrom, goingTo;
 	private Cardinality cardinalityFrom, cardinalityTo;
 	private TextLabel label;
+	
+	private ArrayList<Point> points = new ArrayList<Point>();
 	
 	public Relationship(ClassRectangle from, ClassRectangle to) {
 		this.goingFrom = from;
@@ -88,6 +91,12 @@ public class Relationship extends DocumentElement {
 
 	public void setLabel(TextLabel label) {
 		this.label = label;
+	}
+	
+	@Override
+	/** Disables all JPanel functionality for this class. */
+	public boolean isVisible() {
+		return false;
 	}
 	
 

@@ -125,14 +125,12 @@ public class TextLabel extends DocumentElement {
 		
 		labelTextArea.setPreferredSize(new Dimension(diagramWidth - x, diagramHeight - y));
 		labelTextArea.setLocation(new Point(x,y));
-		labelTextArea.setName("EditingDiagramLabel");
 		labelTextArea.setOpaque(false);
 		labelTextArea.setFont(this.getFont());
 		labelTextArea.setLineWrap(true);
 		labelTextArea.setWrapStyleWord(true);
 		labelTextArea.repaint();
 		
-		//labelTextArea.setFont(document.getPreferences().getFont()); TODO: Fixme
 		labelTextArea.setText(this.getText());
 		labelTextArea.addKeyListener(this.getKeyListeners()[0]);
 		SwingUtilities.invokeLater(new Runnable() {
