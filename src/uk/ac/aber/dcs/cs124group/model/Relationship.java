@@ -3,7 +3,7 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.Point;
 import java.util.ArrayList;
 
-public class Relationship extends DocumentElement {
+public class Relationship extends DocumentElementModel {
 
 	
 	private static final long serialVersionUID = 272724938449188987L;
@@ -93,11 +93,8 @@ public class Relationship extends DocumentElement {
 		this.label = label;
 	}
 	
-	@Override
-	/** Disables all JPanel functionality for this class. */
-	public boolean isVisible() {
-		return false;
-	}
+
+
 	
 
 }

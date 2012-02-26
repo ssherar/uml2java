@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124group.gui;
+package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
@@ -18,6 +18,13 @@ import java.io.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.export.*;
+import uk.ac.aber.dcs.cs124group.gui.Canvas;
+import uk.ac.aber.dcs.cs124group.gui.ListeningMode;
+import uk.ac.aber.dcs.cs124group.gui.MainFrame;
+import uk.ac.aber.dcs.cs124group.gui.MenuBar;
+import uk.ac.aber.dcs.cs124group.gui.SideBar;
+import uk.ac.aber.dcs.cs124group.gui.StatusBar;
+import uk.ac.aber.dcs.cs124group.gui.ToolBar;
 
 public class Manager extends DiagramListener implements ActionListener,
 		ChangeListener {

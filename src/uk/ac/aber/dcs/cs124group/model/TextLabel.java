@@ -3,13 +3,14 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.util.Observable;
 
 import javax.swing.*;
 
-import uk.ac.aber.dcs.cs124group.gui.DiagramListener;
+import uk.ac.aber.dcs.cs124group.controller.DiagramListener;
 import uk.ac.aber.dcs.cs124group.gui.ListeningMode;
 
-public class TextLabel extends DocumentElement {
+public class TextLabel extends DocumentElementView {
 
 	private static final long serialVersionUID = -7388262736446472023L;
 	private String text = "Double-click to edit";
@@ -187,5 +188,11 @@ public class TextLabel extends DocumentElement {
 			}
 			
 		}
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 }

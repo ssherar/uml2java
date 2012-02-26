@@ -1,6 +1,9 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
 import javax.swing.*;
+
+import uk.ac.aber.dcs.cs124group.controller.Manager;
+
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.awt.event.*;

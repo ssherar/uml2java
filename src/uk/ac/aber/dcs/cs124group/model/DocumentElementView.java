@@ -4,25 +4,22 @@ import java.awt.*;
 
 import javax.swing.*;
 
-public abstract class DocumentElement extends JPanel implements java.io.Serializable {
+public abstract class DocumentElementView extends JPanel implements java.util.Observer {
 
 	
-	private static final long serialVersionUID = -253995425441515922L;
-	private transient ElementPaintState paintState = ElementPaintState.DEFAULT;
+	private ElementPaintState paintState = ElementPaintState.DEFAULT;
 	private Font font;
 	private double zoomFactor = 1;
 	
-	protected DocumentElement() {
+	protected DocumentElementView() {
 		
 	}
 	
-	@Override
 	public void setFont(Font font) {
 		this.font = font;
 		
 	}
 	
-	@Override
 	public Font getFont() {
 		return font;
 	}

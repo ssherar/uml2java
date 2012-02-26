@@ -8,6 +8,8 @@ import java.awt.event.WindowListener;
 
 import javax.swing.*;
 
+import uk.ac.aber.dcs.cs124group.controller.Manager;
+
 public class MainFrame extends JFrame implements WindowListener {
 	
 	private SideBar sideBar;

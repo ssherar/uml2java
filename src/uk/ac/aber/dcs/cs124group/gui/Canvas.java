@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.*;
 
+import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 import javax.swing.*;

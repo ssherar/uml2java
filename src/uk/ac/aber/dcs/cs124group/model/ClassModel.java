@@ -1,0 +1,170 @@
+package uk.ac.aber.dcs.cs124group.model;
+
+import java.util.ArrayList;
+import java.awt.Point;
+import java.awt.Dimension;
+
+public class ClassModel extends DocumentElementModel {
+	
+	private String name;
+	private ClassModel superClass;
+	private ArrayList<Relationship> relationships = new ArrayList<Relationship> ();
+	
+	private ArrayList<Attribute> dataFields = new ArrayList<Attribute>();
+	private ArrayList<Attribute> methods = new ArrayList<Attribute>();
+	
+	private IVisibility visibility = IVisibility.PUBLIC;
+	
+	private boolean isAbstract = false;
+	private boolean isFinal = false;
+	private boolean isStatic = false;
+	
+	private boolean exists = true;
+	
+	private Point location;
+	private Dimension size;
+	
+	public ClassModel(Point p) {
+		
+	}
+	
+	public String getClassName() {
+		return this.name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public ArrayList<Attribute> getAttributes() {
+		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
+		if(dataFields == null && methods == null)
+			return null;
+		else if(dataFields == null)
+			return methods;
+		else if(methods == null)
+			return dataFields;
+		else {
+			attributes.addAll(dataFields);
+			attributes.addAll(methods);
+			return attributes;
+		}
+
+	}
+	
+	public void addNewAttribute(AttributeType type) {
+		Attribute newDataField = new Attribute(
+				((ClassRectangle)this).getNextDataFieldPoint(-1), 
+				"- dataField : Type",
+				type);
+		newDataField.setFont(this.model.getFont());
+		newDataField.repaint();
+		model.add(newDataField);
+		model.revalidate();
+		model.repaint();
+	}
+
+	public ArrayList<Relationship> getRelationships() {
+		return relationships;
+	}
+
+	public void addRelationship(Relationship r) {
+		relationships.add(r);
+	}
+
+	public boolean isAbstract() {
+		return isAbstract;
+	}
+
+	public void setAbstract(boolean isAbstract) {
+		this.isAbstract = isAbstract;
+	}
+
+	public boolean isFinal() {
+		return isFinal;
+	}
+
+	public void setFinal(boolean isFinal) {
+		this.isFinal = isFinal;
+	}
+
+	public boolean isStatic(){
+		return isStatic;
+	}
+
+	public void setStatic(boolean isStatic){
+		this.isStatic = isStatic;
+	}
+
+	public Dimension getSize() {
+		return this.size;
+	}
+	
+	public void setSize(Dimension size) {
+		this.size = size;
+	}
+
+	public void setSuperClass(ClassModel c) {
+		this.superClass = c;
+	}
+
+	public ClassModel getSuperClass() {
+		return this.superClass;
+	}
+
+	public void setVisibility(IVisibility visibility) {
+		this.visibility = visibility;
+	}
+
+	public IVisibility getVisibility() {
+		return visibility;
+	}
+
+	public Point getLocation() {
+		return location;
+	}
+
+	public void setLocation(Point location) {
+		this.location = location;
+	}
+
+	public boolean exists() {
+		return exists;
+	}
+
+	public void remove() {
+		this.exists = false;
+	}
+	
+	/** Calculates the location of the next data field label from the top of the rectangle down to the attribute specified by the argument.
+	 * 
+	 * @param afterDataFieldNumber	The index at which a new data label is to be inserted minus one. 
+	 * @return 						The Point at which it is safe to insert a new data field below the one specified by the argument.
+	 */
+	public Point getNextDataFieldPoint(int afterDataFieldNumber) {
+		int y = name.getPreferredSize().height + 5;
+
+		for(int i = 0; i < afterDataFieldNumber && i >= 0 ;i++) {
+			int height = dataFields.get(i).getPreferredSize().height;
+			y += (int) (height * 1.25);	
+		}
+		return new Point(4,y);
+	}
+
+	/** Calculates the location of the next method label from the top of the rectangle down to the method specified by the argument.
+	 * 
+	 * @param afterMethodNumber		The index at which a new method label is to be inserted minus one. 
+	 * @return 						The Point at which it is safe to insert a new method label below the one specified by the argument.
+	 */
+	public Point getNextMethodPoint(int afterMethodNumber) {
+		int y = this.getSeparatorCoordinate() + 5;
+
+		for(int i = 0; i < afterMethodNumber && i >= 0 ;i++) {
+			int height = methods.get(i).getPreferredSize().height;
+			y += (int) (height * 1.25);	
+		}
+		return new Point(4,y);
+	}
+
+
+}

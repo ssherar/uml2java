@@ -1,5 +1,6 @@
 package uk.ac.aber.dcs.cs124group.model;
 
+import uk.ac.aber.dcs.cs124group.controller.*;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
 import java.awt.*;
@@ -15,33 +16,29 @@ import java.awt.event.MouseMotionListener;
 import javax.swing.*;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 
-public class ClassRectangle extends DocumentElement {
+public class ClassRectangle extends DocumentElementView {
 
-	private static final long serialVersionUID = 249568855144662119L;
 	private static final Dimension DEFAULT_RECTANGLE_SIZE = new Dimension(350,225);
 	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
 
 
 	private TextLabel name;
-	private Dimension size;
-	private ClassRectangle superClass = null;
-	private IVisibility visibility = IVisibility.PUBLIC;
 
-	private ArrayList<Relationship> relationships = new ArrayList<Relationship> ();
 	private ArrayList<Attribute> dataFields = new ArrayList<Attribute>();
 	private ArrayList<Attribute> methods = new ArrayList<Attribute>();
 
-	//private ArrayList<Attribute> attributes = new ArrayList<Attribute> ();
+	private ClassModel model;
 
-	private boolean isAbstract = false;
-	private boolean isFinal = false;
-	private boolean isStatic = false;
 
-	public ClassRectangle(Point p) {
-		this.setLocation(p);
-		this.setPreferredSize(DEFAULT_RECTANGLE_SIZE);
+
+	public ClassRectangle(ClassModel model) {
+		this.model = model;
+		
+		this.setLocation(model.getLocation());
+		this.setPreferredSize(model.getSize());
 		this.setOpaque(false);
 		this.setLayout(new DiagramLayout());
 
@@ -67,81 +64,6 @@ public class ClassRectangle extends DocumentElement {
 		this.setComponentPopupMenu(popupMenu);
 	}
 
-	public String getClassName() {
-		return this.name.getText();
-	}
-
-	public void setName(String name) {
-		this.name.setText(name);
-	}
-
-	public ArrayList<Attribute> getAttributes() {
-		ArrayList<Attribute> attributes = new ArrayList<Attribute>();
-		if(dataFields == null && methods == null)
-			return null;
-		else if(dataFields == null)
-			return methods;
-		else if(methods == null)
-			return dataFields;
-		else {
-			attributes.addAll(dataFields);
-			attributes.addAll(methods);
-			return attributes;
-		}
-
-	}
-
-	public ArrayList<Relationship> getRelationships() {
-		return relationships;
-	}
-
-	public void addRelationship(Relationship r) {
-		relationships.add(r);
-	}
-
-	public boolean isAbstract() {
-		return isAbstract;
-	}
-
-	public void setAbstract(boolean isAbstract) {
-		this.isAbstract = isAbstract;
-	}
-
-	public boolean isFinal() {
-		return isFinal;
-	}
-
-	public void setFinal(boolean isFinal) {
-		this.isFinal = isFinal;
-	}
-
-	public boolean isStatic(){
-		return isStatic;
-	}
-
-	public void setStatic(boolean isStatic){
-		this.isStatic = isStatic;
-	}
-
-	public Dimension getSize() {
-		return this.getPreferredSize();
-	}
-
-	public void setSuperClass(ClassRectangle c) {
-		this.superClass = c;
-	}
-
-	public ClassRectangle getSuperClass() {
-		return this.superClass;
-	}
-
-	public void setVisibility(IVisibility visibility) {
-		this.visibility = visibility;
-	}
-
-	public IVisibility getVisibility() {
-		return visibility;
-	}
 
 
 	@Override
@@ -170,8 +92,8 @@ public class ClassRectangle extends DocumentElement {
 	public void setFont(Font f) {
 		super.setFont(f);
 		if(name != null) name.setFont(f);
-		for(int i = 0; this.getAttributes() != null && i < this.getAttributes().size(); i++) {
-			this.getAttributes().get(i).setFont(f);
+		for(int i = 0; this.model.getAttributes() != null && i < this.model.getAttributes().size(); i++) {
+			this.model.getAttributes().get(i).setFont(f);
 
 		}
 		this.repositionAttributes();
@@ -238,35 +160,6 @@ public class ClassRectangle extends DocumentElement {
 		}
 	}
 
-	/** Calculates the location of the next data field label from the top of the rectangle down to the attribute specified by the argument.
-	 * 
-	 * @param afterDataFieldNumber	The index at which a new data label is to be inserted minus one. 
-	 * @return 						The Point at which it is safe to insert a new data field below the one specified by the argument.
-	 */
-	public Point getNextDataFieldPoint(int afterDataFieldNumber) {
-		int y = name.getPreferredSize().height + 5;
-
-		for(int i = 0; i < afterDataFieldNumber && i >= 0 ;i++) {
-			int height = dataFields.get(i).getPreferredSize().height;
-			y += (int) (height * 1.25);	
-		}
-		return new Point(4,y);
-	}
-
-	/** Calculates the location of the next method label from the top of the rectangle down to the method specified by the argument.
-	 * 
-	 * @param afterMethodNumber		The index at which a new method label is to be inserted minus one. 
-	 * @return 						The Point at which it is safe to insert a new method label below the one specified by the argument.
-	 */
-	public Point getNextMethodPoint(int afterMethodNumber) {
-		int y = this.getSeparatorCoordinate() + 5;
-
-		for(int i = 0; i < afterMethodNumber && i >= 0 ;i++) {
-			int height = methods.get(i).getPreferredSize().height;
-			y += (int) (height * 1.25);	
-		}
-		return new Point(4,y);
-	}
 
 	private class RectanglePopupMenu extends JPopupMenu {
 
@@ -375,6 +268,12 @@ public class ClassRectangle extends DocumentElement {
 			diagram.repaint();
 		}
 
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

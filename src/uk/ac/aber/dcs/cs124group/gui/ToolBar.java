@@ -3,6 +3,8 @@ package uk.ac.aber.dcs.cs124group.gui;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 
+import uk.ac.aber.dcs.cs124group.controller.Manager;
+
 import java.awt.*;
 
 public class ToolBar extends JToolBar {

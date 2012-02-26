@@ -13,7 +13,7 @@ public class DocumentModel implements java.io.Serializable {
 	private static final long serialVersionUID = -7136489795698324976L;
 	
 	private DocumentPreferences preferences;
-	private ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
+	private ArrayList<DocumentElementModel> elements = new ArrayList<DocumentElementModel>();
 	
 	public DocumentModel() {
 		preferences = new DocumentPreferences();
@@ -24,21 +24,21 @@ public class DocumentModel implements java.io.Serializable {
 		return preferences;
 	}
 	
-	public ArrayList<DocumentElement> getElements() {
+	public ArrayList<DocumentElementModel> getElements() {
 		return elements;
 	}
 	
-	public void addElement(DocumentElement r) {
+	public void addElement(DocumentElementModel r) {
 		elements.add(r);
 	}
 	
-	public void removeElement(DocumentElement r) {
+	public void removeElement(DocumentElementModel r) {
 		elements.remove(r);
 	}
 	
 	public void cleanUp() {
 		for(int i = 0; i < elements.size(); i++) {
-			if(!elements.get(i).isVisible()) {
+			if(!elements.get(i).exists()) {
 				elements.remove(i);
 			}
 		}
