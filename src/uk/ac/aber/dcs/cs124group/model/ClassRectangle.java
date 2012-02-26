@@ -19,7 +19,6 @@ public class ClassRectangle extends DocumentElementView {
 
 
 	private TextLabel name;
-
 	private ClassModel model;
 
 
@@ -179,8 +178,50 @@ public class ClassRectangle extends DocumentElementView {
 	/** Defines class rectangle specific operations */
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		
+		if(!(arg instanceof String)) {
+			throw new IllegalArgumentException("Invalid argument: Need a string");
+		}
+		
+		if(o instanceof ClassModel) {
+			this.updateModel((ClassModel)o, (String) arg);
+		} else if(o instanceof DocumentPreferences) {
+			this.updatePreferences((DocumentPreferences)o, (String) arg);
+		}
+		
+	}
+	
+	private void updateModel(ClassModel o, String arg) {
+		//location
+		if(arg.equals("locationChanged")) {
+			this.setLocation(o.getLocation());
+			this.getParent().doLayout();
+		//size
+		} else if(arg.equals("sizeChanged")) {
+			this.setPreferredSize(o.getSize());
+		//attribute state TODO decouple attrib
+		} else if(arg.equals("attributeChanged")) {
+		//flagChanged
+		} else if(arg.equals("flagChanged")) {
+			if(o.isStatic()) {
+				
+			} else if(o.isAbstract()) {
+				
+			}
+		//name
+		} else if(arg.equals("nameChanged")) {
+			this.setName(o.getClassName());
+		}
+	}
+	
+	private void updatePreferences(DocumentPreferences o, String arg) {
+		//setFont
+		if(arg.equals("fontChanged")) {
+			this.setFont(o.getFont());
+		} else if(arg.equals("zoomLevelChanged")) {
+			this.setZoomFactor(o.getZoomLevel());
+		}
+		//setZoomLevel
 	}
 
 }

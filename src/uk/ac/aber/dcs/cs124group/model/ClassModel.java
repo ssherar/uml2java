@@ -35,6 +35,7 @@ public class ClassModel extends DocumentElementModel {
 
 	public void setName(String name) {
 		this.name = name;
+		this.setChanged();
 		notifyObservers("nameChanged");
 	}
 
@@ -86,6 +87,7 @@ public class ClassModel extends DocumentElementModel {
 
 	public void setAbstract(boolean isAbstract) {
 		this.isAbstract = isAbstract;
+		this.setChanged();
 		notifyObservers("flagChanged");
 	}
 
@@ -103,6 +105,7 @@ public class ClassModel extends DocumentElementModel {
 
 	public void setStatic(boolean isStatic){
 		this.isStatic = isStatic;
+		this.setChanged();
 		notifyObservers("flagChanged");
 	}
 
@@ -112,6 +115,7 @@ public class ClassModel extends DocumentElementModel {
 	
 	public void setSize(Dimension size) {
 		this.size = size;
+		this.setChanged();
 		notifyObservers("sizeChanged");
 	}
 
@@ -137,6 +141,7 @@ public class ClassModel extends DocumentElementModel {
 
 	public void setLocation(Point location) {
 		this.location = location;
+		this.setChanged();
 		notifyObservers("locationChanged");
 	}
 
