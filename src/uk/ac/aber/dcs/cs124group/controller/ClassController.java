@@ -55,14 +55,12 @@ public class ClassController extends DiagramListener implements ActionListener {
 		}
 		
 		if (this.getMode() == ListeningMode.DRAGGING){
-			Rectangle r = model.getBounds();
+			Rectangle r = new Rectangle(model.getLocation(), model.getSize());
             r.x += e.getX() - startingMousePosition.x;  
             r.y += e.getY() - startingMousePosition.y;
             r.setBounds(r);
 			model.setLocation(r.getLocation());
-			model.getParent().doLayout();
 		}
-		model.repaint();
 	}
 
 }

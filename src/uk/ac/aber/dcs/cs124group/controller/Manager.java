@@ -66,7 +66,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		changeFont();
 	}
 
-	public ArrayList<DocumentElement> getDrawableElements() {
+	public ArrayList<DocumentElementModel> getDrawableElements() {
 		return document.getElements();
 	}
 
@@ -172,13 +172,15 @@ public class Manager extends DiagramListener implements ActionListener,
 
 	private void addNewClass(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
-		ClassRectangle c = new ClassRectangle(p);
-		c.setFont(document.getPreferences().getFont());
+		ClassModel c = new ClassModel(p);
 		document.addElement(c);
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
 
-		canvas.add(c);
-		c.repaint();
+		ClassRectangle view = new ClassRectangle(c);
+		c.addObserver(view);
+		document.getPreferences().addObserver(view);
+		canvas.add(view);
+		view.repaint();
 
 		canvas.repaint();
 		this.edited = true;
@@ -190,7 +192,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		l.setFont(document.getPreferences().getFont());
 		l.setName("label");
 		//l.addMouseListener(this);
-		document.addElement(l);
+		//document.addElement(l);
 		status.setText("New label created at " + p.x + "," + p.y);
 
 		canvas.add(l);
@@ -289,9 +291,9 @@ public class Manager extends DiagramListener implements ActionListener,
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel) in.readObject();
 				for (int i = 0; i < getDrawableElements().size(); i++) {
-					DocumentElement e = getDrawableElements().get(i);
+					DocumentElementModel e = getDrawableElements().get(i);
 					e.setPaintState(ElementPaintState.DEFAULT);
-					canvas.add(e);
+					//canvas.add(c);
 				}
 				canvas.setPreferredSize(document.getPreferences()
 						.getCanvasDefaultSize());
@@ -319,12 +321,6 @@ public class Manager extends DiagramListener implements ActionListener,
 				toolBar.getFontSize());
 		document.getPreferences().setFont(font);
 
-		ArrayList<DocumentElement> elements = document.getElements();
-		for (int i = 0; i < elements.size(); i++) {
-			elements.get(i).setFont(font);
-			elements.get(i).repaint();
-		}
-
 		canvas.setFont(font);
 		canvas.repaint();
 		status.setText("Font changed to " + font);
@@ -332,11 +328,6 @@ public class Manager extends DiagramListener implements ActionListener,
 	}
 
 	private void changeZoom(double zoom) {
-		ArrayList<DocumentElement> elements = document.getElements();
-		for (int i = 0; i < elements.size(); i++) {
-			elements.get(i).setZoomFactor(zoom);
-			elements.get(i).repaint();
-		}
 		canvas.setZoomFactor(zoom);
 		status.setText("Zoom factor is " + canvas.getZoomFactor());
 		canvas.repaint();

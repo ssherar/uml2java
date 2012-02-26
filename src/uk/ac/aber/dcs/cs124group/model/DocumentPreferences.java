@@ -1,9 +1,10 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.io.*;
+import java.util.Observable;
 import java.awt.*;
 
-public class DocumentPreferences implements Serializable {
+public class DocumentPreferences extends Observable implements Serializable {
 
 	/**
 	 * Serialised ID generated from the "serializable" interface.

@@ -67,7 +67,7 @@ public class Canvas extends JPanel {
 				RenderingHints.VALUE_RENDER_QUALITY);
 				
 		
-		ArrayList<DocumentElement> elements = new ArrayList<DocumentElement>();
+		ArrayList<DocumentElementModel> elements = new ArrayList<DocumentElementModel>();
 		try {
 			elements = manager.getDrawableElements();
 		}
@@ -76,7 +76,7 @@ public class Canvas extends JPanel {
 		}
 		
 		for(int i = 0; i < elements.size(); i++) {
-			DocumentElement e = elements.get(i);
+			DocumentElementModel e = elements.get(i);
 			if (e instanceof Relationship) {
 				drawRelationship(g, (Relationship) e);
 			}

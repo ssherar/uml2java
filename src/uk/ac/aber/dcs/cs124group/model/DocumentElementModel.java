@@ -8,9 +8,21 @@ public abstract class DocumentElementModel extends Observable implements java.io
 	
 	private boolean exists = true;
 	
+	private transient ElementPaintState paintState = ElementPaintState.DEFAULT;
+	
 	protected DocumentElementModel() {
 		
 	}
+	
+	
+	public void setPaintState(ElementPaintState paintState) {
+		this.paintState = paintState;
+	}
+	
+	public ElementPaintState getPaintState() {
+		return paintState;
+	}
+	
 
 	public boolean exists() {
 		return exists;

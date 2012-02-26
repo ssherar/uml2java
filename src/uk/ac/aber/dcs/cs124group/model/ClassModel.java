@@ -19,10 +19,10 @@ public class ClassModel extends DocumentElementModel {
 	private boolean isFinal = false;
 	private boolean isStatic = false;
 	
-	private boolean exists = true;
-	
 	private Point location;
-	private Dimension size;
+	private Dimension size = new Dimension(300,225);
+	private int nameFieldHeight;
+	private int separatorCoordinate;
 	
 	public ClassModel(Point p) {
 		
@@ -52,16 +52,22 @@ public class ClassModel extends DocumentElementModel {
 
 	}
 	
+	public ArrayList<Attribute> getDataFields() {
+		return dataFields;
+	}
+
+	public ArrayList<Attribute> getMethods() {
+		return methods;
+	}
+
 	public void addNewAttribute(AttributeType type) {
-		Attribute newDataField = new Attribute(
-				((ClassRectangle)this).getNextDataFieldPoint(-1), 
+		Attribute newAttribute = new Attribute(
+				this.getNextDataFieldPoint(-1), 
 				"- dataField : Type",
 				type);
-		newDataField.setFont(this.model.getFont());
-		newDataField.repaint();
-		model.add(newDataField);
-		model.revalidate();
-		model.repaint();
+		if(type == AttributeType.DATA_FIELD)
+			dataFields.add(newAttribute);
+		else methods.add(newAttribute);
 	}
 
 	public ArrayList<Relationship> getRelationships() {
@@ -128,13 +134,6 @@ public class ClassModel extends DocumentElementModel {
 		this.location = location;
 	}
 
-	public boolean exists() {
-		return exists;
-	}
-
-	public void remove() {
-		this.exists = false;
-	}
 	
 	/** Calculates the location of the next data field label from the top of the rectangle down to the attribute specified by the argument.
 	 * 
@@ -142,7 +141,7 @@ public class ClassModel extends DocumentElementModel {
 	 * @return 						The Point at which it is safe to insert a new data field below the one specified by the argument.
 	 */
 	public Point getNextDataFieldPoint(int afterDataFieldNumber) {
-		int y = name.getPreferredSize().height + 5;
+		int y = nameFieldHeight + 5;
 
 		for(int i = 0; i < afterDataFieldNumber && i >= 0 ;i++) {
 			int height = dataFields.get(i).getPreferredSize().height;
@@ -157,13 +156,25 @@ public class ClassModel extends DocumentElementModel {
 	 * @return 						The Point at which it is safe to insert a new method label below the one specified by the argument.
 	 */
 	public Point getNextMethodPoint(int afterMethodNumber) {
-		int y = this.getSeparatorCoordinate() + 5;
+		int y = separatorCoordinate + 5;
 
 		for(int i = 0; i < afterMethodNumber && i >= 0 ;i++) {
 			int height = methods.get(i).getPreferredSize().height;
 			y += (int) (height * 1.25);	
 		}
 		return new Point(4,y);
+	}
+
+	public int getNameFieldHeight() {
+		return nameFieldHeight;
+	}
+
+	public void setNameFieldHeight(int nameFieldHeight) {
+		this.nameFieldHeight = nameFieldHeight;
+	}
+
+	public void setSeparatorCoordinate(int separatorCoordinate) {
+		this.separatorCoordinate = separatorCoordinate;
 	}
 
 

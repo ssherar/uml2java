@@ -4,14 +4,7 @@ import uk.ac.aber.dcs.cs124group.controller.*;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
 
 import javax.swing.*;
 
@@ -27,11 +20,7 @@ public class ClassRectangle extends DocumentElementView {
 
 	private TextLabel name;
 
-	private ArrayList<Attribute> dataFields = new ArrayList<Attribute>();
-	private ArrayList<Attribute> methods = new ArrayList<Attribute>();
-
 	private ClassModel model;
-
 
 
 	public ClassRectangle(ClassModel model) {
@@ -54,7 +43,7 @@ public class ClassRectangle extends DocumentElementView {
 		name.setAlignmentInParent(JTextField.CENTER);
 
 
-		RectangleListener listener = new RectangleListener(this);
+		ClassController listener = new ClassController(this.model);
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
 		this.addMouseMotionListener(listener);
@@ -69,11 +58,7 @@ public class ClassRectangle extends DocumentElementView {
 	@Override
 	public Container add(Component c) {
 		super.add(c);
-		if(c instanceof Attribute) {
-			if(((Attribute) c).getType() == AttributeType.DATA_FIELD)
-				this.dataFields.add((Attribute) c);
-			else this.methods.add((Attribute)c);
-		}
+
 		if(!(c instanceof JTextArea))this.repositionAttributes();
 		return this;
 	}
@@ -81,11 +66,7 @@ public class ClassRectangle extends DocumentElementView {
 	@Override
 	public void remove(Component c) {
 		super.remove(c);
-		if(c instanceof Attribute) {
-			if(((Attribute) c).getType() == AttributeType.DATA_FIELD)
-				this.dataFields.remove((Attribute) c);
-			else this.methods.remove((Attribute)c);
-		}
+
 	}
 
 	@Override
@@ -101,14 +82,17 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 	private void repositionAttributes() {
+		ArrayList<Attribute> dataFields = this.model.getDataFields();
+		ArrayList<Attribute> methods = this.model.getMethods();
+		
 		for(int i = 0; dataFields != null && i < dataFields.size(); i++) {
 			Attribute a = dataFields.get(i);
-			a.setLocation(this.getNextDataFieldPoint(i));
+			a.setLocation(this.model.getNextDataFieldPoint(i));
 		}
 
 		for(int i = 0; methods != null && i < methods.size(); i++) {
 			Attribute a = methods.get(i);
-			a.setLocation(this.getNextMethodPoint(i));
+			a.setLocation(this.model.getNextMethodPoint(i));
 		}
 
 	}
@@ -152,20 +136,20 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 	private int getSeparatorCoordinate() {
-		if(this.dataFields.size() == 0)
+		if(this.model.getDataFields().size() == 0)
 			return this.getPreferredSize().height / 2;
 		else {
-			int y = this.getNextDataFieldPoint(dataFields.size()).y;
-			return (int) (y / (double)(dataFields.size()) * (dataFields.size() + 1)) + 3;
+			int y = this.model.getNextDataFieldPoint(this.model.getDataFields().size()).y;
+			return (int) (y / (double)(this.model.getDataFields().size()) * (this.model.getDataFields().size() + 1)) + 3;
 		}
 	}
 
 
 	private class RectanglePopupMenu extends JPopupMenu {
 
-		private RectangleListener listener;
+		private ClassController listener;
 
-		public RectanglePopupMenu(RectangleListener listener) {
+		public RectanglePopupMenu(ClassController listener) {
 
 			this.listener = listener;
 
@@ -193,83 +177,6 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 	/** Defines class rectangle specific operations */
-	private class RectangleListener extends DiagramListener implements ActionListener, java.io.Serializable {
-		
-		
-		private ClassRectangle diagram;
-		private Point startingMousePosition;
-		
-		public RectangleListener(ClassRectangle c) {
-			this.diagram = c;
-		}
-
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			String c = e.getActionCommand();
-			if(c.equals("Add relationship")) {
-				//TODO: Implement
-			}
-			if(c.equals("Add data field")) {
-				Attribute newDataField = new Attribute(
-						((ClassRectangle)diagram).getNextDataFieldPoint(-1), 
-						"- dataField : Type",
-						AttributeType.DATA_FIELD);
-				newDataField.setFont(this.diagram.getFont());
-				newDataField.repaint();
-				diagram.add(newDataField);
-				diagram.revalidate();
-				diagram.repaint();
-				this.setMode(ListeningMode.EDITING_TEXT); 
-				newDataField.enableEdit();
-			}
-			if(c.equals("Add method")) {
-				Attribute newMethod = new Attribute(
-						diagram.getNextMethodPoint(-1), 
-						"+ method(args : ArgType) : ReturnType",
-						AttributeType.METHOD);
-				newMethod.setFont(this.diagram.getFont());
-				newMethod.repaint();
-				diagram.add(newMethod);
-				diagram.revalidate();
-				diagram.repaint();
-				this.setMode(ListeningMode.EDITING_TEXT); 
-				newMethod.enableEdit();
-
-			}
-			if(c.equals("Remove")) {
-				diagram.setVisible(false);
-			}
-
-		}
-		
-		public void mousePressed(MouseEvent e){
-			diagram.setPaintState(ElementPaintState.SELECTED);
-
-		}
-		
-		public void mouseReleased(MouseEvent e){
-			this.setMode(ListeningMode.LISTEN_TO_ALL);
-		}
-
-		public void mouseDragged(MouseEvent e){
-			if(this.getMode() != ListeningMode.DRAGGING && diagram.getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
-				this.setMode(ListeningMode.DRAGGING);
-				startingMousePosition = e.getPoint();
-			}
-			
-			if (this.getMode() == ListeningMode.DRAGGING){
-				Rectangle r = diagram.getBounds();
-                r.x += e.getX() - startingMousePosition.x;  
-                r.y += e.getY() - startingMousePosition.y;
-                r.setBounds(r);
-				diagram.setLocation(r.getLocation());
-				diagram.getParent().doLayout();
-			}
-			diagram.repaint();
-		}
-
-	}
-
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub

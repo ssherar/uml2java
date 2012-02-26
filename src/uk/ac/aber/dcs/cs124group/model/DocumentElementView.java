@@ -7,7 +7,7 @@ import javax.swing.*;
 public abstract class DocumentElementView extends JPanel implements java.util.Observer {
 
 	
-	private ElementPaintState paintState = ElementPaintState.DEFAULT;
+	
 	private Font font;
 	private double zoomFactor = 1;
 	
@@ -38,15 +38,7 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	}
 	
 
-	
-	public void setPaintState(ElementPaintState paintState) {
-		this.paintState = paintState;
-	}
-	
-	public ElementPaintState getPaintState() {
-		return paintState;
-	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
