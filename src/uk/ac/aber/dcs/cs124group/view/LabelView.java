@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124group.model;
+package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -10,11 +10,13 @@ import javax.swing.*;
 import uk.ac.aber.dcs.cs124group.controller.DiagramListener;
 import uk.ac.aber.dcs.cs124group.controller.LabelController;
 import uk.ac.aber.dcs.cs124group.controller.ListeningMode;
+import uk.ac.aber.dcs.cs124group.model.DocumentPreferences;
+import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 
 public class LabelView extends DocumentElementView {
 
 	private static final long serialVersionUID = -7388262736446472023L;
-	private String text = "Double-click to edit";
+	private String text;
 	private FontMetrics metrics;
 	private int alignmentInParent = JTextField.LEFT;
 	private Container suspendedParent;
@@ -24,6 +26,7 @@ public class LabelView extends DocumentElementView {
 	public LabelView(TextLabelModel m) {
 
 		this.model = m;
+		this.text = m.getText();
 		this.setLocation(m.getLocation());
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension(56,12));
@@ -156,6 +159,7 @@ public class LabelView extends DocumentElementView {
 		JTextArea a = replacement;
 		suspendedParent.remove(a);
 		if(a.getText().length() < 1) {
+			this.model.remove();
 			this.setVisible(false);
 			return;
 		}

@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs124group.export;
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.gui.*;
 import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 
 import java.util.*;
 import java.io.*;

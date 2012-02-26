@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124group.model;
+package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
 

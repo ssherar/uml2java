@@ -3,7 +3,7 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.*;
 
 public class TextLabelModel extends DocumentElementModel {
-	private String text = "Double-click to edit";
+	private String text = "New Label";
 	private Point location;
 	private Dimension size;
 	private boolean editing = false;
@@ -11,6 +11,11 @@ public class TextLabelModel extends DocumentElementModel {
 	public TextLabelModel(Point p) {
 		this.location = p;
 		
+	}
+	
+	public TextLabelModel(Point p, String text) {
+		this.location = p;
+		this.text = text;
 	}
 
 	public String getText() {

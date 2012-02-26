@@ -3,6 +3,9 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
+import uk.ac.aber.dcs.cs124group.view.LabelView;
+
 public class Relationship extends DocumentElementModel {
 
 	

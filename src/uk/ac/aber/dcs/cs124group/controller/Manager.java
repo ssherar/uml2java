@@ -17,6 +17,8 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
+import uk.ac.aber.dcs.cs124group.view.LabelView;
 import uk.ac.aber.dcs.cs124group.export.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
 import uk.ac.aber.dcs.cs124group.gui.MainFrame;
@@ -188,18 +190,18 @@ public class Manager extends DiagramListener implements ActionListener,
 	private void addNewLabel(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabelModel mod = new TextLabelModel(p);
-		LabelView l = new LabelView(mod);
-		l.setFont(document.getPreferences().getFont());
-		l.setName("label");
-		mod.addObserver(l);
+		LabelView view = new LabelView(mod);
+		view.setFont(document.getPreferences().getFont());
+
+		mod.addObserver(view);
+		document.getPreferences().addObserver(view);
+		
 		document.addElement(mod);
-		document.getPreferences().addObserver(l);
-		//l.addMouseListener(this);
-		//document.addElement(l);
+
 		status.setText("New label created at " + p.x + "," + p.y);
 
-		canvas.add(l);
-		l.repaint();
+		canvas.add(view);
+		view.enableEdit();
 
 		canvas.repaint();
 		this.edited = true;

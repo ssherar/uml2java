@@ -23,8 +23,7 @@ public class ClassModel extends DocumentElementModel {
 	
 	private Point location;
 	private Dimension size = new Dimension(300,225);
-	private int nameFieldHeight;
-	private int separatorCoordinate;
+
 	
 	public ClassModel(Point p) {
 		this.location = p;
@@ -33,12 +32,6 @@ public class ClassModel extends DocumentElementModel {
 	public String getClassName() {
 		return this.nameLabel.getText();
 	}
-
-	/*public void setName(String name) {
-		this.nameLabel.setText(name);
-		this.setChanged();
-		notifyObservers("nameChanged");
-	}*/
 	
 	public void setNameLabel(TextLabelModel n) {
 		this.nameLabel = n;
@@ -155,24 +148,21 @@ public class ClassModel extends DocumentElementModel {
 		this.setChanged();
 		notifyObservers("locationChanged");
 	}
-
-
-
-	public int getNameFieldHeight() {
-		return nameFieldHeight;
-	}
-
-	public void setNameFieldHeight(int nameFieldHeight) {
-		this.nameFieldHeight = nameFieldHeight;
-	}
-
-	public void setSeparatorCoordinate(int separatorCoordinate) {
-		this.separatorCoordinate = separatorCoordinate;
-	}
-
 	
-	
-
-
+	public void cleanUp() {
+		if(dataFields != null && methods != null) {
+			for(int i = 0; i < dataFields.size(); i++) {
+				if(!dataFields.get(i).exists()) {
+					dataFields.remove(i);
+					System.out.println("Removed");
+				}
+				
+			}
+			for(int i = 0; i < methods.size(); i++) {
+				if(!methods.get(i).exists())
+					methods.remove(i);
+			}
+		}
+	}
 
 }

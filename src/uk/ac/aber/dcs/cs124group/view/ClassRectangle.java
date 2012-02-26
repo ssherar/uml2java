@@ -1,7 +1,12 @@
-package uk.ac.aber.dcs.cs124group.model;
+package uk.ac.aber.dcs.cs124group.view;
 
 import uk.ac.aber.dcs.cs124group.controller.*;
 import uk.ac.aber.dcs.cs124group.gui.*;
+import uk.ac.aber.dcs.cs124group.model.Attribute;
+import uk.ac.aber.dcs.cs124group.model.AttributeType;
+import uk.ac.aber.dcs.cs124group.model.ClassModel;
+import uk.ac.aber.dcs.cs124group.model.DocumentPreferences;
+import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -34,11 +39,13 @@ public class ClassRectangle extends DocumentElementView {
 		this.setLayout(new DiagramLayout());
 
 
-		TextLabelModel nameLabel = new TextLabelModel(new Point(0,0));
+		TextLabelModel nameLabel = new TextLabelModel(new Point(0,0), "NewClass");
 		name = new LabelView(nameLabel);
+		
 		nameLabel.addObserver(name);
 		model.setNameLabel(nameLabel);
 		this.add(name);
+		name.enableEdit();
 
 
 
@@ -71,11 +78,6 @@ public class ClassRectangle extends DocumentElementView {
 		return this;
 	}
 
-	@Override
-	public void remove(Component c) {
-		super.remove(c);
-
-	}
 
 	//@Override
 	/*public void setFont(Font f) {
@@ -90,6 +92,7 @@ public class ClassRectangle extends DocumentElementView {
 	}*/
 
 	private void repositionAttributes() {
+		this.cleanUp();
 		ArrayList<Attribute> dataFields = this.model.getDataFields();
 		ArrayList<Attribute> methods = this.model.getMethods();
 		
@@ -106,10 +109,10 @@ public class ClassRectangle extends DocumentElementView {
 	}
 	
 	private void addAttributeToModel(AttributeType type) {
+		String defaultRepresentation = type == AttributeType.METHOD? "+ method() : void" : "- dataField : Type";
 		Attribute newAttribute = new Attribute(
 				this.getNextDataFieldPoint(-1), 
-				"+ attribute : Type",
-				type);
+				defaultRepresentation, type);
 		LabelView newView = new LabelView(newAttribute);
 		newAttribute.addObserver(newView);
 		model.addAttribute(newAttribute);
@@ -122,6 +125,19 @@ public class ClassRectangle extends DocumentElementView {
 		this.add(newView);
 		newView.enableEdit();
 		this.repaint();
+	}
+	
+	private void cleanUp() {
+		this.model.cleanUp();
+		for(int i = 0; i < dataFieldViews.size(); i++) {
+			if(!dataFieldViews.get(i).isVisible())
+				dataFieldViews.remove(i);
+		}
+		for(int i = 0; i < methodViews.size(); i++) {
+			if(!methodViews.get(i).isVisible())
+				methodViews.remove(i);
+		}
+		
 	}
 	
 
@@ -201,11 +217,6 @@ public class ClassRectangle extends DocumentElementView {
 		return new Point(4,y);
 	}
 
-
-
-
-
-	/** Defines class rectangle specific operations */
 	@Override
 	public void update(Observable o, Object arg) {
 		
