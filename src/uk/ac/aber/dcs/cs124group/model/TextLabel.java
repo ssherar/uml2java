@@ -8,7 +8,7 @@ import java.util.Observable;
 import javax.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.DiagramListener;
-import uk.ac.aber.dcs.cs124group.gui.ListeningMode;
+import uk.ac.aber.dcs.cs124group.controller.ListeningMode;
 
 public class TextLabel extends DocumentElementView {
 

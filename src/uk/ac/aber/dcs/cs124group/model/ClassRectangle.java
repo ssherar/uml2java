@@ -69,8 +69,8 @@ public class ClassRectangle extends DocumentElementView {
 
 	}
 
-	@Override
-	public void setFont(Font f) {
+	//@Override
+	/*public void setFont(Font f) {
 		super.setFont(f);
 		if(name != null) name.setFont(f);
 		for(int i = 0; this.model.getAttributes() != null && i < this.model.getAttributes().size(); i++) {
@@ -79,7 +79,7 @@ public class ClassRectangle extends DocumentElementView {
 		}
 		this.repositionAttributes();
 		this.doLayout();
-	}
+	}*/
 
 	private void repositionAttributes() {
 		ArrayList<Attribute> dataFields = this.model.getDataFields();

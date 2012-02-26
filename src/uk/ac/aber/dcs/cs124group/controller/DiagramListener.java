@@ -1,6 +1,5 @@
 package uk.ac.aber.dcs.cs124group.controller;
 
-import uk.ac.aber.dcs.cs124group.gui.ListeningMode;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 import java.awt.*;

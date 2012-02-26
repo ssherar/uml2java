@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
-import uk.ac.aber.dcs.cs124group.gui.ListeningMode;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 public class ClassController extends DiagramListener implements ActionListener {

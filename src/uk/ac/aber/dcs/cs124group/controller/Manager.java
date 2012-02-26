@@ -19,7 +19,6 @@ import java.io.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.export.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
-import uk.ac.aber.dcs.cs124group.gui.ListeningMode;
 import uk.ac.aber.dcs.cs124group.gui.MainFrame;
 import uk.ac.aber.dcs.cs124group.gui.MenuBar;
 import uk.ac.aber.dcs.cs124group.gui.SideBar;

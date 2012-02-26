@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124group.gui;
+package uk.ac.aber.dcs.cs124group.controller;
 
 public enum ListeningMode {
 	LISTEN_TO_ALL,

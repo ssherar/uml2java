@@ -25,6 +25,7 @@ public class ClassModel extends DocumentElementModel {
 	private int separatorCoordinate;
 	
 	public ClassModel(Point p) {
+		this.location = p;
 		
 	}
 	
