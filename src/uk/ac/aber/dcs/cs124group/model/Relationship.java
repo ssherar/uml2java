@@ -11,7 +11,7 @@ public class Relationship extends DocumentElementModel {
 	private RelationshipType type;
 	private ClassRectangle goingFrom, goingTo;
 	private Cardinality cardinalityFrom, cardinalityTo;
-	private TextLabel label;
+	private LabelView label;
 	
 	private ArrayList<Point> points = new ArrayList<Point>();
 	
@@ -83,13 +83,13 @@ public class Relationship extends DocumentElementModel {
 
 
 
-	public TextLabel getLabel() {
+	public LabelView getLabel() {
 		return label;
 	}
 
 
 
-	public void setLabel(TextLabel label) {
+	public void setLabel(LabelView label) {
 		this.label = label;
 	}
 	

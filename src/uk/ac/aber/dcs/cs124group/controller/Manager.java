@@ -45,7 +45,7 @@ public class Manager extends DiagramListener implements ActionListener,
 	private DocumentModel document;
 
 	private boolean edited = false;
-	private TextLabel currentEdited;
+	private LabelView currentEdited;
 
 	public Manager() {
 		window = new MainFrame(this);
@@ -187,9 +187,13 @@ public class Manager extends DiagramListener implements ActionListener,
 
 	private void addNewLabel(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
-		TextLabel l = new TextLabel(p);
+		TextLabelModel mod = new TextLabelModel(p);
+		LabelView l = new LabelView(mod);
 		l.setFont(document.getPreferences().getFont());
 		l.setName("label");
+		mod.addObserver(l);
+		document.addElement(mod);
+		document.getPreferences().addObserver(l);
 		//l.addMouseListener(this);
 		//document.addElement(l);
 		status.setText("New label created at " + p.x + "," + p.y);

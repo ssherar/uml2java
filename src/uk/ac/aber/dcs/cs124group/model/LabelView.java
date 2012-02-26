@@ -8,9 +8,10 @@ import java.util.Observable;
 import javax.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.DiagramListener;
+import uk.ac.aber.dcs.cs124group.controller.LabelController;
 import uk.ac.aber.dcs.cs124group.controller.ListeningMode;
 
-public class TextLabel extends DocumentElementView {
+public class LabelView extends DocumentElementView {
 
 	private static final long serialVersionUID = -7388262736446472023L;
 	private String text = "Double-click to edit";
@@ -18,10 +19,12 @@ public class TextLabel extends DocumentElementView {
 	private int alignmentInParent = JTextField.LEFT;
 	private Container suspendedParent;
 	private JTextArea replacement;
+	private TextLabelModel model;
 	
-	public TextLabel(Point p) {
-		setLocation(p);
-		
+	public LabelView(TextLabelModel m) {
+
+		this.model = m;
+		this.setLocation(m.getLocation());
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
@@ -29,7 +32,7 @@ public class TextLabel extends DocumentElementView {
 		this.resizeToText();
 		this.setLayout(null);
 		
-		LabelListener listener = new LabelListener(this);
+		LabelController listener = new LabelController(this.model);
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
 
@@ -157,42 +160,52 @@ public class TextLabel extends DocumentElementView {
 			return;
 		}
 		this.setText(a.getText());
+		model.setText(a.getText());
 		suspendedParent.add(this);
 		this.getParent().repaint();
 	}
 	
-	private class LabelListener extends DiagramListener implements java.io.Serializable {
-		
-		private TextLabel diagram;
-		
-		public LabelListener(TextLabel l) {
-			this.diagram = l;
-		}
-		
 	
-		@Override
-		public void mouseClicked(MouseEvent e) {
-			if(e.getClickCount() == 2 && !e.isConsumed() && this.getMode() == ListeningMode.LISTEN_TO_ALL) {
-				e.consume();
-				this.setMode(ListeningMode.EDITING_TEXT);
-				diagram.enableEdit();
-					
-			}
-		}
-		
-		@Override 
-		public void keyPressed(KeyEvent e) {
-			if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-				diagram.exitEdit();
-				this.setMode(ListeningMode.LISTEN_TO_ALL);
-			}
-			
-		}
-	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		
+		if(!(arg instanceof String)) {
+			throw new IllegalArgumentException("Invalid argument: Need a string");
+		}
+		
+		if(o instanceof TextLabelModel) {
+			this.updateModel((TextLabelModel)o, (String) arg);
+		} else if(o instanceof DocumentPreferences) {
+			this.updatePreferences((DocumentPreferences)o, (String) arg);
+		}
+		
+	}
+	
+	private void updateModel(TextLabelModel o, String arg) {
+		//text
+		//location
+		if(arg.equals("locationChanged")) {
+			this.setLocation(o.getLocation());
+		}
+		//editing
+		else if(arg.equals("editingChanged")) {
+			if(o.isEditing()) {
+				//true
+				this.enableEdit();
+			} else {
+				this.exitEdit();
+			}
+		}
+	}
+	
+	private void updatePreferences(DocumentPreferences o, String arg) {
+		//setFont
+		if(arg.equals("fontChanged")) {
+			this.setFont(o.getFont());
+		} else if(arg.equals("zoomLevelChanged")) {
+			this.setZoomFactor(o.getZoomLevel());
+		}
+				//setZoomLevel
 	}
 }

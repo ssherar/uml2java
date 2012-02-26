@@ -18,7 +18,7 @@ public class ClassRectangle extends DocumentElementView {
 	private static final Color RECTANGLE_BACKGROUND = new Color(255,255,190);
 
 
-	private TextLabel name;
+	private LabelView name;
 	private ClassModel model;
 
 
@@ -31,7 +31,7 @@ public class ClassRectangle extends DocumentElementView {
 		this.setLayout(new DiagramLayout());
 
 
-		name = new TextLabel(new Point(0,0)); //TODO: Fixme
+		name = new LabelView(new Point(0,0)); //TODO: Fixme
 		this.add(name);
 
 		SwingUtilities.invokeLater(new Runnable() {
