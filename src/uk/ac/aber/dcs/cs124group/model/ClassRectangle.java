@@ -20,6 +20,9 @@ public class ClassRectangle extends DocumentElementView {
 
 	private LabelView name;
 	private ClassModel model;
+	
+	private ArrayList<LabelView> dataFieldViews = new ArrayList<LabelView>();
+	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
 
 	public ClassRectangle(ClassModel model) {
@@ -31,15 +34,15 @@ public class ClassRectangle extends DocumentElementView {
 		this.setLayout(new DiagramLayout());
 
 
-		name = new LabelView(new Point(0,0)); //TODO: Fixme
+		TextLabelModel nameLabel = new TextLabelModel(new Point(0,0));
+		name = new LabelView(nameLabel);
+		nameLabel.addObserver(name);
+		model.setNameLabel(nameLabel);
 		this.add(name);
 
-		SwingUtilities.invokeLater(new Runnable() {
-			public void run() {
-				name.setLocation(new Point((getPreferredSize().width - name.getPreferredSize().width) / 2, 0));
-			}
-		});
-		name.setAlignmentInParent(JTextField.CENTER);
+
+
+		name.setAlignmentInParent(JTextField.CENTER); //TODO: fix name label positioning 
 
 
 		ClassController listener = new ClassController(this.model);
@@ -50,6 +53,12 @@ public class ClassRectangle extends DocumentElementView {
 
 		RectanglePopupMenu popupMenu = new RectanglePopupMenu(listener);
 		this.setComponentPopupMenu(popupMenu);
+		
+		SwingUtilities.invokeLater(new Runnable() {
+			public void run() {
+				repaint();
+			}
+		});	
 	}
 
 
@@ -86,14 +95,33 @@ public class ClassRectangle extends DocumentElementView {
 		
 		for(int i = 0; dataFields != null && i < dataFields.size(); i++) {
 			Attribute a = dataFields.get(i);
-			a.setLocation(this.model.getNextDataFieldPoint(i));
+			a.setLocation(this.getNextDataFieldPoint(i));
 		}
 
 		for(int i = 0; methods != null && i < methods.size(); i++) {
 			Attribute a = methods.get(i);
-			a.setLocation(this.model.getNextMethodPoint(i));
+			a.setLocation(this.getNextMethodPoint(i));
 		}
 
+	}
+	
+	private void addAttributeToModel(AttributeType type) {
+		Attribute newAttribute = new Attribute(
+				this.getNextDataFieldPoint(-1), 
+				"+ attribute : Type",
+				type);
+		LabelView newView = new LabelView(newAttribute);
+		newAttribute.addObserver(newView);
+		model.addAttribute(newAttribute);
+		
+		if(type == AttributeType.DATA_FIELD) {
+			this.dataFieldViews.add(newView);
+		}
+		else this.methodViews.add(newView);
+		
+		this.add(newView);
+		newView.enableEdit();
+		this.repaint();
 	}
 	
 
@@ -138,12 +166,104 @@ public class ClassRectangle extends DocumentElementView {
 		if(this.model.getDataFields().size() == 0)
 			return this.getPreferredSize().height / 2;
 		else {
-			int y = this.model.getNextDataFieldPoint(this.model.getDataFields().size()).y;
+			int y = this.getNextDataFieldPoint(this.model.getDataFields().size()).y;
 			return (int) (y / (double)(this.model.getDataFields().size()) * (this.model.getDataFields().size() + 1)) + 3;
 		}
 	}
+	
+	/** Calculates the location of the next data field label from the top of the rectangle down to the attribute specified by the argument.
+	 * 
+	 * @param afterDataFieldNumber	The index at which a new data label is to be inserted minus one. 
+	 * @return 						The Point at which it is safe to insert a new data field below the one specified by the argument.
+	 */
+	public Point getNextDataFieldPoint(int afterDataFieldNumber) {
+		int y = this.name.getPreferredSize().height + 5;
+
+		for(int i = 0; i < afterDataFieldNumber && i >= 0 ;i++) {
+			int height = this.dataFieldViews.get(i).getPreferredSize().height;
+			y += (int) (height * 1.25);	
+		}
+		return new Point(4,y);
+	}
+
+	/** Calculates the location of the next method label from the top of the rectangle down to the method specified by the argument.
+	 * 
+	 * @param afterMethodNumber		The index at which a new method label is to be inserted minus one. 
+	 * @return 						The Point at which it is safe to insert a new method label below the one specified by the argument.
+	 */
+	public Point getNextMethodPoint(int afterMethodNumber) {
+		int y = this.getSeparatorCoordinate() + 5;
+
+		for(int i = 0; i < afterMethodNumber && i >= 0 ;i++) {
+			int height = this.methodViews.get(i).getPreferredSize().height;
+			y += (int) (height * 1.25);	
+		}
+		return new Point(4,y);
+	}
 
 
+
+
+
+	/** Defines class rectangle specific operations */
+	@Override
+	public void update(Observable o, Object arg) {
+		
+		if(!(arg instanceof String)) {
+			throw new IllegalArgumentException("Invalid argument: Need a string");
+		}
+		
+		if(o instanceof ClassModel) {
+			this.updateModel((ClassModel)o, (String) arg);
+		} else if(o instanceof DocumentPreferences) {
+			this.updatePreferences((DocumentPreferences)o, (String) arg);
+		}
+		
+	}
+	
+	private void updateModel(ClassModel o, String arg) {
+		if(arg.equals("locationChanged")) {
+			this.setLocation(o.getLocation());
+			this.getParent().doLayout();
+			
+		} else if(arg.equals("sizeChanged")) {
+			this.setPreferredSize(o.getSize());
+			
+		} else if(arg.equals("attributeChanged")) {
+			
+		} else if(arg.equals("flagChanged")) {
+			if(o.isStatic()) {
+				//TODO: set underlined font
+			} else if(o.isAbstract()) {
+				//TODO: set italic font
+			}
+			
+		} else if(arg.equals("nameChanged")) {
+			this.setName(o.getClassName());
+			
+		} else if(arg.equals("addDataFieldRequested")) {
+			this.addAttributeToModel(AttributeType.DATA_FIELD);
+			
+		} else if(arg.equals("addMethodRequested")) {
+			this.addAttributeToModel(AttributeType.METHOD);
+		
+		} else if(arg.equals("wasRemoved")) {
+			
+			this.setVisible(false);
+		}
+		
+	}
+	
+	private void updatePreferences(DocumentPreferences o, String arg) {
+		//setFont
+		if(arg.equals("fontChanged")) {
+			this.setFont(o.getFont());
+		} else if(arg.equals("zoomLevelChanged")) {
+			this.setZoomFactor(o.getZoomLevel());
+		}
+		//setZoomLevel
+	}
+	
 	private class RectanglePopupMenu extends JPopupMenu {
 
 		private ClassController listener;
@@ -173,55 +293,6 @@ public class ClassRectangle extends DocumentElementView {
 
 
 		}
-	}
-
-	/** Defines class rectangle specific operations */
-	@Override
-	public void update(Observable o, Object arg) {
-		
-		if(!(arg instanceof String)) {
-			throw new IllegalArgumentException("Invalid argument: Need a string");
-		}
-		
-		if(o instanceof ClassModel) {
-			this.updateModel((ClassModel)o, (String) arg);
-		} else if(o instanceof DocumentPreferences) {
-			this.updatePreferences((DocumentPreferences)o, (String) arg);
-		}
-		
-	}
-	
-	private void updateModel(ClassModel o, String arg) {
-		//location
-		if(arg.equals("locationChanged")) {
-			this.setLocation(o.getLocation());
-			this.getParent().doLayout();
-		//size
-		} else if(arg.equals("sizeChanged")) {
-			this.setPreferredSize(o.getSize());
-		//attribute state TODO decouple attrib
-		} else if(arg.equals("attributeChanged")) {
-		//flagChanged
-		} else if(arg.equals("flagChanged")) {
-			if(o.isStatic()) {
-				
-			} else if(o.isAbstract()) {
-				
-			}
-		//name
-		} else if(arg.equals("nameChanged")) {
-			this.setName(o.getClassName());
-		}
-	}
-	
-	private void updatePreferences(DocumentPreferences o, String arg) {
-		//setFont
-		if(arg.equals("fontChanged")) {
-			this.setFont(o.getFont());
-		} else if(arg.equals("zoomLevelChanged")) {
-			this.setZoomFactor(o.getZoomLevel());
-		}
-		//setZoomLevel
 	}
 
 }

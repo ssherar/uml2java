@@ -1,12 +1,14 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.awt.Point;
 import java.awt.Dimension;
 
 public class ClassModel extends DocumentElementModel {
 	
-	private String name;
+	private TextLabelModel nameLabel;
 	private ClassModel superClass;
 	private ArrayList<Relationship> relationships = new ArrayList<Relationship> ();
 	
@@ -26,17 +28,20 @@ public class ClassModel extends DocumentElementModel {
 	
 	public ClassModel(Point p) {
 		this.location = p;
-		
 	}
 	
 	public String getClassName() {
-		return this.name;
+		return this.nameLabel.getText();
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	/*public void setName(String name) {
+		this.nameLabel.setText(name);
 		this.setChanged();
 		notifyObservers("nameChanged");
+	}*/
+	
+	public void setNameLabel(TextLabelModel n) {
+		this.nameLabel = n;
 	}
 
 	public ArrayList<Attribute> getAttributes() {
@@ -63,14 +68,20 @@ public class ClassModel extends DocumentElementModel {
 		return methods;
 	}
 
-	public void addNewAttribute(AttributeType type) {
-		Attribute newAttribute = new Attribute(
-				this.getNextDataFieldPoint(-1), 
-				"- dataField : Type",
-				type);
-		if(type == AttributeType.DATA_FIELD)
-			dataFields.add(newAttribute);
-		else methods.add(newAttribute);
+	public void addAttribute(Attribute a)  {
+		if(a.getType() == AttributeType.METHOD)
+			this.methods.add(a);
+		else this.dataFields.add(a);
+	}
+	
+	public void requestNewDataField() {
+		this.setChanged();
+		this.notifyObservers("addDataFieldRequested");
+	}
+	
+	public void requestNewMethod() {
+		this.setChanged();
+		this.notifyObservers("addMethodRequested");
 	}
 
 	public ArrayList<Relationship> getRelationships() {
@@ -145,36 +156,7 @@ public class ClassModel extends DocumentElementModel {
 		notifyObservers("locationChanged");
 	}
 
-	
-	/** Calculates the location of the next data field label from the top of the rectangle down to the attribute specified by the argument.
-	 * 
-	 * @param afterDataFieldNumber	The index at which a new data label is to be inserted minus one. 
-	 * @return 						The Point at which it is safe to insert a new data field below the one specified by the argument.
-	 */
-	public Point getNextDataFieldPoint(int afterDataFieldNumber) {
-		int y = nameFieldHeight + 5;
 
-		for(int i = 0; i < afterDataFieldNumber && i >= 0 ;i++) {
-			int height = dataFields.get(i).getPreferredSize().height;
-			y += (int) (height * 1.25);	
-		}
-		return new Point(4,y);
-	}
-
-	/** Calculates the location of the next method label from the top of the rectangle down to the method specified by the argument.
-	 * 
-	 * @param afterMethodNumber		The index at which a new method label is to be inserted minus one. 
-	 * @return 						The Point at which it is safe to insert a new method label below the one specified by the argument.
-	 */
-	public Point getNextMethodPoint(int afterMethodNumber) {
-		int y = separatorCoordinate + 5;
-
-		for(int i = 0; i < afterMethodNumber && i >= 0 ;i++) {
-			int height = methods.get(i).getPreferredSize().height;
-			y += (int) (height * 1.25);	
-		}
-		return new Point(4,y);
-	}
 
 	public int getNameFieldHeight() {
 		return nameFieldHeight;
@@ -187,6 +169,10 @@ public class ClassModel extends DocumentElementModel {
 	public void setSeparatorCoordinate(int separatorCoordinate) {
 		this.separatorCoordinate = separatorCoordinate;
 	}
+
+	
+	
+
 
 
 }

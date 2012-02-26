@@ -19,6 +19,8 @@ public class TextLabelModel extends DocumentElementModel {
 
 	public void setText(String text) {
 		this.text = text;
+		this.setChanged();
+		this.notifyObservers("textChanged");
 	}
 
 	public Point getLocation() {

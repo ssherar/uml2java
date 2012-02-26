@@ -5,7 +5,7 @@ import java.awt.Point;
 import java.util.regex.*;
 import uk.ac.aber.dcs.cs124group.model.*;
 
-public class Attribute extends LabelView implements java.io.Serializable {
+public class Attribute extends TextLabelModel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;

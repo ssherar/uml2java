@@ -30,6 +30,8 @@ public abstract class DocumentElementModel extends Observable implements java.io
 	
 	public void remove() {
 		exists = false;
+		setChanged();
+		notifyObservers("wasRemoved");
 	}
 
 

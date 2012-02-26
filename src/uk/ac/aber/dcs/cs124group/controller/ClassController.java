@@ -24,11 +24,11 @@ public class ClassController extends DiagramListener implements ActionListener {
 			//TODO: Implement
 		}
 		if(c.equals("Add data field")) {
-			model.addNewAttribute(AttributeType.DATA_FIELD);
+			model.requestNewDataField();
 			this.setMode(ListeningMode.EDITING_TEXT); 
 		}
 		if(c.equals("Add method")) {
-			model.addNewAttribute(AttributeType.METHOD);
+			model.requestNewMethod();
 			this.setMode(ListeningMode.EDITING_TEXT); 
 
 		}
