@@ -4,5 +4,5 @@ public enum ElementPaintState {
 	DEFAULT,
 	SELECTED,
 	MOUSED_OVER,
-	MOUSED_OVER_RESIZE,
+	MOUSED_OVER_RESIZE;
 }
