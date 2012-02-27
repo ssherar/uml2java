@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.awt.print.PrinterException;
 import java.awt.*;
 import java.util.*;
 import java.util.regex.*;
@@ -150,6 +151,14 @@ public class Manager extends UndoManager implements ActionListener,
 			try {
 				exp.exportCode();
 			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+		} else if (c.equals("Print")){
+			PrinterDriver printer = new PrinterDriver(canvas);
+			try {
+				printer.print();
+			} catch (PrinterException e1) {
+				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
