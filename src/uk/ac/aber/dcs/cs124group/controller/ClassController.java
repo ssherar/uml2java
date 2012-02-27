@@ -52,9 +52,32 @@ public class ClassController extends DiagramListener implements ActionListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e){
-		model.setPaintState(ElementPaintState.SELECTED);
+		if(model.getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
+			model.setPaintState(ElementPaintState.SELECTED);
+		}
 
 	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		
+
+		Point bottomRightCorner = new Point (model.getSize().width, model.getSize().height);
+
+		
+		Rectangle notResizeRectangle = new Rectangle(new Point(0,0), model.getSize());
+		notResizeRectangle.grow(-5, -5);
+		
+		
+		if(e.getPoint().distance(bottomRightCorner) < 30) {
+			model.setPaintState(ElementPaintState.MOUSED_OVER_RESIZE);
+		}
+		else {
+			model.setPaintState(ElementPaintState.MOUSED_OVER);
+		}
+	}
+	
+
 	
 	@Override
 	public void mouseReleased(MouseEvent e){
@@ -63,17 +86,24 @@ public class ClassController extends DiagramListener implements ActionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e){
-		if(this.getMode() != ListeningMode.DRAGGING && model.getPaintState() != ElementPaintState.MOUSED_OVER_RESIZE) {
+		if(this.getMode() != ListeningMode.DRAGGING) {
 			this.setMode(ListeningMode.DRAGGING);
 			startingMousePosition = e.getPoint();
 		}
 		
-		if (this.getMode() == ListeningMode.DRAGGING){
+		if (this.getMode() == ListeningMode.DRAGGING && !(model.getPaintState().toString().contains("RESIZE"))){
 			Rectangle r = new Rectangle(model.getLocation(), model.getSize());
             r.x += e.getX() - startingMousePosition.x;  
             r.y += e.getY() - startingMousePosition.y;
-            r.setBounds(r);
 			model.setLocation(r.getLocation());
+		}
+		else if(model.getPaintState() == ElementPaintState.MOUSED_OVER_RESIZE) {
+			Rectangle r = new Rectangle(model.getLocation(), model.getSize());
+            r.width = e.getX();  
+            r.height = e.getY();
+            if(r.width < 50) r.width = 50;
+            if(r.height < 50) r.height = 50;
+			model.setSize(r.getSize());
 		}
 	}
 

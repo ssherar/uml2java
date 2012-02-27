@@ -26,7 +26,9 @@ public class DocumentPreferences extends Observable implements Serializable {
 	}
 
 	public void setFont(Font f) {
-		font = f;
+		font = f;		
+		this.setChanged();
+		this.notifyObservers("fontChanged");
 	}
 	
 	public Font getFont() {

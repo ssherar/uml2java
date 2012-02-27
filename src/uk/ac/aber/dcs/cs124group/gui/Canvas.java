@@ -23,7 +23,7 @@ public class Canvas extends JPanel {
 		this.setBackground(Color.WHITE);
 		this.setLayout(new DiagramLayout());
 		
-		this.addMouseMotionListener(manager);
+		//this.addMouseMotionListener(manager);
 		this.addMouseListener(manager);
 		this.addKeyListener(manager);
 		

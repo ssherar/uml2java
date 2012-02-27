@@ -17,6 +17,8 @@ public abstract class DocumentElementModel extends Observable implements java.io
 	
 	public void setPaintState(ElementPaintState paintState) {
 		this.paintState = paintState;
+		setChanged();
+		notifyObservers("paintStateChanged");
 	}
 	
 	public ElementPaintState getPaintState() {

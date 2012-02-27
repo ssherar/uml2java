@@ -6,6 +6,7 @@ import uk.ac.aber.dcs.cs124group.model.Attribute;
 import uk.ac.aber.dcs.cs124group.model.AttributeType;
 import uk.ac.aber.dcs.cs124group.model.ClassModel;
 import uk.ac.aber.dcs.cs124group.model.DocumentPreferences;
+import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
 import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 
 import java.awt.*;
@@ -56,7 +57,6 @@ public class ClassRectangle extends DocumentElementView {
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
 		this.addMouseMotionListener(listener);
-		this.name.addMouseListener(listener);
 
 		RectanglePopupMenu popupMenu = new RectanglePopupMenu(listener);
 		this.setComponentPopupMenu(popupMenu);
@@ -237,8 +237,14 @@ public class ClassRectangle extends DocumentElementView {
 			this.setLocation(o.getLocation());
 			this.getParent().doLayout();
 			
+		} else if (arg.equals("paintStateChanged")) {
+			if(model.getPaintState().toString().contains("RESIZE"))
+				this.setResizeCursor();
+			else this.setDefaultCursor();
+			
 		} else if(arg.equals("sizeChanged")) {
 			this.setPreferredSize(o.getSize());
+			this.getParent().doLayout();
 			
 		} else if(arg.equals("attributeChanged")) {
 			
@@ -273,6 +279,19 @@ public class ClassRectangle extends DocumentElementView {
 			this.setZoomFactor(o.getZoomLevel());
 		}
 		//setZoomLevel
+	}
+	
+	private void setResizeCursor() {
+		try {
+			this.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));			
+		}
+		catch(Exception ex) {
+			this.setCursor(Cursor.getDefaultCursor());
+		}
+	}
+	
+	private void setDefaultCursor() {
+		this.setCursor(Cursor.getDefaultCursor());
 	}
 	
 	private class RectanglePopupMenu extends JPopupMenu {
