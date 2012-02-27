@@ -31,7 +31,7 @@ import uk.ac.aber.dcs.cs124group.gui.StatusBar;
 import uk.ac.aber.dcs.cs124group.gui.ToolBar;
 
 public class Manager extends UndoManager implements ActionListener,
-		ChangeListener,  KeyListener, MouseMotionListener, MouseListener  {
+		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer  {
 
 	private boolean inDebug = true;
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
@@ -51,6 +51,8 @@ public class Manager extends UndoManager implements ActionListener,
 
 	private boolean edited = false;
 	private LabelView currentEdited;
+	
+	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
 
 	public Manager() {
 		window = new MainFrame(this);
@@ -130,6 +132,8 @@ public class Manager extends UndoManager implements ActionListener,
 		} else if (c.equals("New label")) {
 			mode = ListeningMode.PLACING_TEXT;
 			status.setText("Click on the canvas to place your label");
+		} else if (c.equals("New Relationship")) {
+			addNewRelationship();
 		} else if (c.equals("Save")) {
 			save();
 		} else if (c.equals("Save as...")) {
@@ -190,6 +194,7 @@ public class Manager extends UndoManager implements ActionListener,
 
 		ClassRectangle view = new ClassRectangle(c, true);
 		c.addObserver(view);
+		c.addObserver(this);
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
 		view.repaint();
@@ -216,6 +221,16 @@ public class Manager extends UndoManager implements ActionListener,
 
 		canvas.repaint();
 		this.edited = true;
+	}
+	
+	public void addNewRelationship() {
+		status.setText("Click on the class you want the relationship to go from");
+		this.mode = ListeningMode.PLACING_RELATIONSHIP;
+	}
+	
+	private void addNewRelationship(ClassModel to, ClassModel from) {
+		assert(!to.equals(from));
+		System.out.println("Received request for new relationship from " + from + " to " + to);
 	}
 
 	private void openAboutWindow() {
@@ -317,6 +332,7 @@ public class Manager extends UndoManager implements ActionListener,
 					DocumentElementView ew = e.getView();
 					ew.setFont(document.getPreferences().getFont());
 					e.addObserver(ew);
+					e.addObserver(this);
 					document.getPreferences().addObserver(ew);
 					canvas.add(ew);
 				}
@@ -415,6 +431,26 @@ public class Manager extends UndoManager implements ActionListener,
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {	}
+
+	@Override
+	public void update(Observable o, Object s) {
+		if(!(s instanceof String)) {
+			throw new IllegalArgumentException("String expected");
+		}
+		else if(o instanceof ClassModel && s.equals("paintStateChanged") && ((ClassModel) o).getPaintState() == ElementPaintState.SELECTED) {
+			if(this.mode == ListeningMode.PLACING_RELATIONSHIP) {
+				if(selectionStack.size() == 1 && !((ClassModel)o).equals(selectionStack.peek())) {
+					this.mode = ListeningMode.LISTEN_TO_ALL;
+					this.addNewRelationship((ClassModel) o, (ClassModel) (selectionStack.pop()));
+				}
+				else if(selectionStack.size() == 0) {
+					selectionStack.push((ClassModel) o);
+					status.setText("Now click on the class you want the relationship to go to");
+				}
+			}
+		}
+		
+	}
 
 
 }

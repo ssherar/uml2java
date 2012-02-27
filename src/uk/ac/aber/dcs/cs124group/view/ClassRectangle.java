@@ -74,7 +74,7 @@ public class ClassRectangle extends DocumentElementView {
 
 
 
-		name.setAlignmentInParent(JTextField.CENTER); //TODO: fix name label positioning 
+		name.setAlignmentInParent(JTextField.CENTER); 
 
 
 		ClassController listener = new ClassController(this.model);
