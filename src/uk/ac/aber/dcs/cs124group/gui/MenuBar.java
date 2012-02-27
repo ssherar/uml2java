@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 
+import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import java.util.*;
 import java.awt.event.*;
@@ -17,6 +18,7 @@ public class MenuBar extends JMenuBar {
 			      help = new JMenu("Help");
 	private LinkedList<JMenuItem> fileItems, editItems, canvasItems, exportItems, helpItems;
 	private Manager manager;
+	int shortCutKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 	
 	public MenuBar(Manager manager) {
 		super();
@@ -44,11 +46,13 @@ public class MenuBar extends JMenuBar {
 		fileItems.add(new JMenuItem("Print"));
 		fileItems.add(new JMenuItem("Exit"));
 		
-		fileItems.get(0).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, InputEvent.CTRL_DOWN_MASK));
-		fileItems.get(1).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, InputEvent.CTRL_DOWN_MASK));
-		fileItems.get(2).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_DOWN_MASK));
-		fileItems.get(4).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, InputEvent.CTRL_DOWN_MASK));
-		fileItems.get(5).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_DOWN_MASK));
+		
+		
+		fileItems.get(0).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, shortCutKey));
+		fileItems.get(1).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, shortCutKey));
+		fileItems.get(2).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, shortCutKey));
+		fileItems.get(4).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, shortCutKey));
+		fileItems.get(5).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, shortCutKey));
 		
 		for(JMenuItem i : fileItems) {
 			i.addActionListener(manager);
@@ -62,8 +66,8 @@ public class MenuBar extends JMenuBar {
 		editItems.add(new JMenuItem("Undo"));
 		editItems.add(new JMenuItem("Redo"));
 		
-		editItems.get(0).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, InputEvent.CTRL_DOWN_MASK));
-		editItems.get(1).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, InputEvent.CTRL_DOWN_MASK));
+		editItems.get(0).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Z, shortCutKey));
+		editItems.get(1).setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Y, shortCutKey));
 		
 		for(JMenuItem i : editItems) {
 			i.addActionListener(manager);

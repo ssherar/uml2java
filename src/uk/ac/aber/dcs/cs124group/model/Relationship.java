@@ -3,6 +3,10 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoableEdit;
+
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.LabelView;
 
@@ -95,9 +99,6 @@ public class Relationship extends DocumentElementModel {
 	public void setLabel(LabelView label) {
 		this.label = label;
 	}
-	
 
-
-	
 
 }

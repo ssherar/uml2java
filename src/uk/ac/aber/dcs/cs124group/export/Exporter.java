@@ -100,7 +100,7 @@ public class Exporter {
 		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fcCode.setAcceptAllFileFilterUsed(false);
 		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
-		File chosenDirectory = fcCode.getSelectedFile();
+		String chosenDirectory = fcCode.getSelectedFile().getPath();
 
 		manager.setWaitCursor(false);
 
@@ -112,7 +112,7 @@ public class Exporter {
 				f = new File(fileNames.get(j));
 				
 				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
-						new FileOutputStream(chosenDirectory + "\\"
+						new FileOutputStream(chosenDirectory + ""
 								+ fileNames.get(j))));
 				fileOut.println(outputFiles.get(j));
 				fileOut.close();

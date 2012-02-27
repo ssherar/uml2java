@@ -13,6 +13,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.undo.UndoManager;
 
 import java.io.*;
 
@@ -28,8 +29,8 @@ import uk.ac.aber.dcs.cs124group.gui.SideBar;
 import uk.ac.aber.dcs.cs124group.gui.StatusBar;
 import uk.ac.aber.dcs.cs124group.gui.ToolBar;
 
-public class Manager extends DiagramListener implements ActionListener,
-		ChangeListener {
+public class Manager extends UndoManager implements ActionListener,
+		ChangeListener,  KeyListener, MouseMotionListener, MouseListener  {
 
 	private boolean inDebug = true;
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
@@ -249,7 +250,11 @@ public class Manager extends DiagramListener implements ActionListener,
 
 		if (retVal == JFileChooser.APPROVE_OPTION) {
 			//TODO: Remove extension if already exists
-			File saveFile = new File(fc.getSelectedFile().getAbsolutePath() + "." + FILE_EXTENSION);
+			String filePath = fc.getSelectedFile().getAbsolutePath();
+			if(filePath.contains(FILE_EXTENSION)) {
+				filePath = filePath.substring(0, filePath.length() - 5);
+			}
+			File saveFile = new File(filePath + "." + FILE_EXTENSION);
 			try {
 				if (saveFile.isFile())
 					saveFile.createNewFile();
@@ -380,6 +385,27 @@ public class Manager extends DiagramListener implements ActionListener,
 			System.exit(0);
 		}
 	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {	}
+
+	@Override
+	public void keyPressed(KeyEvent arg0) {	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {	}
 
 
 }

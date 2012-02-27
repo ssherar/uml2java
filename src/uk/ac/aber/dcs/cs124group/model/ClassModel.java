@@ -6,6 +6,10 @@ import java.util.Observer;
 import java.awt.Point;
 import java.awt.Dimension;
 
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.UndoableEdit;
+
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
@@ -176,5 +180,6 @@ public class ClassModel extends DocumentElementModel {
 			}
 		}
 	}
+
 
 }
