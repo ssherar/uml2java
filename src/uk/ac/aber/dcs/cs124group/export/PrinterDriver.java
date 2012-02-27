@@ -30,12 +30,17 @@ public class PrinterDriver extends Object implements Printable {
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
 			throws PrinterException {
 		
-		if(pageIndex>0){
+		if(pageIndex > 0){
 			return NO_SUCH_PAGE;
 		}
 		
 		RepaintManager repaint = RepaintManager.currentManager(canvas);
 		Graphics2D graphicsCreator = (Graphics2D)graphics;
+
+		double resizeWidth = canvas.getWidth() / pageFormat.getWidth();
+		double resizeHeight = canvas.getHeight() / pageFormat.getHeight();
+		
+		graphicsCreator.scale(1/resizeWidth, 1/resizeHeight);
 		
 		graphicsCreator.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
 		repaint.setDoubleBufferingEnabled(false);
