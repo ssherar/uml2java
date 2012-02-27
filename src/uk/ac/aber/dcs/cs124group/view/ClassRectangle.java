@@ -79,17 +79,17 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 
-	//@Override
-	/*public void setFont(Font f) {
+	@Override
+	public void setFont(Font f) {
 		super.setFont(f);
 		if(name != null) name.setFont(f);
-		for(int i = 0; this.model.getAttributes() != null && i < this.model.getAttributes().size(); i++) {
-			this.model.getAttributes().get(i).setFont(f);
+		for(int i = 0; i < this.getComponentCount(); i++) {
+			this.getComponent(i).setFont(f);
 
 		}
-		this.repositionAttributes();
+		if (this.getComponentCount() > 0) this.repositionAttributes();
 		this.doLayout();
-	}*/
+	}
 
 	private void repositionAttributes() {
 		this.cleanUp();
