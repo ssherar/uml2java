@@ -325,7 +325,13 @@ public class Manager extends DiagramListener implements ActionListener,
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN,
 				toolBar.getFontSize());
 		document.getPreferences().setFont(font);
-
+		ArrayList<DocumentElementModel> e = document.getElements();
+		/*for(int i = 0; i < e.size(); i++) {
+			if(e.get(i) instanceof ClassModel) {
+				ClassModel tmp = (ClassModel) e.get(i);
+				tmp.setFont(font);
+			}
+		}*/
 		canvas.setFont(font);
 		canvas.repaint();
 		status.setText("Font changed to " + font);
