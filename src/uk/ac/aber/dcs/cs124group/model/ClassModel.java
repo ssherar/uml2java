@@ -6,6 +6,9 @@ import java.util.Observer;
 import java.awt.Point;
 import java.awt.Dimension;
 
+import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
+import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
+
 public class ClassModel extends DocumentElementModel {
 	
 	private TextLabelModel nameLabel;
@@ -29,12 +32,21 @@ public class ClassModel extends DocumentElementModel {
 		this.location = p;
 	}
 	
+	@Override
+	public ClassRectangle getView() {
+		return new ClassRectangle(this, false);
+	}
+	
 	public String getClassName() {
 		return this.nameLabel.getText();
 	}
 	
 	public void setNameLabel(TextLabelModel n) {
 		this.nameLabel = n;
+	}
+	
+	public TextLabelModel getNameLabel() {
+		return nameLabel;
 	}
 
 	public ArrayList<Attribute> getAttributes() {

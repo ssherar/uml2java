@@ -2,6 +2,8 @@ package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.Observable;
 
+import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
+
 public abstract class DocumentElementModel extends Observable implements java.io.Serializable {
 
 	private static final long serialVersionUID = -8960995955260463413L;
@@ -34,6 +36,10 @@ public abstract class DocumentElementModel extends Observable implements java.io
 		exists = false;
 		setChanged();
 		notifyObservers("wasRemoved");
+	}
+	
+	public DocumentElementView getView() {
+		return null;
 	}
 
 

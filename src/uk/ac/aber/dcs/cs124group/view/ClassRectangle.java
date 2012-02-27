@@ -31,7 +31,7 @@ public class ClassRectangle extends DocumentElementView {
 	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
 
-	public ClassRectangle(ClassModel model) {
+	public ClassRectangle(ClassModel model, boolean isNew) {
 		this.model = model;
 		
 		this.setLocation(model.getLocation());
@@ -40,13 +40,32 @@ public class ClassRectangle extends DocumentElementView {
 		this.setLayout(new DiagramLayout());
 
 
-		TextLabelModel nameLabel = new TextLabelModel(new Point(0,0), "NewClass");
-		name = new LabelView(nameLabel);
+		if(isNew) {
+			TextLabelModel nameLabel = new TextLabelModel(new Point(0,0), "NewClass");
+			name = new LabelView(nameLabel);
 		
-		nameLabel.addObserver(name);
-		model.setNameLabel(nameLabel);
-		this.add(name);
-		name.enableEdit();
+			nameLabel.addObserver(name);
+			model.setNameLabel(nameLabel);
+			this.add(name);
+			name.enableEdit();
+		}
+		else {
+			name = new LabelView(model.getNameLabel());
+			model.getNameLabel().addObserver(name);
+			this.add(name);
+			
+			for(int i = 0; model.getDataFields() != null && i < model.getDataFields().size(); i++) {
+				LabelView l = model.getDataFields().get(i).getView();
+				this.add(l);
+				this.dataFieldViews.add(l);
+			}
+
+			for(int i = 0; model.getMethods() != null && i < model.getMethods().size(); i++) {
+				LabelView l = model.getMethods().get(i).getView();
+				this.add(l);
+				this.methodViews.add(l);
+			}
+		}
 
 
 
@@ -195,7 +214,7 @@ public class ClassRectangle extends DocumentElementView {
 	public Point getNextDataFieldPoint(int afterDataFieldNumber) {
 		int y = this.name.getPreferredSize().height + 5;
 
-		for(int i = 0; i < afterDataFieldNumber && i >= 0 ;i++) {
+		for(int i = 0; i < this.dataFieldViews.size() && i < afterDataFieldNumber && i >= 0 ;i++) {
 			int height = this.dataFieldViews.get(i).getPreferredSize().height;
 			y += (int) (height * 1.25);	
 		}
@@ -210,7 +229,7 @@ public class ClassRectangle extends DocumentElementView {
 	public Point getNextMethodPoint(int afterMethodNumber) {
 		int y = this.getSeparatorCoordinate() + 5;
 
-		for(int i = 0; i < afterMethodNumber && i >= 0 ;i++) {
+		for(int i = 0; i < this.methodViews.size() && i < afterMethodNumber && i >= 0 ;i++) {
 			int height = this.methodViews.get(i).getPreferredSize().height;
 			y += (int) (height * 1.25);	
 		}

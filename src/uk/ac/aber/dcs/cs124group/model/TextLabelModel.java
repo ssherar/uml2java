@@ -2,6 +2,10 @@ package uk.ac.aber.dcs.cs124group.model;
 
 import java.awt.*;
 
+import uk.ac.aber.dcs.cs124group.view.LabelView;
+
+
+
 public class TextLabelModel extends DocumentElementModel {
 	private String text = "New Label";
 	private Point location;
@@ -16,6 +20,11 @@ public class TextLabelModel extends DocumentElementModel {
 	public TextLabelModel(Point p, String text) {
 		this.location = p;
 		this.text = text;
+	}
+	
+	@Override
+	public LabelView getView() {
+		return new LabelView(this);
 	}
 
 	public String getText() {

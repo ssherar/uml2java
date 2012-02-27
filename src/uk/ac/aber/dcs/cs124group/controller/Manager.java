@@ -177,7 +177,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		document.addElement(c);
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
 
-		ClassRectangle view = new ClassRectangle(c);
+		ClassRectangle view = new ClassRectangle(c, true);
 		c.addObserver(view);
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
@@ -247,6 +247,7 @@ public class Manager extends DiagramListener implements ActionListener,
 		setWaitCursor(false);
 
 		if (retVal == JFileChooser.APPROVE_OPTION) {
+			//TODO: Remove extension if already exists
 			File saveFile = new File(fc.getSelectedFile().getAbsolutePath() + "." + FILE_EXTENSION);
 			try {
 				if (saveFile.isFile())
@@ -297,24 +298,22 @@ public class Manager extends DiagramListener implements ActionListener,
 				document = (DocumentModel) in.readObject();
 				for (int i = 0; i < getDrawableElements().size(); i++) {
 					DocumentElementModel e = getDrawableElements().get(i);
-					e.setPaintState(ElementPaintState.DEFAULT);
+					//System.out.println(e.getView());
+					canvas.add(e.getView());
 					//canvas.add(c);
 				}
 				canvas.setPreferredSize(document.getPreferences()
 						.getCanvasDefaultSize());
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
-				canvas.setZoomFactor(document.getPreferences().getZoomLevel()); // TODO:
-																				// fixme,
-																				// JSlider
-																				// will
-																				// not
-																				// have updated
+			
+				//canvas.setZoomFactor(document.getPreferences().getZoomLevel()); 
 				
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
 			} catch (Exception e) {
 				status.setText("Could not open file " + openFile);
+				e.printStackTrace();
 			}
 
 		}
