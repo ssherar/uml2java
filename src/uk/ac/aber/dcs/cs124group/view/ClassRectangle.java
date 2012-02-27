@@ -270,6 +270,7 @@ public class ClassRectangle extends DocumentElementView {
 			
 		} else if(arg.equals("sizeChanged")) {
 			this.setPreferredSize(o.getSize());
+			this.name.realign();
 			this.getParent().doLayout();
 			
 		} else if(arg.equals("attributeChanged")) {

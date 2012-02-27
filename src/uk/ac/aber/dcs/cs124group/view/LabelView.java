@@ -56,6 +56,12 @@ public class LabelView extends DocumentElementView {
 	public void setAlignmentInParent(int alignment) {
 		this.model.setAlignmentInParent(alignment);
 	}
+	
+	public void realign() {
+		if(model.getAlignmentInParent() == JTextField.CENTER) {
+			model.setLocation(new Point((getParent().getPreferredSize().width - getPreferredSize().width) / 2, model.getLocation().y));
+		}
+	}
 
 	public void setText(String text) {
 		this.text = text;
@@ -107,9 +113,7 @@ public class LabelView extends DocumentElementView {
 							(int) (getZoomFactor() * metrics.getHeight())));
 					getParent().doLayout(); //TODO: update size in model
 					
-					if(model.getAlignmentInParent() == JTextField.CENTER) {
-						model.setLocation(new Point((getParent().getPreferredSize().width - getPreferredSize().width) / 2, model.getLocation().y));
-					}
+					realign();
 				}
 			
 			});

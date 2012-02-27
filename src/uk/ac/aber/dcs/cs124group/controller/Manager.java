@@ -87,11 +87,7 @@ public class Manager extends UndoManager implements ActionListener,
 			addNewLabel(new Point(
 					(int) ((1 / canvas.getZoomFactor()) * e.getX()),
 					(int) ((1 / canvas.getZoomFactor()) * e.getY())));
-		} else {
-			// Editing text...
-
-		}
-
+		} 
 	}
 
 
@@ -229,7 +225,6 @@ public class Manager extends UndoManager implements ActionListener,
 	}
 	
 	private void addNewRelationship(ClassModel to, ClassModel from) {
-		assert(!to.equals(from));
 		System.out.println("Received request for new relationship from " + from + " to " + to);
 	}
 
@@ -355,21 +350,13 @@ public class Manager extends UndoManager implements ActionListener,
 	}
 
 	private void changeFont() {
-		setWaitCursor(true);
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN,
 				toolBar.getFontSize());
 		document.getPreferences().setFont(font);
-		ArrayList<DocumentElementModel> e = document.getElements();
-		/*for(int i = 0; i < e.size(); i++) {
-			if(e.get(i) instanceof ClassModel) {
-				ClassModel tmp = (ClassModel) e.get(i);
-				tmp.setFont(font);
-			}
-		}*/
+
 		canvas.setFont(font);
 		canvas.repaint();
 		status.setText("Font changed to " + font);
-		setWaitCursor(false);
 	}
 
 	private void changeZoom(double zoom) {
