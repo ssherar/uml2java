@@ -21,26 +21,25 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Exporter {
 
 	private DocumentModel model;
-	private String outputDirectory;
+	private ArrayList<DocumentElementModel> classModel;
 	private Canvas canvas;
-	private ArrayList<String> outputFiles;
-	private ArrayList<String> fileNames;
+	private ArrayList<String> outputFiles = new ArrayList<String>();
+	private ArrayList<String> fileNames = new ArrayList<String>();
 	private final String NL = "\n";
 	private final String TB = "\t";
-	private String imageSaveLocation;
 	private Manager manager;
-
 
 	public Exporter(DocumentModel model, Manager manager) {
 		this.model = model;
 		this.manager = manager;
+		this.classModel = model.getElements();
+
 	}
 
 	public Exporter(Canvas c, Manager manager) {
-		this.canvas  = c;
+		this.canvas = c;
 		this.manager = manager;
 	}
-	
 
 	public void exportImage() throws IIOException {
 		BufferedImage bi = new BufferedImage(canvas.getSize().width,
@@ -90,9 +89,8 @@ public class Exporter {
 
 	public void exportCode() throws IOException {
 		for (int i = 0; i < model.getElements().size(); i++) {
-			if (model.getElements().get(i).equals(ClassRectangle.class)) {
-				fileNames.add(model.getElements().get(i).getName() + ".java");
-				outputFiles.add(createClassFileContents((ClassRectangle) model
+			if (model.getElements().get(i).getClass() == (ClassModel.class)) {
+				outputFiles.add(createClassFileContents((ClassModel) model
 						.getElements().get(i)));
 			}
 		}
@@ -101,183 +99,202 @@ public class Exporter {
 		JFileChooser fcCode = new JFileChooser();
 		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fcCode.setAcceptAllFileFilterUsed(false);
-
-		File chosenDirectory = fcCode.getCurrentDirectory();
-
 		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
+		File chosenDirectory = fcCode.getSelectedFile();
+
 		manager.setWaitCursor(false);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println(fileNames.size());
+			System.out.println(fcCode.getSelectedFile());
 			for (int j = fileNames.size() - 1; j >= 0; j--) {
 				File f;
+				
 				f = new File(fileNames.get(j));
-				if (!f.exists()) {
-					f.createNewFile();
-					PrintWriter fileOut = new PrintWriter(
-							new OutputStreamWriter(new FileOutputStream(
-									chosenDirectory + fileNames.get(j))));
-					fileOut.println(outputFiles.get(j));
-					fileOut.close();
-				}
+				
+				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
+						new FileOutputStream(chosenDirectory + "\\"
+								+ fileNames.get(j))));
+				fileOut.println(outputFiles.get(j));
+				fileOut.close();
+
 			}
 		}
 
 	}
 
-	private String createClassFileContents(ClassRectangle r) {
-		String contents = "";
+	private String createClassFileContents(ClassModel classModel) {
 
-		switch (r.getVisibility()) {
+		fileNames.add(classModel.getClassName() + ".java");
+
+		String contents = "";
+		switch (classModel.getVisibility()) {
 		case PUBLIC:
 			contents = "public ";
+			break;
 		case PRIVATE:
 			contents = "private ";
+			break;
 		case PROTECTED:
 			contents = "protected ";
+			break;
 		case PACKAGE:
 			contents = "package ";
+			break;
 		}
 
-		if (r.isAbstract() && !r.isFinal()) {
-			contents.concat("abstract ");
+		if (classModel.isAbstract() && !classModel.isFinal()) {
+			contents = (contents + "abstract ");
 		}
 
-		if (r.isStatic()) {
-			contents.concat("static ");
+		if (classModel.isStatic()) {
+			contents = (contents + "static ");
 		}
 
-		contents.concat("class "); // can amend this to include interface and
-									// enums etc if we decide to implement them
-
-		contents.concat(r.getClassName() + " ");
+		contents = (contents + "class "); // can amend this to include interface
+											// and
+		// enums etc if we decide to implement them
+		contents = (contents + classModel.getClassName() + " ");
 
 		String eXtends = "";
 		String iMplements = "";
 
-		for (int l = 0; l <= r.getRelationships().size() - 1; l++) {
-			switch (r.getRelationships().get(l).getType()) {
+		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
+			switch (classModel.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
-				iMplements.concat(r.getRelationships().get(l).getGoingTo()
-						.getName()
-						+ " ");
+				iMplements = (iMplements
+						+ classModel.getRelationships().get(l).getGoingTo()
+								.getName() + " ");
 			case INHERITANCE:
-				eXtends.concat(r.getRelationships().get(l).getGoingTo()
-						.getName()
-						+ " ");
+				eXtends = (eXtends
+						+ classModel.getRelationships().get(l).getGoingTo()
+								.getName() + " ");
 			}
 		}
 
 		if (!eXtends.isEmpty()) {
-			contents.concat("extends " + eXtends);
+			contents = (contents + "extends " + eXtends);
 		}
 		if (!iMplements.isEmpty()) {
-			contents.concat("implements " + iMplements);
+			contents = (contents + "implements " + iMplements + " ");
 		}
 
-		contents.concat("{" + NL + NL);
+		contents = (contents + "{" + NL + NL);
 
 		// --------------------Attributes/Fields----------------------------
-		for (int j = 0; j <= r.getAttributes().size() - 1; j++) {
+		for (int j = 0; j <= classModel.getAttributes().size() - 1; j++) {
 
 			boolean isAttributeFinal = false;
 			boolean isMethodAbstract = false;
 
-			switch (r.getAttributes().get(j).getType()) {
+			switch (classModel.getAttributes().get(j).getType()) {
 			case DATA_FIELD:
-				switch (r.getAttributes().get(j).getVisibility()) {
+				switch (classModel.getAttributes().get(j).getVisibility()) {
 				case PUBLIC:
-					contents.concat(TB + "public ");
+					contents = (contents + TB + "public ");
+					break;
 				case PRIVATE:
-					contents.concat(TB + "private ");
+					contents = (contents + TB + "private ");
+					break;
 				case PROTECTED:
-					contents.concat(TB + "protected ");
+					contents = (contents + TB + "protected ");
+					break;
 				}
 
-				if (r.getAttributes().get(j).isFlagStatic()) {
-					contents.concat("static ");
+				if (classModel.getAttributes().get(j).isFlagStatic()) {
+					contents = (contents + "static ");
 				}
 
-				if (r.getAttributes().get(j).isFlagFinal()) {
-					contents.concat("final ");
+				if (classModel.getAttributes().get(j).isFlagFinal()) {
+					contents = (contents + "final ");
 					isAttributeFinal = true;
 				}
 
-				if (r.getAttributes().get(j).isFlagTransient()) {
-					contents.concat("transistent ");
+				if (classModel.getAttributes().get(j).isFlagTransient()) {
+					contents = (contents + "transistent ");
 				}
 
-				if (r.getAttributes().get(j).isFlagVolatile()) {
-					contents.concat("volatile ");
+				if (classModel.getAttributes().get(j).isFlagVolatile()) {
+					contents = (contents + "volatile ");
 				}
 
-				contents.concat(r.getAttributes().get(j).getType().toString());
+				contents = (contents
+						+ classModel.getAttributes().get(j).getAttributeType() + " ");
 
 				if (isAttributeFinal) {
-					contents.concat(r.getAttributes().get(j).getAttributeName()
-							.toUpperCase()
-							+ ";");
+					contents = (contents
+							+ classModel.getAttributes().get(j)
+									.getAttributeName().toUpperCase() + ";");
 				} else {
-					contents.concat(r.getAttributes().get(j).getAttributeName()
-							+ ";");
+					contents = (contents
+							+ classModel.getAttributes().get(j)
+									.getAttributeName() + ";");
 				}
-
-				// ------------------------Methods---------------------------
+				contents = contents + NL;
+				break;
+			// ------------------------Methods---------------------------
 			case METHOD:
-				switch (r.getAttributes().get(j).getVisibility()) {
+				switch (classModel.getAttributes().get(j).getVisibility()) {
 				case PUBLIC:
-					contents.concat(TB + "public ");
+					contents = (contents + TB + "public ");
+					break;
 				case PRIVATE:
-					contents.concat(TB + "private ");
+					contents = (contents + TB + "private ");
+					break;
 				case PROTECTED:
-					contents.concat(TB + "protected ");
+					contents = (contents + TB + "protected ");
+					break;
 				}
 
-				if (r.getAttributes().get(j).isFlagAbstract()) {
-					contents.concat("abstract");
+				if (classModel.getAttributes().get(j).isFlagAbstract()) {
+					contents = (contents + "abstract");
 					isMethodAbstract = true;
 				}
 
-				if (r.getAttributes().get(j).isFlagStatic()) {
-					contents.concat("static ");
+				if (classModel.getAttributes().get(j).isFlagStatic()) {
+					contents = (contents + "static ");
 				}
 
-				if (r.getAttributes().get(j).isFlagFinal()) {
-					contents.concat("final ");
+				if (classModel.getAttributes().get(j).isFlagFinal()) {
+					contents = (contents + "final ");
 				}
 
-				if (r.getAttributes().get(j).isFlagSyncronised()) {
-					contents.concat("syncronized ");
+				if (classModel.getAttributes().get(j).isFlagSyncronised()) {
+					contents = (contents + "syncronized ");
 				}
 
-				contents.concat(r.getAttributes().get(j).getReturnType() + " ");
+				contents = (contents
+						+ classModel.getAttributes().get(j).getReturnType() + " ");
 
-				contents.concat(r.getAttributes().get(j).getAttributeName()
-						+ "(");
+				contents = (contents
+						+ classModel.getAttributes().get(j).getAttributeName() + "(");
 
-				int numOfArgs = r.getAttributes().get(j).getArgs().size();
+				int numOfArgs = classModel.getAttributes().get(j).getArgs()
+						.size();
 
 				for (int k = 0; k <= numOfArgs - 1; k++) {
-					contents.concat(r.getAttributes().get(j).getArgs().get(k));
+					contents = (contents + classModel.getAttributes().get(j)
+							.getArgs().get(k));
 					if (k < numOfArgs - 2) {
-						contents.concat(", ");
+						contents = (contents + ", ");
 					}
 				}
-				contents.concat(")");
+				contents = (contents + ")");
 				if (isMethodAbstract) {
-					contents.concat(";");
+					contents = (contents + ";");
 				} else {
-					if (r.getAttributes().get(j).getReturnType() != "void") {
-						contents.concat("{" + NL + TB + TB + "return null;"
-								+ NL + TB + "}");
+					if (classModel.getAttributes().get(j).getReturnType()
+							.equals("void")) {
+						contents = (contents + "{" + NL + NL + TB + "}" + NL + NL);
 					} else {
-						contents.concat("{" + NL + NL + TB + "}");
+						contents = (contents + "{" + NL + TB + TB
+								+ "return null;" + NL + TB + "}" + NL + NL);
 					}
 				}
-
+				break;
 			}
-			contents.concat("}");
+
 		}
+		contents = (contents + "}");
 		return contents;
 
 	}

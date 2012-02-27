@@ -84,6 +84,10 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		this.attributeName = name;
 	}
 
+	public String getAttributeType(){
+		return attributeType;
+	}
+	
 	public String getReturnType() {
 		return returnType;
 	}
@@ -152,6 +156,8 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		return type;
 	}
 
+	
+	
 	public void setType(AttributeType type) {
 		this.type = type;
 	}
@@ -185,6 +191,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				if(m.group(3) != null) {
+				
 					Matcher args = this.checkArguements(m.group(3));
 					while(args.find()) {
 						this.addArgsElement(args.group(3),args.group(1));
@@ -196,8 +203,10 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	}
 	
 	public Matcher checkArguements(String var) {
+		args.clear(); //edited to avoid args double up if exported code editted then exported again
 		Pattern p = Pattern.compile(REGEX_METHOD_ARGS);
-		Matcher m = p.matcher(var);
+		Matcher m = p.matcher(var);	
+		
 		return m;
 	}
 
