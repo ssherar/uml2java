@@ -163,11 +163,11 @@ public class Exporter {
 			case IMPLEMENTS:
 				iMplements = (iMplements
 						+ classModel.getRelationships().get(l).getGoingTo()
-								.getName() + " ");
+								.getClassName() + " ");
 			case INHERITANCE:
 				eXtends = (eXtends
 						+ classModel.getRelationships().get(l).getGoingTo()
-								.getName() + " ");
+								.getClassName() + " ");
 			}
 		}
 

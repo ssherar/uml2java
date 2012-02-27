@@ -220,12 +220,18 @@ public class Manager extends UndoManager implements ActionListener,
 	}
 	
 	public void addNewRelationship() {
+		selectionStack.removeAllElements();
 		status.setText("Click on the class you want the relationship to go from");
 		this.mode = ListeningMode.PLACING_RELATIONSHIP;
 	}
 	
 	private void addNewRelationship(ClassModel to, ClassModel from) {
+		
 		System.out.println("Received request for new relationship from " + from + " to " + to);
+		// Create the object
+
+		// Add the object to document
+		// Add the object to the respective classes
 	}
 
 	private void openAboutWindow() {
@@ -432,7 +438,7 @@ public class Manager extends UndoManager implements ActionListener,
 				}
 				else if(selectionStack.size() == 0) {
 					selectionStack.push((ClassModel) o);
-					status.setText("Now click on the class you want the relationship to go to");
+					status.setText("Now click on the class you want the relationship to go to.");
 				}
 			}
 		}

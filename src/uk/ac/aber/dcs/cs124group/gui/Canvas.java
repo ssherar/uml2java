@@ -4,6 +4,7 @@ import java.awt.*;
 
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.view.ManuallyDrawnElement;
 
 import javax.swing.*;
 
@@ -16,6 +17,8 @@ public class Canvas extends JPanel {
 	
 	private double zoomFactor = 1;
 	private Font font = new Font("Arial", Font.PLAIN, 12);
+	
+	private ArrayList<ManuallyDrawnElement> manuallyDrawnElements = new ArrayList<ManuallyDrawnElement> ();
 
 	
 	public Canvas(Manager manager) {
@@ -67,33 +70,23 @@ public class Canvas extends JPanel {
 				RenderingHints.VALUE_RENDER_QUALITY);
 				
 		
-		ArrayList<DocumentElementModel> elements = new ArrayList<DocumentElementModel>();
-		try {
-			elements = manager.getDrawableElements();
-		}
-		catch (NullPointerException ex) {
-			System.out.println("Could not draw anything");
-		}
 		
-		for(int i = 0; i < elements.size(); i++) {
-			DocumentElementModel e = elements.get(i);
-			if (e instanceof Relationship) {
-				drawRelationship(g, (Relationship) e);
-			}
+		for(int i = 0; i < manuallyDrawnElements.size(); i++) {
+			manuallyDrawnElements.get(i).draw(g, this);
 
 		}
 		
 	}
 			
-	private void drawRelationship(Graphics2D g, Relationship r) {
-		
-	}	
-	
 	
 	@Override
 	public Component add(Component c){
 		super.add(c);
 		this.setComponentZOrder(c, 0);
 		return c;
+	}
+	
+	public void addManuallyDrawnElement(ManuallyDrawnElement e) {
+		this.manuallyDrawnElements.add(e);
 	}
  }
