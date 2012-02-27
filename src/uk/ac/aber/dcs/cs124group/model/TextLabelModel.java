@@ -2,6 +2,8 @@ package uk.ac.aber.dcs.cs124group.model;
 
 import java.awt.*;
 
+import javax.swing.JTextField;
+
 import uk.ac.aber.dcs.cs124group.view.LabelView;
 
 
@@ -11,6 +13,7 @@ public class TextLabelModel extends DocumentElementModel {
 	private Point location;
 	private Dimension size;
 	private boolean editing = false;
+	private int alignmentInParent = JTextField.LEFT;
 	
 	public TextLabelModel(Point p) {
 		this.location = p;
@@ -65,6 +68,14 @@ public class TextLabelModel extends DocumentElementModel {
 		this.editing = editing;
 		this.setChanged();
 		this.notifyObservers("editingChanged");
+	}
+
+	public void setAlignmentInParent(int alignmentInParent) {
+		this.alignmentInParent = alignmentInParent;
+	}
+	
+	public int getAlignmentInParent() {
+		return this.alignmentInParent;
 	}
 	
 	

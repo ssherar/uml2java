@@ -18,7 +18,6 @@ public class LabelView extends DocumentElementView {
 	private static final long serialVersionUID = -7388262736446472023L;
 	private String text;
 	private FontMetrics metrics;
-	private int alignmentInParent = JTextField.LEFT;
 	private Container suspendedParent;
 	private JTextArea replacement;
 	private TextLabelModel model;
@@ -54,12 +53,8 @@ public class LabelView extends DocumentElementView {
 		g.drawString(text, textX, textY);
 	}
 	
-	public int getAlignmentInParent() {
-		return alignmentInParent;
-	}
-
-	public void setAlignmentInParent(int alignmentInParent) {
-		this.alignmentInParent = alignmentInParent;
+	public void setAlignmentInParent(int alignment) {
+		this.model.setAlignmentInParent(alignment);
 	}
 
 	public void setText(String text) {
@@ -110,7 +105,11 @@ public class LabelView extends DocumentElementView {
 					setPreferredSize(new Dimension(
 							(int) (getZoomFactor() * 1.1 * width + 1), 
 							(int) (getZoomFactor() * metrics.getHeight())));
-					getParent().doLayout();
+					getParent().doLayout(); //TODO: update size in model
+					
+					if(model.getAlignmentInParent() == JTextField.CENTER) {
+						model.setLocation(new Point((getParent().getPreferredSize().width - getPreferredSize().width) / 2, model.getLocation().y));
+					}
 				}
 			
 			});
