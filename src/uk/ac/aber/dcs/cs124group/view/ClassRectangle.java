@@ -56,15 +56,20 @@ public class ClassRectangle extends DocumentElementView {
 			
 			for(int i = 0; model.getDataFields() != null && i < model.getDataFields().size(); i++) {
 				LabelView l = model.getDataFields().get(i).getView();
+				model.getDataFields().get(i).addObserver(l);
 				this.add(l);
+				l.setFont(this.getFont());
 				this.dataFieldViews.add(l);
 			}
 
 			for(int i = 0; model.getMethods() != null && i < model.getMethods().size(); i++) {
 				LabelView l = model.getMethods().get(i).getView();
+				model.getMethods().get(i).addObserver(l);
+				l.setFont(this.getFont());
 				this.add(l);
 				this.methodViews.add(l);
 			}
+			
 		}
 
 
@@ -82,6 +87,7 @@ public class ClassRectangle extends DocumentElementView {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
+				repositionAttributes();
 				repaint();
 			}
 		});	
@@ -134,6 +140,7 @@ public class ClassRectangle extends DocumentElementView {
 				defaultRepresentation, type);
 		LabelView newView = new LabelView(newAttribute);
 		newAttribute.addObserver(newView);
+		newView.setFont(this.getFont());
 		model.addAttribute(newAttribute);
 		
 		if(type == AttributeType.DATA_FIELD) {

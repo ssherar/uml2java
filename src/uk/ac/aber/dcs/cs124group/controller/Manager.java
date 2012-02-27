@@ -18,6 +18,7 @@ import java.io.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
+import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 import uk.ac.aber.dcs.cs124group.view.LabelView;
 import uk.ac.aber.dcs.cs124group.export.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
@@ -296,18 +297,22 @@ public class Manager extends DiagramListener implements ActionListener,
 				FileInputStream fos = new FileInputStream(openFile.getPath());
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel) in.readObject();
+				
 				for (int i = 0; i < getDrawableElements().size(); i++) {
 					DocumentElementModel e = getDrawableElements().get(i);
-					//System.out.println(e.getView());
-					canvas.add(e.getView());
-					//canvas.add(c);
+					DocumentElementView ew = e.getView();
+					ew.setFont(document.getPreferences().getFont());
+					e.addObserver(ew);
+					document.getPreferences().addObserver(ew);
+					canvas.add(ew);
 				}
+				
 				canvas.setPreferredSize(document.getPreferences()
 						.getCanvasDefaultSize());
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 			
-				//canvas.setZoomFactor(document.getPreferences().getZoomLevel()); 
+				canvas.setZoomFactor(document.getPreferences().getZoomLevel()); 
 				
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
