@@ -43,7 +43,7 @@ public class Exporter {
 
 	public void exportImage() throws IIOException {
 		BufferedImage bi = new BufferedImage(canvas.getSize().width,
-				canvas.getSize().height, BufferedImage.TYPE_INT_ARGB);
+				canvas.getSize().height, BufferedImage.TYPE_INT_RGB);
 		Graphics g = bi.createGraphics();
 
 		canvas.paint(g); // this == JComponent
@@ -82,10 +82,6 @@ public class Exporter {
 		}
 	}
 
-	private void serialise(String path) {
-		// TODO Auto-generated method stub
-
-	}
 
 	public void exportCode() throws IOException {
 		for (int i = 0; i < model.getElements().size(); i++) {

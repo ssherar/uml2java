@@ -1,24 +1,16 @@
 package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.event.*;
-import java.awt.image.BufferedImage;
+//import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
 import java.awt.*;
 import java.util.*;
-import java.util.regex.*;
 
-import javax.imageio.IIOException;
-import javax.imageio.ImageIO;
+import javax.imageio.*;
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import javax.swing.event.UndoableEditEvent;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.undo.StateEdit;
-import javax.swing.undo.StateEditable;
-import javax.swing.undo.UndoManager;
+import javax.swing.event.*;
+import javax.swing.filechooser.*;
+import javax.swing.undo.*;
 
 import java.io.*;
 
@@ -72,11 +64,6 @@ public class Manager extends UndoManager implements ActionListener,
 
 		changeFont();
 	}
-
-	public ArrayList<DocumentElementModel> getDrawableElements() {
-		return document.getElements();
-	}
-
 
 	@Override
 	public void mousePressed(MouseEvent e) {
@@ -341,8 +328,8 @@ public class Manager extends UndoManager implements ActionListener,
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel) in.readObject();
 				
-				for (int i = 0; i < getDrawableElements().size(); i++) {
-					DocumentElementModel e = getDrawableElements().get(i);
+				for (int i = 0; i < document.getElements().size(); i++) {
+					DocumentElementModel e = document.getElements().get(i);
 					DocumentElementView ew = e.getView();
 					ew.setFont(document.getPreferences().getFont());
 					e.addObserver(ew);
