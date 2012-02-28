@@ -42,12 +42,12 @@ public class Exporter {
 	}
 
 	public void exportImage() throws IIOException {
-		BufferedImage bi = new BufferedImage(canvas.getSize().width,
+		BufferedImage imageBuffer = new BufferedImage(canvas.getSize().width,
 				canvas.getSize().height, BufferedImage.TYPE_INT_RGB);
-		Graphics g = bi.createGraphics();
+		Graphics canvasImage = imageBuffer.createGraphics();
 
-		canvas.paint(g); // this == JComponent
-		g.dispose();
+		canvas.paint(canvasImage);
+		canvasImage.dispose();
 
 		manager.setWaitCursor(true);
 		JFileChooser fcImage = new JFileChooser();
@@ -71,11 +71,11 @@ public class Exporter {
 
 			try {
 				if (fcImage.getFileFilter() == png) {
-					ImageIO.write(bi, "png", new File(saveFile + ".png"));
+					ImageIO.write(imageBuffer, "png", new File(saveFile + ".png"));
 				} else if (fcImage.getFileFilter() == jpg) {
-					ImageIO.write(bi, "jpg", new File(saveFile + ".jpg"));
+					ImageIO.write(imageBuffer, "jpg", new File(saveFile + ".jpg"));
 				} else if (fcImage.getFileFilter() == gif) {
-					ImageIO.write(bi, "gif", new File(saveFile + ".gif"));
+					ImageIO.write(imageBuffer, "gif", new File(saveFile + ".gif"));
 				}
 			} catch (Exception e) {
 			}
