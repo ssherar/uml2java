@@ -1,24 +1,16 @@
 package uk.ac.aber.dcs.cs124group.model;
 
-import java.awt.Component;
-import java.awt.Graphics2D;
 import java.awt.Point;
-import java.util.ArrayList;
+import java.util.*;
+import javax.swing.undo.*;
+import uk.ac.aber.dcs.cs124group.view.*;
 
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.UndoableEdit;
-
-import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
-import uk.ac.aber.dcs.cs124group.view.LabelView;
-import uk.ac.aber.dcs.cs124group.view.ManuallyDrawnElement;
-
-public class Relationship extends DocumentElementModel implements ManuallyDrawnElement {
+public class Relationship extends DocumentElementModel implements Observer {
 
 	
 	private static final long serialVersionUID = 272724938449188987L;
 	
-	private RelationshipType type;
+	private RelationshipType type = RelationshipType.USES;
 	private ClassModel goingFrom, goingTo;
 	private Cardinality cardinalityFrom, cardinalityTo;
 	private TextLabelModel label;
@@ -29,12 +21,8 @@ public class Relationship extends DocumentElementModel implements ManuallyDrawnE
 		this.goingFrom = from;
 		this.goingTo = to;
 		
-		//Work out points
-		Point fromPoint = this.workOutOptimalEndPoints()[0];
-		Point toPoint = this.workOutOptimalEndPoints()[1];
-		
-		points.add(fromPoint);
-		points.add(toPoint);
+		points.add(goingFrom.getLocation());
+		points.add(goingTo.getLocation());
 		
 		
 	}
@@ -101,39 +89,15 @@ public class Relationship extends DocumentElementModel implements ManuallyDrawnE
 		this.label = label;
 	}
 	
-	private Point[] workOutOptimalEndPoints() {
-		Point fromPoint = new Point(0,0);
-		Point toPoint = new Point(0,0);
-		
-		int horizontalDifference = goingTo.getLocation().x - goingFrom.getLocation().x;
-		int verticalDifference = goingTo.getLocation().y - goingFrom.getLocation().y;
-		
-		//If below
-			//If verticalDifference less than goingFrom height
-				//If to the right EAST -> WEST
-				//If to the left WEST -> EAST
-			//If verticalDifference more than goingFrom height
-				//If to the right
-					//If horizontalDifference more than goingFrom width SOUTH -> WEST
-					//If horizontalDifference less than goingFrom width SOUTH -> NORTH
-				//If to the left
-					//If horDif more than goingFrom width SOUTH -> EAST
-					//If horDif less than
-					
-	
-		
-		
-		
-		return new Point[] {fromPoint, toPoint}; 
-	}
 	
 	public ArrayList<Point> getPoints() {
 		return points;
 	}
 
+	
 
 	@Override
-	public void draw(Graphics2D g, Component parent) {
+	public void update(Observable o, Object s) {
 		// TODO Auto-generated method stub
 		
 	}

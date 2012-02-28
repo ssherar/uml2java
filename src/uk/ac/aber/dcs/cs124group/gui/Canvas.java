@@ -4,7 +4,6 @@ import java.awt.*;
 
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.model.*;
-import uk.ac.aber.dcs.cs124group.view.ManuallyDrawnElement;
 
 import javax.swing.*;
 
@@ -17,8 +16,6 @@ public class Canvas extends JPanel {
 	
 	private double zoomFactor = 1;
 	private Font font = new Font("Arial", Font.PLAIN, 12);
-	
-	private ArrayList<ManuallyDrawnElement> manuallyDrawnElements = new ArrayList<ManuallyDrawnElement> ();
 
 	
 	public Canvas(Manager manager) {
@@ -69,13 +66,7 @@ public class Canvas extends JPanel {
 				RenderingHints.KEY_RENDERING,
 				RenderingHints.VALUE_RENDER_QUALITY);
 				
-		
-		
-		for(int i = 0; i < manuallyDrawnElements.size(); i++) {
-			manuallyDrawnElements.get(i).draw(g, this);
 
-		}
-		
 	}
 			
 	
@@ -86,7 +77,4 @@ public class Canvas extends JPanel {
 		return c;
 	}
 	
-	public void addManuallyDrawnElement(ManuallyDrawnElement e) {
-		this.manuallyDrawnElements.add(e);
-	}
  }

@@ -19,16 +19,11 @@ import javax.swing.undo.UndoManager;
 import java.io.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
-import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
-import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
-import uk.ac.aber.dcs.cs124group.view.LabelView;
+import uk.ac.aber.dcs.cs124group.view.*;
 import uk.ac.aber.dcs.cs124group.export.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
-import uk.ac.aber.dcs.cs124group.gui.MainFrame;
 import uk.ac.aber.dcs.cs124group.gui.MenuBar;
-import uk.ac.aber.dcs.cs124group.gui.SideBar;
-import uk.ac.aber.dcs.cs124group.gui.StatusBar;
-import uk.ac.aber.dcs.cs124group.gui.ToolBar;
+import uk.ac.aber.dcs.cs124group.gui.*;
 
 public class Manager extends UndoManager implements ActionListener,
 		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer  {
@@ -227,11 +222,20 @@ public class Manager extends UndoManager implements ActionListener,
 	
 	private void addNewRelationship(ClassModel to, ClassModel from) {
 		
-		System.out.println("Received request for new relationship from " + from + " to " + to);
-		// Create the object
-
-		// Add the object to document
-		// Add the object to the respective classes
+		status.setText("Received request for new relationship from " + from + " to " + to);
+		Relationship r = new Relationship(from, to);
+		
+		from.addRelationship(r);
+		from.addObserver(r);
+		to.addRelationship(r);
+		to.addObserver(r);
+		
+		RelationshipArrow arrow = new RelationshipArrow(r);
+		r.addObserver(arrow);
+		document.addElement(r);
+		
+		canvas.add(arrow);
+		canvas.repaint();
 	}
 
 	private void openAboutWindow() {
