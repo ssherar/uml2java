@@ -29,6 +29,7 @@ public class Canvas extends JPanel {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {
+	        	 setLocation(new Point(0,0));
 	        	 setPreferredSize(new Dimension(2000,2000));
 	         }
 	      });

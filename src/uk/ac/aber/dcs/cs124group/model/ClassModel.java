@@ -102,6 +102,10 @@ public class ClassModel extends DocumentElementModel implements StateEditable{
 	public void addRelationship(Relationship r) {
 		relationships.add(r);
 	}
+	
+	public void removeRelationship(Relationship r) {
+		relationships.remove(r);
+	}
 
 	public boolean isAbstract() {
 		return isAbstract;

@@ -59,6 +59,7 @@ public class Manager extends UndoManager implements ActionListener,
 		window.setTitle(PROGRAM_NAME);
 
 		canvas = window.getCanvas();
+		canvas.addMouseMotionListener(this);
 
 		menuBar = window.getMenu();
 		sideBar = window.getSideBar();

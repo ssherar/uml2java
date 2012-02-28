@@ -101,6 +101,13 @@ public class Relationship extends DocumentElementModel implements Observer {
 	private void updateWrapAroundEndPoints() {
 		
 	}
+	
+	@Override
+	public void remove() {
+		goingFrom.removeRelationship(this);
+		goingTo.removeRelationship(this);
+		super.remove();
+	}
 
 	
 
@@ -113,6 +120,7 @@ public class Relationship extends DocumentElementModel implements Observer {
 			if(((ClassModel) o).equals(this.goingFrom)) {
 				((RelationshipEndPoint)this.points.get(0)).updateTo(
 						new Rectangle(this.goingFrom.getLocation(), this.goingFrom.getSize()));
+				
 				this.setChanged();
 				this.notifyObservers("startPointChanged");
 			}

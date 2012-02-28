@@ -20,6 +20,15 @@ public class RelationshipEndPoint extends Point {
 	}
 	
 	public void updateTo(Rectangle r) {
+		
+		if(this.side == NORTH || this.side == SOUTH && this.pixelsFromStart > r.width) {
+			this.pixelsFromStart = r.width;
+		}
+		else if (this.side == EAST || this.side == WEST && this.pixelsFromStart > r.height) {
+			this.pixelsFromStart = r.height;
+		}
+		
+		
 		if (this.side == NORTH) {
 			this.y = r.y;
 			this.x = r.x + pixelsFromStart;
@@ -37,8 +46,7 @@ public class RelationshipEndPoint extends Point {
 			this.x = r.x + pixelsFromStart;
 		}
 		
-		if(this.x > r.x + r.width) this.x = r.x + r.width;
-		if(this.y > r.y + r.height) this.y = r.y + r.height;
+
 	}
 	
 	private void wrapFromCoordinates(Rectangle r) {

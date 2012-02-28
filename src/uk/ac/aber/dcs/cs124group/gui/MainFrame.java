@@ -3,8 +3,7 @@ package uk.ac.aber.dcs.cs124group.gui;
 import java.awt.BorderLayout;
 
 import java.awt.*;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import java.awt.event.*;
 
 import javax.swing.*;
 
@@ -32,20 +31,33 @@ public class MainFrame extends JFrame implements WindowListener {
 			
 		}
 		
-		JPanel dummyPanel = new JPanel();
-		add(dummyPanel);
-		
+		final JPanel dummyPanel = new JPanel();
+	
 		
 	    canvas = new Canvas(manager);
-	    JScrollPane scroll = new JScrollPane();
-	    scroll.setViewportView(canvas);
+	    final JScrollPane scroll = new JScrollPane();
+	   
 	    
-	    scroll.setPreferredSize(new Dimension(900,800));
-		canvas.setPreferredSize(new Dimension(2000,2000));
+	
 	    
 	    dummyPanel.setBackground(Color.GRAY);
 	    dummyPanel.setLayout(new DiagramLayout());
-	    dummyPanel.add(scroll);   
+	    dummyPanel.add(canvas);
+	    dummyPanel.setOpaque(true);
+	    //dummyPanel.setPreferredSize(new Dimension(2000,2000));
+	    scroll.setViewportView(dummyPanel);  
+	   
+	    this.addComponentListener(new ComponentAdapter() {
+	    	public void componentResized(ComponentEvent e) {
+	    		dummyPanel.setSize(new Dimension(scroll.getSize().width - 30, scroll.getSize().height - 30));
+	    	}
+	    });
+	    
+	    canvas.addComponentListener(new ComponentAdapter() {
+	    	public void componentResized(ComponentEvent e) {
+	    		dummyPanel.setPreferredSize(canvas.getSize());
+	    	}
+	    });
 	    
 	    
 	    sideBar = new SideBar(manager);
@@ -53,6 +65,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    toolbar = new ToolBar(manager);
 	    status = new StatusBar();
 	    
+	    add(scroll);
 	    add(sideBar, BorderLayout.WEST);
 		add(toolbar, BorderLayout.NORTH);
 		add(status, BorderLayout.SOUTH);
