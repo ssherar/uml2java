@@ -1,0 +1,42 @@
+\contentsline {figure}{\numberline {1}{\ignorespaces Creating a new Diagram\relax }}{3}
+\contentsline {figure}{\numberline {2}{\ignorespaces Opening an existing diagram\relax }}{3}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {File $\rightarrow $ Open}}}{3}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Select File to open}}}{3}
+\contentsline {figure}{\numberline {3}{\ignorespaces Saving a diagram\relax }}{3}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {File $\rightarrow $ Save}}}{3}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Select Save Location}}}{3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Printing a diagram\relax }}{4}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {File $\rightarrow $ Print}}}{4}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Select Printer}}}{4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Exiting the Designer\relax }}{4}
+\contentsline {figure}{\numberline {6}{\ignorespaces Undo last Action\relax }}{4}
+\contentsline {figure}{\numberline {7}{\ignorespaces Redoing an Action\relax }}{5}
+\contentsline {figure}{\numberline {8}{\ignorespaces Printing a diagram\relax }}{5}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Canvas $\rightarrow $ Resize...}}}{5}
+\contentsline {figure}{\numberline {9}{\ignorespaces Fit diagram to visible canvas\relax }}{5}
+\contentsline {figure}{\numberline {10}{\ignorespaces Exporting to Java code\relax }}{6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Export $\rightarrow $ Code}}}{6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Export to Java...}}}{6}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Choose Directory to create files}}}{6}
+\contentsline {figure}{\numberline {11}{\ignorespaces Export Diagram as Image\relax }}{6}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Export $\rightarrow $ Image}}}{6}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Choose Directory to save image}}}{6}
+\contentsline {figure}{\numberline {12}{\ignorespaces Adding a new class to diagram\relax }}{7}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Add new class}}}{7}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Click to create new class}}}{7}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Added Class}}}{7}
+\contentsline {figure}{\numberline {13}{\ignorespaces Adding a new Data Field to the Class\relax }}{8}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Right-Click $\rightarrow $ Add data field}}}{8}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Added Data Field}}}{8}
+\contentsline {figure}{\numberline {14}{\ignorespaces Adding a new Method to the Class\relax }}{8}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Right-Click $\rightarrow $ Add Method}}}{8}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Added Data Field}}}{8}
+\contentsline {figure}{\numberline {15}{\ignorespaces Editing the class name of a Class\relax }}{9}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Double-Click the Class Name}}}{9}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Changed Name}}}{9}
+\contentsline {figure}{\numberline {16}{\ignorespaces Editing a data field in a class\relax }}{9}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Double-Click the Class Name}}}{9}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Changed Name}}}{9}
+\contentsline {figure}{\numberline {17}{\ignorespaces Editing a data field in a class\relax }}{10}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Double-Click the Class Name}}}{10}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Changed Name}}}{10}
