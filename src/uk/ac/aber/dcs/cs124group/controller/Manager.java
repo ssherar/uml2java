@@ -12,8 +12,12 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.UndoableEditEvent;
+import javax.swing.event.UndoableEditListener;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import javax.swing.undo.StateEdit;
+import javax.swing.undo.StateEditable;
 import javax.swing.undo.UndoManager;
 
 import java.io.*;
@@ -26,7 +30,7 @@ import uk.ac.aber.dcs.cs124group.gui.MenuBar;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
 public class Manager extends UndoManager implements ActionListener,
-		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer  {
+		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer, UndoableEditListener  {
 
 	private boolean inDebug = true;
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
@@ -50,6 +54,7 @@ public class Manager extends UndoManager implements ActionListener,
 	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
 
 	public Manager() {
+		super();
 		window = new MainFrame(this);
 		window.setTitle(PROGRAM_NAME);
 
@@ -156,6 +161,8 @@ public class Manager extends UndoManager implements ActionListener,
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
+		} else if (c.equals("Undo")) {
+			this.undo();
 		}
 
 	}
@@ -186,6 +193,7 @@ public class Manager extends UndoManager implements ActionListener,
 		ClassRectangle view = new ClassRectangle(c, true);
 		c.addObserver(view);
 		c.addObserver(this);
+		this.undoableEditHappened(new UndoableEditEvent(canvas, c));
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
 		view.repaint();
@@ -446,6 +454,16 @@ public class Manager extends UndoManager implements ActionListener,
 				}
 			}
 		}
+		
+	}
+	
+	public void undoableEditHappened(UndoableEditEvent arg0) {
+		System.out.println("Fired");
+		StateEdit nEdit = new StateEdit((StateEditable) arg0.getEdit());
+		nEdit.addEdit(arg0.getEdit());
+		nEdit.end();
+		this.addEdit(nEdit);
+		//this.end();
 		
 	}
 

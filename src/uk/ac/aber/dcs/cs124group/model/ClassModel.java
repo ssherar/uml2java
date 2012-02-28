@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.Observable;
 import java.util.Observer;
 import java.awt.Point;
@@ -8,12 +9,13 @@ import java.awt.Dimension;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.StateEditable;
 import javax.swing.undo.UndoableEdit;
 
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
-public class ClassModel extends DocumentElementModel {
+public class ClassModel extends DocumentElementModel implements StateEditable{
 	
 	private TextLabelModel nameLabel;
 	private ClassModel superClass;
@@ -179,6 +181,19 @@ public class ClassModel extends DocumentElementModel {
 					methods.remove(i);
 			}
 		}
+	}
+
+	@Override
+	public void restoreState(Hashtable<?, ?> arg0) {
+		// TODO Auto-generated method stub
+		System.out.println("restoreState fired");
+		this.remove();
+	}
+
+	@Override
+	public void storeState(Hashtable<Object, Object> arg0) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
