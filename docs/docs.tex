@@ -5,13 +5,23 @@
 \usepackage[pdftex]{graphicx}
 \usepackage{color}
 \usepackage{makeidx}
+\usepackage{subfig}
+\usepackage{float}
+
+
 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\newcommand{\tab}{\hspace*{2em}}
 \makeindex
 \begin{document}
 \input{./title.tex}
 
-\begin{center}\LARGE{UML2Java Graphical Designer}
+\newcommand{\imagespace}[0]{\ \ \ \ \ \ \ }
+\setlength\fboxsep{0pt}
+\setlength\fboxrule{0.7pt}
+%\includegraphics[trim= left bottom right top, clip, scale]
+
+\begin{center}\huge{UML2Java Graphical Designer}
 \end{center}
 
 \texttt{UML2Java} is a Graphic User Interface program that allows a user to create UML2 class diagrams. The program will then output the class files from the created class diagram including all relevant fields, methods and relationships to other classes. The UML designer was created as a requirement for our first year group project. 
@@ -24,72 +34,208 @@
 
 \subsection{Create new Class Diagram} \index{File!Create new diagram}
 To create a new Class Diagram, go to the top menu bar and press \texttt{File $\rightarrow$ New}
-
-\begin{center} \includegraphics[trim = 0pt 500pt 0pt 0pt, clip, scale=0.4]{./images/file-new.png} \end{center}
+\begin{figure}[H] \begin{center} 
+	\fbox{\includegraphics[trim = 0pt 200pt 0pt 0pt, clip, scale=1.2]{./images/file-new.png}}
+	\caption{Creating a new Diagram} \vspace{-20pt}
+\end{center} \end{figure}
 
 \subsection{Open an existing diagram} \index{File!Open existing diagram}
 To open a previously saved diagram, go to the top menu bar and press \texttt{File $\rightarrow$ Open...} or simply press \texttt{CTRL+O}
 This will open up a new window asking for the location of the file you wish to open
-\begin{center} \includegraphics[trim = 0pt 300pt 700pt 0pt, clip, scale=0.4]{./images/file-open1.png}     
-\includegraphics[scale=0.4]{./images/file-open2.png} \end{center}
+
+\begin{center} \begin{figure}[H]
+\vspace{-20pt}
+\subfloat[File $\rightarrow$ Open]{\label{fig:open}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/file-open1.png}}\imagespace}
+\subfloat[Select File to open]{\label{fig:openSelect}\includegraphics[scale=1]{./images/file-open2.png}}
+\caption{Opening an existing diagram} 
+\vspace{-20pt}
+ \end{figure} \end{center}
 
 \subsection{Saving a diagram} \index{File!Save a Diagram}
 To save a diagram, go to the top menu bar and press \texttt{File $\rightarrow$ Save/Save as...} or simply press \texttt{CTRL+S}
-\begin{center} \includegraphics[trim = 0pt 300pt 700pt 0pt, clip, scale=0.4]{./images/file-save1.png}     
-\includegraphics[scale=0.4]{./images/file-save2.png} \end{center}
-\newpage
+
+\begin{center} \begin{figure}[H]
+\vspace{-20pt}
+\subfloat[File $\rightarrow$ Save] {\label{fig:save}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/file-save1.png}}\imagespace} 
+\subfloat[Select Save Location]{\label{fig:saveSelect}\fbox{\includegraphics[scale=1]{./images/file-save2.png}}}
+\caption{Saving a diagram} \vspace{-20pt} 
+\end{figure} \end{center}
 
 \subsection{Printing a Diagram} \index{File!Printing a diagram}
 To print a created diagram, go to the top bar and press \texttt{File $\rightarrow$ Print} or simply press \texttt{CTRL+P} and select the desired printer from the open window
 
+\begin{figure}[H] \begin{center} 
+\vspace{-20pt}
+\subfloat[File $\rightarrow$ Print] {\label{fig:print}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/file-print1.png}}\imagespace} 
+\subfloat[Select Printer]{\label{fig:printerSelect}\fbox{\includegraphics[scale=0.6]{./images/file-print2.png}}}
+\caption{Printing a diagram} \vspace{-20pt} 
+\end{center} \end{figure}
+
 \subsection{Exiting the Designer} \index{File!Exiting UML2Java}
 To end the current session in \texttt{UML2Java}
+\begin{figure}[H] \begin{center} 
+\label{fig:exit}\fbox{\includegraphics[trim = 0pt 200pt 300pt 0pt, clip, scale=1.2]{./images/file-exit.png}}
+\caption{Exiting the Designer}
+\vspace{-20pt}
+\end{center} \end{figure}
 
 \section{Edit Menu}
 \subsection{Undoing an Action} \index{Edit!Undo}
 If you require to undo the previous action, go to the top bar and press \texttt{Edit $\rightarrow$ Undo} or press \texttt{CTRL+Z} from the keyboard
-\begin{center} \includegraphics[trim = 0pt 500pt 0pt 0pt, clip, scale=0.45]{./images/edit-undo.png} \end{center}
+\begin{figure}[H] \begin{center} 
+\label{fig:undo}\fbox{\includegraphics[trim = 0pt 200pt 300pt 0pt, clip, scale=1.2]{./images/edit-undo.png}}
+\caption{Undo last Action}
+\vspace{-20pt}
+\end{center} \end{figure} 
+\newpage
 \subsection{Redoing an Action} \index{Edit!Redo}
 if you need to redo a previously undone action, simply go to the top bar and press \texttt{Edit $\rightarrow$ Redo} or press \texttt{CTRL+Y} from your keyboard
-\begin{center} \includegraphics[trim = 0pt 500pt 0pt 0pt, clip, scale=0.45]{./images/edit-redo.png} \end{center}
+
+\begin{figure}[H] \begin{center} 
+\label{fig:redo}\fbox{\includegraphics[trim = 0pt 200pt 300pt 0pt, clip, scale=1.2]{./images/edit-redo.png}}
+\caption{Redoing an Action}
+\vspace{-20pt}
+\end{center} \end{figure} 
 
 \section{Editing Canvas Settings}
 \subsection{Resize the Canvas} \index{Canvas Settings!Resize}
 If you require a different canvas size , you can do this from the top menu, pressing \texttt{Canvas $\rightarrow$ Resize}
-\newpage %can be deleted once images become available
+
+ \begin{figure}[H] \begin{center}
+\subfloat[Canvas $\rightarrow$ Resize...] {\label{fig:resizeOption}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/canvas-resize1.png}}\imagespace} 
+%\subfloat[Select resize options]{\label{fig:resizeSet}\fbox{\includegraphics[scale=1]{./images/canvas-resize2.png}}}
+\caption{Printing a diagram} \vspace{-20pt} 
+\end{center} \end{figure} 
 
 \subsection{Fitting to Diagram} \index{Canvas Settings!Fit to Diagram}
 The canvas menu option also allows you to resize the canvas to a state where all of the current contents of the diagram will be able to be seen with little white space around the resulting design, to achieve this press \texttt{Canvas $\rightarrow$ Fit to Diagram}
-\begin{center} \includegraphics[trim = 0pt 500pt 0pt 0pt, clip, scale=0.45]{./images/canvas-fitto.png} \end{center}
+\begin{figure}[H] \begin{center}
 
+\label{fig:fitDiagram}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/canvas-fit.png}}
+\caption{Fit diagram to visible canvas}
+\vspace{-20pt}
+\end{center} \end{figure} 
+\newpage
 \section{Exporting}
 \subsection{Export to Code} \index{Exporting!Code}
-To create the code files of your created diagram, go to the top bar and select \texttt{Export $\rightarrow$ Code} this will generate the .java files of your created diagram, it will take into account any relationships you have created between classes, any variable declarations you have made, and methods you have created. Or you can go to the left menu bar and select \texttt{Export to Java} from the list there. \par
+To create the code files of your created diagram, go to the top bar and select \texttt{Export $\rightarrow$ Code} this will generate the .java files of your created diagram, it will take into account any relationships you have created between classes, any variable declarations you have made, and methods you have created. Or you can go to the left menu bar and select \texttt{Export to Java} from the list there
 
-\begin{center}\includegraphics[trim = 0pt 300pt 700pt 0pt, clip, scale=0.4]{./images/export-code1.png}
-\includegraphics[trim = 0pt 300pt 700pt 0pt, clip, scale=0.4]{./images/export-code2.png} \end{center}
+\begin{figure}[H] \begin{center}
+\subfloat[Export $\rightarrow$ Code] {\label{fig:exportcode}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.075]{./images/export-code1.png}}} \imagespace
+\subfloat[Export to Java...] {\label{fig:exportJava}\fbox{\includegraphics[trim = 0pt 355pt 450pt 0pt, clip, scale=0.6]{./images/export-code2.png}}} \end{center}
+You will then be asked to select a directory to save the code files to, you can select a existing directory or create a new one
+\begin{center}
+\subfloat[Choose Directory to create files] {\label{fig:exportJavaDirectory}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.45]{./images/export-code-directory.png}}}
+\caption{Exporting to Java code}
+\end{center}
+\vspace{-20pt}
+\end{figure}
 
 \subsection{Export Image of Diagram}\index{Exporting!Image}
 To create an image file of the class diagram you have created, go to \texttt{Export $\rightarrow$ Image} and an save box will appear, where you can select the location of where you wish to save the file and also the file type, either \texttt{.png} or \texttt{.jpg}
+\begin{figure}[H]
+\begin{center}
+	\subfloat[Export $\rightarrow$ Image] {\label{fig:exportImage}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/export-image1.png}}} \imagespace
+	\subfloat[Choose Directory to save image] {\label{fig:exportImageLoc}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.5]{./images/export-image2.png}}}
+\caption{Export Diagram as Image}
+\end{center}
+\end{figure}
 
 \newpage
+
 \section{Adding Elements to the Class Diagram}
 \subsection{Adding a new class}\index{Adding to diagram!Add new Class}
 To create a new class on the diagram, go to the left-hand menu and select \texttt{New Class}
-\begin{center}\includegraphics[trim = 0pt 300pt 700pt 0pt, clip, scale=0.4]{./images/addnewclass1.png} \end{center}
-To make sure that you have selected to add a new class, once pressed a message will appear in the status bar at the bottom of the window
-\begin{center}\includegraphics[trim = 0pt 0pt 500pt 675pt, clip, scale=0.7]{./images/addnewclass2.png} \end{center}
+\begin{figure}[H]
+\begin{center}
+	\subfloat[Add new class] {\label{fig:addClass1}\fbox{\includegraphics[trim = 0pt 350pt 450pt 0pt, clip, scale=0.6]{./images/addNewClass1.png}}}
+\end{center}
+
+To make sure that you have selected to add a new class, once pressed, a message will appear in the status bar at the bottom of the window
+\begin{center}
+\subfloat[Click to create new class] {\label{fig:addClass2}\fbox{\includegraphics[trim = 0pt 0pt 300pt 300pt, clip, scale=0.4]{./images/addNewClass2.png}}}
+\end{center}
+
 To add the class to the diagram, left-click on the white canvas and your new class will appear
-\begin{center}\includegraphics[scale=0.3]{./images/addnewclass3.png} \end{center}
+
+\begin{center}
+\subfloat[Added Class]{\label{fig:addClass3}\fbox{\includegraphics[scale=0.4]{./images/addNewClass3.png}}} \end{center}
+
 You will recieve confirmation via the status bar at the bottom of the screen, giving the x and y co-ordinates of the generated class box
-\begin{center}\includegraphics[trim = 0pt 0pt 500pt 675pt , clip, scale=0.7]{./images/addnewclass3.png} \end{center}
+\caption{Adding a new class to diagram}
+\vspace{-10pt}
+\end{figure}
 \newpage
+\subsubsection{Adding Data fields to the new Class}
+To add a new Data field to the Created Class, \texttt{Right Click} on the class, and select \texttt{Add data field}, the new data field will then be added to the diagram.
+\begin{figure}[H]
+\begin{center}
+\subfloat[Right-Click $\rightarrow$ Add data field] {\label{fig:addData}\fbox{\includegraphics[trim = 105pt 100pt 95pt 60pt, clip, scale=1]{./images/addDataField1.png}}} \imagespace
+\subfloat[Added Data Field] {\label{fig:addedData}\fbox{\includegraphics[trim = 105pt 100pt 95pt 60pt, clip, scale=1]{./images/addDataField2.png}}}
+\caption{Adding a new Data Field to the Class}
+\end{center}
+\end{figure}
+
+\subsubsection{Adding Methods to the new Class}
+to add a new method to the class, \texttt{Right Click} on the class, and select \texttt{Add method}, the new method will then be added to the diagram
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Right-Click $\rightarrow$ Add Method] {\label{fig:addMethod}\fbox{\includegraphics[trim = 125pt 100pt 75pt 60pt, clip, scale=1]{./images/addMethod1.png}}} \imagespace
+\subfloat[Added Data Field] {\label{fig:addedMethod}\fbox{\includegraphics[trim = 125pt 100pt 75pt 60pt, clip, scale=1]{./images/addMethod2.png}}}
+\caption{Adding a new Method to the Class}
+\end{center}
+\end{figure}
+
+\newpage
+
 \subsection{Adding a new Relationship between classes}\index{Adding to diagram!Add new Relationship}
 To add a relationship between two classes, press \texttt{New Relationship} from the left-hand menu
 
+\section{Editing}
+\subsection{Changing the Class Name}\index{Editing!Edit class Name}
+To change the class name of a class added to the diagram \emph{(see Adding new Class)} and Double-Click the class name, the text should highlight and you can then enter the new name, press return to confirm your new Class Name
 
+\begin{figure}[H]
+\begin{center}
+\subfloat[Double-Click the Class Name] {\label{fig:editClassName}\fbox{\includegraphics[trim = 135pt 90pt 65pt 70pt, clip, scale=1]{./images/editClassName1.png}}} \imagespace
+\subfloat[Changed Name] {\label{fig:editedClassName}\fbox{\includegraphics[trim = 135pt 90pt 65pt 70pt, clip, scale=1]{./images/editClassName2.png}}}
+\caption{Editing the class name of a Class}
+\end{center}
+\end{figure}
 
+\subsection{Editing a Data Field}\index{Editing!Edit data field}
+To change a data field in a class added to the diagram \emph{(see Adding new Class \& Adding data fields)} Double-Click the data field you wish to change, the text should highlight and you can then edit the data field, your edit \textbf{MUST} be in the format\\*
+\tab \tab \textbf{(+,-,\#) dataFieldName : DataType}\\*
+or if initialised\\* 
+\tab \tab \textbf{(+,-,\#) dataFieldName : DataType = initialisation}\\*
+Press Return $\hookleftarrow$ to confirm your new Class Name
+\begin{figure}[H]
+\begin{center}
+\subfloat[Double-Click the Class Name] {\label{fig:editDataField}\fbox{\includegraphics[trim = 135pt 90pt 65pt 70pt, clip, scale=1]{./images/editDataField1.png}}} \imagespace
+\subfloat[Changed Name] {\label{fig:editedDataField}\fbox{\includegraphics[trim = 135pt 90pt 65pt 70pt, clip, scale=1]{./images/editDataField2.png}}}
+\caption{Editing a data field in a class}
+\end{center}
+\end{figure}
 
 \newpage
+
+\subsection{Editing a Method in a Class}\index{Editing!Edit Method}
+To change a method in a class added to the diagram \emph{(see Adding new Class \& Adding Methods)} Double-Click the method you wish to change, the text should highlight and you can then edit the method definition, you edit \emph{MUST} be in the format \\*
+\tab \tab \textbf{(+,-,\#) methodName() : Return Type}\\* 
+or if arguments are to be passed into the method\\* 
+\tab \tab \textbf{(+,-,\#) methodName(arg1 : Arg1Type, arg2 : Arg2Type...) : ReturnType}\\*
+Press Return $\hookleftarrow$ to confirm your new Class Name
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Double-Click the Class Name] {\label{fig:editMethod}\fbox{\includegraphics[trim = 135pt 90pt 65pt 70pt, clip, scale=1]{./images/editMethod1.png}}} \imagespace
+\subfloat[Changed Name] {\label{fig:editedMethod}\fbox{\includegraphics[trim = 135pt 90pt 65pt 70pt, clip, scale=1]{./images/editMethod2.png}}}
+\caption{Editing a method in a class}
+\end{center}
+\end{figure}
+
+\newpage
+\listoffigures
 \printindex
 \end{document}

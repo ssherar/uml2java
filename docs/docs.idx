@@ -4,10 +4,13 @@
 \indexentry{File!Printing a diagram}{4}
 \indexentry{File!Exiting UML2Java}{4}
 \indexentry{Edit!Undo}{4}
-\indexentry{Edit!Redo}{4}
-\indexentry{Canvas Settings!Resize}{4}
+\indexentry{Edit!Redo}{5}
+\indexentry{Canvas Settings!Resize}{5}
 \indexentry{Canvas Settings!Fit to Diagram}{5}
-\indexentry{Exporting!Code}{5}
-\indexentry{Exporting!Image}{5}
-\indexentry{Adding to diagram!Add new Class}{6}
-\indexentry{Adding to diagram!Add new Relationship}{7}
+\indexentry{Exporting!Code}{6}
+\indexentry{Exporting!Image}{6}
+\indexentry{Adding to diagram!Add new Class}{7}
+\indexentry{Adding to diagram!Add new Relationship}{9}
+\indexentry{Editing!Edit class Name}{9}
+\indexentry{Editing!Edit data field}{9}
+\indexentry{Editing!Edit Method}{10}

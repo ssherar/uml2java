@@ -6,13 +6,19 @@
 \contentsline {subsection}{\numberline {1.5}Exiting the Designer}{4}
 \contentsline {section}{\numberline {2}Edit Menu}{4}
 \contentsline {subsection}{\numberline {2.1}Undoing an Action}{4}
-\contentsline {subsection}{\numberline {2.2}Redoing an Action}{4}
-\contentsline {section}{\numberline {3}Editing Canvas Settings}{4}
-\contentsline {subsection}{\numberline {3.1}Resize the Canvas}{4}
+\contentsline {subsection}{\numberline {2.2}Redoing an Action}{5}
+\contentsline {section}{\numberline {3}Editing Canvas Settings}{5}
+\contentsline {subsection}{\numberline {3.1}Resize the Canvas}{5}
 \contentsline {subsection}{\numberline {3.2}Fitting to Diagram}{5}
-\contentsline {section}{\numberline {4}Exporting}{5}
-\contentsline {subsection}{\numberline {4.1}Export to Code}{5}
-\contentsline {subsection}{\numberline {4.2}Export Image of Diagram}{5}
-\contentsline {section}{\numberline {5}Adding Elements to the Class Diagram}{6}
-\contentsline {subsection}{\numberline {5.1}Adding a new class}{6}
-\contentsline {subsection}{\numberline {5.2}Adding a new Relationship between classes}{7}
+\contentsline {section}{\numberline {4}Exporting}{6}
+\contentsline {subsection}{\numberline {4.1}Export to Code}{6}
+\contentsline {subsection}{\numberline {4.2}Export Image of Diagram}{6}
+\contentsline {section}{\numberline {5}Adding Elements to the Class Diagram}{7}
+\contentsline {subsection}{\numberline {5.1}Adding a new class}{7}
+\contentsline {subsubsection}{\numberline {5.1.1}Adding Data fields to the new Class}{8}
+\contentsline {subsubsection}{\numberline {5.1.2}Adding Methods to the new Class}{8}
+\contentsline {subsection}{\numberline {5.2}Adding a new Relationship between classes}{9}
+\contentsline {section}{\numberline {6}Editing}{9}
+\contentsline {subsection}{\numberline {6.1}Changing the Class Name}{9}
+\contentsline {subsection}{\numberline {6.2}Editing a Data Field}{9}
+\contentsline {subsection}{\numberline {6.3}Editing a Method in a Class}{10}
