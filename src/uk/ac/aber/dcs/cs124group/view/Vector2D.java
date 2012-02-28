@@ -33,7 +33,7 @@ public class Vector2D extends Point {
 			else if (this.x == 0) {
 				return(b.x == 0);
 			}
-			else return (this.y / b.y - this.x / b.x < 0.001);
+			else return (Math.abs(b.y / this.y) - Math.abs(b.x / this.x) < 0.1);
 		}
 		else return false;
 	}
@@ -42,11 +42,12 @@ public class Vector2D extends Point {
 		return (this.x != 0 || this.y != 0);
 	}
 	
+	/** If b = k * this, returns k */
 	public double getColinearityFactor(Vector2D b) {
 		if(this.nonZero() && b.nonZero() && this.colinear(b)) {
 			if(this.y != 0)
-				return b.y / this.y;
-			else return b.x / this.x;
+				return b.y / (double) this.y;
+			else return b.x / (double) this.x;
 		}
 		else return 0;
 	}

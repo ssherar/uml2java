@@ -20,14 +20,34 @@ public class RelationshipArrow extends DocumentElementView {
 	
 	@Override
 	public boolean contains(Point p) {
-		return this.contains(p.x, p.y);
+		
+		for(int j = 1; j < this.model.getPoints().size(); j++) {
+			Point p1 = this.model.getPoints().get(j - 1);
+			Point p2 = this.model.getPoints().get(j);
+			
+			Vector2D pVector = new Vector2D(p.x - p1.x, p.y - p1.y);
+			Vector2D segmentVector = new Vector2D(p2.x - p1.x, p2.y - p1.y);
+			Vector2D projection = pVector.projection(segmentVector);
+			
+			if(segmentVector.getColinearityFactor(projection) < 1.001 && segmentVector.getColinearityFactor(projection) > 0)  {
+				double distanceToSegment = p.distance(p1.x + projection.x, p1.y + projection.y);
+				System.out.println("Distance to segment is " + distanceToSegment);
+				if (distanceToSegment < 10) System.out.println("CONTAINS the point " + p);
+				return (distanceToSegment < 10);
+			}
+
+		}
+		
+		return false;
 	}
 	
 	@Override
 	public boolean contains(int x, int y) {
-		return false;
+		
+		return this.contains(new Point(x,y));
+		
 	}
-
+	
 	@Override
 	public void update(Observable o, Object s) {
 		// TODO Auto-generated method stub
