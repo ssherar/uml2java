@@ -96,12 +96,12 @@ public class Exporter {
 		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fcCode.setAcceptAllFileFilterUsed(false);
 		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
-		String chosenDirectory = fcCode.getSelectedFile().getPath();
+		String chosenDirectory = fcCode.getSelectedFile().getPath() + "/";
 
 		manager.setWaitCursor(false);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println(fcCode.getSelectedFile());
+			System.out.println(fcCode.getSelectedFile().getPath() + "/");
 			for (int j = fileNames.size() - 1; j >= 0; j--) {
 				File f;
 				
