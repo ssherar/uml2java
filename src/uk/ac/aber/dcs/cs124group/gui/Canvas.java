@@ -52,7 +52,7 @@ public class Canvas extends JPanel {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
 		g.setFont(font);
-		g.scale(zoomFactor, zoomFactor);
+		//g.scale(zoomFactor, zoomFactor);
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);

@@ -39,6 +39,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    canvas = new Canvas(manager);
 	    JScrollPane scroll = new JScrollPane();
 	    scroll.setViewportView(canvas);
+	    
 	    scroll.setPreferredSize(new Dimension(900,800));
 		canvas.setPreferredSize(new Dimension(2000,2000));
 	    

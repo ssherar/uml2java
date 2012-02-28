@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.*;
 import javax.swing.undo.*;
 import uk.ac.aber.dcs.cs124group.view.*;
@@ -21,8 +22,11 @@ public class Relationship extends DocumentElementModel implements Observer {
 		this.goingFrom = from;
 		this.goingTo = to;
 		
-		points.add(goingFrom.getLocation());
-		points.add(goingTo.getLocation());
+		RelationshipEndPoint start = new RelationshipEndPoint(goingFrom.getLocation(), new Rectangle(goingFrom.getLocation(), goingFrom.getSize()));
+		RelationshipEndPoint end = new RelationshipEndPoint(goingTo.getLocation(), new Rectangle(goingTo.getLocation(), goingTo.getSize()));
+		
+		points.add(start);
+		points.add(end);
 		
 		
 	}
@@ -93,12 +97,36 @@ public class Relationship extends DocumentElementModel implements Observer {
 	public ArrayList<Point> getPoints() {
 		return points;
 	}
+	
+	private void updateWrapAroundEndPoints() {
+		
+	}
 
 	
 
 	@Override
 	public void update(Observable o, Object s) {
-		// TODO Auto-generated method stub
+		if(!(s instanceof String)) {
+			throw new IllegalArgumentException("String expected");
+		}
+		else if(s.equals("locationChanged") || s.equals("sizeChanged")) {
+			if(((ClassModel) o).equals(this.goingFrom)) {
+				((RelationshipEndPoint)this.points.get(0)).updateTo(
+						new Rectangle(this.goingFrom.getLocation(), this.goingFrom.getSize()));
+				this.setChanged();
+				this.notifyObservers("startPointChanged");
+			}
+			else {
+				((RelationshipEndPoint)this.points.get(this.points.size() - 1)).updateTo(
+						new Rectangle(this.goingTo.getLocation(), this.goingTo.getSize()));
+
+				this.setChanged();
+				this.notifyObservers("endPointChanged");
+			}
+		}
+		else if(s.equals("wasRemoved")) {
+			this.remove();
+		}
 		
 	}
 

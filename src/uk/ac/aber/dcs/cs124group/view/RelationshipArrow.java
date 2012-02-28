@@ -31,8 +31,6 @@ public class RelationshipArrow extends DocumentElementView {
 			
 			if(segmentVector.getColinearityFactor(projection) < 1.001 && segmentVector.getColinearityFactor(projection) > 0)  {
 				double distanceToSegment = p.distance(p1.x + projection.x, p1.y + projection.y);
-				System.out.println("Distance to segment is " + distanceToSegment);
-				if (distanceToSegment < 10) System.out.println("CONTAINS the point " + p);
 				return (distanceToSegment < 10);
 			}
 
@@ -42,15 +40,20 @@ public class RelationshipArrow extends DocumentElementView {
 	}
 	
 	@Override
-	public boolean contains(int x, int y) {
-		
-		return this.contains(new Point(x,y));
-		
+	public boolean contains(int x, int y) {		
+		return this.contains(new Point(x,y));		
 	}
 	
 	@Override
 	public void update(Observable o, Object s) {
-		// TODO Auto-generated method stub
+		if(!(s instanceof String)) {
+			throw new IllegalArgumentException("String expected");
+		}
+		else if(s.equals("wasRemoved")) {
+			this.setVisible(false);
+			this.getParent().remove(this);
+		}
+		else this.repaint();
 
 	}
 	
@@ -69,11 +72,11 @@ public class RelationshipArrow extends DocumentElementView {
 		
 		Stroke tmp = g.getStroke();
 		
-		double finalSegmentSlope = (points.get(points.size() - 1).y - points.get(points.size() - 2).y) /
-                				   (points.get(points.size() - 1).x - points.get(points.size() - 2).x);
+		/*double finalSegmentSlope = (points.get(points.size() - 1).y - points.get(points.size() - 2).y) /
+                				   (points.get(points.size() - 1).x - points.get(points.size() - 2).x);*/
 		
 		if(this.model.getType() == RelationshipType.IMPLEMENTS) {
-			g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[] {10}, 5));
+			g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[] {10}, 0));
 		}
 		
 		if(this.model.getType() == RelationshipType.COMPOSITION) {

@@ -292,7 +292,7 @@ public class ClassRectangle extends DocumentElementView {
 			this.addAttributeToModel(AttributeType.METHOD);
 		
 		} else if(arg.equals("wasRemoved")) {
-			
+			this.getParent().remove(this);
 			this.setVisible(false);
 		}
 		
