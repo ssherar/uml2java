@@ -45,6 +45,7 @@ public class ClassRectangle extends DocumentElementView {
 			name = new LabelView(nameLabel);
 		
 			nameLabel.addObserver(name);
+			
 			model.setNameLabel(nameLabel);
 			this.add(name);
 			name.enableEdit();
@@ -52,6 +53,7 @@ public class ClassRectangle extends DocumentElementView {
 		else {
 			name = new LabelView(model.getNameLabel());
 			model.getNameLabel().addObserver(name);
+			model.getNameLabel().addUndoableEditListener(model.getUndoableEditListener());
 			this.add(name);
 			
 			for(int i = 0; model.getDataFields() != null && i < model.getDataFields().size(); i++) {
@@ -75,7 +77,6 @@ public class ClassRectangle extends DocumentElementView {
 
 
 		name.setAlignmentInParent(JTextField.CENTER); 
-
 
 		ClassController listener = new ClassController(this.model);
 		this.addMouseListener(listener);
@@ -140,6 +141,7 @@ public class ClassRectangle extends DocumentElementView {
 				defaultRepresentation, type);
 		LabelView newView = new LabelView(newAttribute);
 		newAttribute.addObserver(newView);
+		
 		newView.setFont(this.getFont());
 		model.addAttribute(newAttribute);
 		

@@ -7,6 +7,7 @@ import java.util.Observer;
 import java.awt.Point;
 import java.awt.Dimension;
 
+import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.*;
 
 import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
@@ -82,6 +83,7 @@ public class ClassModel extends DocumentElementModel{
 	}
 
 	public void addAttribute(Attribute a)  {
+		a.addUndoableEditListener(this.getUndoableEditListener());
 		
 		if(a.getType() == AttributeType.METHOD)
 			this.methods.add(a);
@@ -222,6 +224,12 @@ public class ClassModel extends DocumentElementModel{
 					methods.remove(i);
 			}
 		}
+	}
+	
+	@Override
+	public void addUndoableEditListener(UndoableEditListener l) {
+		super.addUndoableEditListener(l);
+		nameLabel.addUndoableEditListener(l);
 	}
 
 

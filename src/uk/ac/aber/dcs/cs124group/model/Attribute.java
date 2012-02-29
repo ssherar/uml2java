@@ -36,16 +36,16 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		this.representation = representation;
 		this.type = type;
 		initializeFields();		
-		this.setText(representation);
+		this.setText(representation, false);
 	}
 	
 	public void addArgsElement(String argType, String argName){
 		args.add(argType + " " + argName);
 	}
 	
-	//@Override
-	public void setText(String text) {
-		super.setText(text);
+	@Override
+	public void setText(String text, boolean undoable) {
+		super.setText(text, undoable);
 		this.representation = text;
 		initializeFields();
 	}

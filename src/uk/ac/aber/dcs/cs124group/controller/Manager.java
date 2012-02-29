@@ -200,6 +200,7 @@ public class Manager extends UndoManager implements ActionListener,
 		view.setFont(document.getPreferences().getFont());
 
 		mod.addObserver(view);
+		mod.addUndoableEditListener(this);
 		document.getPreferences().addObserver(view);
 		
 		document.addElement(mod);
@@ -230,6 +231,7 @@ public class Manager extends UndoManager implements ActionListener,
 		
 		RelationshipArrow arrow = new RelationshipArrow(r);
 		r.addObserver(arrow);
+		r.addUndoableEditListener(this);
 		document.addElement(r);
 		
 		canvas.add(arrow);
@@ -335,6 +337,7 @@ public class Manager extends UndoManager implements ActionListener,
 					DocumentElementView ew = e.getView();
 					ew.setFont(document.getPreferences().getFont());
 					e.addObserver(ew);
+					e.addUndoableEditListener(this);
 					e.addObserver(this);
 					document.getPreferences().addObserver(ew);
 					canvas.add(ew);
