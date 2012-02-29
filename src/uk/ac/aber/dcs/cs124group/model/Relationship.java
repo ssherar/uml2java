@@ -3,7 +3,6 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.*;
-import javax.swing.undo.*;
 import uk.ac.aber.dcs.cs124group.view.*;
 
 public class Relationship extends DocumentElementModel implements Observer {
@@ -31,6 +30,10 @@ public class Relationship extends DocumentElementModel implements Observer {
 		
 	}
 	
+	@Override
+	public RelationshipArrow getView() {
+		return new RelationshipArrow(this);
+	}
 	
 	public void addPoint(Point p) {
 		//TODO: Work out the order of points... convex hull?

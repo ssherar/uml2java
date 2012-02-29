@@ -95,7 +95,7 @@ public class ClassController extends DiagramListener implements ActionListener {
 			Rectangle r = new Rectangle(model.getLocation(), model.getSize());
             r.x += e.getX() - startingMousePosition.x;  
             r.y += e.getY() - startingMousePosition.y;
-			model.setLocation(r.getLocation());
+			model.setLocation(r.getLocation(), true);
 		}
 		else if(model.getPaintState() == ElementPaintState.MOUSED_OVER_RESIZE) {
 			Rectangle r = new Rectangle(model.getLocation(), model.getSize());

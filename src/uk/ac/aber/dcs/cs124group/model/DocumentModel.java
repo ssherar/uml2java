@@ -1,8 +1,11 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.ArrayList;
+import java.util.Observable;
+
 import javax.swing.*;
 import java.awt.Font;
+import java.util.Observer;
 
 public class DocumentModel implements java.io.Serializable {
 
@@ -14,6 +17,9 @@ public class DocumentModel implements java.io.Serializable {
 	
 	private DocumentPreferences preferences;
 	private ArrayList<DocumentElementModel> elements = new ArrayList<DocumentElementModel>();
+	
+	private ArrayList<ArrayList<DocumentElementModel>> pastStates = new ArrayList<ArrayList<DocumentElementModel>>();
+	private int undoIndex = 0;
 	
 	public DocumentModel() {
 		preferences = new DocumentPreferences();
@@ -43,5 +49,6 @@ public class DocumentModel implements java.io.Serializable {
 			}
 		}
 	}
+	
 
 }

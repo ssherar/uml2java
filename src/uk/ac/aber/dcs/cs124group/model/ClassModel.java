@@ -7,11 +7,9 @@ import java.util.Observer;
 import java.awt.Point;
 import java.awt.Dimension;
 
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
-import javax.swing.undo.StateEditable;
-import javax.swing.undo.UndoableEdit;
+import javax.swing.undo.*;
 
+import uk.ac.aber.dcs.cs124group.undo.LocationEdit;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
@@ -81,12 +79,10 @@ public class ClassModel extends DocumentElementModel{
 	}
 
 	public void addAttribute(Attribute a)  {
-		/*this.edits.put((Object) "newAttrib", (Object) this.dataFields);
-		this.storeState(edits);*/
+		
 		if(a.getType() == AttributeType.METHOD)
 			this.methods.add(a);
 		else this.dataFields.add(a);
-		this.storeState("dataField", this.dataFields);
 		
 	}
 	
@@ -170,8 +166,13 @@ public class ClassModel extends DocumentElementModel{
 		return location;
 	}
 
-	public void setLocation(Point location) {
-		this.location = location;
+	public void setLocation(Point l, boolean undoable) {
+		if(undoable) {
+			LocationEdit edit = new LocationEdit(this, this.location, l);
+			this.fireUndoableEvent(edit);
+		}
+		
+		this.location = l;
 		this.setChanged();
 		notifyObservers("locationChanged");
 	}
@@ -192,28 +193,7 @@ public class ClassModel extends DocumentElementModel{
 		}
 	}
 
-	/*@Override
-	public void restoreState(Hashtable<?, ?> arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("restoreState fired");
-		//this.remove();
-	}
 
-	@Override
-	public void storeState(Hashtable<Object, Object> arg0) {
-		// TODO Auto-generated method stub
-		//arg0.put("classModel", this);
-		arg0.putAll(edits);
-		System.out.println("storeState fired");
-	}*/
-	
-	@Override
-	public void restoreState(int i) {
-		Edit e = this.edits.get(i);
-		if(e.getKey().equals("dataField")) {
-			this.dataFields = (ArrayList<Attribute>) e.getValue();
-		}
-	}
 
 
 }

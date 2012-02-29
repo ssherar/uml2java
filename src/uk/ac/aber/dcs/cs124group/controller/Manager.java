@@ -21,7 +21,7 @@ import uk.ac.aber.dcs.cs124group.gui.Canvas;
 import uk.ac.aber.dcs.cs124group.gui.MenuBar;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
-public class Manager implements ActionListener,
+public class Manager extends UndoManager implements ActionListener,
 		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer  {
 
 	private boolean inDebug = true;
@@ -150,11 +150,9 @@ public class Manager implements ActionListener,
 				e1.printStackTrace();
 			}
 		} else if (c.equals("Undo")) {
-			//this.undo();
-			canvas.repaint();
+			this.undo();
 		} else if (c.equals("Redo")) {
-			//this.redo();
-			canvas.repaint();
+			this.redo();
 		}
 
 	}
@@ -185,6 +183,8 @@ public class Manager implements ActionListener,
 		ClassRectangle view = new ClassRectangle(c, true);
 		c.addObserver(view);
 		c.addObserver(this);
+		c.addUndoableEditListener(this);
+
 		//this.undoableEditHappened(new UndoableEditEvent(canvas, c));
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
@@ -449,15 +449,23 @@ public class Manager implements ActionListener,
 		
 	}
 	
-	/*public void undoableEditHappened(UndoableEditEvent arg0) {
-		System.out.println("Fired");
-		StateEdit nEdit = new StateEdit((StateEditable) arg0.getEdit());
-		nEdit.addEdit(arg0.getEdit());
-		nEdit.end();
-		this.addEdit(nEdit);
-		//this.end();
+	
+	private void restoreView() {
 		
-	}*/
+		canvas.removeAll();
+		canvas.repaint();
+		for (int i = 0; i < document.getElements().size(); i++) {
+			DocumentElementModel e = document.getElements().get(i);
+			DocumentElementView ew = e.getView();
+			ew.setFont(document.getPreferences().getFont());
+			e.addObserver(ew);
+			e.addObserver(this);
+			document.getPreferences().addObserver(ew);
+			canvas.add(ew);
+		}
+		canvas.doLayout();
+		canvas.repaint();
+	}
 
 
 }
