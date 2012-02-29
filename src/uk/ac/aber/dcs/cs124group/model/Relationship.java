@@ -11,7 +11,7 @@ public class Relationship extends DocumentElementModel implements Observer {
 	
 	private static final long serialVersionUID = 272724938449188987L;
 	
-	private RelationshipType type = RelationshipType.USES;
+	private RelationshipType type = RelationshipType.COMPOSITION;
 	private ClassModel goingFrom, goingTo;
 	private Cardinality cardinalityFrom, cardinalityTo;
 	private TextLabelModel label;

@@ -82,6 +82,7 @@ public class RelationshipArrow extends DocumentElementView {
 		
 		Point referencePoint = new Point(fromPoint.x + referencePointVector.x, fromPoint.y + referencePointVector.y);
 		
+		
 		AffineTransform rotation = new AffineTransform();
 		rotation.rotate(Math.PI / 6, fromPoint.x, fromPoint.y);
 		
@@ -92,11 +93,39 @@ public class RelationshipArrow extends DocumentElementView {
 		rotation.rotate(-Math.PI / 3, fromPoint.x, fromPoint.y);
 		rotation.transform(referencePoint, arrowPoint2);
 		
-		g.drawLine(arrowPoint1.x, arrowPoint1.y, fromPoint.x, fromPoint.y);
-		g.drawLine(arrowPoint2.x, arrowPoint2.y, fromPoint.x, fromPoint.y);
 		
-		if(this.model.getType() == RelationshipType.COMPOSITION || this.model.getType() == RelationshipType.AGGREGATION) {
+		
+		if(this.model.getType() == RelationshipType.INHERITANCE || this.model.getType() == RelationshipType.IMPLEMENTS) {
+			g.drawLine(arrowPoint1.x, arrowPoint1.y, fromPoint.x, fromPoint.y);
+			g.drawLine(arrowPoint2.x, arrowPoint2.y, fromPoint.x, fromPoint.y);
+			g.drawLine(arrowPoint1.x, arrowPoint1.y, arrowPoint2.x, arrowPoint2.y);
+			xpoints[0] = referencePoint.x;
+			ypoints[0] = referencePoint.y;
+		}
+		
+		else if(this.model.getType() == RelationshipType.USES) {
+			g.drawLine(arrowPoint1.x, arrowPoint1.y, fromPoint.x, fromPoint.y);
+			g.drawLine(arrowPoint2.x, arrowPoint2.y, fromPoint.x, fromPoint.y);
+		}
+		
+		else if(this.model.getType() == RelationshipType.COMPOSITION || this.model.getType() == RelationshipType.AGGREGATION) {
+			Vector2D doubleReferenceVector = referencePointVector.multiplyByScalar(2 * (Math.cos(Math.PI / 6)));
+			Point doubleReferencePoint = new Point(fromPoint.x + doubleReferenceVector.x, fromPoint.y + doubleReferenceVector.y);
+			Polygon diamond = new Polygon();
+			diamond.addPoint(fromPoint.x, fromPoint.y);
+			diamond.addPoint(arrowPoint1.x, arrowPoint1.y);
+			diamond.addPoint(doubleReferencePoint.x, doubleReferencePoint.y);
+			diamond.addPoint(arrowPoint2.x, arrowPoint2.y);
 			
+			xpoints[0] = doubleReferencePoint.x;
+			ypoints[0] = doubleReferencePoint.y;
+			
+			if(this.model.getType() == RelationshipType.COMPOSITION) {
+				g.drawPolygon(diamond);
+			}
+			else {
+				g.fillPolygon(diamond);
+			}
 			
 		}
 		
@@ -104,6 +133,7 @@ public class RelationshipArrow extends DocumentElementView {
 			g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[] {10}, 0));
 		}
 		g.drawPolyline(xpoints, ypoints, points.size());
+	
 		g.setStroke(tmp);
 		
 
