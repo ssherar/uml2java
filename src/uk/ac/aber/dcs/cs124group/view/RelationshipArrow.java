@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Observable;
 
@@ -72,16 +73,35 @@ public class RelationshipArrow extends DocumentElementView {
 		
 		Stroke tmp = g.getStroke();
 		
-		/*double finalSegmentSlope = (points.get(points.size() - 1).y - points.get(points.size() - 2).y) /
-                				   (points.get(points.size() - 1).x - points.get(points.size() - 2).x);*/
+		//We are drawing the arrows at the fromPoint!!!
+		Point fromPoint = points.get(0);
+		Point toPoint   = points.get(1);
+		
+		Vector2D firstSegmentVector = new Vector2D(toPoint.x - fromPoint.x, toPoint.y - fromPoint.y); 
+		Vector2D referencePointVector = firstSegmentVector.multiplyByScalar(15.0 / firstSegmentVector.length());
+		
+		Point referencePoint = new Point(fromPoint.x + referencePointVector.x, fromPoint.y + referencePointVector.y);
+		
+		AffineTransform rotation = new AffineTransform();
+		rotation.rotate(Math.PI / 6, fromPoint.x, fromPoint.y);
+		
+		Point arrowPoint1 = new Point(0,0);
+		Point arrowPoint2 = new Point(0,0);
+		
+		rotation.transform(referencePoint, arrowPoint1);
+		rotation.rotate(-Math.PI / 3, fromPoint.x, fromPoint.y);
+		rotation.transform(referencePoint, arrowPoint2);
+		
+		g.drawLine(arrowPoint1.x, arrowPoint1.y, fromPoint.x, fromPoint.y);
+		g.drawLine(arrowPoint2.x, arrowPoint2.y, fromPoint.x, fromPoint.y);
+		
+		if(this.model.getType() == RelationshipType.COMPOSITION || this.model.getType() == RelationshipType.AGGREGATION) {
+			
+			
+		}
 		
 		if(this.model.getType() == RelationshipType.IMPLEMENTS) {
 			g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[] {10}, 0));
-		}
-		
-		if(this.model.getType() == RelationshipType.COMPOSITION) {
-			//Move last point 7px back along slope
-			
 		}
 		g.drawPolyline(xpoints, ypoints, points.size());
 		g.setStroke(tmp);

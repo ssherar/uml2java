@@ -25,6 +25,10 @@ public class Vector2D extends Point {
 		return new Vector2D(x,y);
 	}
 	
+	public Vector2D multiplyByScalar(double k) {
+		return new Vector2D((int) (this.x * k), (int) (this.y * k));
+	}
+	
 	public boolean colinear(Vector2D b) {
 		if(this.nonZero() && b.nonZero()) {
 			if(this.y == 0) {
