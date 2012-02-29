@@ -5,6 +5,13 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Observable;
 
+import javax.swing.ButtonGroup;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+import javax.swing.JRadioButtonMenuItem;
+
+import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
 import uk.ac.aber.dcs.cs124group.model.Relationship;
 import uk.ac.aber.dcs.cs124group.model.RelationshipType;
 
@@ -17,6 +24,8 @@ public class RelationshipArrow extends DocumentElementView {
 		this.setLocation(new Point(0,0));
 		this.setPreferredSize(new Dimension(100000,100000));
 		this.setOpaque(false);
+		RelationshipPopup menu = new RelationshipPopup(new RelationshipController(this.model));
+		this.setComponentPopupMenu(menu);
 	}
 	
 	@Override
@@ -137,6 +146,33 @@ public class RelationshipArrow extends DocumentElementView {
 		g.setStroke(tmp);
 		
 
+	}
+	
+	public class RelationshipPopup extends JPopupMenu {
+		private RelationshipController listener;
+		
+		private String[] rTypes = {"Aggregation","Composition","Inheritance","Uses","Implements"};
+		public RelationshipPopup(RelationshipController l) {
+			this.listener = l;
+			JMenu changeRelationship = new JMenu("Change Relationship");
+			JMenuItem submenu;
+			
+			ButtonGroup typeGroup = new ButtonGroup();
+			for(String s : rTypes) {
+				//submenu = null;
+				submenu = new JRadioButtonMenuItem(s, s.equals("Uses"));
+				submenu.addActionListener(listener);
+				typeGroup.add(submenu);
+				changeRelationship.add(submenu);
+				
+			}
+			
+			JMenuItem invert = new JMenuItem("Invert");
+			invert.addActionListener(listener);
+				
+			add(changeRelationship);
+			add(invert);
+		}
 	}
 
 }

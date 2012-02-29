@@ -50,6 +50,10 @@ public abstract class DocumentElementModel extends Observable implements java.io
 		this.undoManager = l;
 	}
 	
+	public UndoableEditListener getUndoableEditListener() {
+		return this.undoManager;
+	}
+	
 	protected void fireUndoableEvent(UndoableEdit e) {
 		undoManager.undoableEditHappened(new UndoableEditEvent(this, e));
 		System.out.println("fired");

@@ -7,8 +7,10 @@ import java.util.Observer;
 import java.awt.Point;
 import java.awt.Dimension;
 
+import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.*;
 
+import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
 import uk.ac.aber.dcs.cs124group.undo.LocationEdit;
 import uk.ac.aber.dcs.cs124group.undo.SizeEdit;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
@@ -81,6 +83,7 @@ public class ClassModel extends DocumentElementModel{
 	}
 
 	public void addAttribute(Attribute a)  {
+		a.addUndoableEditListener(this.getUndoableEditListener());
 		
 		if(a.getType() == AttributeType.METHOD)
 			this.methods.add(a);
@@ -114,7 +117,12 @@ public class ClassModel extends DocumentElementModel{
 		return isAbstract;
 	}
 
-	public void setAbstract(boolean isAbstract) {
+	public void setAbstract(boolean isAbstract, boolean undoable) {
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "isAbstract", this.isAbstract, isAbstract);
+			this.fireUndoableEvent(edit);
+		}
+		
 		this.isAbstract = isAbstract;
 		this.setChanged();
 		notifyObservers("flagChanged");
@@ -124,7 +132,11 @@ public class ClassModel extends DocumentElementModel{
 		return isFinal;
 	}
 
-	public void setFinal(boolean isFinal) {
+	public void setFinal(boolean isFinal, boolean undoable) {
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "isFinal", this.isFinal, isFinal);
+			this.fireUndoableEvent(edit);
+		}
 		this.isFinal = isFinal;
 	}
 
@@ -132,7 +144,12 @@ public class ClassModel extends DocumentElementModel{
 		return isStatic;
 	}
 
-	public void setStatic(boolean isStatic){
+	public void setStatic(boolean isStatic, boolean undoable){
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "isStatic", this.isStatic, isStatic);
+			this.fireUndoableEvent(edit);
+		}
+
 		this.isStatic = isStatic;
 		this.setChanged();
 		notifyObservers("flagChanged");
@@ -160,7 +177,11 @@ public class ClassModel extends DocumentElementModel{
 		return this.superClass;
 	}
 
-	public void setVisibility(IVisibility visibility) {
+	public void setVisibility(IVisibility visibility, boolean undoable) {
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "visibility",this.visibility, visibility);
+			this.fireUndoableEvent(edit);
+		}
 		this.visibility = visibility;
 	}
 
@@ -188,6 +209,7 @@ public class ClassModel extends DocumentElementModel{
 		this.compoundEdit = new CompoundEdit();
 	}
 	
+	
 	public void cleanUp() {
 		if(dataFields != null && methods != null) {
 			for(int i = 0; i < dataFields.size(); i++) {
@@ -203,8 +225,12 @@ public class ClassModel extends DocumentElementModel{
 			}
 		}
 	}
-
-
+	
+	@Override
+	public void addUndoableEditListener(UndoableEditListener l) {
+		super.addUndoableEditListener(l);
+		nameLabel.addUndoableEditListener(l);
+	}
 
 
 }

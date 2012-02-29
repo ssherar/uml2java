@@ -40,8 +40,6 @@ public class Manager extends UndoManager implements ActionListener,
 
 	private DocumentModel document;
 
-	private boolean edited = false;
-	private LabelView currentEdited;
 	
 	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
 
@@ -193,7 +191,6 @@ public class Manager extends UndoManager implements ActionListener,
 		view.repaint();
 
 		canvas.repaint();
-		this.edited = true;
 	}
 
 	private void addNewLabel(Point p) {
@@ -203,6 +200,7 @@ public class Manager extends UndoManager implements ActionListener,
 		view.setFont(document.getPreferences().getFont());
 
 		mod.addObserver(view);
+		mod.addUndoableEditListener(this);
 		document.getPreferences().addObserver(view);
 		
 		document.addElement(mod);
@@ -213,7 +211,6 @@ public class Manager extends UndoManager implements ActionListener,
 		view.enableEdit();
 
 		canvas.repaint();
-		this.edited = true;
 	}
 	
 	public void addNewRelationship() {
@@ -234,6 +231,7 @@ public class Manager extends UndoManager implements ActionListener,
 		
 		RelationshipArrow arrow = new RelationshipArrow(r);
 		r.addObserver(arrow);
+		r.addUndoableEditListener(this);
 		document.addElement(r);
 		
 		canvas.add(arrow);
@@ -339,6 +337,7 @@ public class Manager extends UndoManager implements ActionListener,
 					DocumentElementView ew = e.getView();
 					ew.setFont(document.getPreferences().getFont());
 					e.addObserver(ew);
+					e.addUndoableEditListener(this);
 					e.addObserver(this);
 					document.getPreferences().addObserver(ew);
 					canvas.add(ew);
@@ -393,10 +392,11 @@ public class Manager extends UndoManager implements ActionListener,
 
 	public void exit() {
 
-		if (this.edited && !this.inDebug) {
+		if ((this.canUndo() || this.canRedo()) && !this.inDebug) {
 			Object[] options = { "Save", "Don't Save", "Cancel" };
 			int n = JOptionPane
-					.showOptionDialog(window,"Would you like to save your changes? Any unsaved changes will be lost.","Warning!", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE, null, options,options[2]);
+					.showOptionDialog(window,"Would you like to save your changes? Any unsaved changes will be lost.",
+							"Warning!", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE, null, options,options[2]);
 			if (n != 2 || n != JOptionPane.CANCEL_OPTION) {
 				if (n == 0) {
 					save();
@@ -451,23 +451,6 @@ public class Manager extends UndoManager implements ActionListener,
 		
 	}
 	
-	
-	private void restoreView() {
-		
-		canvas.removeAll();
-		canvas.repaint();
-		for (int i = 0; i < document.getElements().size(); i++) {
-			DocumentElementModel e = document.getElements().get(i);
-			DocumentElementView ew = e.getView();
-			ew.setFont(document.getPreferences().getFont());
-			e.addObserver(ew);
-			e.addObserver(this);
-			document.getPreferences().addObserver(ew);
-			canvas.add(ew);
-		}
-		canvas.doLayout();
-		canvas.repaint();
-	}
 
 
 }

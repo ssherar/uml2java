@@ -47,6 +47,8 @@ public class Relationship extends DocumentElementModel implements Observer {
 
 	public void setType(RelationshipType type) {
 		this.type = type;
+		this.setChanged();
+		this.notifyObservers("typeChanged");
 	}
 
 

@@ -4,6 +4,7 @@ import java.awt.*;
 
 import javax.swing.JTextField;
 
+import uk.ac.aber.dcs.cs124group.undo.TextEdit;
 import uk.ac.aber.dcs.cs124group.view.LabelView;
 
 
@@ -34,7 +35,13 @@ public class TextLabelModel extends DocumentElementModel {
 		return text;
 	}
 
-	public void setText(String text) {
+	public void setText(String text, boolean undoable) {
+		if(undoable) {
+			TextEdit edit = new TextEdit(this, this.text, text);
+			this.fireUndoableEvent(edit);
+		}
+		
+		
 		this.text = text;
 		this.setChanged();
 		this.notifyObservers("textChanged");

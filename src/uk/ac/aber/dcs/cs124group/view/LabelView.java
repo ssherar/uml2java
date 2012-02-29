@@ -166,8 +166,8 @@ public class LabelView extends DocumentElementView {
 			this.setVisible(false);
 			return;
 		}
-		this.setText(a.getText());
-		model.setText(a.getText());
+		
+		model.setText(a.getText(), true);
 		suspendedParent.add(this);
 		this.getParent().repaint();
 	}
@@ -190,9 +190,11 @@ public class LabelView extends DocumentElementView {
 	}
 	
 	private void updateModel(TextLabelModel o, String arg) {
-		//text
+		if(arg.equals("textChanged")) {
+			this.setText(model.getText());
+		}
 		//location
-		if(arg.equals("locationChanged")) {
+		else if(arg.equals("locationChanged")) {
 			this.setLocation(o.getLocation());
 		}
 		//editing
