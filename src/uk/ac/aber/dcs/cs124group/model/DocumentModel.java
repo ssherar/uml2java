@@ -18,8 +18,6 @@ public class DocumentModel implements java.io.Serializable {
 	private DocumentPreferences preferences;
 	private ArrayList<DocumentElementModel> elements = new ArrayList<DocumentElementModel>();
 	
-	private ArrayList<ArrayList<DocumentElementModel>> pastStates = new ArrayList<ArrayList<DocumentElementModel>>();
-	private int undoIndex = 0;
 	
 	public DocumentModel() {
 		preferences = new DocumentPreferences();

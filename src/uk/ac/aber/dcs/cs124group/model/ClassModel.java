@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import javax.swing.undo.*;
 
 import uk.ac.aber.dcs.cs124group.undo.LocationEdit;
+import uk.ac.aber.dcs.cs124group.undo.SizeEdit;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
@@ -32,6 +33,7 @@ public class ClassModel extends DocumentElementModel{
 	private Point location;
 	private Dimension size = new Dimension(300,225);
 
+	private CompoundEdit compoundEdit = new CompoundEdit();
 	
 	public ClassModel(Point p) {
 		this.location = p;
@@ -140,8 +142,12 @@ public class ClassModel extends DocumentElementModel{
 		return this.size;
 	}
 	
-	public void setSize(Dimension size) {
-		this.size = size;
+	public void setSize(Dimension s, boolean undoable) {
+		if(undoable) {
+			this.compoundEdit.addEdit(new SizeEdit(this, this.size, s));
+		}
+		
+		this.size = s;
 		this.setChanged();
 		notifyObservers("sizeChanged");
 	}
@@ -168,13 +174,18 @@ public class ClassModel extends DocumentElementModel{
 
 	public void setLocation(Point l, boolean undoable) {
 		if(undoable) {
-			LocationEdit edit = new LocationEdit(this, this.location, l);
-			this.fireUndoableEvent(edit);
+			compoundEdit.addEdit(new LocationEdit(this, this.location, l));
 		}
 		
 		this.location = l;
 		this.setChanged();
 		notifyObservers("locationChanged");
+	}
+	
+	public void stopMoving() {
+		this.compoundEdit.end();
+		this.fireUndoableEvent(this.compoundEdit);
+		this.compoundEdit = new CompoundEdit();
 	}
 	
 	public void cleanUp() {
