@@ -82,6 +82,7 @@ public class ClassController extends DiagramListener implements ActionListener {
 	@Override
 	public void mouseReleased(MouseEvent e){
 		this.setMode(ListeningMode.LISTEN_TO_ALL);
+		this.model.stopMoving();
 	}
 
 	@Override

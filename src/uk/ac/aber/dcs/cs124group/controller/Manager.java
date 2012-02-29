@@ -150,9 +150,11 @@ public class Manager extends UndoManager implements ActionListener,
 				e1.printStackTrace();
 			}
 		} else if (c.equals("Undo")) {
-			this.undo();
+			try {this.undo();}
+			catch(Exception ex) {}
 		} else if (c.equals("Redo")) {
-			this.redo();
+			try {this.redo();}
+			catch(Exception ex) {}
 		}
 
 	}
