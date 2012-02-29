@@ -21,10 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * fields, methods and the basic outline of the class. It will also add any
  * relationships to other classes.
  * 
- * @author Daniel Mal&yacute, Samuel Sherar, Lee Smith
- * 
- * 
- * 
+ * @author Daniel Mal&yacute, Samuel Sherar, Lee Smith 
  */
 
 public class Exporter {
