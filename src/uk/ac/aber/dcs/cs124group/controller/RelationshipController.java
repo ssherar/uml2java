@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import uk.ac.aber.dcs.cs124group.model.Relationship;
+import uk.ac.aber.dcs.cs124group.model.RelationshipType;
 
 public class RelationshipController extends DiagramListener implements ActionListener {
 	private Relationship model;
@@ -16,7 +17,19 @@ public class RelationshipController extends DiagramListener implements ActionLis
 	public void actionPerformed(ActionEvent arg0) {
 		String c = arg0.getActionCommand();
 		if(c.equals("Aggregation")) {
-			System.out.println("Aggregation fired");
+			model.setType(RelationshipType.AGGREGATION);
+		}
+		else if (c.equals("Composition")) {
+			model.setType(RelationshipType.COMPOSITION);
+		}
+		else if (c.equals("Inheritance")) {
+			model.setType(RelationshipType.INHERITANCE);
+		}
+		else if (c.equals("Uses")) {
+			model.setType(RelationshipType.USES);
+		}
+		else if (c.equals("Implements")) {
+			model.setType(RelationshipType.IMPLEMENTS);
 		}
 
 	}
