@@ -1,6 +1,6 @@
 package uk.ac.aber.dcs.cs124group.model;
 
-import java.util.Observable;
+import java.util.*;
 
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
@@ -8,7 +8,11 @@ import javax.swing.undo.UndoableEdit;
 
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
-public abstract class DocumentElementModel extends Observable implements java.io.Serializable, UndoableEdit{
+public abstract class DocumentElementModel extends Observable implements java.io.Serializable{
+	
+	//private Hashtable<String, Object> edits = new Hashtable<String, Object>();
+	protected Stack<Edit> edits = new Stack<Edit>();
+	private int index = 0;
 
 	private static final long serialVersionUID = -8960995955260463413L;
 	
@@ -45,83 +49,17 @@ public abstract class DocumentElementModel extends Observable implements java.io
 	public DocumentElementView getView() {
 		return null;
 	}
-
-
-	@Override
-	public boolean addEdit(UndoableEdit anEdit) {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public void storeState(String key, Object value){
+		edits.push(new Edit(key, value));
+		index++;
 	}
-
-
-	@Override
-	public boolean canRedo() {
-		// TODO Auto-generated method stub
-		return false;
+	
+	public void undo() {
+		Edit tmp = edits.get(index);
+		this.restoreState(index);
+		index--;
 	}
-
-
-	@Override
-	public boolean canUndo() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public void die() {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public String getPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public String getRedoPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public String getUndoPresentationName() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-	@Override
-	public boolean isSignificant() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public void redo() throws CannotRedoException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
-	@Override
-	public boolean replaceEdit(UndoableEdit anEdit) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-
-	@Override
-	public void undo() throws CannotUndoException {
-		// TODO Auto-generated method stub
-		
-	}
-
-
+	
+	public abstract void restoreState(int i);
 }

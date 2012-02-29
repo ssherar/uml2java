@@ -21,8 +21,8 @@ import uk.ac.aber.dcs.cs124group.gui.Canvas;
 import uk.ac.aber.dcs.cs124group.gui.MenuBar;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
-public class Manager extends UndoManager implements ActionListener,
-		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer, UndoableEditListener  {
+public class Manager implements ActionListener,
+		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer  {
 
 	private boolean inDebug = true;
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
@@ -150,7 +150,11 @@ public class Manager extends UndoManager implements ActionListener,
 				e1.printStackTrace();
 			}
 		} else if (c.equals("Undo")) {
-			this.undo();
+			//this.undo();
+			canvas.repaint();
+		} else if (c.equals("Redo")) {
+			//this.redo();
+			canvas.repaint();
 		}
 
 	}
@@ -181,7 +185,7 @@ public class Manager extends UndoManager implements ActionListener,
 		ClassRectangle view = new ClassRectangle(c, true);
 		c.addObserver(view);
 		c.addObserver(this);
-		this.undoableEditHappened(new UndoableEditEvent(canvas, c));
+		//this.undoableEditHappened(new UndoableEditEvent(canvas, c));
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
 		view.repaint();
@@ -445,7 +449,7 @@ public class Manager extends UndoManager implements ActionListener,
 		
 	}
 	
-	public void undoableEditHappened(UndoableEditEvent arg0) {
+	/*public void undoableEditHappened(UndoableEditEvent arg0) {
 		System.out.println("Fired");
 		StateEdit nEdit = new StateEdit((StateEditable) arg0.getEdit());
 		nEdit.addEdit(arg0.getEdit());
@@ -453,7 +457,7 @@ public class Manager extends UndoManager implements ActionListener,
 		this.addEdit(nEdit);
 		//this.end();
 		
-	}
+	}*/
 
 
 }

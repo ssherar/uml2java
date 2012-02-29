@@ -15,7 +15,7 @@ import javax.swing.undo.UndoableEdit;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
-public class ClassModel extends DocumentElementModel implements StateEditable{
+public class ClassModel extends DocumentElementModel{
 	
 	private TextLabelModel nameLabel;
 	private ClassModel superClass;
@@ -29,6 +29,7 @@ public class ClassModel extends DocumentElementModel implements StateEditable{
 	private boolean isAbstract = false;
 	private boolean isFinal = false;
 	private boolean isStatic = false;
+
 	
 	private Point location;
 	private Dimension size = new Dimension(300,225);
@@ -80,9 +81,13 @@ public class ClassModel extends DocumentElementModel implements StateEditable{
 	}
 
 	public void addAttribute(Attribute a)  {
+		/*this.edits.put((Object) "newAttrib", (Object) this.dataFields);
+		this.storeState(edits);*/
 		if(a.getType() == AttributeType.METHOD)
 			this.methods.add(a);
 		else this.dataFields.add(a);
+		this.storeState("dataField", this.dataFields);
+		
 	}
 	
 	public void requestNewDataField() {
@@ -187,17 +192,27 @@ public class ClassModel extends DocumentElementModel implements StateEditable{
 		}
 	}
 
-	@Override
+	/*@Override
 	public void restoreState(Hashtable<?, ?> arg0) {
 		// TODO Auto-generated method stub
 		System.out.println("restoreState fired");
-		this.remove();
+		//this.remove();
 	}
 
 	@Override
 	public void storeState(Hashtable<Object, Object> arg0) {
 		// TODO Auto-generated method stub
-		
+		//arg0.put("classModel", this);
+		arg0.putAll(edits);
+		System.out.println("storeState fired");
+	}*/
+	
+	@Override
+	public void restoreState(int i) {
+		Edit e = this.edits.get(i);
+		if(e.getKey().equals("dataField")) {
+			this.dataFields = (ArrayList<Attribute>) e.getValue();
+		}
 	}
 
 
