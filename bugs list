@@ -1,7 +1,6 @@
 Known bugs:
 
 Zoom is flawed
-ScrollPane size is not dynamic
 StatusBar is not updated from anywhere except the manager
 the "edited" field is not updated from anywhere except the manager
 Class Rectangles don't support word wrapping

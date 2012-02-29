@@ -78,7 +78,7 @@ public class RelationshipArrow extends DocumentElementView {
 		Point toPoint   = points.get(1);
 		
 		Vector2D firstSegmentVector = new Vector2D(toPoint.x - fromPoint.x, toPoint.y - fromPoint.y); 
-		Vector2D referencePointVector = firstSegmentVector.multiplyByScalar(15.0 / firstSegmentVector.length());
+		Vector2D referencePointVector = firstSegmentVector.multiplyByScalar(19.0 / firstSegmentVector.length());
 		
 		Point referencePoint = new Point(fromPoint.x + referencePointVector.x, fromPoint.y + referencePointVector.y);
 		
