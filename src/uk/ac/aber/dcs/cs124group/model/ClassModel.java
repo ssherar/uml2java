@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import javax.swing.undo.*;
 
 import uk.ac.aber.dcs.cs124group.undo.LocationEdit;
+import uk.ac.aber.dcs.cs124group.undo.SizeEdit;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
@@ -141,8 +142,12 @@ public class ClassModel extends DocumentElementModel{
 		return this.size;
 	}
 	
-	public void setSize(Dimension size) {
-		this.size = size;
+	public void setSize(Dimension s, boolean undoable) {
+		if(undoable) {
+			this.compoundEdit.addEdit(new SizeEdit(this, this.size, s));
+		}
+		
+		this.size = s;
 		this.setChanged();
 		notifyObservers("sizeChanged");
 	}
