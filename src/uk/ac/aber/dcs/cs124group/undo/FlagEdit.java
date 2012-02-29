@@ -4,40 +4,61 @@ import javax.swing.undo.AbstractUndoableEdit;
 
 import uk.ac.aber.dcs.cs124group.model.Attribute;
 import uk.ac.aber.dcs.cs124group.model.ClassModel;
+import uk.ac.aber.dcs.cs124group.model.IVisibility;
 
 public class FlagEdit extends AbstractUndoableEdit {
 	
 	private Object editedObject;
 	private boolean formerFlag;
 	private boolean latterFlag;
-	private String whichFlag;
+	
+	private String whatChanged;
+	
+	private IVisibility formerVisibility;
+	private IVisibility latterVisibility;
 	
 	public FlagEdit(Object o, String w, boolean f, boolean l) {
 		this.editedObject = o;
-		this.whichFlag = w;
+		this.whatChanged = w;
 		this.latterFlag = l;
 		this.formerFlag = f;
 	}
 	
+	public FlagEdit(Object o, String s,IVisibility former, IVisibility latter) {
+		this.editedObject = o;
+		this.formerVisibility = former;
+		this.latterVisibility = latter;
+	}
+	
 	public void undo() {
-		this.setFlag(formerFlag);
+		if(this.whatChanged != "visibility") {
+			this.setFlag(formerFlag);
+		}
+		else if(this.editedObject instanceof ClassModel) {
+			((ClassModel)editedObject).setVisibility(formerVisibility, false);
+		}
 	}
 	
 	public void redo() {
-		this.setFlag(latterFlag);
+		if(this.whatChanged != "visibility") {
+			this.setFlag(latterFlag);
+		}
+		else if(this.editedObject instanceof ClassModel) {
+			((ClassModel)editedObject).setVisibility(latterVisibility, false);
+		}
 	}
 	
 	private void setFlag(boolean flag) {
 		if(editedObject instanceof ClassModel) {
 			ClassModel c = (ClassModel) editedObject;
 			
-			if(whichFlag.equals("isStatic")) {
+			if(whatChanged.equals("isStatic")) {
 				c.setStatic(flag, false);
 			}
-			else if(whichFlag.equals("isAbstract")) {
+			else if(whatChanged.equals("isAbstract")) {
 				c.setAbstract(flag, false);
 			}
-			else if(whichFlag.equals("isFinal")) {
+			else if(whatChanged.equals("isFinal")) {
 				c.setFinal(flag, false);
 			}
 		}

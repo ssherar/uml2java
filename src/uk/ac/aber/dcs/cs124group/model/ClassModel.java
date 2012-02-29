@@ -116,8 +116,10 @@ public class ClassModel extends DocumentElementModel{
 	}
 
 	public void setAbstract(boolean isAbstract, boolean undoable) {
-		FlagEdit edit = new FlagEdit(this, "isAbstract", this.isAbstract, isAbstract);
-		this.fireUndoableEvent(edit);
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "isAbstract", this.isAbstract, isAbstract);
+			this.fireUndoableEvent(edit);
+		}
 		
 		this.isAbstract = isAbstract;
 		this.setChanged();
@@ -129,8 +131,10 @@ public class ClassModel extends DocumentElementModel{
 	}
 
 	public void setFinal(boolean isFinal, boolean undoable) {
-		FlagEdit edit = new FlagEdit(this, "isFinal", this.isFinal, isFinal);
-		this.fireUndoableEvent(edit);
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "isFinal", this.isFinal, isFinal);
+			this.fireUndoableEvent(edit);
+		}
 		this.isFinal = isFinal;
 	}
 
@@ -139,8 +143,10 @@ public class ClassModel extends DocumentElementModel{
 	}
 
 	public void setStatic(boolean isStatic, boolean undoable){
-		FlagEdit edit = new FlagEdit(this, "isStatic", this.isStatic, isStatic);
-		this.fireUndoableEvent(edit);
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "isStatic", this.isStatic, isStatic);
+			this.fireUndoableEvent(edit);
+		}
 
 		this.isStatic = isStatic;
 		this.setChanged();
@@ -169,7 +175,11 @@ public class ClassModel extends DocumentElementModel{
 		return this.superClass;
 	}
 
-	public void setVisibility(IVisibility visibility) {
+	public void setVisibility(IVisibility visibility, boolean undoable) {
+		if(undoable) {
+			FlagEdit edit = new FlagEdit(this, "visibility",this.visibility, visibility);
+			this.fireUndoableEvent(edit);
+		}
 		this.visibility = visibility;
 	}
 
@@ -213,8 +223,6 @@ public class ClassModel extends DocumentElementModel{
 			}
 		}
 	}
-
-
 
 
 }
