@@ -5,3 +5,4 @@ StatusBar is not updated from anywhere except the manager
 the "edited" field is not updated from anywhere except the manager
 Class Rectangles don't support word wrapping
 It is possible to set the name of a class to nothing
+Deleting Classes with Relationships - not deleting relationships.
