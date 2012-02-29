@@ -3,25 +3,33 @@ package uk.ac.aber.dcs.cs124group.export;
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.gui.*;
 import uk.ac.aber.dcs.cs124group.model.*;
-import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
-
 import java.util.*;
 import java.io.*;
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.image.*;
 
 import javax.imageio.IIOException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
+
+/**
+ * 
+ * The Exporter class allows the user to create java code documents based on the
+ * class diagram they have created. The code exporter {@link #exportCode()}
+ * provides a basic outline for the classes created in the diagram, completing
+ * fields, methods and the basic outline of the class. It will also add any
+ * relationships to other classes.
+ * 
+ * @author Daniel Mal&yacute, Samuel Sherar, Lee Smith
+ * 
+ * 
+ * 
+ */
 
 public class Exporter {
 
 	private DocumentModel model;
-	private ArrayList<DocumentElementModel> classModel;
 	private Canvas canvas;
 	private ArrayList<String> outputFiles = new ArrayList<String>();
 	private ArrayList<String> fileNames = new ArrayList<String>();
@@ -29,19 +37,48 @@ public class Exporter {
 	private final String TB = "\t";
 	private Manager manager;
 
+	/**
+	 * Creates a <code>Exporter</code> instance with the specified DocumentModel
+	 * and Manager. This constructor is used to complete exporting the diagram
+	 * and creating the resulting code
+	 * 
+	 * @param model
+	 *            The current state of the {@link #DocumentModel()}
+	 * @param manager
+	 *            The diagram {@link #Manager}
+	 */
+
 	public Exporter(DocumentModel model, Manager manager) {
+
 		this.model = model;
 		this.manager = manager;
-		this.classModel = model.getElements();
-
 	}
 
+	/**
+	 * Creates a <code>Exporter</code> instance with the current Canvas and
+	 * Manager. This constructor is used to complete exporting the diagram and
+	 * creating the resulting code
+	 * 
+	 * @param model
+	 *            The current state of the {@link #Canvas()} and what is on it
+	 * @param manager
+	 *            The diagram {@link #Manager}
+	 * 
+	 */
 	public Exporter(Canvas c, Manager manager) {
+
 		this.canvas = c;
 		this.manager = manager;
 	}
 
+	/**
+	 * Allows Image export, to create a .png, .jpg, or .gif file from the canvas
+	 * image. and allows the user to select where to place the file in their
+	 * directory
+	 */
+
 	public void exportImage() throws IIOException {
+
 		BufferedImage imageBuffer = new BufferedImage(canvas.getSize().width,
 				canvas.getSize().height, BufferedImage.TYPE_INT_RGB);
 		Graphics canvasImage = imageBuffer.createGraphics();
@@ -71,17 +108,25 @@ public class Exporter {
 
 			try {
 				if (fcImage.getFileFilter() == png) {
-					ImageIO.write(imageBuffer, "png", new File(saveFile + ".png"));
+					ImageIO.write(imageBuffer, "png", new File(saveFile
+							+ ".png"));
 				} else if (fcImage.getFileFilter() == jpg) {
-					ImageIO.write(imageBuffer, "jpg", new File(saveFile + ".jpg"));
+					ImageIO.write(imageBuffer, "jpg", new File(saveFile
+							+ ".jpg"));
 				} else if (fcImage.getFileFilter() == gif) {
-					ImageIO.write(imageBuffer, "gif", new File(saveFile + ".gif"));
+					ImageIO.write(imageBuffer, "gif", new File(saveFile
+							+ ".gif"));
 				}
 			} catch (Exception e) {
 			}
 		}
 	}
 
+	/**
+	 * Allows <code>.java</code> files to be created from the diagram
+	 * components. Also allows the user to select the directory to save the
+	 * files to.
+	 */
 
 	public void exportCode() throws IOException {
 		for (int i = 0; i < model.getElements().size(); i++) {
@@ -104,9 +149,9 @@ public class Exporter {
 			System.out.println(fcCode.getSelectedFile().getPath() + "/");
 			for (int j = fileNames.size() - 1; j >= 0; j--) {
 				File f;
-				
+
 				f = new File(fileNames.get(j));
-				
+
 				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
 						new FileOutputStream(chosenDirectory + ""
 								+ fileNames.get(j))));
@@ -117,6 +162,19 @@ public class Exporter {
 		}
 
 	}
+
+	/**
+	 * 
+	 * Creates the String that is used to create the <code>.java</code> taking
+	 * components and extracting information such as class name and return types
+	 * from data that the user has entered into the class diagram.
+	 * 
+	 * @param classModel
+	 *            All the components that the user has created in the class
+	 *            diagram.
+	 * @return String of characters that comprise the contents of the .java
+	 *         files that are to be created.
+	 */
 
 	private String createClassFileContents(ClassModel classModel) {
 
