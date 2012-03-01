@@ -138,6 +138,8 @@ public class ClassModel extends DocumentElementModel{
 			this.fireUndoableEvent(edit);
 		}
 		this.isFinal = isFinal;
+		this.setChanged();
+		notifyObservers("flagChanged");
 	}
 
 	public boolean isStatic(){
