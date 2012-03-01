@@ -21,7 +21,7 @@ public class Relationship extends DocumentElementModel implements Observer {
 		this.goingFrom = from;
 		this.goingTo = to;
 		
-		RelationshipEndPoint start = new RelationshipEndPoint(goingFrom.getLocation(), new Rectangle(goingFrom.getLocation(), goingFrom.getSize()));
+		RelationshipEndPoint start = new RelationshipEndPoint(new Point(goingFrom.getLocation().x + 10, goingFrom.getLocation().y), new Rectangle(goingFrom.getLocation(), goingFrom.getSize()));
 		RelationshipEndPoint end = new RelationshipEndPoint(goingTo.getLocation(), new Rectangle(goingTo.getLocation(), goingTo.getSize()));
 		
 		points.add(start);
