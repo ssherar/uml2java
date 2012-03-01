@@ -12,11 +12,11 @@ import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
 
 import javax.swing.*;
 
-import java.util.ArrayList;
-import java.util.Observable;
+import java.util.*;
 
 public class ClassRectangle extends DocumentElementView {
 
@@ -26,13 +26,13 @@ public class ClassRectangle extends DocumentElementView {
 
 	private LabelView name;
 	private ClassModel model;
-
+	private String nameText; //needed to reset text if changed from final to other modifier
 	private ArrayList<LabelView> dataFieldViews = new ArrayList<LabelView>();
 	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
 	public ClassRectangle(ClassModel model, boolean isNew) {
 		this.model = model;
-
+		
 		this.setLocation(model.getLocation());
 		this.setPreferredSize(model.getSize());
 		this.setOpaque(false);
@@ -76,7 +76,9 @@ public class ClassRectangle extends DocumentElementView {
 		}
 
 		name.setAlignmentInParent(JTextField.CENTER);
-
+		
+		nameText = name.getText();
+		
 		ClassController listener = new ClassController(this.model);
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
@@ -290,12 +292,24 @@ public class ClassRectangle extends DocumentElementView {
 		} else if (arg.equals("flagChanged")) {
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
 			Font normalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
+			
+			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
+			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
+			
 			if (o.isStatic()) {
-				// TODO: set underline font
+				this.name.setText(nameText);
+				this.name.setFont(finalChanged);
+				this.repaint();
 			} else if (o.isAbstract()) {
+				this.name.setText(nameText);
 				this.name.setFont(abstractChanged);
 				this.repaint();
-			} else if (!o.isAbstract() && !o.isStatic()){
+			} else if (o.isFinal()){
+				this.name.setText(this.name.getText().toUpperCase());
+				this.repaint();
+			} else if (!o.isAbstract() && !o.isStatic() && !o.isFinal()){
+				this.name.setText(nameText);
 				this.name.setFont(normalChanged);
 				this.repaint();
 			}

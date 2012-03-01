@@ -51,16 +51,23 @@ public class ClassController extends DiagramListener implements ActionListener {
 		}
 		if (c.equals("Abstract")){
 			model.setAbstract(true, true);
+			model.setFinal(false, true);
+			model.setStatic(false, true);
 		}
 		if (c.equals("Final")){
 			model.setFinal(true, true);
+			model.setAbstract(false, true);
+			model.setStatic(false, true);
 		}
 		if (c.equals("Static")){
 			model.setStatic(true, true);
+			model.setFinal(false, true);
+			model.setAbstract(false, true);
 		}
 		if (c.equals("None")){
 			model.setAbstract(false, true);
 			model.setFinal(false, true);
+			model.setStatic(false, true);
 		}
 		
 	}
