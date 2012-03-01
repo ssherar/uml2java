@@ -19,7 +19,7 @@ import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 public class ClassModel extends DocumentElementModel{
 	
 	private TextLabelModel nameLabel;
-	private ClassModel superClass;
+	//private ClassModel superClass;
 	private ArrayList<Relationship> relationships = new ArrayList<Relationship> ();
 	
 	private ArrayList<Attribute> dataFields = new ArrayList<Attribute>();
@@ -171,13 +171,13 @@ public class ClassModel extends DocumentElementModel{
 		notifyObservers("sizeChanged");
 	}
 
-	public void setSuperClass(ClassModel c) {
+	/*public void setSuperClass(ClassModel c) {
 		this.superClass = c;
 	}
 
 	public ClassModel getSuperClass() {
 		return this.superClass;
-	}
+	}*/
 
 	public void setVisibility(IVisibility visibility, boolean undoable) {
 		if(undoable) {

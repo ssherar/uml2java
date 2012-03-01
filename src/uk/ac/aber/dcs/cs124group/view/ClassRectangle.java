@@ -26,7 +26,7 @@ public class ClassRectangle extends DocumentElementView {
 
 	private LabelView name;
 	private ClassModel model;
-	private String nameText; //needed to reset text if changed from final to other modifier
+	//private String nameText; //needed to reset text if changed from final to other modifier
 	private ArrayList<LabelView> dataFieldViews = new ArrayList<LabelView>();
 	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
@@ -76,8 +76,7 @@ public class ClassRectangle extends DocumentElementView {
 		}
 
 		name.setAlignmentInParent(JTextField.CENTER);
-		
-		nameText = name.getText();
+
 		
 		ClassController listener = new ClassController(this.model);
 		this.addMouseListener(listener);
@@ -108,7 +107,7 @@ public class ClassRectangle extends DocumentElementView {
 	public void setFont(Font f) {
 		super.setFont(f);
 		if (name != null)
-			name.setFont(f);
+			name.setFont(new Font(f.getName(),name.getFont().getStyle(), f.getSize()));
 		for (int i = 0; i < this.getComponentCount(); i++) {
 			this.getComponent(i).setFont(f);
 
@@ -298,18 +297,18 @@ public class ClassRectangle extends DocumentElementView {
 			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			
 			if (o.isStatic()) {
-				this.name.setText(nameText);
+				this.model.getNameLabel().setText(this.model.getClassName(), false);
 				this.name.setFont(finalChanged);
 				this.repaint();
 			} else if (o.isAbstract()) {
-				this.name.setText(nameText);
+				this.model.getNameLabel().setText(this.model.getClassName(), false);
 				this.name.setFont(abstractChanged);
 				this.repaint();
 			} else if (o.isFinal()){
-				this.name.setText(this.name.getText().toUpperCase());
+				this.model.getNameLabel().setText(this.name.getText().toUpperCase(), false);
 				this.repaint();
 			} else if (!o.isAbstract() && !o.isStatic() && !o.isFinal()){
-				this.name.setText(nameText);
+				this.model.getNameLabel().setText(model.getClassName(), false);
 				this.name.setFont(normalChanged);
 				this.repaint();
 			}
@@ -355,7 +354,7 @@ public class ClassRectangle extends DocumentElementView {
 	private class RectanglePopupMenu extends JPopupMenu {
 
 		private ClassController listener;
-		private String[] modTypes = {"Abstract", "Final", "Static", "None"};
+		private String[] modTypes = {"Abstract", "Final", "Static"};
 		
 		public RectanglePopupMenu(ClassController listener) {
 			
@@ -364,11 +363,9 @@ public class ClassRectangle extends DocumentElementView {
 			JMenu addModifiers = new JMenu("Class Modifiers");
 			JMenuItem modMenu;
 			
-			ButtonGroup modGroup = new ButtonGroup();
 			for (String s : modTypes){
-				modMenu = new JRadioButtonMenuItem(s, s.equals("None"));
+				modMenu = new JRadioButtonMenuItem(s, false);
 				modMenu.addActionListener(listener);
-				modGroup.add(modMenu);
 				addModifiers.add(modMenu);
 			}
 			

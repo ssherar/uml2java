@@ -37,3 +37,9 @@ TO-DO
 	- Design documentation
 	- User documentation
 	
+	@Override
+	public void addUndoableEditListener(UndoableEditListener l) {
+		super.addUndoableEditListener(l);
+		nameLabel.addUndoableEditListener(l);
+	}
+	

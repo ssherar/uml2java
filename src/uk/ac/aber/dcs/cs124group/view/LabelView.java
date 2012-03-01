@@ -63,7 +63,7 @@ public class LabelView extends DocumentElementView {
 		}
 	}
 
-	public void setText(String text) {
+	private void setText(String text) {
 		this.text = text;
 		resizeToText();		
 	}
