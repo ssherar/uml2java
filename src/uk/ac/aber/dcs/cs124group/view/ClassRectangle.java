@@ -208,10 +208,7 @@ public class ClassRectangle extends DocumentElementView {
 		if (this.model.getDataFields().size() == 0)
 			return this.getPreferredSize().height / 2;
 		else {
-			int y = this.getNextDataFieldPoint(this.model.getDataFields()
-					.size()).y;
-			return (int) (y / (double) (this.model.getDataFields().size()) * (this.model
-					.getDataFields().size() + 1)) + 3;
+			return this.getNextDataFieldPoint(this.model.getDataFields().size()).y;
 		}
 	}
 
