@@ -162,9 +162,14 @@ public class LabelView extends DocumentElementView {
 		JTextArea a = replacement;
 		suspendedParent.remove(a);
 		if(a.getText().length() < 1) {
-			this.model.remove();
-			this.setVisible(false);
-			return;
+			if(this.model.isClassName()) {
+				a.setText(this.model.getText());
+			}
+			else {
+				this.model.remove();
+				this.setVisible(false);
+				return;
+			}		
 		}
 		
 		model.setText(a.getText(), true);
