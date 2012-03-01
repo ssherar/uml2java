@@ -4,22 +4,26 @@ import java.awt.*;
 
 public class RelationshipEndPoint extends Point {
 	
-	private static final int NORTH = 1;
-	private static final int WEST = 2;
-	private static final int SOUTH = 3;
-	private static final int EAST = 4;
+	private static final int NORTH = 0;
+	private static final int EAST = 1;
+	private static final int SOUTH = 2;
+	private static final int WEST = 3;
 	
 	private int side = NORTH;
 	private int pixelsFromStart = 25;
 	
+	private Rectangle rect;
+	
 	public RelationshipEndPoint(Point p, Rectangle r) {
 		this.x = p.x;
 		this.y = p.y;
+		this.rect = r;
 		
 		wrapFromCoordinates(r);
 	}
 	
 	public void updateTo(Rectangle r) {
+		this.rect = r;
 		
 		if(this.side == NORTH || this.side == SOUTH && this.pixelsFromStart > r.width) {
 			this.pixelsFromStart = r.width;
@@ -67,6 +71,37 @@ public class RelationshipEndPoint extends Point {
 			this.pixelsFromStart = this.x - r.x;
 		}
 		else throw new IllegalArgumentException(this + " is not on the Rectangle " + r);
+	}
+	
+	@Override
+	public void move(int x, int y) {
+		
+		Vector2D[] sideVectors = new Vector2D[] {new Vector2D (rect.width, 0), new Vector2D(0, rect.height), new Vector2D(rect.width, 0), new Vector2D(0, rect.height)};
+		
+		Vector2D pointDisplacement = new Vector2D(x, y);
+		Vector2D projectionOnSide = pointDisplacement.projection(sideVectors[this.side]);
+		
+		System.out.println(sideVectors[this.side].getColinearityFactor(projectionOnSide));
+		//System.out.println(this.side);
+		
+		if(sideVectors[this.side].getColinearityFactor(projectionOnSide) > 1) {
+			this.side = (this.side + 1) % 3;
+			this.pixelsFromStart = 5;
+			this.updateTo(this.rect);
+			this.move(x, y);
+		}
+		else if(sideVectors[this.side].getColinearityFactor(projectionOnSide) < 0) {
+			this.side = this.side == 0 ? 3 : (this.side - 1) % 3;
+			this.pixelsFromStart = 5;
+			this.updateTo(this.rect);
+			this.move(x, y);
+		}
+		else {
+			this.pixelsFromStart = (int)(sideVectors[this.side].getColinearityFactor(projectionOnSide) * sideVectors[this.side].length());
+			System.out.println("We are on side " + this.side + ", " + this.pixelsFromStart + "px from start.");
+			this.updateTo(rect);
+			//System.out.println(this.pixelsFromStart);
+		}
 	}
 	
 

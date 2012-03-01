@@ -116,15 +116,17 @@ public class Relationship extends DocumentElementModel implements Observer {
 		return points;
 	}
 	
-	private void updateWrapAroundEndPoints() {
-		
-	}
 	
 	@Override
 	public void remove() {
 		goingFrom.removeRelationship(this);
 		goingTo.removeRelationship(this);
 		super.remove();
+	}
+	
+	public void pointMoved() {
+		this.setChanged();
+		this.notifyObservers("pointMoved");
 	}
 
 	

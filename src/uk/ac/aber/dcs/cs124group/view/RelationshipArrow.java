@@ -24,8 +24,12 @@ public class RelationshipArrow extends DocumentElementView {
 		this.setLocation(new Point(0,0));
 		this.setPreferredSize(new Dimension(100000,100000));
 		this.setOpaque(false);
-		RelationshipPopup menu = new RelationshipPopup(new RelationshipController(this.model));
+		RelationshipController controller = new RelationshipController(this.model);
+		RelationshipPopup menu = new RelationshipPopup(controller);
 		this.setComponentPopupMenu(menu);
+		
+		this.addMouseListener(controller);
+		this.addMouseMotionListener(controller);
 	}
 	
 	@Override

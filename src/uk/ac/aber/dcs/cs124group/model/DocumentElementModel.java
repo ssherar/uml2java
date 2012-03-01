@@ -56,7 +56,6 @@ public abstract class DocumentElementModel extends Observable implements java.io
 	
 	protected void fireUndoableEvent(UndoableEdit e) {
 		undoManager.undoableEditHappened(new UndoableEditEvent(this, e));
-		System.out.println("fired");
 	}
 	
 	public abstract DocumentElementView getView();

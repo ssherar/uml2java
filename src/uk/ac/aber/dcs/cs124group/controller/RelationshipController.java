@@ -2,6 +2,8 @@ package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.Point;
 
 import uk.ac.aber.dcs.cs124group.model.ClassModel;
 import uk.ac.aber.dcs.cs124group.model.Relationship;
@@ -9,6 +11,7 @@ import uk.ac.aber.dcs.cs124group.model.RelationshipType;
 
 public class RelationshipController extends DiagramListener implements ActionListener {
 	private Relationship model;
+	private Point movedPoint;
 	
 	public RelationshipController(Relationship m) {
 		this.model = m;
@@ -45,6 +48,26 @@ public class RelationshipController extends DiagramListener implements ActionLis
 		}
 		
 
+	}
+	
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		movedPoint = null;
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		if(movedPoint == null) {
+			for(Point p : this.model.getPoints()) {
+				if(p.distance(e.getPoint()) < 10) {
+					movedPoint = p;
+				}
+			}
+		}
+		if(movedPoint != null) {
+			movedPoint.move(e.getX() - movedPoint.x, e.getY() - movedPoint.y);
+			this.model.pointMoved();
+		}
 	}
 
 }
