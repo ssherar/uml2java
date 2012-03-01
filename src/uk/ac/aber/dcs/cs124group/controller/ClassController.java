@@ -8,7 +8,6 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JMenu;
 import javax.swing.JRadioButtonMenuItem;
-import javax.swing.AbstractButton;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 
@@ -51,18 +50,20 @@ public class ClassController extends DiagramListener implements ActionListener {
 			model.remove();
 		}
 		if (c.equals("Abstract")){
-			model.setAbstract(((AbstractButton)e.getSource()).isSelected(), true);
+			model.setAbstract(true, true);
 
 		}
 		if (c.equals("Final")){
-			model.setFinal(((AbstractButton)e.getSource()).isSelected(), true);
+			model.setFinal(true, true);
 
 		}
 		if (c.equals("Static")){
-			model.setStatic(((AbstractButton)e.getSource()).isSelected(), true);
+			model.setStatic(true, true);
 
 		}
-	
+		if (c.equals("None")){
+			model.removeFlags();
+		}
 		
 	}
 	

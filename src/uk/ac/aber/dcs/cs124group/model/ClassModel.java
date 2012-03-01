@@ -124,6 +124,10 @@ public class ClassModel extends DocumentElementModel{
 		}
 		
 		this.isAbstract = isAbstract;
+		if(isAbstract) {
+			this.isStatic = false;
+			this.isFinal = false;
+		}
 		this.setChanged();
 		notifyObservers("flagChanged");
 	}
@@ -138,6 +142,10 @@ public class ClassModel extends DocumentElementModel{
 			this.fireUndoableEvent(edit);
 		}
 		this.isFinal = isFinal;
+		if(isFinal) {
+			this.isStatic = false;
+			this.isAbstract = false;
+		}
 		this.setChanged();
 		notifyObservers("flagChanged");
 	}
@@ -153,8 +161,25 @@ public class ClassModel extends DocumentElementModel{
 		}
 
 		this.isStatic = isStatic;
+		if(isStatic) {
+			this.isFinal = false;
+			this.isAbstract = false;
+		}
+		
 		this.setChanged();
 		notifyObservers("flagChanged");
+	}
+	
+	public void removeFlags() {
+		if(isAbstract) {
+			this.setAbstract(false, true);
+		}
+		if(isStatic) {
+			this.setStatic(false, true);
+		}
+		if(isFinal) {
+			this.setFinal(false, true);
+		}
 	}
 
 	public Dimension getSize() {

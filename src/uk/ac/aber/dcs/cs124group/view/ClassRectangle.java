@@ -354,7 +354,7 @@ public class ClassRectangle extends DocumentElementView {
 	private class RectanglePopupMenu extends JPopupMenu {
 
 		private ClassController listener;
-		private String[] modTypes = {"Abstract", "Final", "Static"};
+		private String[] modTypes = {"Abstract", "Final", "Static", "None"};
 		
 		public RectanglePopupMenu(ClassController listener) {
 			
@@ -363,9 +363,11 @@ public class ClassRectangle extends DocumentElementView {
 			JMenu addModifiers = new JMenu("Class Modifiers");
 			JMenuItem modMenu;
 			
+			ButtonGroup bg = new ButtonGroup();
 			for (String s : modTypes){
-				modMenu = new JRadioButtonMenuItem(s, false);
+				modMenu = new JRadioButtonMenuItem(s, s.equals("None"));
 				modMenu.addActionListener(listener);
+				bg.add(modMenu);
 				addModifiers.add(modMenu);
 			}
 			
