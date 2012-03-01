@@ -15,16 +15,25 @@ public class TextLabelModel extends DocumentElementModel {
 	private Dimension size;
 	private boolean editing = false;
 	private int alignmentInParent = JTextField.LEFT;
+	private boolean isClassName = false;
 	
 	public TextLabelModel(Point p) {
 		this.location = p;
 		
 	}
 	
+	
 	public TextLabelModel(Point p, String text) {
 		this.location = p;
 		this.text = text;
 	}
+	
+	public TextLabelModel(Point p, String text, boolean isClassName) {
+		this.location = p;
+		this.text = text;
+		this.isClassName = isClassName;
+	}
+	
 	
 	@Override
 	public LabelView getView() {
@@ -84,6 +93,11 @@ public class TextLabelModel extends DocumentElementModel {
 	public int getAlignmentInParent() {
 		return this.alignmentInParent;
 	}
+	
+	public boolean isClassName() {
+		return isClassName;
+	}
+	
 	
 	
 }
