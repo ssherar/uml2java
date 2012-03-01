@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 
+import javax.swing.JMenu;
+import javax.swing.JRadioButtonMenuItem;
+
 import uk.ac.aber.dcs.cs124group.model.*;
 
 /**
@@ -32,14 +35,14 @@ public class ClassController extends DiagramListener implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		String c = e.getActionCommand();
-		if(c.equals("Add relationship")) {
+		if(c.equals("Add Relationship")) {
 			//TODO: Implement
 		}
-		if(c.equals("Add data field")) {
+		if(c.equals("Add Data Field")) {
 			model.requestNewDataField();
 			this.setMode(ListeningMode.EDITING_TEXT); 
 		}
-		if(c.equals("Add method")) {
+		if(c.equals("Add Method")) {
 			model.requestNewMethod();
 			this.setMode(ListeningMode.EDITING_TEXT); 
 
@@ -47,7 +50,13 @@ public class ClassController extends DiagramListener implements ActionListener {
 		if(c.equals("Remove")) {
 			model.remove();
 		}
-
+		if (c.equals("Abstract")){
+			model.setAbstract(true, true);
+		}
+		if (c.equals("Final")){
+			model.setFinal(true, true);
+		}
+		
 	}
 	
 	@Override
@@ -76,8 +85,6 @@ public class ClassController extends DiagramListener implements ActionListener {
 			model.setPaintState(ElementPaintState.MOUSED_OVER);
 		}
 	}
-	
-
 	
 	@Override
 	public void mouseReleased(MouseEvent e){
