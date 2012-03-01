@@ -11,6 +11,7 @@ import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 
 import javax.swing.*;
 
@@ -287,10 +288,16 @@ public class ClassRectangle extends DocumentElementView {
 		} else if (arg.equals("attributeChanged")) {
 
 		} else if (arg.equals("flagChanged")) {
+			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
+			Font normalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
 			if (o.isStatic()) {
 				// TODO: set underline font
 			} else if (o.isAbstract()) {
-				// TODO: set italic font
+				this.name.setFont(abstractChanged);
+				this.repaint();
+			} else if (!o.isAbstract() && !o.isStatic()){
+				this.name.setFont(normalChanged);
+				this.repaint();
 			}
 
 		} else if (arg.equals("nameChanged")) {
@@ -334,25 +341,25 @@ public class ClassRectangle extends DocumentElementView {
 	private class RectanglePopupMenu extends JPopupMenu {
 
 		private ClassController listener;
-		private String[] modTypes = {"Abstract", "Final"};
+		private String[] modTypes = {"Abstract", "Final", "Static", "None"};
+		
 		public RectanglePopupMenu(ClassController listener) {
-
+			
 			this.listener = listener;
-
-			JMenuItem addRelationship = new JMenuItem("Add Relationship");
-			addRelationship.addActionListener(listener);
-
-			JMenu addModifiers = new JMenu("Modifiers");
+			
+			JMenu addModifiers = new JMenu("Class Modifiers");
 			JMenuItem modMenu;
 			
 			ButtonGroup modGroup = new ButtonGroup();
 			for (String s : modTypes){
-				modMenu = new JRadioButtonMenuItem(s, s.equals("Uses"));
+				modMenu = new JRadioButtonMenuItem(s, s.equals("None"));
 				modMenu.addActionListener(listener);
 				modGroup.add(modMenu);
 				addModifiers.add(modMenu);
 			}
 			
+			JMenuItem addRelationship = new JMenuItem("Add Relationship");
+			addRelationship.addActionListener(listener);
 
 			JMenuItem addDataField = new JMenuItem("Add Data Field");
 			addDataField.addActionListener(listener);
@@ -364,8 +371,8 @@ public class ClassRectangle extends DocumentElementView {
 			remove.addActionListener(listener);
 			remove.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 
-			add(addRelationship);
 			add(addModifiers);
+			add(addRelationship);
 			add(addDataField);
 			add(addMethod);
 			add(remove);

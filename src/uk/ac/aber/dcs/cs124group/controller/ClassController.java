@@ -45,7 +45,6 @@ public class ClassController extends DiagramListener implements ActionListener {
 		if(c.equals("Add Method")) {
 			model.requestNewMethod();
 			this.setMode(ListeningMode.EDITING_TEXT); 
-
 		}
 		if(c.equals("Remove")) {
 			model.remove();
@@ -55,6 +54,13 @@ public class ClassController extends DiagramListener implements ActionListener {
 		}
 		if (c.equals("Final")){
 			model.setFinal(true, true);
+		}
+		if (c.equals("Static")){
+			model.setStatic(true, true);
+		}
+		if (c.equals("None")){
+			model.setAbstract(false, true);
+			model.setFinal(false, true);
 		}
 		
 	}
