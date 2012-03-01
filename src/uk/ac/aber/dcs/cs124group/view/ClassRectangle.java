@@ -40,7 +40,7 @@ public class ClassRectangle extends DocumentElementView {
 
 		if (isNew) {
 			TextLabelModel nameLabel = new TextLabelModel(new Point(0, 0),
-					"NewClass");
+					"NewClass", true);
 			name = new LabelView(nameLabel);
 
 			nameLabel.addObserver(name);
