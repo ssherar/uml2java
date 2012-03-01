@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs124group.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import uk.ac.aber.dcs.cs124group.model.ClassModel;
 import uk.ac.aber.dcs.cs124group.model.Relationship;
 import uk.ac.aber.dcs.cs124group.model.RelationshipType;
 
@@ -31,6 +32,18 @@ public class RelationshipController extends DiagramListener implements ActionLis
 		else if (c.equals("Implements")) {
 			model.setType(RelationshipType.IMPLEMENTS);
 		}
+		else if (c.equals("Invert")) {
+			ClassModel to, from;
+			to = model.getGoingTo();
+			from = model.getGoingFrom();
+			model.setGoingTo(from);
+			model.setGoingFrom(to);
+			model.setInverted();
+		}
+		else if (c.equals("Delete")) {
+			model.remove();
+		}
+		
 
 	}
 

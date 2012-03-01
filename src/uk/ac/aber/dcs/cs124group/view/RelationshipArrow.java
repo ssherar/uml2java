@@ -63,6 +63,10 @@ public class RelationshipArrow extends DocumentElementView {
 			this.setVisible(false);
 			this.getParent().remove(this);
 		}
+		else if(s.equals("wasInverted")) {
+			this.getParent().doLayout();
+			this.repaint();
+		}
 		else this.repaint();
 
 	}
@@ -169,9 +173,13 @@ public class RelationshipArrow extends DocumentElementView {
 			
 			JMenuItem invert = new JMenuItem("Invert");
 			invert.addActionListener(listener);
+			
+			JMenuItem delete = new JMenuItem("Delete");
+			delete.addActionListener(listener);
 				
 			add(changeRelationship);
 			add(invert);
+			add(delete);
 		}
 	}
 

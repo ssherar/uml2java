@@ -10,7 +10,7 @@ public class Relationship extends DocumentElementModel implements Observer {
 	
 	private static final long serialVersionUID = 272724938449188987L;
 	
-	private RelationshipType type = RelationshipType.AGGREGATION;
+	private RelationshipType type = RelationshipType.USES;
 	private ClassModel goingFrom, goingTo;
 	private Cardinality cardinalityFrom, cardinalityTo;
 	private TextLabelModel label;
@@ -61,6 +61,14 @@ public class Relationship extends DocumentElementModel implements Observer {
 	public ClassModel getGoingTo() {
 		return goingTo;
 	}
+	
+	public void setGoingFrom(ClassModel f) {
+		this.goingFrom = f;
+	}
+	
+	public void setGoingTo(ClassModel t) {
+		this.goingTo = t;
+	}
 
 
 
@@ -84,6 +92,11 @@ public class Relationship extends DocumentElementModel implements Observer {
 
 	public void setCardinalityTo(Cardinality cardinalityTo) {
 		this.cardinalityTo = cardinalityTo;
+	}
+	
+	public void setInverted() {
+		setChanged();
+		this.notifyObservers("wasInverted");
 	}
 
 
