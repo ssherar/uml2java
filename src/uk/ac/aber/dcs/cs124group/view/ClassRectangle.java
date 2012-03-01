@@ -30,11 +30,11 @@ public class ClassRectangle extends DocumentElementView {
 	private ArrayList<LabelView> dataFieldViews = new ArrayList<LabelView>();
 	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
-	public ClassRectangle(ClassModel model, boolean isNew) {
-		this.model = model;
+	public ClassRectangle(ClassModel m, boolean isNew) {
+		this.model = m;
 		
-		this.setLocation(model.getLocation());
-		this.setPreferredSize(model.getSize());
+		this.setLocation(m.getLocation());
+		this.setPreferredSize(m.getSize());
 		this.setOpaque(false);
 		this.setLayout(new DiagramLayout());
 
@@ -45,29 +45,29 @@ public class ClassRectangle extends DocumentElementView {
 
 			nameLabel.addObserver(name);
 
-			model.setNameLabel(nameLabel);
+			m.setNameLabel(nameLabel);
 			this.add(name);
 			name.enableEdit();
 		} else {
-			name = new LabelView(model.getNameLabel());
-			model.getNameLabel().addObserver(name);
-			model.getNameLabel().addUndoableEditListener(
-					model.getUndoableEditListener());
+			name = new LabelView(m.getNameLabel());
+			m.getNameLabel().addObserver(name);
+			m.getNameLabel().addUndoableEditListener(
+					m.getUndoableEditListener());
 			this.add(name);
 
-			for (int i = 0; model.getDataFields() != null
-					&& i < model.getDataFields().size(); i++) {
-				LabelView l = model.getDataFields().get(i).getView();
-				model.getDataFields().get(i).addObserver(l);
+			for (int i = 0; m.getDataFields() != null
+					&& i < m.getDataFields().size(); i++) {
+				LabelView l = m.getDataFields().get(i).getView();
+				m.getDataFields().get(i).addObserver(l);
 				this.add(l);
 				l.setFont(this.getFont());
 				this.dataFieldViews.add(l);
 			}
 
-			for (int i = 0; model.getMethods() != null
-					&& i < model.getMethods().size(); i++) {
-				LabelView l = model.getMethods().get(i).getView();
-				model.getMethods().get(i).addObserver(l);
+			for (int i = 0; m.getMethods() != null
+					&& i < m.getMethods().size(); i++) {
+				LabelView l = m.getMethods().get(i).getView();
+				m.getMethods().get(i).addObserver(l);
 				l.setFont(this.getFont());
 				this.add(l);
 				this.methodViews.add(l);
@@ -85,10 +85,13 @@ public class ClassRectangle extends DocumentElementView {
 
 		RectanglePopupMenu popupMenu = new RectanglePopupMenu(listener);
 		this.setComponentPopupMenu(popupMenu);
+		
+		
 
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				repositionAttributes();
+				updateModel(model, "flagChanged");
 				repaint();
 			}
 		});
@@ -290,26 +293,28 @@ public class ClassRectangle extends DocumentElementView {
 
 		} else if (arg.equals("flagChanged")) {
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
-			Font normalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
 			
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			
 			if (o.isStatic()) {
-				this.model.getNameLabel().setText(this.model.getClassName(), false);
 				this.name.setFont(finalChanged);
+				((RectanglePopupMenu)(this.getComponentPopupMenu())).setStatic();
 				this.repaint();
+				
 			} else if (o.isAbstract()) {
-				this.model.getNameLabel().setText(this.model.getClassName(), false);
 				this.name.setFont(abstractChanged);
+				((RectanglePopupMenu)(this.getComponentPopupMenu())).setAbstract();
 				this.repaint();
+				
 			} else if (o.isFinal()){
-				this.model.getNameLabel().setText(this.name.getText().toUpperCase(), false);
+				((RectanglePopupMenu)(this.getComponentPopupMenu())).setFinal();
 				this.repaint();
+				
 			} else if (!o.isAbstract() && !o.isStatic() && !o.isFinal()){
-				this.model.getNameLabel().setText(model.getClassName(), false);
-				this.name.setFont(normalChanged);
+				this.name.setFont(this.getFont());
+				((RectanglePopupMenu)(this.getComponentPopupMenu())).setNone();
 				this.repaint();
 			}
 
@@ -323,7 +328,9 @@ public class ClassRectangle extends DocumentElementView {
 			this.addAttributeToModel(AttributeType.METHOD);
 
 		} else if (arg.equals("wasRemoved")) {
+			Container tmp = this.getParent();
 			this.getParent().remove(this);
+			tmp.repaint();
 			this.setVisible(false);
 		}
 
@@ -356,11 +363,13 @@ public class ClassRectangle extends DocumentElementView {
 		private ClassController listener;
 		private String[] modTypes = {"Abstract", "Final", "Static", "None"};
 		
+		private JMenu addModifiers;
+		
 		public RectanglePopupMenu(ClassController listener) {
 			
 			this.listener = listener;
 			
-			JMenu addModifiers = new JMenu("Class Modifiers");
+			addModifiers = new JMenu("Class Modifiers");
 			JMenuItem modMenu;
 			
 			ButtonGroup bg = new ButtonGroup();
@@ -390,6 +399,40 @@ public class ClassRectangle extends DocumentElementView {
 			add(addMethod);
 			add(remove);
 
+		}
+		
+		public void setAbstract() {
+			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
+				if(this.addModifiers.getItem(i).getText().equals("Abstract")) {
+					this.addModifiers.getItem(i).setSelected(true);
+				}
+			}
+		}
+		
+		public void setFinal() {
+			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
+				if(this.addModifiers.getItem(i).getText().equals("Final")) {
+					this.addModifiers.getItem(i).setSelected(true);
+				}
+			}
+			
+		}
+		
+		public void setStatic() {
+			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
+				if(this.addModifiers.getItem(i).getText().equals("Static")) {
+					this.addModifiers.getItem(i).setSelected(true);
+				}
+			}
+			
+		}
+		
+		public void setNone() {
+			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
+				if(this.addModifiers.getItem(i).getText().equals("None")) {
+					this.addModifiers.getItem(i).setSelected(true);
+				}
+			}
 		}
 	}
 
