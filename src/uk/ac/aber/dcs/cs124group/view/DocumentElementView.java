@@ -54,9 +54,15 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 			throw new IllegalArgumentException("String expected");
 		if(s.equals("wasRemoved")) {
 			this.suspendedParent = this.getParent();
-			this.getParent().remove(this);
+			try {
+				this.getParent().remove(this);
+				suspendedParent.repaint();
+			}
+			catch(NullPointerException ex) {
+				
+			}
 			this.setVisible(false);
-			suspendedParent.repaint();
+
 		}
 		else if(s.equals("wasResurrected")) {
 			this.setVisible(true);

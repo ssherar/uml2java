@@ -178,7 +178,6 @@ public class LabelView extends DocumentElementView {
 			}
 			else {
 				this.model.remove();
-				this.setVisible(false);
 				return;
 			}		
 		}

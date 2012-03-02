@@ -144,7 +144,7 @@ public class Manager extends UndoManager implements ActionListener,
 			}
 		} else if (c.equals("Undo")) {
 			try {this.undo();}
-			catch(Exception ex) {}
+			catch(Exception ex) {ex.printStackTrace();}
 		} else if (c.equals("Redo")) {
 			try {this.redo();}
 			catch(Exception ex) {}
@@ -206,6 +206,10 @@ public class Manager extends UndoManager implements ActionListener,
 	private void addNewLabel(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabelModel mod = new TextLabelModel(p);
+		
+		ExistenceEdit edit = new ExistenceEdit(mod, true);
+		this.undoableEditHappened(new UndoableEditEvent(mod, edit));
+		
 		LabelView view = new LabelView(mod);
 		view.setFont(document.getPreferences().getFont());
 
@@ -238,6 +242,9 @@ public class Manager extends UndoManager implements ActionListener,
 		from.addObserver(r);
 		to.addRelationship(r);
 		to.addObserver(r);
+			
+		ExistenceEdit edit = new ExistenceEdit(r, true);
+		this.undoableEditHappened(new UndoableEditEvent(r, edit));
 		
 		RelationshipArrow arrow = new RelationshipArrow(r);
 		r.addObserver(arrow);
