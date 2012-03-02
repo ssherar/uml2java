@@ -39,7 +39,6 @@ public class RelationshipEndPoint extends Point {
 		if (this.side == NORTH) {
 			this.y = r.y;
 			this.x = r.x + pixelsFromStart;
-			System.out.println("r.x is " + r.x);
 		}
 		else if (this.side == WEST) {
 			this.x = r.x;
@@ -61,7 +60,6 @@ public class RelationshipEndPoint extends Point {
 			this.y = r.y;
 		}
 		
-		System.out.println("Moved point is at " + this.x + "," + this.y);
 		
 
 	}

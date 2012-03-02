@@ -49,7 +49,7 @@ public class LabelController extends DiagramListener implements ActionListener {
 	
 	@Override 
 	public void mouseDragged(MouseEvent e) {
-		if(!this.checkLabel()) return;
+		if(!this.isNotAttribute()) return;
 		if(this.getMode() != ListeningMode.DRAGGING) {
 			this.setMode(ListeningMode.DRAGGING);
 			startingMousePos = e.getPoint();
@@ -59,23 +59,27 @@ public class LabelController extends DiagramListener implements ActionListener {
 			Rectangle r = new Rectangle(model.getLocation(),model.getSize());
 			r.x += e.getX() - startingMousePos.x;
 			r.y += e.getY() - startingMousePos.y;
-			this.model.setLocation(r.getLocation());
+			this.model.setLocation(r.getLocation(), true);
 		}
 	}
 	
 	@Override
 	public void mouseReleased(MouseEvent e){
-		if(!this.checkLabel()) return;
-		this.setMode(ListeningMode.LISTEN_TO_ALL);
+		if(this.isNotAttribute()) {
+			if(this.getMode() == ListeningMode.DRAGGING)
+				this.model.stopMoving();
+			this.setMode(ListeningMode.LISTEN_TO_ALL);
+			
+		}
 	}
 	
 	@Override
 	public void mousePressed(MouseEvent e){
-		if(!this.checkLabel()) return;
+		if(!this.isNotAttribute()) return;
 		model.setPaintState(ElementPaintState.SELECTED);
 	}
 	
-	private boolean checkLabel() {
+	private boolean isNotAttribute() {
 		return (this.model instanceof Attribute) ? false : true;
 	}
 

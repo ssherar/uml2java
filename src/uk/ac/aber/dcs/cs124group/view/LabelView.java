@@ -69,7 +69,7 @@ public class LabelView extends DocumentElementView {
 	
 	public void realign() {
 		if(model.getAlignmentInParent() == JTextField.CENTER) {
-			model.setLocation(new Point((getParent().getPreferredSize().width - getPreferredSize().width) / 2, model.getLocation().y));
+			model.setLocation(new Point((getParent().getPreferredSize().width - getPreferredSize().width) / 2, model.getLocation().y), false);
 		}
 	}
 

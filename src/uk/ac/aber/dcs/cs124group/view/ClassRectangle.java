@@ -127,12 +127,12 @@ public class ClassRectangle extends DocumentElementView {
 
 		for (int i = 0; dataFields != null && i < dataFields.size(); i++) {
 			Attribute a = dataFields.get(i);
-			a.setLocation(this.getNextDataFieldPoint(i));
+			a.setLocation(this.getNextDataFieldPoint(i), false);
 		}
 
 		for (int i = 0; methods != null && i < methods.size(); i++) {
 			Attribute a = methods.get(i);
-			a.setLocation(this.getNextMethodPoint(i));
+			a.setLocation(this.getNextMethodPoint(i), false);
 		}
 
 	}

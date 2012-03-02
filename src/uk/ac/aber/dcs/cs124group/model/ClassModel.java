@@ -16,7 +16,7 @@ import uk.ac.aber.dcs.cs124group.undo.SizeEdit;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
-public class ClassModel extends DocumentElementModel{
+public class ClassModel extends DocumentElementModel implements Moveable, Resizeable {
 	
 	private TextLabelModel nameLabel;
 	//private ClassModel superClass;
@@ -195,14 +195,6 @@ public class ClassModel extends DocumentElementModel{
 		this.setChanged();
 		notifyObservers("sizeChanged");
 	}
-
-	/*public void setSuperClass(ClassModel c) {
-		this.superClass = c;
-	}
-
-	public ClassModel getSuperClass() {
-		return this.superClass;
-	}*/
 
 	public void setVisibility(IVisibility visibility, boolean undoable) {
 		if(undoable) {

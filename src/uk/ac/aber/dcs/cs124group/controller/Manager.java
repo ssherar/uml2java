@@ -158,6 +158,7 @@ public class Manager extends UndoManager implements ActionListener,
 	}
 
 	private void openNewDocument() {
+		this.discardAllEdits();
 		document = new DocumentModel();
 		canvas.removeAll();
 		canvas.repaint();
@@ -326,6 +327,7 @@ public class Manager extends UndoManager implements ActionListener,
 			File openFile = fc.getSelectedFile();
 			try {
 				document = null;
+				this.discardAllEdits();
 				canvas.removeAll();
 				canvas.repaint();
 				FileInputStream fos = new FileInputStream(openFile.getPath());

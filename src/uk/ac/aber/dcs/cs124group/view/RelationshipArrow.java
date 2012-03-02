@@ -208,7 +208,6 @@ public class RelationshipArrow extends DocumentElementView {
 		
 		public void setSelectedType(String t) {
 			String type = t.toLowerCase();
-			System.out.println(t);
 			for(int i = 0; i < changeRelationship.getItemCount(); i++) {
 				JMenuItem currentItem = changeRelationship.getItem(i);
 				if (currentItem.getName().toLowerCase().equals(type)) {
