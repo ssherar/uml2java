@@ -3,6 +3,9 @@ package uk.ac.aber.dcs.cs124group.view;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
+import java.awt.font.TextAttribute;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.*;
@@ -221,6 +224,12 @@ public class LabelView extends DocumentElementView {
 		} else if(arg.equals("wasRemoved")) {
 			this.setVisible(false);
 			this.getParent().remove(this);
+		} else if(arg.equals("flagChanged")) {
+			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
+			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
+			System.out.println("Change the font, yo");
+			
 		}
 	}
 	
@@ -244,10 +253,12 @@ public class LabelView extends DocumentElementView {
 			this.listener = l;
 			JMenu modifers = new JMenu("Modifiers...");
 			JMenuItem submenu;
+			ButtonGroup group = new ButtonGroup();
 			if(data) {
 				for(String s : this.dataModifiers) {
 					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
 					submenu.addActionListener(listener);
+					group.add(submenu);
 					modifers.add(submenu);
 					submenu = null;
 				}
@@ -255,6 +266,7 @@ public class LabelView extends DocumentElementView {
 				for(String s : this.methodModifiers) {
 					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
 					submenu.addActionListener(listener);
+					group.add(submenu);
 					modifers.add(submenu);
 					submenu = null;
 				}
