@@ -20,7 +20,6 @@ public class LabelView extends DocumentElementView {
 	private static final long serialVersionUID = -7388262736446472023L;
 	private String text;
 	private FontMetrics metrics;
-	private Container suspendedParent;
 	private JTextArea replacement;
 	private TextLabelModel model;
 	
@@ -122,7 +121,8 @@ public class LabelView extends DocumentElementView {
 					setPreferredSize(new Dimension(
 							(int) (getZoomFactor() * 1.1 * width + 1), 
 							(int) (getZoomFactor() * metrics.getHeight())));
-					getParent().doLayout(); //TODO: update size in model
+					model.setSize(getPreferredSize());
+					getParent().doLayout(); 
 					
 					realign();
 				}
@@ -192,6 +192,7 @@ public class LabelView extends DocumentElementView {
 
 	@Override
 	public void update(Observable o, Object arg) {
+		super.update(o, arg);
 		
 		if(!(arg instanceof String)) {
 			throw new IllegalArgumentException("Invalid argument: Need a string");
@@ -221,9 +222,7 @@ public class LabelView extends DocumentElementView {
 			} else {
 				this.exitEdit();
 			}
-		} else if(arg.equals("wasRemoved")) {
-			this.setVisible(false);
-			this.getParent().remove(this);
+			
 		} else if(arg.equals("flagChanged")) {
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
@@ -231,9 +230,8 @@ public class LabelView extends DocumentElementView {
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
 			Attribute a = (Attribute) o;
 			if(a.isFlagAbstract()) {
-				this.setFont(abstractChanged);
+			this.setFont(abstractChanged);
 			}
-			this.repaint();
 			
 		}
 	}
@@ -245,7 +243,7 @@ public class LabelView extends DocumentElementView {
 		} else if(arg.equals("zoomLevelChanged")) {
 			this.setZoomFactor(o.getZoomLevel());
 		}
-				//setZoomLevel
+			
 	}
 	
 	public class AttributePopup extends JPopupMenu {
