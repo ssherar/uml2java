@@ -49,7 +49,7 @@ public class LabelController extends DiagramListener implements ActionListener {
 	
 	@Override 
 	public void mouseDragged(MouseEvent e) {
-		if(!this.isNotAttribute()) return;
+		if(!this.isNotAttribute() || this.model.isClassName()) return;
 		if(this.getMode() != ListeningMode.DRAGGING) {
 			this.setMode(ListeningMode.DRAGGING);
 			startingMousePos = e.getPoint();
