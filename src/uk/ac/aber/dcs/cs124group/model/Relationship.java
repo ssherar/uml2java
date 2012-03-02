@@ -95,6 +95,7 @@ public class Relationship extends DocumentElementModel implements Observer {
 	}
 	
 	public void setInverted() {
+		Collections.reverse(this.points);
 		setChanged();
 		this.notifyObservers("wasInverted");
 	}
