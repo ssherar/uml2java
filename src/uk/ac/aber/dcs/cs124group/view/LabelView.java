@@ -227,14 +227,17 @@ public class LabelView extends DocumentElementView {
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			Font staticChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
+			
+			
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
+			Font normal = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
 			Attribute a = (Attribute) o;
 			if(a.isFlagAbstract()) {
 				this.setFont(abstractChanged);
 			} else if(a.isFlagStatic()) {
 				this.setFont(staticChanged);
 			} else {
-				this.setFont(this.getFont());
+				this.setFont(normal);
 			}
 			this.repaint();
 			
