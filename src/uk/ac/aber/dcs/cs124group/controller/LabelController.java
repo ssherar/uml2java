@@ -81,9 +81,13 @@ public class LabelController extends DiagramListener implements ActionListener {
 
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
-		
+	public void actionPerformed(ActionEvent e) {
+		if(this.model instanceof Attribute) {
+			String c = e.getActionCommand();
+			if(c.equals("Delete")) {
+				this.model.remove();
+			}
+		}
 	}
 	
 }

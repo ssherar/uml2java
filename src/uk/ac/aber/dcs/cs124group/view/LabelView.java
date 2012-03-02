@@ -218,6 +218,9 @@ public class LabelView extends DocumentElementView {
 			} else {
 				this.exitEdit();
 			}
+		} else if(arg.equals("wasRemoved")) {
+			this.setVisible(false);
+			this.getParent().remove(this);
 		}
 	}
 	
@@ -238,6 +241,7 @@ public class LabelView extends DocumentElementView {
 		private String[] methodModifiers = {"Static", "Abstract", "None"};
 		
 		public AttributePopup(LabelController l, boolean data) {
+			this.listener = l;
 			JMenu modifers = new JMenu("Modifiers...");
 			JMenuItem submenu;
 			if(data) {
