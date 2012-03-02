@@ -18,7 +18,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	
 	private String representation; //e.g. +addElement(element : Element) : void
 	private String attributeName;
-	// TODO needs to be either hashtables/map<String, String>
 	private ArrayList<String> args;
 	private String returnType = "void";
 	private String attribDefault = null;

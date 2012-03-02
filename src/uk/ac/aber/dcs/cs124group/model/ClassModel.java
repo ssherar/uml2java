@@ -33,7 +33,7 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 
 	
 	private Point location;
-	private Dimension size = new Dimension(300,225);
+	private Dimension size = new Dimension(220,150);
 
 	private CompoundEdit compoundEdit = new CompoundEdit();
 	

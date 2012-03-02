@@ -139,8 +139,7 @@ public class Manager extends UndoManager implements ActionListener,
 			try {
 				printer.print();
 			} catch (PrinterException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+
 			}
 		} else if (c.equals("Undo")) {
 			try {this.undo();}
@@ -295,7 +294,6 @@ public class Manager extends UndoManager implements ActionListener,
 		setWaitCursor(false);
 
 		if (retVal == JFileChooser.APPROVE_OPTION) {
-			//TODO: Remove extension if already exists
 			String filePath = fc.getSelectedFile().getAbsolutePath();
 			if(filePath.contains(FILE_EXTENSION)) {
 				filePath = filePath.substring(0, filePath.length() - 5);

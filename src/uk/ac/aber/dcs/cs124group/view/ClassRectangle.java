@@ -20,13 +20,10 @@ import java.util.*;
 
 public class ClassRectangle extends DocumentElementView {
 
-	private static final Dimension DEFAULT_RECTANGLE_SIZE = new Dimension(350,
-			225);
 	private static final Color RECTANGLE_BACKGROUND = new Color(255, 255, 190);
 
 	private LabelView name;
 	private ClassModel model;
-	//private String nameText; //needed to reset text if changed from final to other modifier
 	private ArrayList<LabelView> dataFieldViews = new ArrayList<LabelView>();
 	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
@@ -177,17 +174,6 @@ public class ClassRectangle extends DocumentElementView {
 		Font f = this.getFont();
 		g.setFont(f);
 
-		g.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING,
-				RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
-		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-				RenderingHints.VALUE_ANTIALIAS_ON);
-		g.setRenderingHint(RenderingHints.KEY_FRACTIONALMETRICS,
-				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-		g.setRenderingHint(RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-
-		FontMetrics metrics = g.getFontMetrics();
-
 		int width = getPreferredSize().width;
 		int height = getPreferredSize().height;
 
@@ -206,7 +192,7 @@ public class ClassRectangle extends DocumentElementView {
 
 	private int getSeparatorCoordinate() {
 		if (this.model.getDataFields().size() == 0)
-			return this.getPreferredSize().height / 2;
+			return this.name.getPreferredSize().height + 40;
 		else {
 			return this.getNextDataFieldPoint(this.model.getDataFields().size()).y;
 		}
@@ -325,13 +311,11 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 	private void updatePreferences(DocumentPreferences o, String arg) {
-		// setFont
 		if (arg.equals("fontChanged")) {
 			this.setFont(o.getFont());
 		} else if (arg.equals("zoomLevelChanged")) {
 			this.setZoomFactor(o.getZoomLevel());
 		}
-		// setZoomLevel
 	}
 
 	private void setResizeCursor() {
