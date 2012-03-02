@@ -216,6 +216,23 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		this.attribDefault = attribDefault;
 	}
 	
+	public void setAbstract(boolean set, boolean undo) {
+		if(undo) {
+			
+		}
+		this.cleanFlags();
+		this.flagAbstract = true;
+		setChanged();
+		notifyObservers("flagChanged");
+	}
+	
+	private void cleanFlags() {
+		this.flagAbstract = false;
+		this.flagStatic = false;
+		this.flagFinal = false;
+		this.flagTransient = false;
+	}
+	
 	
 
 }
