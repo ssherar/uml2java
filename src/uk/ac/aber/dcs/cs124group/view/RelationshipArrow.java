@@ -12,6 +12,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
 import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
+import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
 import uk.ac.aber.dcs.cs124group.model.Relationship;
 import uk.ac.aber.dcs.cs124group.model.RelationshipType;
 
@@ -34,6 +35,11 @@ public class RelationshipArrow extends DocumentElementView {
 	
 	@Override
 	public boolean contains(Point p) {
+		
+		for(int i = 0; i < model.getPoints().size(); i++) {
+			if(p.distance(model.getPoints().get(i)) < 10)
+				return true;
+		}
 		
 		for(int j = 1; j < this.model.getPoints().size(); j++) {
 			Point p1 = this.model.getPoints().get(j - 1);
@@ -152,6 +158,15 @@ public class RelationshipArrow extends DocumentElementView {
 		g.drawPolyline(xpoints, ypoints, points.size());
 	
 		g.setStroke(tmp);
+		
+		if(this.model.getPaintState() == ElementPaintState.MOUSED_OVER || this.model.getPaintState() == ElementPaintState.SELECTED) {
+			g.setColor(Color.GREEN);
+			for(int i = 0; i < points.size(); i++) {
+				Point p = points.get(i);
+				int ovalSize = (int) (10 / Math.sqrt(2));
+				g.fillOval(p.x - 3, p.y - 3, ovalSize, ovalSize);
+			}
+		}
 		
 
 	}
