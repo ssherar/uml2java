@@ -20,6 +20,7 @@ public class RelationshipController extends DiagramListener implements ActionLis
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		this.model.storeInEdit();
 		String c = arg0.getActionCommand();
 		if(c.equals("Aggregation")) {
 			model.setType(RelationshipType.AGGREGATION);
@@ -62,6 +63,8 @@ public class RelationshipController extends DiagramListener implements ActionLis
 			for(Point p : this.model.getPoints()) {
 				if(p.distance(e.getPoint()) < 10) {
 					movedPoint = p;
+					this.model.storeInEdit();
+					break;
 				}
 			}
 		}

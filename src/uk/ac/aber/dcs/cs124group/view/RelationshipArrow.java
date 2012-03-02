@@ -77,6 +77,10 @@ public class RelationshipArrow extends DocumentElementView {
 			this.getParent().doLayout();
 			this.repaint();
 		}
+		else if(s.equals("typeChanged") || s.equals("restored")) {
+			((RelationshipPopup) (this.getComponentPopupMenu())).setSelectedType(this.model.getType().toString());
+			this.repaint();
+		}
 		else this.repaint();
 
 	}
@@ -173,17 +177,18 @@ public class RelationshipArrow extends DocumentElementView {
 	
 	public class RelationshipPopup extends JPopupMenu {
 		private RelationshipController listener;
+		private JMenu changeRelationship;
 		
 		private String[] rTypes = {"Aggregation","Composition","Inheritance","Uses","Implements"};
 		public RelationshipPopup(RelationshipController l) {
 			this.listener = l;
-			JMenu changeRelationship = new JMenu("Change Relationship");
+			changeRelationship = new JMenu("Change Relationship");
 			JMenuItem submenu;
 			
 			ButtonGroup typeGroup = new ButtonGroup();
 			for(String s : rTypes) {
-				//submenu = null;
 				submenu = new JRadioButtonMenuItem(s, s.equals("Uses"));
+				submenu.setName(s);
 				submenu.addActionListener(listener);
 				typeGroup.add(submenu);
 				changeRelationship.add(submenu);
@@ -199,6 +204,17 @@ public class RelationshipArrow extends DocumentElementView {
 			add(changeRelationship);
 			add(invert);
 			add(delete);
+		}
+		
+		public void setSelectedType(String t) {
+			String type = t.toLowerCase();
+			System.out.println(t);
+			for(int i = 0; i < changeRelationship.getItemCount(); i++) {
+				JMenuItem currentItem = changeRelationship.getItem(i);
+				if (currentItem.getName().toLowerCase().equals(type)) {
+					currentItem.setSelected(true);
+				}
+			}
 		}
 	}
 

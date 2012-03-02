@@ -5,7 +5,7 @@ import java.awt.Rectangle;
 import java.util.*;
 import uk.ac.aber.dcs.cs124group.view.*;
 
-public class Relationship extends DocumentElementModel implements Observer {
+public class Relationship extends DocumentElementModel implements Observer, Cloneable {
 
 	
 	private static final long serialVersionUID = 272724938449188987L;
@@ -158,6 +158,37 @@ public class Relationship extends DocumentElementModel implements Observer {
 		}
 		
 	}
+	
+	public Relationship clone() {
+		try {
+			Relationship storedState = (Relationship) super.clone();
+			storedState.points = new ArrayList<Point> ();
+			for(int i = 0; i < this.points.size(); i++) {
+				storedState.points.add((Point) this.points.get(i).clone()); 
+			}
+			return storedState;
+		}
+		catch(CloneNotSupportedException e) {
+			return null;
+		}
+	
+	}
+	
+	public void storeInEdit() {
+		RelationshipStateEdit edit = new RelationshipStateEdit(this.clone(), this);
+		this.fireUndoableEvent(edit);
+	}
+	
+	public void restoreFromPrevious(Relationship previous) {
+		this.points = previous.points;
+		this.goingFrom = previous.goingFrom;
+		this.goingTo = previous.goingTo;
+		this.type = previous.type;
+		
+		this.setChanged();
+		this.notifyObservers("restored");
+	}
+	
 
 
 }
