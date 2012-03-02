@@ -264,9 +264,9 @@ public class Exporter {
 					contents = (contents + "transistent ");
 				}
 
-				if (classModel.getAttributes().get(j).isFlagVolatile()) {
+				/*if (classModel.getAttributes().get(j).isFlagVolatile()) {
 					contents = (contents + "volatile ");
-				}
+				}*/
 
 				contents = (contents
 						+ classModel.getAttributes().get(j).getAttributeType() + " ");
@@ -309,9 +309,9 @@ public class Exporter {
 					contents = (contents + "final ");
 				}
 
-				if (classModel.getAttributes().get(j).isFlagSyncronised()) {
+				/*if (classModel.getAttributes().get(j).isFlagSyncronised()) {
 					contents = (contents + "syncronized ");
-				}
+				}*/
 
 				contents = (contents
 						+ classModel.getAttributes().get(j).getReturnType() + " ");

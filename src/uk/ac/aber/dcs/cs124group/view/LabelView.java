@@ -10,8 +10,7 @@ import javax.swing.*;
 import uk.ac.aber.dcs.cs124group.controller.DiagramListener;
 import uk.ac.aber.dcs.cs124group.controller.LabelController;
 import uk.ac.aber.dcs.cs124group.controller.ListeningMode;
-import uk.ac.aber.dcs.cs124group.model.DocumentPreferences;
-import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
+import uk.ac.aber.dcs.cs124group.model.*;
 
 public class LabelView extends DocumentElementView {
 
@@ -31,12 +30,20 @@ public class LabelView extends DocumentElementView {
 		this.setPreferredSize(new Dimension(56,12));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		this.setName("label");
+		model.setSize(this.getPreferredSize());
 		this.resizeToText();
 		this.setLayout(null);
 		
 		LabelController listener = new LabelController(this.model);
 		this.addMouseListener(listener);
+		this.addMouseMotionListener(listener);
 		this.addKeyListener(listener);
+		if(this.model instanceof Attribute) {
+			if(((Attribute) this.model).getType() == AttributeType.DATA_FIELD)
+				this.setComponentPopupMenu(new AttributePopup(listener, true));
+			else
+				this.setComponentPopupMenu(new AttributePopup(listener, false));
+		}
 
 	}
 	
@@ -93,6 +100,7 @@ public class LabelView extends DocumentElementView {
 			setPreferredSize(new Dimension(
 					(int) (getZoomFactor() * 1.1 * width + 1), 
 					(int) (getZoomFactor() * metrics.getHeight())));
+			model.setSize(this.getPreferredSize());
 			getParent().doLayout();
 		}
 		catch(NullPointerException ex) {
@@ -221,5 +229,37 @@ public class LabelView extends DocumentElementView {
 			this.setZoomFactor(o.getZoomLevel());
 		}
 				//setZoomLevel
+	}
+	
+	public class AttributePopup extends JPopupMenu {
+		
+		private LabelController listener;
+		private String[] dataModifiers = {"Final", "Abstract", "Transient", "None"};
+		private String[] methodModifiers = {"Static", "Abstract", "None"};
+		
+		public AttributePopup(LabelController l, boolean data) {
+			JMenu modifers = new JMenu("Modifiers...");
+			JMenuItem submenu;
+			if(data) {
+				for(String s : this.dataModifiers) {
+					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
+					submenu.addActionListener(listener);
+					modifers.add(submenu);
+					submenu = null;
+				}
+			} else {
+				for(String s : this.methodModifiers) {
+					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
+					submenu.addActionListener(listener);
+					modifers.add(submenu);
+					submenu = null;
+				}
+			}
+			this.add(modifers);
+			
+			JMenuItem delete = new JMenuItem("Delete");
+			delete.addActionListener(listener);
+			this.add(delete);
+		}
 	}
 }

@@ -26,8 +26,8 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
-	private boolean flagSyncronised = false;
-	private boolean flagVolatile = false;
+	//private boolean flagSyncronised = false;
+	//private boolean flagVolatile = false;
 	private boolean flagFinal = false;
 	
 	public Attribute(Point p, String representation, AttributeType type) {
@@ -120,21 +120,21 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		this.flagTransient = flagTransient;
 	}
 
-	public boolean isFlagVolatile(){
+	/*public boolean isFlagVolatile(){
 		return flagVolatile;
 	}
 	
 	private void setFlagVolatile(boolean flagVolatile){
 		this.flagTransient = flagVolatile;
-	}
+	}*/
 	
-	public boolean isFlagSyncronised(){
+	/*public boolean isFlagSyncronised(){
 		return flagSyncronised;
 	}
 	
 	private void setFlagSyncronised(boolean flagSyncronised){
 		this.flagSyncronised = flagSyncronised;
-	}
+	}*/
 	
 	public boolean isFlagFinal() {
 		return flagFinal;
@@ -156,8 +156,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		return type;
 	}
 
-	
-	
 	public void setType(AttributeType type) {
 		this.type = type;
 	}

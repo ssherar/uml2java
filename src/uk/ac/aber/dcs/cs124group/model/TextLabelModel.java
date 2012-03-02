@@ -19,7 +19,6 @@ public class TextLabelModel extends DocumentElementModel {
 	
 	public TextLabelModel(Point p) {
 		this.location = p;
-		
 	}
 	
 	
