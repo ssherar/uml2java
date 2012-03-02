@@ -6,6 +6,7 @@ import java.awt.event.MouseEvent;
 import java.awt.Point;
 
 import uk.ac.aber.dcs.cs124group.model.ClassModel;
+import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
 import uk.ac.aber.dcs.cs124group.model.Relationship;
 import uk.ac.aber.dcs.cs124group.model.RelationshipType;
 
@@ -68,6 +69,17 @@ public class RelationshipController extends DiagramListener implements ActionLis
 			movedPoint.move(e.getX() - movedPoint.x, e.getY() - movedPoint.y);
 			this.model.pointMoved();
 		}
+		this.model.setPaintState(ElementPaintState.SELECTED);
+	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		model.setPaintState(ElementPaintState.MOUSED_OVER);
+	}
+	
+	@Override
+	public void mouseExited(MouseEvent e) {
+		model.setPaintState(ElementPaintState.DEFAULT);
 	}
 
 }
