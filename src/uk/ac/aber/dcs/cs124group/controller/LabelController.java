@@ -92,6 +92,12 @@ public class LabelController extends DiagramListener implements ActionListener {
 				this.model.remove();
 			} else if(c.equals("Abstract")) {
 				((Attribute)this.model).setAbstract(true, true);
+			} else if(c.equals("Static")) {
+				((Attribute)this.model).setAbstract(true, true);
+			 
+			
+			} else if(c.equals("None")) {
+				((Attribute)this.model).setNone(true, true);
 			}
 		}
 	}

@@ -224,14 +224,20 @@ public class LabelView extends DocumentElementView {
 			}
 			
 		} else if(arg.equals("flagChanged")) {
+			/* Reference: http://stackoverflow.com/questions/325840/what-is-the-constant-value-of-the-underline-font-in-java */
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
+			Font staticChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
 			Attribute a = (Attribute) o;
 			if(a.isFlagAbstract()) {
-			this.setFont(abstractChanged);
+				this.setFont(abstractChanged);
+			} else if(a.isFlagStatic()) {
+				this.setFont(staticChanged);
+			} else {
+				this.setFont(this.getFont());
 			}
+			this.repaint();
 			
 		}
 	}

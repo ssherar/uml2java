@@ -286,7 +286,7 @@ public class ClassRectangle extends DocumentElementView {
 
 		} else if (arg.equals("flagChanged")) {
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
-			
+			/* Reference: http://stackoverflow.com/questions/325840/what-is-the-constant-value-of-the-underline-font-in-java */
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
