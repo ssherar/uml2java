@@ -36,7 +36,7 @@ public class ClassController extends DiagramListener implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		String c = e.getActionCommand();
 		if(c.equals("Add Relationship")) {
-			//TODO: Implement
+			this.model.requestOutgoingRelationship();
 		}
 		if(c.equals("Add Data Field")) {
 			model.requestNewDataField();

@@ -253,6 +253,11 @@ public class ClassModel extends DocumentElementModel{
 		}
 	}
 	
+	public void requestOutgoingRelationship() {
+		this.setChanged();
+		this.notifyObservers("relationshipRequested");
+	}
+	
 	@Override
 	public void addUndoableEditListener(UndoableEditListener l) {
 		super.addUndoableEditListener(l);

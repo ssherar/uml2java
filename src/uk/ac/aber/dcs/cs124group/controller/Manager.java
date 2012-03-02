@@ -448,6 +448,12 @@ public class Manager extends UndoManager implements ActionListener,
 				}
 			}
 		}
+		else if (o instanceof ClassModel && s.equals("relationshipRequested")) {
+			selectionStack.removeAllElements();
+			selectionStack.push((ClassModel) o);
+			this.mode = ListeningMode.PLACING_RELATIONSHIP;
+			status.setText("Now click on the class you want the relationship to go to.");
+		}
 		
 	}
 	
