@@ -13,7 +13,7 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 /**
  * An all-purpose listener controlling class models. Is added as a listener to ClassRectangles.
- * @authors Daniel Maly, Sam Sherar, Lee Smith
+ * @author Daniel Maly, Sam Sherar, Lee Smith
  *
  */
 public class ClassController extends DiagramListener implements ActionListener {

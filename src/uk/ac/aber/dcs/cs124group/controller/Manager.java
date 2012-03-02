@@ -1,7 +1,6 @@
 package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.event.*;
-//import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
 import java.awt.*;
 import java.util.*;
@@ -34,8 +33,6 @@ public class Manager extends UndoManager implements ActionListener,
 	
 	private MainFrame window;
 	private Canvas canvas;
-	private MenuBar menuBar;
-	private SideBar sideBar;
 	private StatusBar status;
 	private ToolBar toolBar;
 
@@ -52,8 +49,6 @@ public class Manager extends UndoManager implements ActionListener,
 		canvas = window.getCanvas();
 		canvas.addMouseMotionListener(this);
 
-		menuBar = window.getMenu();
-		sideBar = window.getSideBar();
 		status = window.getStatus();
 		toolBar = window.getToolbar();
 

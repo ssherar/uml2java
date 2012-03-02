@@ -5,7 +5,7 @@ import uk.ac.aber.dcs.cs124group.controller.Manager;
 
 /** 
  * This is the main class of the application and contains the program entry point.
- * @authors Daniel Maly, Sam Sherar, Lee Smith.
+ * @author Daniel Maly, Sam Sherar, Lee Smith.
  *
  */
 public class Run {

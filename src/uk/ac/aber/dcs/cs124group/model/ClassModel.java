@@ -19,7 +19,6 @@ import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 public class ClassModel extends DocumentElementModel implements Moveable, Resizeable {
 	
 	private TextLabelModel nameLabel;
-	//private ClassModel superClass;
 	private ArrayList<Relationship> relationships = new ArrayList<Relationship> ();
 	
 	private ArrayList<Attribute> dataFields = new ArrayList<Attribute>();
