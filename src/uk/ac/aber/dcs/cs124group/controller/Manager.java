@@ -15,6 +15,7 @@ import javax.swing.undo.*;
 import java.io.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
 import uk.ac.aber.dcs.cs124group.view.*;
 import uk.ac.aber.dcs.cs124group.export.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
@@ -185,6 +186,9 @@ public class Manager extends UndoManager implements ActionListener,
 		ClassModel c = new ClassModel(p);
 		document.addElement(c);
 		status.setText("New class rectangle created at " + p.x + "," + p.y);
+		
+		ExistenceEdit edit = new ExistenceEdit(c, true);
+		this.undoableEditHappened(new UndoableEditEvent(c, edit));
 
 		ClassRectangle view = new ClassRectangle(c, true);
 		c.addObserver(view);
