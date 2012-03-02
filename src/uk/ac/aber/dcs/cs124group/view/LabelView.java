@@ -104,6 +104,7 @@ public class LabelView extends DocumentElementView {
 					(int) (getZoomFactor() * metrics.getHeight())));
 			model.setSize(this.getPreferredSize());
 			getParent().doLayout();
+			realign();
 		}
 		catch(NullPointerException ex) {
 		
@@ -172,6 +173,8 @@ public class LabelView extends DocumentElementView {
 	public void exitEdit() {
 		JTextArea a = replacement;
 		suspendedParent.remove(a);
+		suspendedParent.add(this);
+		
 		if(a.getText().length() < 1) {
 			if(this.model.isClassName()) {
 				a.setText(this.model.getText());
@@ -183,7 +186,7 @@ public class LabelView extends DocumentElementView {
 		}
 		
 		model.setText(a.getText(), true);
-		suspendedParent.add(this);
+		
 		this.getParent().repaint();
 	}
 	
