@@ -45,6 +45,12 @@ public abstract class DocumentElementModel extends Observable implements java.io
 		setChanged();
 		notifyObservers("wasRemoved");
 	}
+	
+	public void resurrect() {
+		exists = true;
+		setChanged();
+		notifyObservers("wasResurrected");
+	}
 		
 	public void addUndoableEditListener(UndoableEditListener l) {
 		this.undoManager = l;

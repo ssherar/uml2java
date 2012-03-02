@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import java.util.Observable;
 
 import javax.swing.*;
 
@@ -10,6 +11,8 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	
 	private Font font;
 	private double zoomFactor = 1;
+	
+	protected Container suspendedParent;
 	
 	protected DocumentElementView() {
 		
@@ -43,6 +46,24 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+	}
+	
+	@Override
+	public void update(Observable o, Object s) {
+		if(!(s instanceof String))
+			throw new IllegalArgumentException("String expected");
+		if(s.equals("wasRemoved")) {
+			this.suspendedParent = this.getParent();
+			this.getParent().remove(this);
+			this.setVisible(false);
+			suspendedParent.repaint();
+		}
+		else if(s.equals("wasResurrected")) {
+			this.setVisible(true);
+			this.suspendedParent.add(this);
+			this.getParent().doLayout();
+			this.getParent().repaint();
+		}
 	}
 	
 

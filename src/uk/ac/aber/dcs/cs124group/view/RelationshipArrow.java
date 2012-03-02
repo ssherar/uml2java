@@ -66,18 +66,8 @@ public class RelationshipArrow extends DocumentElementView {
 	
 	@Override
 	public void update(Observable o, Object s) {
-		if(!(s instanceof String)) {
-			throw new IllegalArgumentException("String expected");
-		}
-		else if(s.equals("wasRemoved")) {
-			this.setVisible(false);
-			this.getParent().remove(this);
-		}
-		else if(s.equals("wasInverted")) {
-			this.getParent().doLayout();
-			this.repaint();
-		}
-		else if(s.equals("typeChanged") || s.equals("restored")) {
+		super.update(o, s);
+		if(s.equals("typeChanged") || s.equals("restored")) {
 			((RelationshipPopup) (this.getComponentPopupMenu())).setSelectedType(this.model.getType().toString());
 			this.repaint();
 		}

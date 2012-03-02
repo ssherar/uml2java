@@ -217,8 +217,8 @@ public class ClassRectangle extends DocumentElementView {
 	 * rectangle down to the attribute specified by the argument.
 	 * 
 	 * @param afterDataFieldNumber
-	 *            The index at which a new data label is to be inserted minus
-	 *            one.
+	 *            The index at which a new data label is to be inserted.
+	 *            
 	 * @return The Point at which it is safe to insert a new data field below
 	 *         the one specified by the argument.
 	 */
@@ -238,8 +238,8 @@ public class ClassRectangle extends DocumentElementView {
 	 * rectangle down to the method specified by the argument.
 	 * 
 	 * @param afterMethodNumber
-	 *            The index at which a new method label is to be inserted minus
-	 *            one.
+	 *            The index at which a new method label is to be inserted.
+	 *            
 	 * @return The Point at which it is safe to insert a new method label below
 	 *         the one specified by the argument.
 	 */
@@ -256,11 +256,7 @@ public class ClassRectangle extends DocumentElementView {
 
 	@Override
 	public void update(Observable o, Object arg) {
-
-		if (!(arg instanceof String)) {
-			throw new IllegalArgumentException(
-					"Invalid argument: Need a string");
-		}
+		super.update(o, arg);
 
 		if (o instanceof ClassModel) {
 			this.updateModel((ClassModel) o, (String) arg);
@@ -324,11 +320,6 @@ public class ClassRectangle extends DocumentElementView {
 		} else if (arg.equals("addMethodRequested")) {
 			this.addAttributeToModel(AttributeType.METHOD);
 
-		} else if (arg.equals("wasRemoved")) {
-			Container tmp = this.getParent();
-			this.getParent().remove(this);
-			tmp.repaint();
-			this.setVisible(false);
 		}
 
 	}
