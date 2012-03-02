@@ -132,13 +132,7 @@ public class Manager extends UndoManager implements ActionListener,
 				e1.printStackTrace();
 			}
 		} else if (c.equals("Code")) {
-			document.cleanUp();
-			Exporter exp = new Exporter(document, this);
-			try {
-				exp.exportCode();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			}
+				this.export();
 		} else if (c.equals("Print")){
 			PrinterDriver printer = new PrinterDriver(canvas);
 			try {
@@ -155,6 +149,17 @@ public class Manager extends UndoManager implements ActionListener,
 			catch(Exception ex) {}
 		}
 
+	}
+	
+	private void export() {
+		document.cleanUp();
+		this.discardAllEdits();
+		Exporter exp = new Exporter(document, this);
+		try {
+			exp.exportCode();
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
 	}
 
 	private void openNewDocument() {
@@ -300,7 +305,6 @@ public class Manager extends UndoManager implements ActionListener,
 	}
 
 	private void serialise(String fileName) {
-		document.cleanUp();
 		try {
 			FileOutputStream fos = new FileOutputStream(fileName);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
@@ -333,6 +337,7 @@ public class Manager extends UndoManager implements ActionListener,
 				FileInputStream fos = new FileInputStream(openFile.getPath());
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel) in.readObject();
+				document.cleanUp();
 				
 				for (int i = 0; i < document.getElements().size(); i++) {
 					DocumentElementModel e = document.getElements().get(i);
