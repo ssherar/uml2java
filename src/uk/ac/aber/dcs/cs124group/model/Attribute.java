@@ -25,8 +25,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	private boolean flagStatic = false;
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
-	//private boolean flagSyncronised = false;
-	//private boolean flagVolatile = false;
 	private boolean flagFinal = false;
 	
 	public Attribute(Point p, String representation, AttributeType type) {
@@ -75,81 +73,50 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		this.representation = representation;
 	}
 	
+	public void setAttributeName(String name) {
+		this.attributeName = name;
+	}
+	
 	public String getAttributeName() {
 		return attributeName;
-	}
-
-	private void setAttributeName(String name) {
-		this.attributeName = name;
 	}
 
 	public String getAttributeType(){
 		return attributeType;
 	}
 	
+	public void setAttributeType(String type) {
+		this.attributeType = type;
+	}
+	
 	public String getReturnType() {
 		return returnType;
-	}
-
-	private void setReturnType(String returnType) {
-		this.returnType = returnType;
 	}
 
 	public boolean isFlagStatic() {
 		return flagStatic;
 	}
 
-	private void setFlagStatic(boolean flagStatic) {
-		this.flagStatic = flagStatic;
-	}
-
 	public boolean isFlagAbstract() {
 		return flagAbstract;
-	}
-
-	private void setFlagAbstract(boolean flagAbstract) {
-		this.flagAbstract = flagAbstract;
 	}
 
 	public boolean isFlagTransient() {
 		return flagTransient;
 	}
-
-	private void setFlagTransient(boolean flagTransient) {
-		this.flagTransient = flagTransient;
-	}
-
-	/*public boolean isFlagVolatile(){
-		return flagVolatile;
-	}
-	
-	private void setFlagVolatile(boolean flagVolatile){
-		this.flagTransient = flagVolatile;
-	}*/
-	
-	/*public boolean isFlagSyncronised(){
-		return flagSyncronised;
-	}
-	
-	private void setFlagSyncronised(boolean flagSyncronised){
-		this.flagSyncronised = flagSyncronised;
-	}*/
 	
 	public boolean isFlagFinal() {
 		return flagFinal;
 	}
 
-	private void setFlagFinal(boolean flagFinal) {
-		this.flagFinal = flagFinal;
-	}
-
 	public IVisibility getVisibility() {
 		return visibility;
 	}
-
-	private void setVisibility(IVisibility visibility) {
+	
+	public void setVisibility(IVisibility visibility) {
 		this.visibility = visibility;
 	}
+	
 
 	public AttributeType getType() {
 		return type;
@@ -205,14 +172,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		Matcher m = p.matcher(var);	
 		
 		return m;
-	}
-
-	public String getAttribDefault() {
-		return attribDefault;
-	}
-
-	public void setAttribDefault(String attribDefault) {
-		this.attribDefault = attribDefault;
 	}
 	
 	public void setAbstract(boolean set, boolean undo) {

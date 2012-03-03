@@ -8,20 +8,17 @@ TO-DO
 2. Labels
 	- Make modifier changes undoable
 	- Fix button groups in data fields
-	- Make separate classes for ClassNameLabel and RelationshipLabel
 	- Add right-click menu for ordinary labels
 	
 3. Exporter
 	- Test it and fix bugs
+	- ADD SUPPORT FOR LABELLED RELATIONSHIPS
 	
 4. Additional features
-	- Test saving / loading, fix it if it doesn't work
-	- Canvas resizing
 	- Fix the status bar 
 	- Fix zoom
 
 5. Bits and pieces
-	- Make scrolling the canvas with the mouse wheel faster
 	- Make a better "about" window
 	
 6. Documentation

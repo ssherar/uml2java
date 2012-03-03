@@ -51,7 +51,7 @@ public class RelationshipArrow extends DocumentElementView {
 			
 			if(segmentVector.getColinearityFactor(projection) < 1.001 && segmentVector.getColinearityFactor(projection) > 0)  {
 				double distanceToSegment = p.distance(p1.x + projection.x, p1.y + projection.y);
-				return (distanceToSegment < 10);
+				if (distanceToSegment < 10) return true;
 			}
 
 		}

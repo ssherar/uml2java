@@ -13,7 +13,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	private RelationshipType type = RelationshipType.USES;
 	private ClassModel goingFrom, goingTo;
 	private Cardinality cardinalityFrom, cardinalityTo;
-	private TextLabelModel label;
+	private RelationshipLabel label;
 	
 	private ArrayList<Point> points = new ArrayList<Point>();
 	
@@ -98,13 +98,13 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 
 
 
-	public TextLabelModel getLabel() {
+	public RelationshipLabel getLabel() {
 		return label;
 	}
 
 
 
-	public void setLabel(TextLabelModel label) {
+	public void setLabel(RelationshipLabel label) {
 		this.label = label;
 	}
 	

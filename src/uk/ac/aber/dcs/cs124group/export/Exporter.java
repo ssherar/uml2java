@@ -265,9 +265,6 @@ public class Exporter {
 					contents = (contents + "transistent ");
 				}
 
-				/*if (classModel.getAttributes().get(j).isFlagVolatile()) {
-					contents = (contents + "volatile ");
-				}*/
 
 				contents = (contents
 						+ classModel.getAttributes().get(j).getAttributeType() + " ");
