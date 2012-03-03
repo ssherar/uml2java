@@ -53,7 +53,6 @@ public class Manager extends UndoManager implements ActionListener,
 		toolBar = window.getToolbar();
 
 		openNewDocument();
-		canvas.setPreferredSize(new Dimension(500, 500));
 		status.setText("Welcome!");
 
 		changeFont();
@@ -169,7 +168,6 @@ public class Manager extends UndoManager implements ActionListener,
 				.getFontSize()));
 		canvas.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar
 				.getFontSize()));
-		preferences.setCanvasDefaultSize(canvas.getSize());
 
 		status.setText("Opened a brand new class diagram");
 
@@ -295,6 +293,12 @@ public class Manager extends UndoManager implements ActionListener,
 				filePath = filePath.substring(0, filePath.length() - 5);
 			}
 			File saveFile = new File(filePath + "." + FILE_EXTENSION);
+			if (saveFile.exists()) {
+				int choice = JOptionPane.showConfirmDialog(window,"This file already exists. Do you want to overwrite it?",
+								"Warning!", JOptionPane.YES_NO_OPTION,JOptionPane.WARNING_MESSAGE);
+				if(choice == JOptionPane.NO_OPTION) 
+					return;
+			}
 			try {
 				if (saveFile.isFile())
 					saveFile.createNewFile();
@@ -311,6 +315,8 @@ public class Manager extends UndoManager implements ActionListener,
 
 	private void serialise(String fileName) {
 		try {
+			document.getPreferences().setCanvasDefaultSize(canvas.getPreferredSize());
+			
 			FileOutputStream fos = new FileOutputStream(fileName);
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(this.document);
@@ -355,8 +361,8 @@ public class Manager extends UndoManager implements ActionListener,
 					canvas.add(ew);
 				}
 				
-				/*canvas.setPreferredSize(document.getPreferences()
-						.getCanvasDefaultSize());*/
+				canvas.setPreferredSize(document.getPreferences()
+						.getCanvasDefaultSize());
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 			
