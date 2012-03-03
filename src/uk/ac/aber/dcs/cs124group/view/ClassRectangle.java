@@ -38,6 +38,8 @@ public class ClassRectangle extends DocumentElementView {
 			this.add(name);
 			name.enableEdit();
 		} else {
+			m.cleanUp();
+			
 			name = new LabelView(m.getNameLabel());
 			name.setFont(this.getFont());
 			m.getNameLabel().addObserver(name);

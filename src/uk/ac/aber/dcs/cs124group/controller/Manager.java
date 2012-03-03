@@ -355,8 +355,8 @@ public class Manager extends UndoManager implements ActionListener,
 					canvas.add(ew);
 				}
 				
-				canvas.setPreferredSize(document.getPreferences()
-						.getCanvasDefaultSize());
+				/*canvas.setPreferredSize(document.getPreferences()
+						.getCanvasDefaultSize());*/
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 			

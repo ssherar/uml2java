@@ -44,6 +44,7 @@ public class DocumentModel implements java.io.Serializable {
 		for(int i = 0; i < elements.size(); i++) {
 			if(!elements.get(i).exists()) {
 				elements.remove(i);
+				i--;
 			}
 		}
 	}

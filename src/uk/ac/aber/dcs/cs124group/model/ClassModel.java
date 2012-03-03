@@ -239,18 +239,22 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 			for(int i = 0; i < dataFields.size(); i++) {
 				if(!dataFields.get(i).exists()) {
 					dataFields.remove(i);
-					System.out.println("Removed");
+					i--;
 				}
 				
 			}
 			for(int i = 0; i < methods.size(); i++) {
-				if(!methods.get(i).exists())
+				if(!methods.get(i).exists()) {
 					methods.remove(i);
+					i--;
+				}
 			}
 		}
 		for(int i = 0; i < relationships.size(); i++) {
-			if(!relationships.get(i).exists())
+			if(!relationships.get(i).exists()) {
 				relationships.remove(i);
+				i--;
+			}
 		}
 	}
 	

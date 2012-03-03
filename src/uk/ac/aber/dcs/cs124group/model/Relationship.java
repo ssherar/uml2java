@@ -61,15 +61,6 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	public ClassModel getGoingTo() {
 		return goingTo;
 	}
-	
-	public void setGoingFrom(ClassModel f) {
-		this.goingFrom = f;
-	}
-	
-	public void setGoingTo(ClassModel t) {
-		this.goingTo = t;
-	}
-
 
 
 	public Cardinality getCardinalityFrom() {
@@ -95,6 +86,11 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	}
 	
 	public void setInverted() {
+		ClassModel tmp = this.goingTo;
+		this.goingTo = this.goingFrom;
+		this.goingFrom = tmp;
+		
+		
 		Collections.reverse(this.points);
 		setChanged();
 		this.notifyObservers("wasInverted");

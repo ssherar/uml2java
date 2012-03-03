@@ -38,11 +38,6 @@ public class RelationshipController extends DiagramListener implements ActionLis
 			model.setType(RelationshipType.IMPLEMENTS);
 		}
 		else if (c.equals("Invert")) {
-			ClassModel to, from;
-			to = model.getGoingTo();
-			from = model.getGoingFrom();
-			model.setGoingTo(from);
-			model.setGoingFrom(to);
 			model.setInverted();
 		}
 		else if (c.equals("Delete")) {
