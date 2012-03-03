@@ -2,20 +2,11 @@ package uk.ac.aber.dcs.cs124group.view;
 
 import uk.ac.aber.dcs.cs124group.controller.*;
 import uk.ac.aber.dcs.cs124group.gui.*;
-import uk.ac.aber.dcs.cs124group.model.Attribute;
-import uk.ac.aber.dcs.cs124group.model.AttributeType;
-import uk.ac.aber.dcs.cs124group.model.ClassModel;
-import uk.ac.aber.dcs.cs124group.model.DocumentPreferences;
-import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
-import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
-
+import uk.ac.aber.dcs.cs124group.model.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
-
 import javax.swing.*;
-
 import java.util.*;
 
 public class ClassRectangle extends DocumentElementView {
@@ -290,12 +281,12 @@ public class ClassRectangle extends DocumentElementView {
 			Font staticChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			
 			if (o.isStatic()) {
-				this.name.setFont(staticChanged);
+				this.name.setFont(staticChanged, true);
 				((RectanglePopupMenu)(this.getComponentPopupMenu())).setStatic();
 				this.repaint();
 				
 			} else if (o.isAbstract()) {
-				this.name.setFont(abstractChanged);
+				this.name.setFont(abstractChanged, true);
 				((RectanglePopupMenu)(this.getComponentPopupMenu())).setAbstract();
 				this.repaint();
 				
@@ -304,7 +295,7 @@ public class ClassRectangle extends DocumentElementView {
 				this.repaint();
 				
 			} else if (!o.isAbstract() && !o.isStatic() && !o.isFinal()){
-				this.name.setFont(this.getFont());
+				this.name.setFont(this.getFont(), true);
 				((RectanglePopupMenu)(this.getComponentPopupMenu())).setNone();
 				this.repaint();
 			}

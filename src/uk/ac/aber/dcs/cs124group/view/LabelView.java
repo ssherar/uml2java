@@ -230,21 +230,22 @@ public class LabelView extends DocumentElementView {
 			}
 			
 		} else if(arg.equals("flagChanged")) {
+			
 			/* Reference: http://stackoverflow.com/questions/325840/what-is-the-constant-value-of-the-underline-font-in-java */
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
 			Font staticChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			
-			
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
 			Font normal = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize());
+			
 			Attribute a = (Attribute) o;
 			if(a.isFlagAbstract()) {
-				this.setFont(abstractChanged);
+				this.setFont(abstractChanged, true);
 			} else if(a.isFlagStatic()) {
-				this.setFont(staticChanged);
+				this.setFont(staticChanged, true);
 			} else {
-				this.setFont(normal);
+				this.setFont(normal, true);
 			}
 			this.repaint();
 			
@@ -265,8 +266,8 @@ public class LabelView extends DocumentElementView {
 	public class AttributePopup extends JPopupMenu {
 		
 		private LabelController listener;
-		private String[] dataModifiers = {"Final", "Abstract", "Transient", "None"};
-		private String[] methodModifiers = {"Static", "Abstract", "None"};
+		private String[] dataModifiers = {"Final", "Static", "Transient", "None"};
+		private String[] methodModifiers = {"Static", "Abstract", "Final", "None"};
 		
 		public AttributePopup(LabelController l, boolean data) {
 			this.listener = l;

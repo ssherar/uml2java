@@ -18,9 +18,17 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 		
 	}
 	
+	@Override
 	public void setFont(Font font) {
-		this.font = font;
-		super.setFont(font);
+		this.setFont(font, false);
+	}
+	
+	public void setFont(Font font, boolean overrideStyle) {
+		if(!overrideStyle && this.font != null) 
+			this.font = new Font(font.getName(), this.font.getStyle(), font.getSize());
+		else
+			this.font = font;
+
 		doLayout();
 	}
 	

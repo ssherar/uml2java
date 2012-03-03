@@ -26,7 +26,6 @@ public class LabelController extends DiagramListener implements ActionListener {
 	 */
 	public LabelController(TextLabelModel m) {
 		this.model = m;
-		System.out.println(m);
 	}
 	
 
@@ -94,7 +93,7 @@ public class LabelController extends DiagramListener implements ActionListener {
 			} else if(c.equals("Abstract")) {
 				((Attribute)this.model).setAbstract(true, true);
 			} else if(c.equals("Static")) {
-				((Attribute)this.model).setAbstract(true, true);
+				((Attribute)this.model).setStatic(true, true);
 			 
 			
 			} else if(c.equals("None")) {
