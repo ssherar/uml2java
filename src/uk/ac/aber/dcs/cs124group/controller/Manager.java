@@ -127,7 +127,7 @@ public class Manager extends UndoManager implements ActionListener,
 			} catch (IIOException e1) {
 				e1.printStackTrace();
 			}
-		} else if (c.equals("Code")) {
+		} else if (c.equals("Code") || c.equals("Export to Java...")) {
 				this.export();
 		} else if (c.equals("Print")){
 			PrinterDriver printer = new PrinterDriver(canvas);
