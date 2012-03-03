@@ -138,7 +138,7 @@ public class Manager extends UndoManager implements ActionListener,
 			}
 		} else if (c.equals("Undo")) {
 			try {this.undo();}
-			catch(Exception ex) {ex.printStackTrace();}
+			catch(Exception ex) {}
 		} else if (c.equals("Redo")) {
 			try {this.redo();}
 			catch(Exception ex) {}
@@ -192,6 +192,7 @@ public class Manager extends UndoManager implements ActionListener,
 		//this.undoableEditHappened(new UndoableEditEvent(canvas, c));
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
+		view.setFont(document.getPreferences().getFont());
 		view.repaint();
 
 		canvas.repaint();

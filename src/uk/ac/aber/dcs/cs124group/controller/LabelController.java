@@ -90,7 +90,7 @@ public class LabelController extends DiagramListener implements ActionListener {
 		if(this.model instanceof Attribute) {
 			String c = e.getActionCommand();
 			if(c.equals("Delete")) {
-				this.model.remove();
+				this.model.userRemove();
 			} else if(c.equals("Abstract")) {
 				((Attribute)this.model).setAbstract(true, true);
 			} else if(c.equals("Static")) {

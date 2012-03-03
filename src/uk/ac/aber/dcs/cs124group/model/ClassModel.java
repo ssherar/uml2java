@@ -211,10 +211,12 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 		return visibility;
 	}
 
+	@Override
 	public Point getLocation() {
 		return location;
 	}
 
+	@Override
 	public void setLocation(Point l, boolean undoable) {
 		if(undoable) {
 			compoundEdit.addEdit(new LocationEdit(this, this.location, l));

@@ -49,6 +49,10 @@ public class LabelView extends DocumentElementView {
 
 	}
 	
+	public TextLabelModel getModel() {
+		return this.model;
+	}
+	
 	public void paintComponent(Graphics d) {
 		super.paintComponent(d);
 		Graphics2D g = (Graphics2D) d;
@@ -256,6 +260,7 @@ public class LabelView extends DocumentElementView {
 		}
 			
 	}
+
 	
 	public class AttributePopup extends JPopupMenu {
 		

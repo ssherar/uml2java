@@ -46,7 +46,7 @@ public class RelationshipController extends DiagramListener implements ActionLis
 			model.setInverted();
 		}
 		else if (c.equals("Delete")) {
-			model.remove();
+			model.userRemove();
 		}
 		
 

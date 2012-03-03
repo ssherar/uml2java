@@ -4,13 +4,12 @@ import java.util.*;
 
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
-import javax.swing.undo.CannotRedoException;
-import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoableEdit;
 
+import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
-public abstract class DocumentElementModel extends Observable implements java.io.Serializable{
+public abstract class DocumentElementModel extends Observable implements java.io.Serializable {
 	
 
 	private static final long serialVersionUID = -8960995955260463413L;
@@ -38,6 +37,13 @@ public abstract class DocumentElementModel extends Observable implements java.io
 
 	public boolean exists() {
 		return exists;
+	}
+	
+	public void userRemove() {
+		ExistenceEdit edit = new ExistenceEdit(this, false);
+		this.fireUndoableEvent(edit);
+		
+		this.remove();
 	}
 	
 	public void remove() {

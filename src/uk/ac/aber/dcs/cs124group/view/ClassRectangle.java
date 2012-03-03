@@ -39,6 +39,7 @@ public class ClassRectangle extends DocumentElementView {
 			TextLabelModel nameLabel = new TextLabelModel(new Point(0, 0),
 					"NewClass", true);
 			name = new LabelView(nameLabel);
+			name.setFont(this.getFont());
 
 			nameLabel.addObserver(name);
 
@@ -47,6 +48,7 @@ public class ClassRectangle extends DocumentElementView {
 			name.enableEdit();
 		} else {
 			name = new LabelView(m.getNameLabel());
+			name.setFont(this.getFont());
 			m.getNameLabel().addObserver(name);
 			m.getNameLabel().addUndoableEditListener(
 					m.getUndoableEditListener());
@@ -101,6 +103,16 @@ public class ClassRectangle extends DocumentElementView {
 		if (!(c instanceof JTextArea))
 			this.repositionAttributes();
 		return this;
+	}
+	
+	
+	@Override
+	public void remove(Component c) {
+		super.remove(c);
+		if(c instanceof LabelView) {
+			if(!((LabelView)c).getModel().exists())
+				this.repositionAttributes();
+		}
 	}
 
 	@Override
@@ -207,7 +219,8 @@ public class ClassRectangle extends DocumentElementView {
 				&& i < afterDataFieldNumber && i >= 0; i++) {
 			if(this.dataFieldViews.get(i).isVisible()) {
 				int height = this.dataFieldViews.get(i).getPreferredSize().height;
-				y += (int) (height * 1.25);
+				if(this.dataFieldViews.get(i).getModel().exists())
+					y += (int) (height * 1.25);
 			}
 		}
 		return new Point(4, y);
@@ -230,7 +243,8 @@ public class ClassRectangle extends DocumentElementView {
 				&& i >= 0; i++) {
 			if(this.methodViews.get(i).isVisible()) {
 				int height = this.methodViews.get(i).getPreferredSize().height;
-				y += (int) (height * 1.25);
+				if(this.methodViews.get(i).getModel().exists())
+					y += (int) (height * 1.25);
 			}
 		}
 		return new Point(4, y);
@@ -268,13 +282,15 @@ public class ClassRectangle extends DocumentElementView {
 
 		} else if (arg.equals("flagChanged")) {
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
+			
 			/* Reference: http://stackoverflow.com/questions/325840/what-is-the-constant-value-of-the-underline-font-in-java */
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
 			underlineFont.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-			Font finalChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
+			
+			Font staticChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			
 			if (o.isStatic()) {
-				this.name.setFont(finalChanged);
+				this.name.setFont(staticChanged);
 				((RectanglePopupMenu)(this.getComponentPopupMenu())).setStatic();
 				this.repaint();
 				

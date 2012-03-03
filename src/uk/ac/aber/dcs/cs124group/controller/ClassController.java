@@ -47,7 +47,7 @@ public class ClassController extends DiagramListener implements ActionListener {
 			this.setMode(ListeningMode.EDITING_TEXT); 
 		}
 		if(c.equals("Remove")) {
-			model.remove();
+			model.userRemove();
 		}
 		if (c.equals("Abstract")){
 			model.setAbstract(true, true);
