@@ -120,11 +120,18 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	
 	@Override
 	public void remove() {
-		goingFrom.removeRelationship(this);
 		goingFrom.deleteObserver(this);
-		goingTo.removeRelationship(this);
 		goingTo.deleteObserver(this);
 		super.remove();
+	}
+	
+	@Override
+	public void resurrect() {
+		if(this.goingFrom.exists() && this.goingTo.exists()) {
+			goingFrom.addObserver(this);
+			goingTo.addObserver(this);
+			super.resurrect();
+		}
 	}
 	
 	public void pointMoved() {

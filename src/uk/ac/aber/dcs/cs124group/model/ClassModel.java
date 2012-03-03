@@ -248,6 +248,10 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 					methods.remove(i);
 			}
 		}
+		for(int i = 0; i < relationships.size(); i++) {
+			if(!relationships.get(i).exists())
+				relationships.remove(i);
+		}
 	}
 	
 	public void requestOutgoingRelationship() {
@@ -259,6 +263,14 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 	public void addUndoableEditListener(UndoableEditListener l) {
 		super.addUndoableEditListener(l);
 		nameLabel.addUndoableEditListener(l);
+	}
+	
+	@Override
+	public void resurrect() {
+		super.resurrect();
+		for(int i = 0; i < this.relationships.size(); i++) {
+			this.relationships.get(i).resurrect();
+		}
 	}
 
 
