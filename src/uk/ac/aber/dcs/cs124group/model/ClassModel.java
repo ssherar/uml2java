@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.*;
 
+import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
 import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
 import uk.ac.aber.dcs.cs124group.undo.LocationEdit;
 import uk.ac.aber.dcs.cs124group.undo.SizeEdit;
@@ -83,6 +84,9 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 
 	public void addAttribute(Attribute a)  {
 		a.addUndoableEditListener(this.getUndoableEditListener());
+		
+		ExistenceEdit edit = new ExistenceEdit(a, true);
+		this.fireUndoableEvent(edit);
 		
 		if(a.getType() == AttributeType.METHOD)
 			this.methods.add(a);

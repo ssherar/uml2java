@@ -118,7 +118,6 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 	private void repositionAttributes() {
-		this.cleanUp();
 		ArrayList<Attribute> dataFields = this.model.getDataFields();
 		ArrayList<Attribute> methods = this.model.getMethods();
 
@@ -155,18 +154,6 @@ public class ClassRectangle extends DocumentElementView {
 		this.repaint();
 	}
 
-	private void cleanUp() {
-		this.model.cleanUp();
-		for (int i = 0; i < dataFieldViews.size(); i++) {
-			if (!dataFieldViews.get(i).isVisible())
-				dataFieldViews.remove(i);
-		}
-		for (int i = 0; i < methodViews.size(); i++) {
-			if (!methodViews.get(i).isVisible())
-				methodViews.remove(i);
-		}
-
-	}
 
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
@@ -191,7 +178,12 @@ public class ClassRectangle extends DocumentElementView {
 	}
 
 	private int getSeparatorCoordinate() {
-		if (this.model.getDataFields().size() == 0)
+		int numberOfExistingDataFields = 0;
+		for(int i = 0; i < this.model.getDataFields().size(); i++) {
+			if(this.model.getDataFields().get(i).exists())
+				numberOfExistingDataFields++;
+		}
+		if (numberOfExistingDataFields == 0)
 			return this.name.getPreferredSize().height + 40;
 		else {
 			return this.getNextDataFieldPoint(this.model.getDataFields().size()).y;
@@ -213,8 +205,10 @@ public class ClassRectangle extends DocumentElementView {
 
 		for (int i = 0; i < this.dataFieldViews.size()
 				&& i < afterDataFieldNumber && i >= 0; i++) {
-			int height = this.dataFieldViews.get(i).getPreferredSize().height;
-			y += (int) (height * 1.25);
+			if(this.dataFieldViews.get(i).isVisible()) {
+				int height = this.dataFieldViews.get(i).getPreferredSize().height;
+				y += (int) (height * 1.25);
+			}
 		}
 		return new Point(4, y);
 	}
@@ -234,8 +228,10 @@ public class ClassRectangle extends DocumentElementView {
 
 		for (int i = 0; i < this.methodViews.size() && i < afterMethodNumber
 				&& i >= 0; i++) {
-			int height = this.methodViews.get(i).getPreferredSize().height;
-			y += (int) (height * 1.25);
+			if(this.methodViews.get(i).isVisible()) {
+				int height = this.methodViews.get(i).getPreferredSize().height;
+				y += (int) (height * 1.25);
+			}
 		}
 		return new Point(4, y);
 	}

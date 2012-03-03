@@ -48,7 +48,7 @@ public class TextLabelModel extends DocumentElementModel implements Moveable {
 	}
 
 	public void setText(String text, boolean undoable) {
-		if(undoable) {
+		if(undoable && !this.text.equals(text)) {
 			TextEdit edit = new TextEdit(this, this.text, text);
 			this.fireUndoableEvent(edit);
 		}
