@@ -162,7 +162,17 @@ public class RelationshipArrow extends DocumentElementView {
 			}
 		}
 		
-
+		/* Set proper bounds on this component */
+		int maxX = 0;
+		int maxY = 0;
+		for(int i = 0; i < points.size(); i++) {
+			if (points.get(i).x > maxX)
+				maxX = points.get(i).x;
+			if (points.get(i).y > maxY)
+				maxY = points.get(i).y;
+		}
+		this.setPreferredSize(new Dimension(maxX + 20, maxY + 20));
+		this.getParent().doLayout();
 	}
 	
 	public class RelationshipPopup extends JPopupMenu {

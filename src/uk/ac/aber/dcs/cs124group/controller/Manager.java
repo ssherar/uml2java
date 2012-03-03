@@ -135,6 +135,10 @@ public class Manager extends UndoManager implements ActionListener,
 			} catch (PrinterException e1) {
 
 			}
+		} else if (c.equals("Resize...")) {
+			this.resizeCanvasDialog();
+		} else if (c.equals("Fit to diagram")) {
+			this.fitToDiagram();
 		} else if (c.equals("Undo")) {
 			try {this.undo();}
 			catch(Exception ex) {}
@@ -394,6 +398,29 @@ public class Manager extends UndoManager implements ActionListener,
 		canvas.repaint();
 
 		document.getPreferences().setZoomLevel(zoom);
+	}
+	
+	private void resizeCanvasDialog() {
+		JFrame resizeDialog = new ResizeDialog(this.canvas);
+		resizeDialog.setLocationRelativeTo(window);
+		resizeDialog.setVisible(true);
+		
+		
+	}
+	
+	private void fitToDiagram() {
+		int maxX = 300;
+		int maxY = 300;
+		Component[] components = canvas.getComponents();
+		for(int i = 0; i < components.length; i++) {
+			if(components[i].getBounds().getMaxX() > maxX)
+				maxX = (int) (components[i].getBounds().getMaxX());
+			if(components[i].getBounds().getMaxY() > maxY)
+				maxY = (int) (components[i].getBounds().getMaxY());
+		}
+		
+		canvas.setPreferredSize(new Dimension(maxX, maxY));
+		canvas.getParent().doLayout();
 	}
 
 	public void setWaitCursor(boolean value) {
