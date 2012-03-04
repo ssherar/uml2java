@@ -138,12 +138,11 @@ public class Exporter {
 		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		fcCode.setAcceptAllFileFilterUsed(false);
 		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
-		String chosenDirectory = fcCode.getSelectedFile().getPath() + "/";
 
 		manager.setWaitCursor(false);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-			System.out.println(fcCode.getSelectedFile().getPath() + "/");
+			String chosenDirectory = fcCode.getSelectedFile().getPath() + "/";
 			for (int j = fileNames.size() - 1; j >= 0; j--) {
 				File f;
 
@@ -209,23 +208,39 @@ public class Exporter {
 
 		String eXtends = "";
 		String iMplements = "";
+
+		int implementsNum = 0;
+		for (int j = 0; j < classModel.getRelationships().size(); j++) {
+			if (classModel.getRelationships().get(j).getType() == RelationshipType.IMPLEMENTS) {
+				implementsNum++;
+
+			}
+		}
+
 		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
 			switch (classModel.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
 				if (classModel.getClassName() != classModel.getRelationships()
 						.get(l).getGoingFrom().getClassName()) {
-					iMplements = (iMplements
-							+ ", " +classModel.getRelationships().get(l).getGoingFrom()
-									.getClassName());
+					iMplements = (iMplements + classModel.getRelationships()
+							.get(l).getGoingFrom().getClassName());
 				}
-				
+				if (implementsNum > 1) {
+					iMplements = iMplements + ", ";
+					implementsNum--;
+				}
+
+				iMplements = (iMplements + ", " + classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName());
+
 				break;
+
 			case INHERITANCE:
 				if (classModel.getClassName() != classModel.getRelationships()
 						.get(l).getGoingFrom().getClassName()) {
 					eXtends = (eXtends
-							+ classModel.getRelationships().get(l).getGoingFrom()
-									.getClassName() + " ");
+							+ classModel.getRelationships().get(l)
+									.getGoingFrom().getClassName() + " ");
 				}
 				break;
 			}
@@ -242,14 +257,13 @@ public class Exporter {
 		contents = (contents + "{" + NL + NL);
 
 		// --------------------Attributes/Fields----------------------------
-		for (int j = 0; j <= classModel.getAttributes().size() - 1; j++) {
+		for (int variables = 0; variables <= classModel.getAttributes().size() - 1; variables++) {
 
 			boolean isAttributeFinal = false;
-			boolean isMethodAbstract = false;
 
-			switch (classModel.getAttributes().get(j).getType()) {
-			case DATA_FIELD:
-				switch (classModel.getAttributes().get(j).getVisibility()) {
+			if (classModel.getAttributes().get(variables).getType() == AttributeType.DATA_FIELD) {
+				switch (classModel.getAttributes().get(variables)
+						.getVisibility()) {
 				case PUBLIC:
 					contents = (contents + TB + "public ");
 					break;
@@ -261,36 +275,58 @@ public class Exporter {
 					break;
 				}
 
-				if (classModel.getAttributes().get(j).isFlagStatic()) {
+				if (classModel.getAttributes().get(variables).isFlagStatic()) {
 					contents = (contents + "static ");
 				}
 
-				if (classModel.getAttributes().get(j).isFlagFinal()) {
+				if (classModel.getAttributes().get(variables).isFlagFinal()) {
 					contents = (contents + "final ");
 					isAttributeFinal = true;
 				}
 
-				if (classModel.getAttributes().get(j).isFlagTransient()) {
+				if (classModel.getAttributes().get(variables).isFlagTransient()) {
 					contents = (contents + "transistent ");
 				}
 
 				contents = (contents
-						+ classModel.getAttributes().get(j).getAttributeType() + " ");
+						+ classModel.getAttributes().get(variables)
+								.getAttributeType() + " ");
 
 				if (isAttributeFinal) {
 					contents = (contents
-							+ classModel.getAttributes().get(j)
+							+ classModel.getAttributes().get(variables)
 									.getAttributeName().toUpperCase() + ";");
 				} else {
 					contents = (contents
-							+ classModel.getAttributes().get(j)
+							+ classModel.getAttributes().get(variables)
 									.getAttributeName() + ";");
 				}
 				contents = contents + NL;
-				break;
-			// ------------------------Methods---------------------------
-			case METHOD:
-				switch (classModel.getAttributes().get(j).getVisibility()) {
+
+			}
+		}
+		// ----------------------Cardinalities------------------------
+		for (int cardinalities = 0; cardinalities < classModel
+				.getRelationships().size(); cardinalities++) {
+			if (classModel.getRelationships().get(cardinalities)
+					.getCardinalityTo().getText().equals("0..*")
+					&& classModel.getRelationships().get(cardinalities)
+							.getGoingTo().getClassName() != classModel
+							.getClassName()) {
+
+				contents = contents
+						+ TB
+						+ "private ArrayList<"
+						+ classModel.getRelationships().get(cardinalities)
+								.getGoingTo().getClassName() + ">; " + NL;
+			}
+		}
+
+		// ------------------------Methods---------------------------
+		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
+
+			if (classModel.getAttributes().get(methods).getType() == AttributeType.METHOD) {
+				switch (classModel.getAttributes().get(methods).getVisibility()) {
 				case PUBLIC:
 					contents = (contents + TB + "public ");
 					break;
@@ -302,36 +338,34 @@ public class Exporter {
 					break;
 				}
 
-				if (classModel.getAttributes().get(j).isFlagAbstract()) {
+				boolean isMethodAbstract = false;
+				if (classModel.getAttributes().get(methods).isFlagAbstract()) {
 					contents = (contents + "abstract");
 					isMethodAbstract = true;
 				}
 
-				if (classModel.getAttributes().get(j).isFlagStatic()) {
+				if (classModel.getAttributes().get(methods).isFlagStatic()) {
 					contents = (contents + "static ");
 				}
 
-				if (classModel.getAttributes().get(j).isFlagFinal()) {
+				if (classModel.getAttributes().get(methods).isFlagFinal()) {
 					contents = (contents + "final ");
 				}
 
-				/*
-				 * if (classModel.getAttributes().get(j).isFlagSyncronised()) {
-				 * contents = (contents + "syncronized "); }
-				 */
+				contents = (contents
+						+ classModel.getAttributes().get(methods)
+								.getReturnType() + " ");
 
 				contents = (contents
-						+ classModel.getAttributes().get(j).getReturnType() + " ");
+						+ classModel.getAttributes().get(methods)
+								.getAttributeName() + "(");
 
-				contents = (contents
-						+ classModel.getAttributes().get(j).getAttributeName() + "(");
-
-				int numOfArgs = classModel.getAttributes().get(j).getArgs()
-						.size();
+				int numOfArgs = classModel.getAttributes().get(methods)
+						.getArgs().size();
 
 				for (int k = 0; k <= numOfArgs - 1; k++) {
-					contents = (contents + classModel.getAttributes().get(j)
-							.getArgs().get(k));
+					contents = (contents + classModel.getAttributes()
+							.get(methods).getArgs().get(k));
 					if (k < numOfArgs - 2) {
 						contents = (contents + ", ");
 					}
@@ -340,7 +374,7 @@ public class Exporter {
 				if (isMethodAbstract) {
 					contents = (contents + ";");
 				} else {
-					if (classModel.getAttributes().get(j).getReturnType()
+					if (classModel.getAttributes().get(methods).getReturnType()
 							.equals("void")) {
 						contents = (contents + "{" + NL + NL + TB + "}" + NL + NL);
 					} else {
@@ -348,7 +382,7 @@ public class Exporter {
 								+ "return null;" + NL + TB + "}" + NL + NL);
 					}
 				}
-				break;
+
 			}
 
 		}
