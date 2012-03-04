@@ -268,17 +268,20 @@ public class LabelView extends DocumentElementView {
 		private LabelController listener;
 		private String[] dataModifiers = {"Final", "Static", "Transient", "None"};
 		private String[] methodModifiers = {"Static", "Abstract", "Final", "None"};
+		JMenu modifers = new JMenu("Modifiers...");
 		
 		public AttributePopup(LabelController l, boolean data) {
 			this.listener = l;
-			JMenu modifers = new JMenu("Modifiers...");
+			
 			JMenuItem submenu;
 			ButtonGroup group = new ButtonGroup();
 			if(data) {
 				for(String s : this.dataModifiers) {
 					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
 					submenu.addActionListener(listener);
-					group.add(submenu);
+					if(!(s.equals("Static") || s.equals("Final"))) {
+						group.add(submenu);
+					}
 					modifers.add(submenu);
 					submenu = null;
 				}
