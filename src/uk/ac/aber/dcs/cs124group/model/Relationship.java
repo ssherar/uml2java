@@ -107,6 +107,8 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 
 	public void requestLabel() {
 		if(this.label != null) {
+			if(!this.label.exists())
+				this.label.resurrect();
 			this.label.setEditing(true);
 		}
 		else {
