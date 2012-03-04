@@ -241,11 +241,20 @@ public class LabelView extends DocumentElementView {
 			
 			Attribute a = (Attribute) o;
 			if(a.isFlagAbstract()) {
+				this.setFont(normal, false);
 				this.setFont(abstractChanged, true);
+				((AttributePopup)this.getComponentPopupMenu()).setFlag("Abstract");
 			} else if(a.isFlagStatic()) {
+				this.setFont(normal, false);
 				this.setFont(staticChanged, true);
+				((AttributePopup)this.getComponentPopupMenu()).setFlag("Static");
+			} else if(a.isFlagFinal()) {
+				((AttributePopup)this.getComponentPopupMenu()).setFlag("Final");
+			} else if(a.isFlagTransient()) {
+				((AttributePopup)this.getComponentPopupMenu()).setFlag("Transient");
 			} else {
 				this.setFont(normal, true);
+				((AttributePopup)this.getComponentPopupMenu()).setNone();
 			}
 			((AttributePopup)this.getComponentPopupMenu()).checkIfSet();
 			this.repaint();
@@ -315,10 +324,25 @@ public class LabelView extends DocumentElementView {
 					
 				}
 			}
-			if(none > -1)
-				this.modifers.getItem(none).setSelected(false);
+			if(none > -1 )
+				this.modifers.getItem(none).setSelected(!(set));
 		}
 		
-		//public void set
+		public void setNone() {
+			for(int i = 0; i < this.modifers.getItemCount(); i++) {
+				if(this.modifers.getItem(i).isSelected()) {
+					this.modifers.getItem(i).setSelected(false);
+				}
+				if(this.modifers.getItem(i).getText().equals("None")) 
+					this.modifers.getItem(i).setSelected(true);
+			}
+		}
+		
+		public void setFlag(String s) {
+			for(int i = 0; i < this.modifers.getItemCount(); i++) {
+				if(this.modifers.getItem(i).getText().equals(s))
+					this.modifers.getItem(i).setSelected(true);
+			}
+		}
 	}
 }
