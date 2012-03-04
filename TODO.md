@@ -2,14 +2,13 @@ TO-DO
 =====
 
 1. Relationships
-	- Let the user add points
+	- Let the user delete points
 	
 2. Labels
 	- Fix button groups in data fields
 	
 3. Exporter
 	- Test it and fix bugs
-	- ADD SUPPORT FOR LABELLED RELATIONSHIPS
 
 4. Bits and pieces
 	- Link documentation button to user docs
