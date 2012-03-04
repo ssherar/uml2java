@@ -385,6 +385,13 @@ public class Manager extends UndoManager implements ActionListener,
 		status.setText("Font changed to " + font);
 	}
 
+	/**
+	 * Changes the zoom factor in the DocumentPreferences of the current DocumentModel. 
+	 * Observers of DocumentPreferences must set their own zoom accordingly. 
+	 * NOTE: The zoom feature is currently disabled due to not being fully implemented. Future releases may enable it.
+	 * @param zoom
+	 * 			The zoom factor to be set.
+	 */
 	private void changeZoom(double zoom) {
 		canvas.setZoomFactor(zoom);
 		status.setText("Zoom factor is " + canvas.getZoomFactor());
