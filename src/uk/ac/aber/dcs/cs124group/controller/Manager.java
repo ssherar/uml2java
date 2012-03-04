@@ -349,10 +349,10 @@ public class Manager extends UndoManager implements ActionListener,
 				
 				for (int i = 0; i < document.getElements().size(); i++) {
 					DocumentElementModel e = document.getElements().get(i);
+					e.addUndoableEditListener(this);
 					DocumentElementView ew = e.getView();
 					ew.setFont(document.getPreferences().getFont());
-					e.addObserver(ew);
-					e.addUndoableEditListener(this);
+					e.addObserver(ew);			
 					e.addObserver(this);
 					document.getPreferences().addObserver(ew);
 					canvas.add(ew);

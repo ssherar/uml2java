@@ -51,6 +51,7 @@ public class ClassRectangle extends DocumentElementView {
 					&& i < m.getDataFields().size(); i++) {
 				LabelView l = m.getDataFields().get(i).getView();
 				m.getDataFields().get(i).addObserver(l);
+				m.getDataFields().get(i).addUndoableEditListener(this.model.getUndoableEditListener());
 				this.add(l);
 				l.setFont(this.getFont());
 				this.dataFieldViews.add(l);
@@ -60,6 +61,7 @@ public class ClassRectangle extends DocumentElementView {
 					&& i < m.getMethods().size(); i++) {
 				LabelView l = m.getMethods().get(i).getView();
 				m.getMethods().get(i).addObserver(l);
+				m.getMethods().get(i).addUndoableEditListener(this.model.getUndoableEditListener());
 				l.setFont(this.getFont());
 				this.add(l);
 				this.methodViews.add(l);
