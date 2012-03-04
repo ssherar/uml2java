@@ -91,8 +91,10 @@ public class LabelController extends DiagramListener implements ActionListener {
 			if(c.equals("Delete")) {
 				this.model.userRemove();
 			} else if(c.equals("Abstract")) {
+				((Attribute)this.model).setNone(true, false);
 				((Attribute)this.model).setAbstract(true, true);
 			} else if(c.equals("Static")) {
+				((Attribute)this.model).setNone(true, false);
 				((Attribute)this.model).setStatic(true, true);
 			} else if(c.equals("Final")) {
 				boolean isSelected = ((Attribute)this.model).isFlagFinal();

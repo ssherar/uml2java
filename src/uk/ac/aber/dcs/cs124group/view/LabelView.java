@@ -299,7 +299,7 @@ public class LabelView extends DocumentElementView {
 				for(String s : this.methodModifiers) {
 					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
 					submenu.addActionListener(listener);
-					group.add(submenu);
+					//group.add(submenu);
 					modifers.add(submenu);
 					submenu = null;
 				}
