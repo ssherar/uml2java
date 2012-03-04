@@ -1,8 +1,6 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,9 +8,7 @@ import java.util.Observable;
 
 import javax.swing.*;
 
-import uk.ac.aber.dcs.cs124group.controller.DiagramListener;
 import uk.ac.aber.dcs.cs124group.controller.LabelController;
-import uk.ac.aber.dcs.cs124group.controller.ListeningMode;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 public class LabelView extends DocumentElementView {
@@ -185,7 +181,7 @@ public class LabelView extends DocumentElementView {
 				a.setText(this.model.getText());
 			}
 			else {
-				this.model.remove();
+				this.model.userRemove();
 				return;
 			}		
 		}

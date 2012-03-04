@@ -21,7 +21,7 @@ public class Cardinality extends TextLabelModel {
 	
 	@Override
 	public void setLocation(Point p, boolean undoable) {
-		if(p.distance(point) < 30) {
+		if(p.distance(point) < 50) {
 			super.setLocation(p, undoable);
 			this.toPoint = new Vector2D(p.x - point.x, p.y - point.y);
 		}

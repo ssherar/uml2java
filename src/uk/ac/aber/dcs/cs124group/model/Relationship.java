@@ -64,6 +64,23 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	public ClassModel getGoingTo() {
 		return goingTo;
 	}
+	
+	public void requestCardinality(String whichOne) {
+		if(whichOne.equals("from") && this.cardinalityFrom != null) {
+			if(!this.cardinalityFrom.exists())
+				this.cardinalityFrom.resurrect();
+			this.cardinalityFrom.setEditing(true);
+		}
+		else if(whichOne.equals("to") && this.cardinalityTo != null) {
+			if(!this.cardinalityTo.exists())
+				this.cardinalityTo.resurrect();
+			this.cardinalityTo.setEditing(true);
+		}
+		else {
+			this.setChanged();
+			this.notifyObservers("cardinalityRequested" + whichOne);
+		}
+	}
 
 
 	public Cardinality getCardinalityFrom() {
@@ -74,6 +91,9 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 
 	public void setCardinalityFrom(Cardinality cardinalityFrom) {
 		this.cardinalityFrom = cardinalityFrom;
+		
+		ExistenceEdit edit = new ExistenceEdit(cardinalityFrom, true);
+		this.fireUndoableEvent(edit);
 	}
 
 
@@ -86,6 +106,9 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 
 	public void setCardinalityTo(Cardinality cardinalityTo) {
 		this.cardinalityTo = cardinalityTo;
+		
+		ExistenceEdit edit = new ExistenceEdit(cardinalityTo, true);
+		this.fireUndoableEvent(edit);
 	}
 	
 	public void setInverted() {
@@ -147,6 +170,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	
 	public void pointMoved() {
 		this.setChanged();
+		this.realignCardinalities();
 		this.notifyObservers("pointMoved");
 	}
 
@@ -210,6 +234,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		this.goingFrom = previous.goingFrom;
 		this.goingTo = previous.goingTo;
 		this.type = previous.type;
+		this.realignCardinalities();
 		
 		this.setChanged();
 		this.notifyObservers("restored");

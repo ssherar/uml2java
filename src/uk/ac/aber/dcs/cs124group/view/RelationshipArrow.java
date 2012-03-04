@@ -88,8 +88,35 @@ public class RelationshipArrow extends DocumentElementView {
 		else if(s.equals("fontChanged")) {
 			this.setFont(((DocumentPreferences)o).getFont());
 		}
+		else if(((String)s).contains("cardinalityRequested")) {
+			if(((String)s).contains("from")) {
+				this.addCardinalityToModel(true);
+			}
+			else this.addCardinalityToModel(false);
+		}
 		else this.repaint();
 
+	}
+	
+	private void addCardinalityToModel(boolean from) {
+		RelationshipEndPoint point = (RelationshipEndPoint) 
+				(from ? this.model.getPoints().get(0) : this.model.getPoints().get(this.model.getPoints().size() - 1));
+		Cardinality c = new Cardinality(point);
+		if(from) {
+			this.model.setCardinalityFrom(c);
+		}
+		else {
+			this.model.setCardinalityTo(c);
+		}
+		
+		LabelView l = c.getView();
+		l.setFont(this.getFont());
+		this.add(l);
+		c.addObserver(l);
+		c.addUndoableEditListener(this.model.getUndoableEditListener());
+		l.enableEdit();
+		
+		this.repaint();
 	}
 	
 	private void addLabelToModel() {
@@ -252,7 +279,9 @@ public class RelationshipArrow extends DocumentElementView {
 			
 			JMenu cardinalities = new JMenu("Cardinalities");
 			JMenuItem cardFrom = new JMenuItem("Cardinality from");
+			cardFrom.addActionListener(listener);
 			JMenuItem cardTo = new JMenuItem("Cardinality to");
+			cardTo.addActionListener(listener);
 			cardinalities.add(cardFrom);
 			cardinalities.add(cardTo);
 			
