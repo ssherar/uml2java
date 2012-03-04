@@ -82,6 +82,9 @@ public class ToolBar extends JToolBar {
 		
 		this.add(zoom);
 		
+		/*Zoom is intentionally disabled here */
+		zoom.setEnabled(false);
+		
 		layout.putConstraint(SpringLayout.NORTH, zoomLabel, 5, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.EAST, zoomLabel, -9, SpringLayout.WEST, zoom);
 		

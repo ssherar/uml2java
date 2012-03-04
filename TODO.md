@@ -6,7 +6,6 @@ TO-DO
 	
 2. Labels
 	- Fix button groups in data fields
-	- Add right-click menu for ordinary labels
 	
 3. Exporter
 	- Test it and fix bugs
