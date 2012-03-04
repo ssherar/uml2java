@@ -28,6 +28,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Exporter {
 
 	private DocumentModel model;
+	private MainFrame window;
 	private Canvas canvas;
 	private ArrayList<String> outputFiles = new ArrayList<String>();
 	private ArrayList<String> fileNames = new ArrayList<String>();
@@ -77,7 +78,8 @@ public class Exporter {
 
 	public void exportImage() throws IIOException {
 
-		BufferedImage imageBuffer = new BufferedImage(canvas.getSize().width, canvas.getSize().height, BufferedImage.TYPE_INT_RGB);
+		BufferedImage imageBuffer = new BufferedImage(canvas.getSize().width,
+				canvas.getSize().height, BufferedImage.TYPE_INT_RGB);
 		Graphics canvasImage = imageBuffer.createGraphics();
 
 		canvas.paint(canvasImage);
@@ -88,9 +90,12 @@ public class Exporter {
 		fcImage.setAcceptAllFileFilterUsed(false);
 		manager.setWaitCursor(false);
 
-		FileNameExtensionFilter png = new FileNameExtensionFilter("PNG Image", "png");
-		FileNameExtensionFilter jpg = new FileNameExtensionFilter("JPEG Image", "jpg");
-		FileNameExtensionFilter gif = new FileNameExtensionFilter("GIF Image", "gif");
+		FileNameExtensionFilter png = new FileNameExtensionFilter("PNG Image",
+				"png");
+		FileNameExtensionFilter jpg = new FileNameExtensionFilter("JPEG Image",
+				"jpg");
+		FileNameExtensionFilter gif = new FileNameExtensionFilter("GIF Image",
+				"gif");
 		fcImage.addChoosableFileFilter(png);
 		fcImage.addChoosableFileFilter(jpg);
 		fcImage.addChoosableFileFilter(gif);
@@ -102,11 +107,14 @@ public class Exporter {
 
 			try {
 				if (fcImage.getFileFilter() == png) {
-					ImageIO.write(imageBuffer, "png", new File(saveFile + ".png"));
+					ImageIO.write(imageBuffer, "png", new File(saveFile
+							+ ".png"));
 				} else if (fcImage.getFileFilter() == jpg) {
-					ImageIO.write(imageBuffer, "jpg", new File(saveFile + ".jpg"));
+					ImageIO.write(imageBuffer, "jpg", new File(saveFile
+							+ ".jpg"));
 				} else if (fcImage.getFileFilter() == gif) {
-					ImageIO.write(imageBuffer, "gif", new File(saveFile + ".gif"));
+					ImageIO.write(imageBuffer, "gif", new File(saveFile
+							+ ".gif"));
 				}
 			} catch (Exception e) {
 			}
@@ -122,7 +130,8 @@ public class Exporter {
 	public void exportCode() throws IOException {
 		for (int i = 0; i < model.getElements().size(); i++) {
 			if (model.getElements().get(i).getClass() == (ClassModel.class)) {
-				outputFiles.add(createClassFileContents((ClassModel) model.getElements().get(i)));
+				outputFiles.add(createClassFileContents((ClassModel) model
+						.getElements().get(i)));
 			}
 		}
 
@@ -141,7 +150,9 @@ public class Exporter {
 
 				f = new File(fileNames.get(j));
 
-				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(new FileOutputStream(chosenDirectory + "" + fileNames.get(j))));
+				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
+						new FileOutputStream(chosenDirectory + ""
+								+ fileNames.get(j))));
 				fileOut.println(outputFiles.get(j));
 				fileOut.close();
 
@@ -211,21 +222,27 @@ public class Exporter {
 		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
 			switch (classModel.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
-				if (classModel.getClassName() != classModel.getRelationships().get(l).getGoingFrom().getClassName()) {
-					iMplements = (iMplements + classModel.getRelationships().get(l).getGoingFrom().getClassName());
+				if (classModel.getClassName() != classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName()) {
+					iMplements = (iMplements + classModel.getRelationships()
+							.get(l).getGoingFrom().getClassName());
 				}
 				if (implementsNum > 1) {
 					iMplements = iMplements + ", ";
 					implementsNum--;
 				}
 
-				iMplements = (iMplements + ", " + classModel.getRelationships().get(l).getGoingFrom().getClassName());
+				iMplements = (iMplements + ", " + classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName());
 
 				break;
 
 			case INHERITANCE:
-				if (classModel.getClassName() != classModel.getRelationships().get(l).getGoingFrom().getClassName()) {
-					eXtends = (eXtends + classModel.getRelationships().get(l).getGoingFrom().getClassName() + " ");
+				if (classModel.getClassName() != classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName()) {
+					eXtends = (eXtends
+							+ classModel.getRelationships().get(l)
+									.getGoingFrom().getClassName() + " ");
 				}
 				break;
 			}
@@ -247,7 +264,8 @@ public class Exporter {
 			boolean isAttributeFinal = false;
 
 			if (classModel.getAttributes().get(variables).getType() == AttributeType.DATA_FIELD) {
-				switch (classModel.getAttributes().get(variables).getVisibility()) {
+				switch (classModel.getAttributes().get(variables)
+						.getVisibility()) {
 				case PUBLIC:
 					contents = (contents + TB + "public ");
 					break;
@@ -272,12 +290,18 @@ public class Exporter {
 					contents = (contents + "transistent ");
 				}
 
-				contents = (contents + classModel.getAttributes().get(variables).getAttributeType() + " ");
+				contents = (contents
+						+ classModel.getAttributes().get(variables)
+								.getAttributeType() + " ");
 
 				if (isAttributeFinal) {
-					contents = (contents + classModel.getAttributes().get(variables).getAttributeName().toUpperCase() + ";");
+					contents = (contents
+							+ classModel.getAttributes().get(variables)
+									.getAttributeName().toUpperCase() + ";");
 				} else {
-					contents = (contents + classModel.getAttributes().get(variables).getAttributeName() + ";");
+					contents = (contents
+							+ classModel.getAttributes().get(variables)
+									.getAttributeName() + ";");
 				}
 				contents = contents + NL;
 
@@ -286,35 +310,100 @@ public class Exporter {
 		// ----------------------Cardinalities------------------------
 
 		// ----------- Many to One -------------
-		for (int cardinalities = 0; cardinalities < classModel.getRelationships().size(); cardinalities++) {
+		for (int cardinalities = 0; cardinalities < classModel
+				.getRelationships().size(); cardinalities++) {
 
-			if (classModel.getRelationships().get(cardinalities).getCardinalityTo().getText().equals("0..*") && classModel.getRelationships().get(cardinalities).getGoingTo().getClassName() != classModel.getClassName()) {
+			if (classModel.getRelationships().get(cardinalities)
+					.getCardinalityTo().getText().equals("0..*")
+					&& classModel.getRelationships().get(cardinalities)
+							.getGoingTo().getClassName() != classModel
+							.getClassName()) {
 
-				contents = contents + TB + "private ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingTo().getClassName() + "> " + classModel.getRelationships().get(cardinalities).getLabel().getText() + "; " + NL;
+				contents = contents
+						+ TB
+						+ "private ArrayList<"
+						+ classModel.getRelationships().get(cardinalities)
+								.getGoingTo().getClassName()
+						+ "> "
+						+ classModel.getRelationships().get(cardinalities)
+								.getLabel().getText() + "; " + NL;
 			}
 			// ------- Many to Many Extension -------
-			if (classModel.getRelationships().get(cardinalities).getCardinalityFrom().getText().equals("0..*") && classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() != classModel.getClassName()) {
+			if (classModel.getRelationships().get(cardinalities)
+					.getCardinalityFrom().getText().equals("0..*")
+					&& classModel.getRelationships().get(cardinalities)
+							.getGoingFrom().getClassName() != classModel
+							.getClassName()) {
 
-				contents = contents + TB + "private ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() + "> " + classModel.getRelationships().get(cardinalities).getLabel().getText() + "; " + NL;
+				contents = contents
+						+ TB
+						+ "private ArrayList<"
+						+ classModel.getRelationships().get(cardinalities)
+								.getGoingFrom().getClassName()
+						+ "> "
+						+ classModel.getRelationships().get(cardinalities)
+								.getLabel().getText() + "; " + NL;
 			}
 			// ---------- Zero to Something Extension --------
-			if (!classModel.getRelationships().get(cardinalities).getCardinalityTo().getText().equals("0..*") && 
-					!classModel.getRelationships().get(cardinalities).getCardinalityTo().getText().equals("1") && 
-					classModel.getRelationships().get(cardinalities).getGoingTo().getClassName() != classModel.getClassName()) {
-				String toCardinality = classModel.getRelationships().get(cardinalities).getCardinalityTo().getText();
+			if (!classModel.getRelationships().get(cardinalities)
+					.getCardinalityTo().getText().equals("0..*")
+					&& !classModel.getRelationships().get(cardinalities)
+							.getCardinalityTo().getText().equals("1")
+					&& classModel.getRelationships().get(cardinalities)
+							.getGoingTo().getClassName() != classModel
+							.getClassName()) {
+				String toCardinality = classModel.getRelationships()
+						.get(cardinalities).getCardinalityTo().getText();
 				String[] values = toCardinality.split("\\.\\.");
-				contents = contents + TB + "private ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingTo().getClassName() + "> " + classModel.getRelationships().get(cardinalities).getLabel().getText() + " = new ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingTo().getClassName() + ">(" + values[1] + ");" + NL;
+				if (!isInteger(values[1].toString())) {
+					JOptionPane.showInternalMessageDialog(window,
+							"Error, Check Cardinalities",
+							"Error in Cardinalities", JOptionPane.OK_OPTION);
+				} else {
+					contents = contents
+							+ TB
+							+ "private ArrayList<"
+							+ classModel.getRelationships().get(cardinalities)
+									.getGoingTo().getClassName()
+							+ "> "
+							+ classModel.getRelationships().get(cardinalities)
+									.getLabel().getText()
+							+ " = new ArrayList<"
+							+ classModel.getRelationships().get(cardinalities)
+									.getGoingTo().getClassName() + ">("
+							+ values[1] + ");" + NL;
+				}
 
 			}
 
-			if (!classModel.getRelationships().get(cardinalities).getCardinalityFrom().getText().equals("0..*") && 
-					!classModel.getRelationships().get(cardinalities).getCardinalityFrom().getText().equals("1") && 
-					classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() != classModel.getClassName()) {
-				String toCardinality = classModel.getRelationships().get(cardinalities).getCardinalityFrom().getText();
+			if (!classModel.getRelationships().get(cardinalities)
+					.getCardinalityFrom().getText().equals("0..*")
+					&& !classModel.getRelationships().get(cardinalities)
+							.getCardinalityFrom().getText().equals("1")
+					&& classModel.getRelationships().get(cardinalities)
+							.getGoingFrom().getClassName() != classModel
+							.getClassName()) {
+				String toCardinality = classModel.getRelationships()
+						.get(cardinalities).getCardinalityFrom().getText();
 				String[] values = toCardinality.split("\\.\\.");
-
-				
-				contents = contents + TB + "private ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() + "> " + classModel.getRelationships().get(cardinalities).getLabel().getText() + " = new ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() + ">(" + values[1] + ");" + NL;
+				if (!isInteger(values[1].toString())) {
+					JOptionPane.showInternalMessageDialog(window,
+							"Error, Check Cardinalities",
+							"Error in Cardinalities", JOptionPane.OK_OPTION);
+				} else {
+					contents = contents
+							+ TB
+							+ "private ArrayList<"
+							+ classModel.getRelationships().get(cardinalities)
+									.getGoingFrom().getClassName()
+							+ "> "
+							+ classModel.getRelationships().get(cardinalities)
+									.getLabel().getText()
+							+ " = new ArrayList<"
+							+ classModel.getRelationships().get(cardinalities)
+									.getGoingFrom().getClassName() + ">("
+							+ values[1] + ");" + NL;
+				}
 
 			}
 		}
@@ -349,14 +438,20 @@ public class Exporter {
 					contents = (contents + "final ");
 				}
 
-				contents = (contents + classModel.getAttributes().get(methods).getReturnType() + " ");
+				contents = (contents
+						+ classModel.getAttributes().get(methods)
+								.getReturnType() + " ");
 
-				contents = (contents + classModel.getAttributes().get(methods).getAttributeName() + "(");
+				contents = (contents
+						+ classModel.getAttributes().get(methods)
+								.getAttributeName() + "(");
 
-				int numOfArgs = classModel.getAttributes().get(methods).getArgs().size();
+				int numOfArgs = classModel.getAttributes().get(methods)
+						.getArgs().size();
 
 				for (int k = 0; k <= numOfArgs - 1; k++) {
-					contents = (contents + classModel.getAttributes().get(methods).getArgs().get(k));
+					contents = (contents + classModel.getAttributes()
+							.get(methods).getArgs().get(k));
 					if (k < numOfArgs - 2) {
 						contents = (contents + ", ");
 					}
@@ -365,10 +460,12 @@ public class Exporter {
 				if (isMethodAbstract) {
 					contents = (contents + ";");
 				} else {
-					if (classModel.getAttributes().get(methods).getReturnType().equals("void")) {
+					if (classModel.getAttributes().get(methods).getReturnType()
+							.equals("void")) {
 						contents = (contents + "{" + NL + NL + TB + "}" + NL + NL);
 					} else {
-						contents = (contents + "{" + NL + TB + TB + "return null;" + NL + TB + "}" + NL + NL);
+						contents = (contents + "{" + NL + TB + TB
+								+ "return null;" + NL + TB + "}" + NL + NL);
 					}
 				}
 
@@ -380,4 +477,13 @@ public class Exporter {
 
 	}
 
+	private boolean isInteger(String s) {
+		try {
+			System.out.println(Integer.parseInt(s));
+			Integer.parseInt(s);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
 }
