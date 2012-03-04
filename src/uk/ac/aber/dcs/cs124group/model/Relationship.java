@@ -3,6 +3,8 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.*;
+
+import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
 import uk.ac.aber.dcs.cs124group.view.*;
 
 public class Relationship extends DocumentElementModel implements Observer, Cloneable {
@@ -27,7 +29,8 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		points.add(start);
 		points.add(end);
 		
-		
+		if(this.label != null)
+			this.label.addUndoableEditListener(this.getUndoableEditListener());
 	}
 	
 	@Override
@@ -102,10 +105,22 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		return label;
 	}
 
+	public void requestLabel() {
+		if(this.label != null) {
+			if(!this.label.exists())
+				this.label.resurrect();
+			this.label.setEditing(true);
+		}
+		else {
+			this.setChanged();
+			this.notifyObservers("labelRequested");
+		}
+	}
 
-
-	public void setLabel(RelationshipLabel label) {
+	public void addLabel(RelationshipLabel label) {
 		this.label = label;
+		ExistenceEdit edit = new ExistenceEdit(label, true);
+		this.fireUndoableEvent(edit);
 	}
 	
 	

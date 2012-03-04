@@ -43,8 +43,8 @@ public class RelationshipController extends DiagramListener implements ActionLis
 		else if (c.equals("Delete")) {
 			model.userRemove();
 		}
-		else if (c.equals("Add label")) {
-			
+		else if (c.equals("Add/edit label")) {
+			model.requestLabel();
 		}
 		
 

@@ -12,9 +12,12 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
 import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
+import uk.ac.aber.dcs.cs124group.gui.DiagramLayout;
 import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
 import uk.ac.aber.dcs.cs124group.model.Relationship;
+import uk.ac.aber.dcs.cs124group.model.RelationshipLabel;
 import uk.ac.aber.dcs.cs124group.model.RelationshipType;
+import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 
 public class RelationshipArrow extends DocumentElementView {
 	
@@ -28,9 +31,16 @@ public class RelationshipArrow extends DocumentElementView {
 		RelationshipController controller = new RelationshipController(this.model);
 		RelationshipPopup menu = new RelationshipPopup(controller);
 		this.setComponentPopupMenu(menu);
+		this.setLayout(new DiagramLayout());
 		
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
+		
+		if(this.model.getLabel() != null) {
+			LabelView view = this.model.getLabel().getView();
+			this.model.getLabel().addObserver(view);
+			view.setFont(this.getFont());
+		}
 	}
 	
 	@Override
@@ -56,6 +66,11 @@ public class RelationshipArrow extends DocumentElementView {
 
 		}
 		
+		for (int i = 0; i < this.getComponentCount(); i++) {
+			if(this.getComponent(i).getBounds().contains(p)) {
+				return true;
+			}
+		}
 		return false;
 	}
 	
@@ -71,8 +86,33 @@ public class RelationshipArrow extends DocumentElementView {
 			((RelationshipPopup) (this.getComponentPopupMenu())).setSelectedType(this.model.getType().toString());
 			this.repaint();
 		}
+		else if (s.equals("labelRequested")) {
+			this.addLabelToModel();
+		}
 		else this.repaint();
 
+	}
+	
+	private void addLabelToModel() {
+		int i = this.model.getPoints().size() / 2;
+		Point p1 = this.model.getPoints().get(i - 1);
+		Point p2 = this.model.getPoints().get(i);
+		
+		Point p = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+		
+		RelationshipLabel label = new RelationshipLabel(p,this.model);
+		label.addUndoableEditListener(this.model.getUndoableEditListener());
+		
+		
+		LabelView view = label.getView();
+		label.addObserver(view);
+		view.setFont(this.getFont());
+		
+		this.model.addLabel(label);
+		this.add(view);
+		view.enableEdit();
+
+		this.repaint();
 	}
 	
 	public void paintComponent(Graphics gg) {
@@ -195,6 +235,9 @@ public class RelationshipArrow extends DocumentElementView {
 				
 			}
 			
+			JMenuItem label = new JMenuItem("Add/edit label");
+			label.addActionListener(listener);
+			
 			JMenuItem invert = new JMenuItem("Invert");
 			invert.addActionListener(listener);
 			
@@ -202,6 +245,7 @@ public class RelationshipArrow extends DocumentElementView {
 			delete.addActionListener(listener);
 				
 			add(changeRelationship);
+			add(label);
 			add(invert);
 			add(delete);
 		}
