@@ -31,11 +31,11 @@ public class Vector2D extends Point {
 	
 	public boolean colinear(Vector2D b) {
 		if(this.nonZero() && b.nonZero()) {
-			if(this.y == 0) {
-				return(b.y == 0);
+			if(Math.abs(this.y) < 5) {
+				return(Math.abs(b.y) < 5);			
 			}
-			else if (this.x == 0) {
-				return(b.x == 0);
+			else if (Math.abs(this.x) < 5) {
+				return(Math.abs(b.x) < 5);
 			}
 			else {
 				return (Math.abs((b.y / (double) this.y) - (b.x / (double) this.x)) < 0.1);
@@ -44,21 +44,6 @@ public class Vector2D extends Point {
 		else return false;
 	}
 	
-	public boolean colinearDebug(Vector2D b) {
-		if(this.nonZero() && b.nonZero()) {
-			if(this.y == 0) {
-				return(b.y == 0);
-			}
-			else if (this.x == 0) {
-				return(b.x == 0);
-			}
-			else {
-				System.out.println(b.y / (double) this.y + " " + b.x / (double) this.x);
-				return (Math.abs(Math.abs(b.y / (double) this.y) - Math.abs(b.x / (double) this.x)) < 0.1);
-			}
-		}
-		else return false;
-	}
 	
 	public boolean nonZero() {
 		return (this.x != 0 || this.y != 0);
@@ -67,7 +52,7 @@ public class Vector2D extends Point {
 	/** If b = k * this, returns k */
 	public double getColinearityFactor(Vector2D b) {
 		if(this.nonZero() && b.nonZero() && this.colinear(b)) {
-			if(this.y != 0)
+			if(this.y != 0 && b.y != 0)
 				return b.y / (double) this.y;
 			else return b.x / (double) this.x;
 		}

@@ -57,7 +57,6 @@ public class RelationshipController extends DiagramListener implements ActionLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		movedPoint = null;
-		System.out.println("Released");
 	}
 	
 	@Override
