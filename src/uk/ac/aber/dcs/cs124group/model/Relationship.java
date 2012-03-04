@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.*;
 
 import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
+import uk.ac.aber.dcs.cs124group.undo.RelationshipStateEdit;
 import uk.ac.aber.dcs.cs124group.view.*;
 
 public class Relationship extends DocumentElementModel implements Observer, Cloneable {

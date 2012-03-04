@@ -50,7 +50,11 @@ public class RelationshipLabel extends TextLabelModel {
 			a.setVisibility(IVisibility.PROTECTED);
 		else a.setVisibility(IVisibility.PACKAGE);
 		
-		a.setAttributeType(associatedRelationship.getGoingTo().getClassName());
+		if(this.associatedRelationship.getType() == RelationshipType.USES) {
+			a.setAttributeType(associatedRelationship.getGoingFrom().getClassName());
+		}
+		else a.setAttributeType(associatedRelationship.getGoingTo().getClassName());
+		
 		a.setAttributeName(this.getText().substring(0,1).matches("[#+-]") ? this.getText().substring(1).trim() : this.getText().trim());
 			
 		return a;

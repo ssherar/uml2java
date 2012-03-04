@@ -13,10 +13,10 @@ TO-DO
 	- ADD SUPPORT FOR LABELLED RELATIONSHIPS
 	
 4. Additional features
-	- Fix the status bar 
 	- Fix zoom
 
 5. Bits and pieces
+	- Link documentation button to user docs
 	- Make a better "about" window
 	
 6. Documentation
