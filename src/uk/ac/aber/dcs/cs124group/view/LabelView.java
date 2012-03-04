@@ -319,6 +319,6 @@ public class LabelView extends DocumentElementView {
 				this.modifers.getItem(none).setSelected(false);
 		}
 		
-		public void set
+		//public void set
 	}
 }
