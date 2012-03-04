@@ -459,9 +459,8 @@ public class Manager extends UndoManager implements ActionListener,
 	@Override
 	public void undoableEditHappened(UndoableEditEvent e) {
 		status.setText(e.getEdit().getPresentationName());
-		if(e.getEdit() instanceof ExistenceEdit) {
-			this.mode = ListeningMode.LISTEN_TO_ALL;
-		}
+		this.mode = ListeningMode.LISTEN_TO_ALL;
+		this.selectionStack.removeAllElements();
 		super.undoableEditHappened(e);
 	}
 
