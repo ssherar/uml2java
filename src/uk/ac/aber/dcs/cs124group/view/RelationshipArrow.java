@@ -144,13 +144,8 @@ public class RelationshipArrow extends DocumentElementView {
 	}
 	
 	private void addLabelToModel() {
-		int i = this.model.getPoints().size() / 2;
-		Point p1 = this.model.getPoints().get(i - 1);
-		Point p2 = this.model.getPoints().get(i);
 		
-		Point p = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
-		
-		RelationshipLabel label = new RelationshipLabel(p,this.model);
+		RelationshipLabel label = new RelationshipLabel(this.model.getLabelReferencePoint(),this.model);
 		label.addUndoableEditListener(this.model.getUndoableEditListener());
 		
 		

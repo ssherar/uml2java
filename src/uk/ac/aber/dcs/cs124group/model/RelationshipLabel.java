@@ -8,10 +8,12 @@ import uk.ac.aber.dcs.cs124group.view.Vector2D;
 public class RelationshipLabel extends TextLabelModel {
 	
 	private Relationship associatedRelationship;
+	private Vector2D toReferencePoint;
 	
 	public RelationshipLabel(Point p, Relationship r) {
 		super(p);
 		this.associatedRelationship = r;
+		this.toReferencePoint = new Vector2D(0,0);
 	}
 	
 	@Override
@@ -33,10 +35,14 @@ public class RelationshipLabel extends TextLabelModel {
 				double distanceToSegment = newCentre.distance(p1.x + projection.x, p1.y + projection.y);
 				if (distanceToSegment < 50) {
 					super.setLocation(p, undoable);
+					this.toReferencePoint = new Vector2D(associatedRelationship.getLabelReferencePoint().x - p.x, 
+													     associatedRelationship.getLabelReferencePoint().y - p.y);
 					return;
 				}
 			}
 		}
+		
+		
 	}
 	
 		
@@ -59,6 +65,11 @@ public class RelationshipLabel extends TextLabelModel {
 			
 		return a;
 	}	
+	
+	public void realign() {
+		super.setLocation(new Point(associatedRelationship.getLabelReferencePoint().x + toReferencePoint.x, 
+									associatedRelationship.getLabelReferencePoint().y + toReferencePoint.y), false);
+	}
 	
 
 }

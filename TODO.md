@@ -10,15 +10,12 @@ TO-DO
 3. Exporter
 	- Test it and fix bugs
 	- ADD SUPPORT FOR LABELLED RELATIONSHIPS
-	
-4. Additional features
-	- Fix zoom
 
-5. Bits and pieces
+4. Bits and pieces
 	- Link documentation button to user docs
 	- Make a better "about" window
 	
-6. Documentation
+5. Documentation
 	- Work out how to compile / run it from the cmd line
 	- Javadoc comments in code
 	- UML diagrams (in our program?)
