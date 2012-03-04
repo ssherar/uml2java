@@ -21,7 +21,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * fields, methods and the basic outline of the class. It will also add any
  * relationships to other classes.
  * 
- * @author Daniel Maly, Sam Sherar, Lee Smith 
+ * @author Daniel Maly, Sam Sherar, Lee Smith
  */
 
 public class Exporter {
@@ -175,7 +175,7 @@ public class Exporter {
 
 	private String createClassFileContents(ClassModel classModel) {
 		classModel.cleanUp();
-		
+
 		fileNames.add(classModel.getClassName() + ".java");
 
 		String contents = "";
@@ -209,17 +209,33 @@ public class Exporter {
 
 		String eXtends = "";
 		String iMplements = "";
-
+		int implementsNum = 0;
+		for (int j = 0; j < classModel.getRelationships().size(); j++){
+			if (classModel.getRelationships().get(j).getType() == RelationshipType.IMPLEMENTS){
+				implementsNum++;
+			}
+		}
 		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
 			switch (classModel.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
-				iMplements = (iMplements
-						+ classModel.getRelationships().get(l).getGoingTo()
-								.getClassName() + " ");
+				if (classModel.getClassName() != classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName()) {
+					iMplements = (iMplements
+							+ classModel.getRelationships().get(l).getGoingFrom()
+									.getClassName());
+				}
+				if (implementsNum < 2){
+					iMplements = iMplements + ", ";
+				}
+				break;
 			case INHERITANCE:
-				eXtends = (eXtends
-						+ classModel.getRelationships().get(l).getGoingTo()
-								.getClassName() + " ");
+				if (classModel.getClassName() != classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName()) {
+					eXtends = (eXtends
+							+ classModel.getRelationships().get(l).getGoingFrom()
+									.getClassName() + " ");
+				}
+				break;
 			}
 		}
 
@@ -265,7 +281,6 @@ public class Exporter {
 					contents = (contents + "transistent ");
 				}
 
-
 				contents = (contents
 						+ classModel.getAttributes().get(j).getAttributeType() + " ");
 
@@ -307,9 +322,10 @@ public class Exporter {
 					contents = (contents + "final ");
 				}
 
-				/*if (classModel.getAttributes().get(j).isFlagSyncronised()) {
-					contents = (contents + "syncronized ");
-				}*/
+				/*
+				 * if (classModel.getAttributes().get(j).isFlagSyncronised()) {
+				 * contents = (contents + "syncronized "); }
+				 */
 
 				contents = (contents
 						+ classModel.getAttributes().get(j).getReturnType() + " ");
