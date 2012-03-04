@@ -180,7 +180,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			FlagEdit edit = new FlagEdit(this, "flagAbstract", this.flagAbstract, set);
 			this.fireUndoableEvent(edit);
 		}
-		this.cleanFlags();
 		this.flagAbstract = set;
 		setChanged();
 		notifyObservers("flagChanged");
@@ -221,22 +220,23 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			FlagEdit edit = new FlagEdit(this, "flagNone", this.flagNone, set);
 			this.fireUndoableEvent(edit);
 		}*/
+		cleanFlags(undo);
 		setChanged();
 		notifyObservers("flagChanged");
 	}
 	
-	private void cleanFlags() {
+	private void cleanFlags(boolean undo) {
 		if(this.flagAbstract == true) {
-			this.setAbstract(false, true);
+			this.setAbstract(false, undo);
 		}
 		if(this.flagFinal == true) {
-			//this.setFinal(false, true);
+			this.setFinal(false, undo);
 		}
 		if(this.flagStatic == true) {
-			this.setStatic(false, true);
+			this.setStatic(false, undo);
 		}
 		if(this.flagTransient == true) {
-			//this.setTransient(false, true);
+			this.setTransient(false, undo);
 		}
 	}
 	

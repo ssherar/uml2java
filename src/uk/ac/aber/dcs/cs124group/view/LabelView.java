@@ -247,6 +247,7 @@ public class LabelView extends DocumentElementView {
 			} else {
 				this.setFont(normal, true);
 			}
+			((AttributePopup)this.getComponentPopupMenu()).checkIfSet();
 			this.repaint();
 			
 		}
@@ -280,7 +281,7 @@ public class LabelView extends DocumentElementView {
 					submenu = new JRadioButtonMenuItem(s, s.equals("None"));
 					submenu.addActionListener(listener);
 					if(!(s.equals("Static") || s.equals("Final"))) {
-						group.add(submenu);
+						//group.add(submenu);
 					}
 					modifers.add(submenu);
 					submenu = null;
@@ -300,5 +301,24 @@ public class LabelView extends DocumentElementView {
 			delete.addActionListener(listener);
 			this.add(delete);
 		}
+		
+		public void checkIfSet() {
+			boolean set = false;
+			int none = -1;
+			for(int i = 0; i < this.modifers.getItemCount(); i++) {
+				if(this.modifers.getItem(i).isSelected()) {
+					if(this.modifers.getItem(i).getText().equals("None")) {
+						none = i;
+					} else {
+						set = true;
+					}
+					
+				}
+			}
+			if(none > -1)
+				this.modifers.getItem(none).setSelected(false);
+		}
+		
+		public void set
 	}
 }

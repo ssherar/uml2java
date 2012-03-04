@@ -103,6 +103,7 @@ public class LabelController extends DiagramListener implements ActionListener {
 			} else if(c.equals("None")) {
 				((Attribute)this.model).setNone(true, true);
 			}
+
 		}
 	}
 	
