@@ -356,9 +356,9 @@ public class Exporter {
 						.get(cardinalities).getCardinalityTo().getText();
 				String[] values = toCardinality.split("\\.\\.");
 				if (!isInteger(values[1].toString())) {
-					JOptionPane.showInternalMessageDialog(window,
+					JOptionPane.showMessageDialog(null,
 							"Error, Check Cardinalities",
-							"Error in Cardinalities", JOptionPane.OK_OPTION);
+							"Error in Cardinalities", JOptionPane.WARNING_MESSAGE);
 				} else {
 					contents = contents
 							+ TB
@@ -387,9 +387,9 @@ public class Exporter {
 						.get(cardinalities).getCardinalityFrom().getText();
 				String[] values = toCardinality.split("\\.\\.");
 				if (!isInteger(values[1].toString())) {
-					JOptionPane.showInternalMessageDialog(window,
+					JOptionPane.showMessageDialog(null,
 							"Error, Check Cardinalities",
-							"Error in Cardinalities", JOptionPane.OK_OPTION);
+							"Error in Cardinalities", JOptionPane.WARNING_MESSAGE);
 				} else {
 					contents = contents
 							+ TB
