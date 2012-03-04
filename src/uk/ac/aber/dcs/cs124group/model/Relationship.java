@@ -39,8 +39,20 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		return new RelationshipArrow(this);
 	}
 	
-	public void addPoint(Point p) {
-		//TODO: Work out the order of points... convex hull?
+	public Point addPoint(Point p) {
+		for(int i = 0; i < this.points.size() - 1; i++) {
+			Point p1 = this.points.get(i);
+			Point p2 = this.points.get(i + 1);
+			
+			Vector2D segmentVector = new Vector2D(p2.x - p1.x, p2.y - p1.y);
+			Vector2D newSegmentVector = new Vector2D(p.x - p1.x, p.y - p1.y);
+			
+			if(segmentVector.colinear(newSegmentVector)) {
+				this.points.add(i + 1, p);
+				return p;
+			}
+		}
+		return null;
 	}
 	
 	public Point getLabelReferencePoint() {

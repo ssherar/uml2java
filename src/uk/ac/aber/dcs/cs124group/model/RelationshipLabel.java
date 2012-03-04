@@ -35,8 +35,8 @@ public class RelationshipLabel extends TextLabelModel {
 				double distanceToSegment = newCentre.distance(p1.x + projection.x, p1.y + projection.y);
 				if (distanceToSegment < 50) {
 					super.setLocation(p, undoable);
-					this.toReferencePoint = new Vector2D(associatedRelationship.getLabelReferencePoint().x - p.x, 
-													     associatedRelationship.getLabelReferencePoint().y - p.y);
+					this.toReferencePoint = new Vector2D(-associatedRelationship.getLabelReferencePoint().x + p.x, 
+													     -associatedRelationship.getLabelReferencePoint().y + p.y);
 					return;
 				}
 			}

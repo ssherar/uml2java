@@ -37,7 +37,25 @@ public class Vector2D extends Point {
 			else if (this.x == 0) {
 				return(b.x == 0);
 			}
-			else return (Math.abs(b.y / this.y) - Math.abs(b.x / this.x) < 0.1);
+			else {
+				return (Math.abs((b.y / (double) this.y) - (b.x / (double) this.x)) < 0.1);
+			}
+		}
+		else return false;
+	}
+	
+	public boolean colinearDebug(Vector2D b) {
+		if(this.nonZero() && b.nonZero()) {
+			if(this.y == 0) {
+				return(b.y == 0);
+			}
+			else if (this.x == 0) {
+				return(b.x == 0);
+			}
+			else {
+				System.out.println(b.y / (double) this.y + " " + b.x / (double) this.x);
+				return (Math.abs(Math.abs(b.y / (double) this.y) - Math.abs(b.x / (double) this.x)) < 0.1);
+			}
 		}
 		else return false;
 	}

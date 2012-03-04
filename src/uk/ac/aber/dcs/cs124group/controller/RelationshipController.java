@@ -5,10 +5,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.Point;
 
-import uk.ac.aber.dcs.cs124group.model.ClassModel;
-import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
-import uk.ac.aber.dcs.cs124group.model.Relationship;
-import uk.ac.aber.dcs.cs124group.model.RelationshipType;
+import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.view.RelationshipEndPoint;
 
 public class RelationshipController extends DiagramListener implements ActionListener {
 	private Relationship model;
@@ -59,6 +57,7 @@ public class RelationshipController extends DiagramListener implements ActionLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		movedPoint = null;
+		System.out.println("Released");
 	}
 	
 	@Override
@@ -71,9 +70,16 @@ public class RelationshipController extends DiagramListener implements ActionLis
 					break;
 				}
 			}
+			if(movedPoint == null) {
+				this.model.storeInEdit();
+				movedPoint = this.model.addPoint(e.getPoint());
+			}
 		}
 		if(movedPoint != null) {
-			movedPoint.move(e.getX() - movedPoint.x, e.getY() - movedPoint.y);
+			if(movedPoint instanceof RelationshipEndPoint) {
+				movedPoint.move(e.getX() - movedPoint.x, e.getY() - movedPoint.y);
+			}
+			else movedPoint.move(e.getX(), e.getY());
 			this.model.pointMoved();
 		}
 		this.model.setPaintState(ElementPaintState.SELECTED);
