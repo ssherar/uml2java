@@ -58,6 +58,9 @@ public class RelationshipArrow extends DocumentElementView {
 			
 			this.add(view);
 		}
+		
+		this.model.getGoingFrom().addObserver(this.model);
+		this.model.getGoingTo().addObserver(this.model);
 	}
 	
 	@Override
