@@ -85,6 +85,7 @@ public class LabelView extends DocumentElementView {
 		return this.text;
 	}
 	
+	@Override
 	public void setFont(Font f) {
 		super.setFont(f);
 		if(this.getGraphics() != null && metrics != null) {

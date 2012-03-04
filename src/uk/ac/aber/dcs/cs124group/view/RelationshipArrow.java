@@ -13,11 +13,7 @@ import javax.swing.JRadioButtonMenuItem;
 
 import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
 import uk.ac.aber.dcs.cs124group.gui.DiagramLayout;
-import uk.ac.aber.dcs.cs124group.model.ElementPaintState;
-import uk.ac.aber.dcs.cs124group.model.Relationship;
-import uk.ac.aber.dcs.cs124group.model.RelationshipLabel;
-import uk.ac.aber.dcs.cs124group.model.RelationshipType;
-import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
+import uk.ac.aber.dcs.cs124group.model.*;
 
 public class RelationshipArrow extends DocumentElementView {
 	
@@ -89,6 +85,9 @@ public class RelationshipArrow extends DocumentElementView {
 		else if (s.equals("labelRequested")) {
 			this.addLabelToModel();
 		}
+		else if(s.equals("fontChanged")) {
+			this.setFont(((DocumentPreferences)o).getFont());
+		}
 		else this.repaint();
 
 	}
@@ -113,6 +112,13 @@ public class RelationshipArrow extends DocumentElementView {
 		view.enableEdit();
 
 		this.repaint();
+	}
+	
+	@Override
+	public void setFont(Font f) {
+		super.setFont(f);
+		for(int i = 0; i < this.getComponentCount(); i++)
+			this.getComponent(i).setFont(f);
 	}
 	
 	public void paintComponent(Graphics gg) {
@@ -210,6 +216,12 @@ public class RelationshipArrow extends DocumentElementView {
 				maxX = points.get(i).x;
 			if (points.get(i).y > maxY)
 				maxY = points.get(i).y;
+		}
+		for(int i = 0; i < this.getComponentCount(); i++) {
+			if(this.getComponent(i).getBounds().getMaxX() > maxX)
+				maxX = (int) (this.getComponent(i).getBounds().getMaxX());
+			if(this.getComponent(i).getBounds().getMaxY() > maxY)
+				maxY = (int) (this.getComponent(i).getBounds().getMaxY());
 		}
 		this.setPreferredSize(new Dimension(maxX + 20, maxY + 20));
 		this.getParent().doLayout();

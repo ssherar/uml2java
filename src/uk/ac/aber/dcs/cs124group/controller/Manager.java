@@ -245,6 +245,7 @@ public class Manager extends UndoManager implements ActionListener,
 		
 		RelationshipArrow arrow = new RelationshipArrow(r);
 		r.addObserver(arrow);
+		document.getPreferences().addObserver(arrow);
 		r.addUndoableEditListener(this);
 		document.addElement(r);
 		

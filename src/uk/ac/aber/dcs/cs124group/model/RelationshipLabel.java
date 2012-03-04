@@ -38,6 +38,7 @@ public class RelationshipLabel extends TextLabelModel {
 			}
 		}
 	}
+	
 		
 	public Attribute getAttribute() {
 		Attribute a = new Attribute(new Point(0,0), this.getText(), AttributeType.DATA_FIELD);

@@ -2,11 +2,10 @@ TO-DO
 =====
 
 1. Relationships
-	- Let the user add labels and cardinalities
+	- Let the user add cardinalities
 	- Let the user add points
 	
 2. Labels
-	- Make modifier changes undoable
 	- Fix button groups in data fields
 	- Add right-click menu for ordinary labels
 	
