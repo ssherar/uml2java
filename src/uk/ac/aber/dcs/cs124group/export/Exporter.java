@@ -306,6 +306,7 @@ public class Exporter {
 			}
 		}
 		// ----------------------Cardinalities------------------------
+			// ----------- Many to One -------------
 		for (int cardinalities = 0; cardinalities < classModel
 				.getRelationships().size(); cardinalities++) {
 			if (classModel.getRelationships().get(cardinalities)
@@ -320,8 +321,21 @@ public class Exporter {
 						+ classModel.getRelationships().get(cardinalities)
 								.getGoingTo().getClassName() + ">; " + NL;
 			}
-		}
+			//------- Many to Many Extension -------
+			if (classModel.getRelationships().get(cardinalities)
+					.getCardinalityFrom().getText().equals("0..*")
+					&& classModel.getRelationships().get(cardinalities)
+							.getGoingFrom().getClassName() != classModel
+							.getClassName()) {
 
+				contents = contents
+						+ TB
+						+ "private ArrayList<"
+						+ classModel.getRelationships().get(cardinalities)
+								.getGoingFrom().getClassName() + ">; " + NL;
+			}		
+		}
+		
 		// ------------------------Methods---------------------------
 		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
 
