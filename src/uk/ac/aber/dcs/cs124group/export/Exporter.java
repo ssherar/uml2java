@@ -209,24 +209,16 @@ public class Exporter {
 
 		String eXtends = "";
 		String iMplements = "";
-		int implementsNum = 0;
-		for (int j = 0; j < classModel.getRelationships().size(); j++){
-			if (classModel.getRelationships().get(j).getType() == RelationshipType.IMPLEMENTS){
-				implementsNum++;
-			}
-		}
 		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
 			switch (classModel.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
 				if (classModel.getClassName() != classModel.getRelationships()
 						.get(l).getGoingFrom().getClassName()) {
 					iMplements = (iMplements
-							+ classModel.getRelationships().get(l).getGoingFrom()
+							+ ", " +classModel.getRelationships().get(l).getGoingFrom()
 									.getClassName());
 				}
-				if (implementsNum < 2){
-					iMplements = iMplements + ", ";
-				}
+				
 				break;
 			case INHERITANCE:
 				if (classModel.getClassName() != classModel.getRelationships()
@@ -243,6 +235,7 @@ public class Exporter {
 			contents = (contents + "extends " + eXtends);
 		}
 		if (!iMplements.isEmpty()) {
+			iMplements = iMplements.substring(2);
 			contents = (contents + "implements " + iMplements + " ");
 		}
 
