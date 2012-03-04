@@ -34,8 +34,29 @@ public class RelationshipArrow extends DocumentElementView {
 		
 		if(this.model.getLabel() != null) {
 			LabelView view = this.model.getLabel().getView();
+			this.model.getLabel().addUndoableEditListener(this.model.getUndoableEditListener());
 			this.model.getLabel().addObserver(view);
 			view.setFont(this.getFont());
+			
+			this.add(view);
+		}
+		
+		if(this.model.getCardinalityFrom() != null) {
+			LabelView view = this.model.getCardinalityFrom().getView();
+			this.model.getCardinalityFrom().addUndoableEditListener(this.model.getUndoableEditListener());
+			this.model.getCardinalityFrom().addObserver(view);
+			view.setFont(this.getFont());
+			
+			this.add(view);
+		}
+		
+		if(this.model.getCardinalityTo() != null) {
+			LabelView view = this.model.getCardinalityTo().getView();
+			this.model.getCardinalityTo().addUndoableEditListener(this.model.getUndoableEditListener());
+			this.model.getCardinalityTo().addObserver(view);
+			view.setFont(this.getFont());
+			
+			this.add(view);
 		}
 	}
 	

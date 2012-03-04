@@ -455,6 +455,15 @@ public class Manager extends UndoManager implements ActionListener,
 			System.exit(0);
 		}
 	}
+	
+	@Override
+	public void undoableEditHappened(UndoableEditEvent e) {
+		status.setText(e.getEdit().getPresentationName());
+		if(e.getEdit() instanceof ExistenceEdit) {
+			this.mode = ListeningMode.LISTEN_TO_ALL;
+		}
+		super.undoableEditHappened(e);
+	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {	}
