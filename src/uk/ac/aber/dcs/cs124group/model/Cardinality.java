@@ -16,7 +16,7 @@ public class Cardinality extends TextLabelModel {
 		this.point = p;
 		this.setText("0..*", false);
 		
-		this.toPoint = new Vector2D(p.x, p.y);
+		this.toPoint = new Vector2D(0, 0);
 	}
 	
 	@Override

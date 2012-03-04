@@ -42,6 +42,15 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	public void addPoint(Point p) {
 		//TODO: Work out the order of points... convex hull?
 	}
+	
+	public Point getLabelReferencePoint() {
+		int i = points.size() / 2;
+		Point p1 = points.get(i - 1);
+		Point p2 = points.get(i);
+		
+		Point p = new Point((p1.x + p2.x) / 2, (p1.y + p2.y) / 2);
+		return p;
+	}
 
 	public RelationshipType getType() {
 		return type;
@@ -208,6 +217,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	public void realignCardinalities() {
 		if(this.cardinalityFrom != null) this.cardinalityFrom.realign();
 		if(this.cardinalityTo != null) this.cardinalityTo.realign();
+		if(this.label != null) this.label.realign();
 	}
 	
 	public Relationship clone() {
@@ -240,6 +250,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		this.setChanged();
 		this.notifyObservers("restored");
 	}
+	
 	
 
 
