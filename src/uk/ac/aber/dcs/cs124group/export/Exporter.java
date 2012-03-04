@@ -313,6 +313,7 @@ public class Exporter {
 				String toCardinality = classModel.getRelationships().get(cardinalities).getCardinalityFrom().getText();
 				String[] values = toCardinality.split("\\.\\.");
 
+				
 				contents = contents + TB + "private ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() + "> " + classModel.getRelationships().get(cardinalities).getLabel().getText() + " = new ArrayList<" + classModel.getRelationships().get(cardinalities).getGoingFrom().getClassName() + ">(" + values[1] + ");" + NL;
 
 			}
