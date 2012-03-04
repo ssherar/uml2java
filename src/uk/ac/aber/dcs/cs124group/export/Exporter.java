@@ -35,6 +35,7 @@ public class Exporter {
 	private final String NL = "\n";
 	private final String TB = "\t";
 	private Manager manager;
+	private boolean errorCheck = false;
 
 	/**
 	 * Creates a <code>Exporter</code> instance with the specified DocumentModel
@@ -134,28 +135,27 @@ public class Exporter {
 						.getElements().get(i)));
 			}
 		}
+		if (!errorCheck) {
+			manager.setWaitCursor(true);
+			JFileChooser fcCode = new JFileChooser();
+			fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+			fcCode.setAcceptAllFileFilterUsed(false);
+			int fcReturnVal = fcCode.showDialog(null, "Select Directory");
 
-		manager.setWaitCursor(true);
-		JFileChooser fcCode = new JFileChooser();
-		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		fcCode.setAcceptAllFileFilterUsed(false);
-		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
+			manager.setWaitCursor(false);
 
-		manager.setWaitCursor(false);
+			if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
+				String chosenDirectory = fcCode.getSelectedFile().getPath()
+						+ "/";
+				for (int j = fileNames.size() - 1; j >= 0; j--) {
+					PrintWriter fileOut = new PrintWriter(
+							new OutputStreamWriter(new FileOutputStream(
+									chosenDirectory + "" + fileNames.get(j))));
 
-		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-			String chosenDirectory = fcCode.getSelectedFile().getPath() + "/";
-			for (int j = fileNames.size() - 1; j >= 0; j--) {
-				File f;
+					fileOut.println(outputFiles.get(j));
+					fileOut.close();
 
-				f = new File(fileNames.get(j));
-
-				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
-						new FileOutputStream(chosenDirectory + ""
-								+ fileNames.get(j))));
-				fileOut.println(outputFiles.get(j));
-				fileOut.close();
-
+				}
 			}
 		}
 
@@ -358,7 +358,9 @@ public class Exporter {
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
 							"Error, Check Cardinalities",
-							"Error in Cardinalities", JOptionPane.WARNING_MESSAGE);
+							"Error in Cardinalities",
+							JOptionPane.WARNING_MESSAGE);
+					errorCheck = true;
 				} else {
 					contents = contents
 							+ TB
@@ -389,7 +391,9 @@ public class Exporter {
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
 							"Error, Check Cardinalities",
-							"Error in Cardinalities", JOptionPane.WARNING_MESSAGE);
+							"Error in Cardinalities",
+							JOptionPane.WARNING_MESSAGE);
+					errorCheck = true;
 				} else {
 					contents = contents
 							+ TB
