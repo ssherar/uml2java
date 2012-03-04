@@ -2,6 +2,8 @@ package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
 
+import uk.ac.aber.dcs.cs124group.model.Relationship;
+
 public class RelationshipEndPoint extends Point {
 	
 	private static final int NORTH = 0;
@@ -14,10 +16,13 @@ public class RelationshipEndPoint extends Point {
 	
 	private Rectangle rect;
 	
-	public RelationshipEndPoint(Point p, Rectangle r) {
+	private Relationship relationship;
+	
+	public RelationshipEndPoint(Point p, Rectangle r, Relationship relationship) {
 		this.x = p.x;
 		this.y = p.y;
 		this.rect = r;
+		this.relationship = relationship;
 		
 		wrapFromCoordinates(r);
 	}
@@ -122,7 +127,7 @@ public class RelationshipEndPoint extends Point {
 		}
 		
 		this.updateTo(this.rect);
-		
+		relationship.realignCardinalities();
 		
 	}
 	

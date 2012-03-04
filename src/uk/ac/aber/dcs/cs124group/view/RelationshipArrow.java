@@ -227,7 +227,7 @@ public class RelationshipArrow extends DocumentElementView {
 		this.getParent().doLayout();
 	}
 	
-	public class RelationshipPopup extends JPopupMenu {
+	private class RelationshipPopup extends JPopupMenu {
 		private RelationshipController listener;
 		private JMenu changeRelationship;
 		
@@ -250,6 +250,12 @@ public class RelationshipArrow extends DocumentElementView {
 			JMenuItem label = new JMenuItem("Add/edit label");
 			label.addActionListener(listener);
 			
+			JMenu cardinalities = new JMenu("Cardinalities");
+			JMenuItem cardFrom = new JMenuItem("Cardinality from");
+			JMenuItem cardTo = new JMenuItem("Cardinality to");
+			cardinalities.add(cardFrom);
+			cardinalities.add(cardTo);
+			
 			JMenuItem invert = new JMenuItem("Invert");
 			invert.addActionListener(listener);
 			
@@ -257,6 +263,7 @@ public class RelationshipArrow extends DocumentElementView {
 			delete.addActionListener(listener);
 				
 			add(changeRelationship);
+			add(cardinalities);
 			add(label);
 			add(invert);
 			add(delete);

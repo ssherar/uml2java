@@ -23,8 +23,8 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		this.goingFrom = from;
 		this.goingTo = to;
 		
-		RelationshipEndPoint start = new RelationshipEndPoint(new Point(goingFrom.getLocation().x + 10, goingFrom.getLocation().y), new Rectangle(goingFrom.getLocation(), goingFrom.getSize()));
-		RelationshipEndPoint end = new RelationshipEndPoint(goingTo.getLocation(), new Rectangle(goingTo.getLocation(), goingTo.getSize()));
+		RelationshipEndPoint start = new RelationshipEndPoint(goingFrom.getLocation(), new Rectangle(goingFrom.getLocation(), goingFrom.getSize()), this);
+		RelationshipEndPoint end = new RelationshipEndPoint(goingTo.getLocation(), new Rectangle(goingTo.getLocation(), goingTo.getSize()), this);
 		
 		points.add(start);
 		points.add(end);
@@ -93,8 +93,8 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		this.goingTo = this.goingFrom;
 		this.goingFrom = tmp;
 		
-		
 		Collections.reverse(this.points);
+		this.realignCardinalities();
 		setChanged();
 		this.notifyObservers("wasInverted");
 	}
@@ -172,11 +172,17 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 				this.setChanged();
 				this.notifyObservers("endPointChanged");
 			}
+			this.realignCardinalities();
 		}
 		else if(s.equals("wasRemoved")) {
 			this.remove();
 		}
 		
+	}
+	
+	public void realignCardinalities() {
+		if(this.cardinalityFrom != null) this.cardinalityFrom.realign();
+		if(this.cardinalityTo != null) this.cardinalityTo.realign();
 	}
 	
 	public Relationship clone() {
