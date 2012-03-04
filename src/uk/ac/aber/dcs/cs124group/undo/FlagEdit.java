@@ -64,6 +64,16 @@ public class FlagEdit extends AbstractUndoableEdit {
 		}
 		else if(editedObject instanceof Attribute) {
 			Attribute a = (Attribute) editedObject;
+			
+			if(whatChanged.equals("flagStatic")) {
+				a.setStatic(flag, false);
+			} else if(whatChanged.equals("flagAbstract")) {
+				a.setAbstract(flag, false);
+			} else if(whatChanged.equals("flagFinal")) {
+				a.setFinal(flag, false);
+			} else if(whatChanged.equals("flagTransient")) {
+				a.setTransient(flag, false);
+			}
 		}
 	}
 }

@@ -94,8 +94,12 @@ public class LabelController extends DiagramListener implements ActionListener {
 				((Attribute)this.model).setAbstract(true, true);
 			} else if(c.equals("Static")) {
 				((Attribute)this.model).setStatic(true, true);
-			 
-			
+			} else if(c.equals("Final")) {
+				boolean isSelected = ((Attribute)this.model).isFlagFinal();
+				((Attribute)this.model).setFinal(!(isSelected), true);
+			} else if(c.equals("Transient")) {
+				boolean isSelected = ((Attribute)this.model).isFlagTransient();
+				((Attribute)this.model).setTransient(!(isSelected), true);
 			} else if(c.equals("None")) {
 				((Attribute)this.model).setNone(true, true);
 			}

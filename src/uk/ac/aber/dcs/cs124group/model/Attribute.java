@@ -4,6 +4,7 @@ import java.util.*;
 import java.awt.Point;
 import java.util.regex.*;
 import uk.ac.aber.dcs.cs124group.model.*;
+import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
 
 public class Attribute extends TextLabelModel implements java.io.Serializable {
 
@@ -176,38 +177,67 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	
 	public void setAbstract(boolean set, boolean undo) {
 		if(undo) {
-			
+			FlagEdit edit = new FlagEdit(this, "flagAbstract", this.flagAbstract, set);
+			this.fireUndoableEvent(edit);
 		}
 		this.cleanFlags();
-		this.flagAbstract = true;
+		this.flagAbstract = set;
 		setChanged();
 		notifyObservers("flagChanged");
 	}
 	
 	public void setStatic(boolean set, boolean undo) {
 		if(undo) {
-			
+			FlagEdit edit = new FlagEdit(this, "flagStatic", this.flagStatic, set);
+			this.fireUndoableEvent(edit);
 		}
-		this.cleanFlags();
-		this.flagStatic = true;
+		this.flagStatic = set;
+		setChanged();
+		notifyObservers("flagChanged");
+	}
+	
+	public void setFinal(boolean set, boolean undo) {
+		if(undo) {
+			FlagEdit edit = new FlagEdit(this, "flagFinal", this.flagFinal, set);
+			this.fireUndoableEvent(edit);
+		}
+		this.flagFinal = set;
+		setChanged();
+		notifyObservers("flagChanged");
+	}
+	
+	public void setTransient(boolean set, boolean undo) {
+		if(undo) {
+			FlagEdit edit = new FlagEdit(this, "flagTransient", this.flagTransient, set);
+			this.fireUndoableEvent(edit);
+		}
+		this.flagFinal = set;
 		setChanged();
 		notifyObservers("flagChanged");
 	}
 	
 	public void setNone(boolean set, boolean undo) {
-		if(undo) {
-			
-		}
-		this.cleanFlags();
+		/*if(undo) {
+			FlagEdit edit = new FlagEdit(this, "flagNone", this.flagNone, set);
+			this.fireUndoableEvent(edit);
+		}*/
 		setChanged();
 		notifyObservers("flagChanged");
 	}
 	
 	private void cleanFlags() {
-		this.flagAbstract = false;
-		this.flagStatic = false;
-		this.flagFinal = false;
-		this.flagTransient = false;
+		if(this.flagAbstract == true) {
+			this.setAbstract(false, true);
+		}
+		if(this.flagFinal == true) {
+			//this.setFinal(false, true);
+		}
+		if(this.flagStatic == true) {
+			this.setStatic(false, true);
+		}
+		if(this.flagTransient == true) {
+			//this.setTransient(false, true);
+		}
 	}
 	
 	
