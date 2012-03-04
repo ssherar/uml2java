@@ -1,21 +1,15 @@
 package uk.ac.aber.dcs.cs124group.model;
 
 import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.Observable;
-import java.util.Observer;
+
 import java.awt.Point;
 import java.awt.Dimension;
 
 import javax.swing.event.UndoableEditListener;
 import javax.swing.undo.*;
 
-import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
-import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
-import uk.ac.aber.dcs.cs124group.undo.LocationEdit;
-import uk.ac.aber.dcs.cs124group.undo.SizeEdit;
+import uk.ac.aber.dcs.cs124group.undo.*;
 import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
-import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 
 public class ClassModel extends DocumentElementModel implements Moveable, Resizeable {
 	
@@ -85,7 +79,7 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 	public void addAttribute(Attribute a)  {
 		a.addUndoableEditListener(this.getUndoableEditListener());
 		
-		ExistenceEdit edit = new ExistenceEdit(a, true);
+		ExistenceEdit edit = new ExistenceEdit(a, true, "New attribute added to " + this.getClassName());
 		this.fireUndoableEvent(edit);
 		
 		if(a.getType() == AttributeType.METHOD)

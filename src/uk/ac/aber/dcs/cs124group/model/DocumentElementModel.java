@@ -40,7 +40,7 @@ public abstract class DocumentElementModel extends Observable implements java.io
 	}
 	
 	public void userRemove() {
-		ExistenceEdit edit = new ExistenceEdit(this, false);
+		ExistenceEdit edit = new ExistenceEdit(this, false, "Element removed");
 		this.fireUndoableEvent(edit);
 		
 		this.remove();

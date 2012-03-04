@@ -73,14 +73,10 @@ public class Manager extends UndoManager implements ActionListener,
 
 
 	@Override
-	public void mouseDragged(MouseEvent e) {
-
-	}
+	public void mouseDragged(MouseEvent e) {}
 
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		status.setMousePos(e.getX(), e.getY());
-	}
+	public void mouseMoved(MouseEvent e) {}
 
 
 
@@ -181,9 +177,8 @@ public class Manager extends UndoManager implements ActionListener,
 		mode = ListeningMode.LISTEN_TO_ALL;
 		ClassModel c = new ClassModel(p);
 		document.addElement(c);
-		status.setText("New class rectangle created at " + p.x + "," + p.y);
 		
-		ExistenceEdit edit = new ExistenceEdit(c, true);
+		ExistenceEdit edit = new ExistenceEdit(c, true, "New class created");
 		this.undoableEditHappened(new UndoableEditEvent(c, edit));
 
 		ClassRectangle view = new ClassRectangle(c, true);
@@ -204,7 +199,7 @@ public class Manager extends UndoManager implements ActionListener,
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabelModel mod = new TextLabelModel(p);
 		
-		ExistenceEdit edit = new ExistenceEdit(mod, true);
+		ExistenceEdit edit = new ExistenceEdit(mod, true, "New label created");
 		this.undoableEditHappened(new UndoableEditEvent(mod, edit));
 		
 		LabelView view = new LabelView(mod);
@@ -215,8 +210,6 @@ public class Manager extends UndoManager implements ActionListener,
 		document.getPreferences().addObserver(view);
 		
 		document.addElement(mod);
-
-		status.setText("New label created at " + p.x + "," + p.y);
 
 		canvas.add(view);
 		view.enableEdit();
@@ -232,7 +225,6 @@ public class Manager extends UndoManager implements ActionListener,
 	
 	private void addNewRelationship(ClassModel to, ClassModel from) {
 		
-		status.setText("Received request for new relationship from " + from + " to " + to);
 		Relationship r = new Relationship(from, to);
 		
 		from.addRelationship(r);
@@ -240,7 +232,7 @@ public class Manager extends UndoManager implements ActionListener,
 		to.addRelationship(r);
 		to.addObserver(r);
 			
-		ExistenceEdit edit = new ExistenceEdit(r, true);
+		ExistenceEdit edit = new ExistenceEdit(r, true, "New relationship created");
 		this.undoableEditHappened(new UndoableEditEvent(r, edit));
 		
 		RelationshipArrow arrow = new RelationshipArrow(r);
@@ -458,9 +450,13 @@ public class Manager extends UndoManager implements ActionListener,
 	
 	@Override
 	public void undoableEditHappened(UndoableEditEvent e) {
-		status.setText(e.getEdit().getPresentationName());
-		this.mode = ListeningMode.LISTEN_TO_ALL;
-		this.selectionStack.removeAllElements();
+		if (e.getEdit().getPresentationName().length() > 0) 
+			status.setText(e.getEdit().getPresentationName());
+		if(e.getEdit() instanceof ExistenceEdit) {
+			this.mode = ListeningMode.LISTEN_TO_ALL;
+			this.selectionStack.removeAllElements();
+		}
+		
 		super.undoableEditHappened(e);
 	}
 

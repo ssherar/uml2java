@@ -92,7 +92,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	public void setCardinalityFrom(Cardinality cardinalityFrom) {
 		this.cardinalityFrom = cardinalityFrom;
 		
-		ExistenceEdit edit = new ExistenceEdit(cardinalityFrom, true);
+		ExistenceEdit edit = new ExistenceEdit(cardinalityFrom, true, "Cardinality created");
 		this.fireUndoableEvent(edit);
 	}
 
@@ -107,7 +107,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	public void setCardinalityTo(Cardinality cardinalityTo) {
 		this.cardinalityTo = cardinalityTo;
 		
-		ExistenceEdit edit = new ExistenceEdit(cardinalityTo, true);
+		ExistenceEdit edit = new ExistenceEdit(cardinalityTo, true, "Cardinality created");
 		this.fireUndoableEvent(edit);
 	}
 	

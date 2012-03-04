@@ -8,12 +8,19 @@ public class ExistenceEdit extends AbstractUndoableEdit {
 	
 	private DocumentElementModel toBeOrNotToBe;
 	private boolean isAnAdd;
+	private String presentationName;
 	
 	public ExistenceEdit(DocumentElementModel m, boolean isAnAdd) {
-		this.toBeOrNotToBe = m;
-		this.isAnAdd = isAnAdd;
+		this(m, isAnAdd, "");
 	}
 	
+	public ExistenceEdit(DocumentElementModel m, boolean isAnAdd, String presentationName) {
+		this.toBeOrNotToBe = m;
+		this.isAnAdd = isAnAdd;
+		this.presentationName = presentationName;
+	}
+	
+	@Override
 	public void undo() {
 		if(this.isAnAdd) {
 			toBeOrNotToBe.remove();
@@ -21,12 +28,18 @@ public class ExistenceEdit extends AbstractUndoableEdit {
 		else toBeOrNotToBe.resurrect();
 	}
 	
+	@Override
 	public void redo() {
 		if(this.isAnAdd) {
 			toBeOrNotToBe.resurrect();
 		}
 		else toBeOrNotToBe.remove();
 		
+	}
+	
+	@Override
+	public String getPresentationName() {
+		return this.presentationName;
 	}
 
 }

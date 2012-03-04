@@ -2,7 +2,6 @@ TO-DO
 =====
 
 1. Relationships
-	- Let the user add cardinalities
 	- Let the user add points
 	
 2. Labels
