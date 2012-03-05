@@ -227,6 +227,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			status.setText("Exported successfully!");
 		} catch (IOException e1) {
 			status.setText("Could not export into Java code.");
+			e1.printStackTrace();
 		}
 	}
 
@@ -297,6 +298,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			out.writeObject(this.document);
 			out.close();
 			status.setText("Document saved successfully");
+			window.setTitle(fileName + " - " + PROGRAM_NAME);
 		} catch (Exception e) {
 			status.setText("Could not write your document into the file. Sorry!");
 			e.printStackTrace();

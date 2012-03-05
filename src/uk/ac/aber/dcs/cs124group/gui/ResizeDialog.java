@@ -1,4 +1,4 @@
-package uk.ac.aber.dcs.cs124group.view;
+package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -6,7 +6,6 @@ import java.text.NumberFormat;
 
 import javax.swing.*;
 
-import uk.ac.aber.dcs.cs124group.gui.Canvas;
 
 public class ResizeDialog extends JFrame {
 	

@@ -3,7 +3,6 @@ package uk.ac.aber.dcs.cs124group.model;
 import java.util.*;
 import java.awt.Point;
 import java.util.regex.*;
-import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
 
 public class Attribute extends TextLabelModel implements java.io.Serializable {
@@ -11,7 +10,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = -2402890557766473597L;
 	private final String REGEX_ATTRIB = "^([+#-]) ([a-z][a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
-	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-z][a-zA-Z]*)\\((.*)\\)(( \\: [a-zA-Z]*)?)$";
+	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-zA-Z]*)\\((.*)\\)(( \\: [a-zA-Z]*)?)$";
 	private final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([A-Za-z0-9]*)";
 	
 	private IVisibility visibility;

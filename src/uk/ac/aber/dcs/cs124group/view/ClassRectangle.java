@@ -73,9 +73,9 @@ public class ClassRectangle extends DocumentElementView {
 				l.setFont(this.getFont());
 				this.add(l);
 				
-				m.getDataFields().get(i).setStatic(m.getDataFields().get(i).isFlagStatic(), false);
-				m.getDataFields().get(i).setFinal(m.getDataFields().get(i).isFlagFinal(), false);
-				m.getDataFields().get(i).setAbstract(m.getDataFields().get(i).isFlagAbstract(), false);
+				m.getMethods().get(i).setStatic(m.getMethods().get(i).isFlagStatic(), false);
+				m.getMethods().get(i).setFinal(m.getMethods().get(i).isFlagFinal(), false);
+				m.getMethods().get(i).setAbstract(m.getMethods().get(i).isFlagAbstract(), false);
 				
 				this.methodViews.add(l);
 			}
