@@ -1,7 +1,7 @@
-\indexentry{File!Create new diagram}{3}
-\indexentry{File!Open existing diagram}{3}
-\indexentry{File!Save a Diagram}{3}
-\indexentry{File!Printing a diagram}{4}
+\indexentry{File!Create New diagram}{3}
+\indexentry{File!Open Saved diagram}{3}
+\indexentry{File!Saving}{3}
+\indexentry{File!Printing}{4}
 \indexentry{File!Exiting UML2Java}{4}
 \indexentry{Edit!Undo}{4}
 \indexentry{Edit!Redo}{5}
@@ -9,8 +9,16 @@
 \indexentry{Canvas Settings!Fit to Diagram}{5}
 \indexentry{Exporting!Code}{6}
 \indexentry{Exporting!Image}{6}
-\indexentry{Adding to diagram!Add new Class}{7}
-\indexentry{Adding to diagram!Add new Relationship}{9}
-\indexentry{Editing!Edit class Name}{9}
-\indexentry{Editing!Edit data field}{9}
-\indexentry{Editing!Edit Method}{10}
+\indexentry{Adding to diagram!Classes}{7}
+\indexentry{Adding to diagram!Data Fields/Variables}{8}
+\indexentry{Adding to diagram!Methods}{8}
+\indexentry{Adding to diagram!Relationships}{9}
+\indexentry{Editing!Class Name}{10}
+\indexentry{Editing!Moving the Classes}{10}
+\indexentry{Editing!Data Fields/Variables}{11}
+\indexentry{Editing!Methods}{11}
+\indexentry{Editing!Relationships}{12}
+\indexentry{Editing!Relationships!Relationship Type}{12}
+\indexentry{Editing!Relationships!Moving Relationship Points}{12}
+\indexentry{Editing!Relationships!Adding Label}{13}
+\indexentry{Edit!Adding Cardinalities}{13}

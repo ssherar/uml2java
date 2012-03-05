@@ -18,7 +18,13 @@
 \contentsline {subsubsection}{\numberline {5.1.1}Adding Data fields to the new Class}{8}
 \contentsline {subsubsection}{\numberline {5.1.2}Adding Methods to the new Class}{8}
 \contentsline {subsection}{\numberline {5.2}Adding a new Relationship between classes}{9}
-\contentsline {section}{\numberline {6}Editing}{9}
-\contentsline {subsection}{\numberline {6.1}Changing the Class Name}{9}
-\contentsline {subsection}{\numberline {6.2}Editing a Data Field}{9}
-\contentsline {subsection}{\numberline {6.3}Editing a Method in a Class}{10}
+\contentsline {section}{\numberline {6}Editing}{10}
+\contentsline {subsection}{\numberline {6.1}Changing the Class Name}{10}
+\contentsline {subsection}{\numberline {6.2}Moving a Class}{10}
+\contentsline {subsection}{\numberline {6.3}Editing a Data Field}{11}
+\contentsline {subsection}{\numberline {6.4}Editing a Method in a Class}{11}
+\contentsline {subsection}{\numberline {6.5}Editing a Relationship}{12}
+\contentsline {subsubsection}{\numberline {6.5.1}Editing the Relationship Type}{12}
+\contentsline {subsubsection}{\numberline {6.5.2}Moving Relationship Points}{12}
+\contentsline {subsubsection}{\numberline {6.5.3}Adding a Label to a Relationship}{13}
+\contentsline {subsubsection}{\numberline {6.5.4}Adding Cardinalities to the Line}{13}

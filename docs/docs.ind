@@ -1,8 +1,10 @@
 \begin{theindex}
 
   \item Adding to diagram
-    \subitem Add new Class, 7
-    \subitem Add new Relationship, 9
+    \subitem Classes, 7
+    \subitem Data Fields/Variables, 8
+    \subitem Methods, 8
+    \subitem Relationships, 9
 
   \indexspace
 
@@ -13,12 +15,18 @@
   \indexspace
 
   \item Edit
+    \subitem Adding Cardinalities, 13
     \subitem Redo, 5
     \subitem Undo, 4
   \item Editing
-    \subitem Edit class Name, 9
-    \subitem Edit data field, 9
-    \subitem Edit Method, 10
+    \subitem Class Name, 10
+    \subitem Data Fields/Variables, 11
+    \subitem Methods, 11
+    \subitem Moving the Classes, 10
+    \subitem Relationships, 12
+      \subsubitem Adding Label, 13
+      \subsubitem Moving Relationship Points, 12
+      \subsubitem Relationship Type, 12
   \item Exporting
     \subitem Code, 6
     \subitem Image, 6
@@ -26,10 +34,10 @@
   \indexspace
 
   \item File
-    \subitem Create new diagram, 3
+    \subitem Create New diagram, 3
     \subitem Exiting UML2Java, 4
-    \subitem Open existing diagram, 3
-    \subitem Printing a diagram, 4
-    \subitem Save a Diagram, 3
+    \subitem Open Saved diagram, 3
+    \subitem Printing, 4
+    \subitem Saving, 3
 
 \end{theindex}
