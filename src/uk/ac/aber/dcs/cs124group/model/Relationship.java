@@ -98,6 +98,9 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	}
 	
 	public void requestCardinality(String whichOne) {
+		if(this.type == RelationshipType.INHERITANCE || this.type == RelationshipType.IMPLEMENTS)
+			return;		
+		
 		if(whichOne.equals("from") && this.cardinalityFrom != null) {
 			if(!this.cardinalityFrom.exists())
 				this.cardinalityFrom.resurrect();
@@ -161,6 +164,9 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	}
 
 	public void requestLabel() {
+		if(this.type == RelationshipType.INHERITANCE || this.type == RelationshipType.IMPLEMENTS)
+			return;	
+		
 		if(this.label != null) {
 			if(!this.label.exists())
 				this.label.resurrect();
@@ -272,6 +278,19 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		this.setChanged();
 		this.notifyObservers("restored");
 	}
+	
+	@Override
+	public void cleanUp() {
+		if(!cardinalityFrom.exists())
+			cardinalityFrom = null;
+		
+		if(!cardinalityTo.exists())
+			cardinalityTo = null;
+		
+		if(!label.exists())
+			label = null;
+	}
+	
 	
 	
 

@@ -66,6 +66,7 @@ public class RelationshipController extends DiagramListener implements ActionLis
 			ArrayList<Point> points = this.model.getPoints();
 			for(int i = 1; i < points.size() - 1; i++) {
 				if (e.getPoint().distance(points.get(i)) <= 10) {
+					this.model.storeInEdit();
 					this.model.deletePoint(points.get(i));
 				}
 			}

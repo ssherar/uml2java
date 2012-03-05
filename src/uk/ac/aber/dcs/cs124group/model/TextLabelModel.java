@@ -111,6 +111,9 @@ public class TextLabelModel extends DocumentElementModel implements Moveable {
 		this.compoundEdit = new CompoundEdit();
 	}
 	
+	@Override
+	public void cleanUp() {}
+	
 	
 	
 }

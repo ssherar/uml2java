@@ -70,5 +70,7 @@ public abstract class DocumentElementModel extends Observable implements java.io
 		undoManager.undoableEditHappened(new UndoableEditEvent(this, e));
 	}
 	
+	public abstract void cleanUp();
+	
 	public abstract DocumentElementView getView();
 }

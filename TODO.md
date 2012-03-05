@@ -1,12 +1,6 @@
 TO-DO
 =====
 
-1. Relationships
-	- Let the user delete points
-	
-2. Labels
-	- Fix button groups in data fields
-	
 3. Exporter
 	- Test it and fix bugs
 
