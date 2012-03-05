@@ -228,7 +228,7 @@ public class RelationshipArrow extends DocumentElementView {
 			xpoints[0] = doubleReferencePoint.x;
 			ypoints[0] = doubleReferencePoint.y;
 			
-			if(this.model.getType() == RelationshipType.COMPOSITION) {
+			if(this.model.getType() == RelationshipType.AGGREGATION) {
 				g.drawPolygon(diamond);
 			}
 			else {
