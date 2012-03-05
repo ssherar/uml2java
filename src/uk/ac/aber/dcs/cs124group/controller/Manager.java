@@ -31,13 +31,19 @@ import uk.ac.aber.dcs.cs124group.gui.*;
  */
 public class Manager extends UndoManager implements ActionListener, ChangeListener,  MouseListener, Observer  {
 
-	private boolean inDebug = true;
+	/** A convenience variable that is set to true during testing so that annoying dialogs don't appear when exiting the application */
+	private boolean inDebug = false
+	
+	/** The state this manager is currently in. Influences how mouse events are handled. */
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
 
-	public static final String PROGRAM_NAME = "UML2Java";
+	/** The name of this application. */
+	public static final String PROGRAM_NAME = "UML2Java
+	
+	/** The file extension used for saved files. */
 	public static final String FILE_EXTENSION = "umlj";
 
-	
+	/** The GUI components being controlled by this manager. */
 	private MainFrame window;
 	private Canvas canvas;
 	private StatusBar status;
@@ -45,9 +51,10 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 
 	private DocumentModel document;
 
-	
+	/** A collection holding currently selected items. At present, only one element is ever contained here. */
 	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
 
+	/** Invoked as the entry point of the application, constructs a Manager object and all the GUI components in the window, including the window itself. */
 	public Manager() {
 		super();
 		window = new MainFrame(this);
@@ -69,6 +76,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	/************************************************************************************/
 	
 	@Override
+	/** If the user is currently placing an element on the canvas, gets the appropriate point for it from the mouse event. */
 	public void mousePressed(MouseEvent e) {
 		if (mode == ListeningMode.PLACING_CLASS) {
 			addNewClass(new Point(
@@ -82,6 +90,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	}
 
 	@Override
+	/** Handles the state changes in the zoom JSlider and the font size JSpinner. */
 	public void stateChanged(ChangeEvent e) {
 		if (e.getSource() instanceof JSlider) {
 			changeZoom(((JSlider) e.getSource()).getValue() / 100.0);
@@ -92,6 +101,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	}
 
 	@Override
+	/** Takes appropriate action based on the button the user clicked. */
 	public void actionPerformed(ActionEvent e) {
 		String c = e.getActionCommand();
 		if (c.equals("Exit")) {
@@ -148,6 +158,10 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	
 	
 	@Override
+	/** Called from individual document elements whenever the user makes an undoable action. 
+	 *  If an element has been added or removed, resets the listening mode to avoid creation of elements 
+	 *  that require the presence of an element that might now be non-existent.
+	 */ 
 	public void undoableEditHappened(UndoableEditEvent e) {
 		if (e.getEdit().getPresentationName().length() > 0) 
 			status.setText(e.getEdit().getPresentationName());
@@ -162,6 +176,10 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 
 
 	@Override
+	/** Used for relationship creation, this method will update the selection stack based on what class
+	 *  the user clicked on. Also, when a relationship is requested by the user directly on a class rectangle,
+	 *  the request is received here.
+	 */
 	public void update(Observable o, Object s) {
 		if(!(s instanceof String)) {
 			throw new IllegalArgumentException("String expected");
@@ -193,6 +211,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	////////////////////////////////////FILE MANAGEMENT\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	/*****************************************************************************************/
 	
+	/** Creates an Exporter that will attempt to create .java class files from the current document.
+	 *  This method clears the document of all non-existent elements by calling cleanUp(), therefore
+	 *  the UndoableEdit stack is emptied to avoid NullPointerExceptions, effectively disabling undos. 
+	 *  @see uk.ac.aber.dcs.cs124group.export.Exporter, uk.ac.aber.dcs.cs124group.model.DocumentModel#cleanUp() cleanUp()
+	 */ 
 	private void export() {
 		document.cleanUp();
 		this.discardAllEdits();
@@ -345,7 +368,6 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		c.addObserver(this);
 		c.addUndoableEditListener(this);
 
-		//this.undoableEditHappened(new UndoableEditEvent(canvas, c));
 		document.getPreferences().addObserver(view);
 		canvas.add(view);
 		view.setFont(document.getPreferences().getFont());
@@ -405,6 +427,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	}
 	
 
+	/**
+	 * Changes the font in the DocumentPreferences of the current DocumentModel.
+	 * The information about the font to be set is taken from the toolbar.
+	 * Observers of DocumentPreferences must set their own font accordingly.
+	 */ 
 	private void changeFont() {
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN,
 				toolBar.getFontSize());
@@ -430,6 +457,9 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		document.getPreferences().setZoomLevel(zoom);
 	}
 	
+	/** Brings up a small dialog allowing the user to resize the canvas.
+	 *  @see uk.ac.aber.dcs.cs124group.gui.ResizeDialog ResizeDialog
+	 */
 	private void resizeCanvasDialog() {
 		JFrame resizeDialog = new ResizeDialog(this.canvas);
 		resizeDialog.setLocationRelativeTo(window);
@@ -438,6 +468,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		
 	}
 	
+	/**
+	 * Resizes the canvas so that it's size is the least possible height and width while still fully 
+	 * containing all elements added to it. 
+	 * @see uk.ac.aber.dcs.cs124group.view.DiagramLayout DiagramLayout
+	 */
 	private void fitToDiagram() {
 		int maxX = 300;
 		int maxY = 300;
@@ -458,6 +493,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	//////////////////////////MISCELLANEOUS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	/**********************************************************************/
 	
+	/** Opens up a window with information about the program itself. */
 	private void openAboutWindow() {
 		JFrame aboutWindow = new JFrame("About " + PROGRAM_NAME);
 		aboutWindow.setSize(450, 250);
@@ -482,7 +518,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		aboutWindow.setSize(450, 250);
 	}
 
-
+	/**
+	 * Attempts to set the system default wait cursor on the main window, indicating that processing is taking place. 
+	 * @param value
+	 * 	Whether the wait cursor is to be set or unset.
+	 */ 
 	public void setWaitCursor(boolean value) {
 		if (value) {
 			try {
@@ -495,6 +535,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	}
 	
 
+	/** Exits the program. If any undoable events are present, brings up a dialog asking the user to save their work. */
 	public void exit() {
 
 		if ((this.canUndo() || this.canRedo()) && !this.inDebug) {
