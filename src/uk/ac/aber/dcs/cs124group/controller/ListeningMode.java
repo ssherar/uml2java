@@ -2,7 +2,10 @@ package uk.ac.aber.dcs.cs124group.controller;
 
 /**
  * Includes possible states in which a DiagramListener may currently be. 
- * @author Daniel Maly, Sam Sherar, Lee Smith
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
  */
 public enum ListeningMode {
 	LISTEN_TO_ALL,

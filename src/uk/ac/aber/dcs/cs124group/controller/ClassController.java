@@ -2,19 +2,16 @@ package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JMenu;
-import javax.swing.JRadioButtonMenuItem;
+import java.awt.event.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 
 /**
  * An all-purpose listener controlling class models. Is added as a listener to ClassRectangles.
- * @author Daniel Maly, Sam Sherar, Lee Smith
- *
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
  */
 public class ClassController extends DiagramListener implements ActionListener {
 	
@@ -24,8 +21,10 @@ public class ClassController extends DiagramListener implements ActionListener {
 	/** A reference point for mouse dragging. */
 	private Point startingMousePosition;
 	
-	/** Constructs a controller for the specified class model. 
-	 * @param c The model this controller will be assigned to.
+	/** 
+	 * Constructs a controller for the specified class model. 
+	 * @param c 
+	 * 	The model this controller will be assigned to.
 	 */
 	public ClassController(ClassModel c) {
 		this.model = c;
@@ -33,6 +32,7 @@ public class ClassController extends DiagramListener implements ActionListener {
 
 
 	@Override
+	/** Handles events from the right-click popup menu of class rectangles. */
 	public void actionPerformed(ActionEvent e) {
 		String c = e.getActionCommand();
 		if(c.equals("Add Relationship")) {
@@ -76,15 +76,9 @@ public class ClassController extends DiagramListener implements ActionListener {
 	}
 	
 	@Override
-	public void mouseMoved(MouseEvent e) {
-		
+	public void mouseMoved(MouseEvent e) {	
 
 		Point bottomRightCorner = new Point (model.getSize().width, model.getSize().height);
-
-		
-		Rectangle notResizeRectangle = new Rectangle(new Point(0,0), model.getSize());
-		notResizeRectangle.grow(-5, -5);
-		
 		
 		if(e.getPoint().distance(bottomRightCorner) < 30) {
 			model.setPaintState(ElementPaintState.MOUSED_OVER_RESIZE);
@@ -101,6 +95,7 @@ public class ClassController extends DiagramListener implements ActionListener {
 	}
 
 	@Override
+	/** Depending on the current paintState of the model, either moves or resizes the controlled rectangle. */
 	public void mouseDragged(MouseEvent e){
 		if(this.getMode() != ListeningMode.DRAGGING) {
 			this.setMode(ListeningMode.DRAGGING);

@@ -8,7 +8,10 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 /**
  * An all-purpose listener controlling labels (this includes attributes and cardinalities). Is added as a listener to LabelViews.
- * @author Daniel Maly, Sam Sherar, Lee Smith
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
  */
 public class LabelController extends DiagramListener implements ActionListener {
 	
