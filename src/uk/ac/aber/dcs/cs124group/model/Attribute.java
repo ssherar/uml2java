@@ -26,6 +26,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	private boolean flagAbstract = false;
 	private boolean flagTransient = false;
 	private boolean flagFinal = false;
+	private boolean valid = true;
 	
 	public Attribute(Point p, String representation, AttributeType type) {
 		super(p);
@@ -42,6 +43,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	
 	@Override
 	public void setText(String text, boolean undoable) {
+		valid = true;
 		super.setText(text, undoable);
 		this.representation = text;
 		initializeFields();
@@ -142,6 +144,10 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			m = this.checkAttribute(uml);
 			if(m.find() && m.groupCount() > 0) {
 				// Attribute has 3 main variables and 4th is optional
+				if(m.groupCount() < 3) {
+					this.valid = false;
+					return;
+				}
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				this.attributeType = m.group(3);
@@ -151,11 +157,15 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			}
 		} else if(this.type == AttributeType.METHOD) {
 			m = this.checkMethodShell(uml);
+			if(m.groupCount() > 3) {
+				this.valid = false;
+				return;
+			}
 			if(m.find() && m.groupCount() > 0) {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				if(m.group(3) != null) {
-				
+					
 					Matcher args = this.checkArguements(m.group(3));
 					while(args.find()) {
 						this.addArgsElement(args.group(3),args.group(1));
@@ -237,6 +247,10 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		if(this.flagTransient == true) {
 			this.setTransient(false, undo);
 		}
+	}
+	
+	public boolean isValid() {
+		return this.valid;
 	}
 	
 	
