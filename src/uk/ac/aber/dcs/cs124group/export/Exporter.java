@@ -22,19 +22,24 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * fields, methods and the basic outline of the class. It will also add any
  * relationships to other classes.
  * 
- * @author Daniel Maly, Sam Sherar, Lee Smith
+ * @author Daniel Maly 
+ * @author Sam Sherar
+ * @author Lee Smith
  */
 
 public class Exporter {
 
 	private DocumentModel model;
-	private MainFrame window;
+	
 	private Canvas canvas;
 	private ArrayList<String> outputFiles = new ArrayList<String>();
 	private ArrayList<String> fileNames = new ArrayList<String>();
-	private final String NL = "\n";
-	private final String TB = "\t";
+	
+	private final static String NL = "\n";
+	private final static String TB = "\t";
+	
 	private Manager manager;
+	
 	private boolean errorCheck = false;
 
 	/**
@@ -135,27 +140,26 @@ public class Exporter {
 						.getElements().get(i)));
 			}
 		}
-		if (!errorCheck) {
-			manager.setWaitCursor(true);
-			JFileChooser fcCode = new JFileChooser();
-			fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-			fcCode.setAcceptAllFileFilterUsed(false);
-			int fcReturnVal = fcCode.showDialog(null, "Select Directory");
+		
+		manager.setWaitCursor(true);
+		JFileChooser fcCode = new JFileChooser();
+		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fcCode.setAcceptAllFileFilterUsed(false);
+		int fcReturnVal = fcCode.showDialog(null, "Select Directory");
 
-			manager.setWaitCursor(false);
+		manager.setWaitCursor(false);
 
-			if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-				String chosenDirectory = fcCode.getSelectedFile().getPath()
-						+ "/";
-				for (int j = fileNames.size() - 1; j >= 0; j--) {
-					PrintWriter fileOut = new PrintWriter(
-							new OutputStreamWriter(new FileOutputStream(
-									chosenDirectory + "" + fileNames.get(j))));
+		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
+			String chosenDirectory = fcCode.getSelectedFile().getPath()
+					+ "/";
+			for (int j = fileNames.size() - 1; j >= 0; j--) {
+				PrintWriter fileOut = new PrintWriter(
+						new OutputStreamWriter(new FileOutputStream(
+								chosenDirectory + "" + fileNames.get(j))));
 
-					fileOut.println(outputFiles.get(j));
-					fileOut.close();
+				fileOut.println(outputFiles.get(j));
+				fileOut.close();
 
-				}
 			}
 		}
 
@@ -174,7 +178,7 @@ public class Exporter {
 	 *         files that are to be created.
 	 */
 
-	private String createClassFileContents(ClassModel classModel) {
+	private String createClassFileContents(ClassModel classModel) throws IOException {
 		classModel.cleanUp();
 
 		fileNames.add(classModel.getClassName() + ".java");
@@ -327,6 +331,7 @@ public class Exporter {
 
 			String cardinalityLabel = classModel.getRelationships()
 					.get(cardinalities).getLabel().getText();
+			
 		// ----------- Many to One -------------
 			if ((manyCardinality(cardinalityTo).equals("*") || cardinalityTo.equals("1"))
 					&& goingTo != classModel.getClassName()) {
@@ -353,7 +358,8 @@ public class Exporter {
 				contents = contents + TB + "private ArrayList<" + goingFrom
 						+ "> " + cardinalityLabel + " = new ArrayList<"
 						+ goingFrom + ">(" + cardinalityFrom + ");" + NL;
-				//Erranious Input
+				//Erroneous Input
+				
 			} else if (!cardinalityTo.equals("0..*")
 					&& !cardinalityTo.equals("1")
 					&& goingTo != classModel.getClassName()) {
@@ -362,10 +368,11 @@ public class Exporter {
 
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
-							"Error, Check Cardinalities",
+							"Error, invalid cardinality.",
 							"Error in Cardinalities",
 							JOptionPane.WARNING_MESSAGE);
-					errorCheck = true;
+					throw new IOException("Export failed");
+					
 				} else {
 					contents = contents + TB + "private ArrayList<" + goingTo
 							+ "> " + cardinalityLabel + " = new ArrayList<"
@@ -377,12 +384,14 @@ public class Exporter {
 					&& goingFrom != classModel.getClassName()) {
 				System.out.println("Check 6");
 				String[] values = cardinalityFrom.split("\\.\\.");
+				
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
-							"Error, Check Cardinalities",
+							"Error, invalid cardinality.",
 							"Error in Cardinalities",
 							JOptionPane.WARNING_MESSAGE);
-					errorCheck = true;
+					throw new IOException("Export failed");
+					
 				} else {
 					contents = contents + TB + "private ArrayList<" + goingFrom
 							+ "> " + cardinalityLabel + " = new ArrayList<"
