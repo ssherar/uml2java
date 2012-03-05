@@ -8,6 +8,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.Manager;
+import uk.ac.aber.dcs.cs124group.view.DiagramLayout;
 
 public class MainFrame extends JFrame implements WindowListener {
 	

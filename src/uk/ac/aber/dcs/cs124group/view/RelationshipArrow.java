@@ -12,7 +12,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JRadioButtonMenuItem;
 
 import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
-import uk.ac.aber.dcs.cs124group.gui.DiagramLayout;
 import uk.ac.aber.dcs.cs124group.model.*;
 
 public class RelationshipArrow extends DocumentElementView {

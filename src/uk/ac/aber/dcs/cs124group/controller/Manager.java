@@ -214,7 +214,9 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	/** Creates an Exporter that will attempt to create .java class files from the current document.
 	 *  This method clears the document of all non-existent elements by calling cleanUp(), therefore
 	 *  the UndoableEdit stack is emptied to avoid NullPointerExceptions, effectively disabling undos. 
-	 *  @see uk.ac.aber.dcs.cs124group.export.Exporter, uk.ac.aber.dcs.cs124group.model.DocumentModel#cleanUp() cleanUp()
+	 *  
+	 *  @see uk.ac.aber.dcs.cs124group.export.Exporter Exporter
+	 *  @see uk.ac.aber.dcs.cs124group.model.DocumentModel#cleanUp() DocumentModel.cleanUp()
 	 */ 
 	private void export() {
 		document.cleanUp();
@@ -521,7 +523,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	/**
 	 * Attempts to set the system default wait cursor on the main window, indicating that processing is taking place. 
 	 * @param value
-	 * 	Whether the wait cursor is to be set or unset.
+	 * 		Whether the wait cursor is to be set or unset.
 	 */ 
 	public void setWaitCursor(boolean value) {
 		if (value) {
