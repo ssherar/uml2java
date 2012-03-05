@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.event.*;
 import java.awt.Point;
+import java.util.ArrayList;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.view.RelationshipEndPoint;
@@ -56,6 +57,20 @@ public class RelationshipController extends DiagramListener implements ActionLis
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		movedPoint = null;
+	}
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if(e.getClickCount() == 2 && !e.isConsumed() && this.getMode() == ListeningMode.LISTEN_TO_ALL) {
+			e.consume();
+			ArrayList<Point> points = this.model.getPoints();
+			for(int i = 1; i < points.size() - 1; i++) {
+				if (e.getPoint().distance(points.get(i)) <= 10) {
+					this.model.deletePoint(points.get(i));
+				}
+			}
+		}
+			
 	}
 	
 	@Override

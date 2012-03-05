@@ -55,6 +55,16 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		return null;
 	}
 	
+	public void deletePoint(Point p) {
+		for(int i = 0; i < this.points.size(); i++) {
+			if (p.equals(points.get(i))) {
+				points.remove(i);
+				this.setChanged();
+				this.notifyObservers("pointRemoved");
+			}
+		}
+	}
+	
 	public Point getLabelReferencePoint() {
 		int i = points.size() / 2;
 		Point p1 = points.get(i - 1);
