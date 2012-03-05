@@ -32,13 +32,13 @@ import uk.ac.aber.dcs.cs124group.gui.*;
 public class Manager extends UndoManager implements ActionListener, ChangeListener,  MouseListener, Observer  {
 
 	/** A convenience variable that is set to true during testing so that annoying dialogs don't appear when exiting the application */
-	private boolean inDebug = false
+	private boolean inDebug = false;
 	
 	/** The state this manager is currently in. Influences how mouse events are handled. */
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
 
 	/** The name of this application. */
-	public static final String PROGRAM_NAME = "UML2Java
+	public static final String PROGRAM_NAME = "UML2Java";
 	
 	/** The file extension used for saved files. */
 	public static final String FILE_EXTENSION = "umlj";
