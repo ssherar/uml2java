@@ -264,9 +264,12 @@ public class Exporter {
 
 		// --------------------Attributes/Fields----------------------------
 		for (int variables = 0; variables <= classModel.getAttributes().size() - 1; variables++) {
-
+			
 			boolean isAttributeFinal = false;
-
+			
+			// Is it actually valid??
+			if(!classModel.getAttributes().get(variables).isValid()) continue;
+			
 			if (classModel.getAttributes().get(variables).getType() == AttributeType.DATA_FIELD) {
 				switch (classModel.getAttributes().get(variables)
 						.getVisibility()) {
@@ -403,6 +406,8 @@ public class Exporter {
 
 		// ------------------------Methods---------------------------
 		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
+			
+			if(!classModel.getAttributes().get(methods).isValid()) continue;
 
 			if (classModel.getAttributes().get(methods).getType() == AttributeType.METHOD) {
 				switch (classModel.getAttributes().get(methods).getVisibility()) {
