@@ -309,52 +309,57 @@ public class Exporter {
 		}
 		// ----------------------Cardinalities------------------------
 
-		// ----------- Many to One -------------
+
 		for (int cardinalities = 0; cardinalities < classModel
 				.getRelationships().size(); cardinalities++) {
 
-			if (classModel.getRelationships().get(cardinalities)
-					.getCardinalityTo().getText().equals("0..*")
-					&& classModel.getRelationships().get(cardinalities)
-							.getGoingTo().getClassName() != classModel
-							.getClassName()) {
+			String cardinalityFrom = classModel.getRelationships()
+					.get(cardinalities).getCardinalityFrom().getText();
 
-				contents = contents
-						+ TB
-						+ "private ArrayList<"
-						+ classModel.getRelationships().get(cardinalities)
-								.getGoingTo().getClassName()
-						+ "> "
-						+ classModel.getRelationships().get(cardinalities)
-								.getLabel().getText() + "; " + NL;
-			}
-			// ------- Many to Many Extension -------
-			if (classModel.getRelationships().get(cardinalities)
-					.getCardinalityFrom().getText().equals("0..*")
-					&& classModel.getRelationships().get(cardinalities)
-							.getGoingFrom().getClassName() != classModel
-							.getClassName()) {
+			String cardinalityTo = classModel.getRelationships()
+					.get(cardinalities).getCardinalityTo().getText();
 
-				contents = contents
-						+ TB
-						+ "private ArrayList<"
-						+ classModel.getRelationships().get(cardinalities)
-								.getGoingFrom().getClassName()
-						+ "> "
-						+ classModel.getRelationships().get(cardinalities)
-								.getLabel().getText() + "; " + NL;
-			}
-			// ---------- Zero to Something Extension --------
-			if (!classModel.getRelationships().get(cardinalities)
-					.getCardinalityTo().getText().equals("0..*")
-					&& !classModel.getRelationships().get(cardinalities)
-							.getCardinalityTo().getText().equals("1")
-					&& classModel.getRelationships().get(cardinalities)
-							.getGoingTo().getClassName() != classModel
-							.getClassName()) {
-				String toCardinality = classModel.getRelationships()
-						.get(cardinalities).getCardinalityTo().getText();
-				String[] values = toCardinality.split("\\.\\.");
+			String goingFrom = classModel.getRelationships().get(cardinalities)
+					.getGoingFrom().getClassName();
+
+			String goingTo = classModel.getRelationships().get(cardinalities)
+					.getGoingTo().getClassName();
+
+			String cardinalityLabel = classModel.getRelationships()
+					.get(cardinalities).getLabel().getText();
+		// ----------- Many to One -------------
+			if ((manyCardinality(cardinalityTo).equals("*") || cardinalityTo.equals("1"))
+					&& goingTo != classModel.getClassName()) {
+				System.out.println("Check 1");
+				contents = contents + TB + "private ArrayList<" + goingTo
+						+ "> " + cardinalityLabel + "; " + NL;
+
+			} else if ((manyCardinality(cardinalityFrom).equals("*") || cardinalityTo.equals("1"))
+					&& goingFrom != classModel.getClassName()) {
+				System.out.println("Check 2");
+				contents = contents + TB + "private ArrayList<" + goingFrom
+						+ "> " + cardinalityLabel + "; " + NL;
+				// Fixed Size
+			} else if (isInteger(cardinalityTo)
+					&& goingTo != classModel.getClassName()) {
+				System.out.println("Check 3");
+				contents = contents + TB + "private ArrayList<" + goingTo
+						+ "> " + cardinalityLabel + " = new ArrayList<"
+						+ goingTo + ">(" + cardinalityTo + ");" + NL;
+
+			} else if (isInteger(cardinalityFrom)
+					&& goingFrom != classModel.getClassName()) {
+				System.out.println("Check 4");
+				contents = contents + TB + "private ArrayList<" + goingFrom
+						+ "> " + cardinalityLabel + " = new ArrayList<"
+						+ goingFrom + ">(" + cardinalityFrom + ");" + NL;
+				//Erranious Input
+			} else if (!cardinalityTo.equals("0..*")
+					&& !cardinalityTo.equals("1")
+					&& goingTo != classModel.getClassName()) {
+				System.out.println("Check 5");
+				String[] values = cardinalityTo.split("\\.\\.");
+
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
 							"Error, Check Cardinalities",
@@ -362,32 +367,16 @@ public class Exporter {
 							JOptionPane.WARNING_MESSAGE);
 					errorCheck = true;
 				} else {
-					contents = contents
-							+ TB
-							+ "private ArrayList<"
-							+ classModel.getRelationships().get(cardinalities)
-									.getGoingTo().getClassName()
-							+ "> "
-							+ classModel.getRelationships().get(cardinalities)
-									.getLabel().getText()
-							+ " = new ArrayList<"
-							+ classModel.getRelationships().get(cardinalities)
-									.getGoingTo().getClassName() + ">("
-							+ values[1] + ");" + NL;
+					contents = contents + TB + "private ArrayList<" + goingTo
+							+ "> " + cardinalityLabel + " = new ArrayList<"
+							+ goingTo + ">(" + values[1] + ");" + NL;
 				}
 
-			}
-
-			if (!classModel.getRelationships().get(cardinalities)
-					.getCardinalityFrom().getText().equals("0..*")
-					&& !classModel.getRelationships().get(cardinalities)
-							.getCardinalityFrom().getText().equals("1")
-					&& classModel.getRelationships().get(cardinalities)
-							.getGoingFrom().getClassName() != classModel
-							.getClassName()) {
-				String toCardinality = classModel.getRelationships()
-						.get(cardinalities).getCardinalityFrom().getText();
-				String[] values = toCardinality.split("\\.\\.");
+			} else if (!cardinalityFrom.equals("0..*")
+					&& !cardinalityFrom.equals("1")
+					&& goingFrom != classModel.getClassName()) {
+				System.out.println("Check 6");
+				String[] values = cardinalityFrom.split("\\.\\.");
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
 							"Error, Check Cardinalities",
@@ -395,18 +384,9 @@ public class Exporter {
 							JOptionPane.WARNING_MESSAGE);
 					errorCheck = true;
 				} else {
-					contents = contents
-							+ TB
-							+ "private ArrayList<"
-							+ classModel.getRelationships().get(cardinalities)
-									.getGoingFrom().getClassName()
-							+ "> "
-							+ classModel.getRelationships().get(cardinalities)
-									.getLabel().getText()
-							+ " = new ArrayList<"
-							+ classModel.getRelationships().get(cardinalities)
-									.getGoingFrom().getClassName() + ">("
-							+ values[1] + ");" + NL;
+					contents = contents + TB + "private ArrayList<" + goingFrom
+							+ "> " + cardinalityLabel + " = new ArrayList<"
+							+ goingFrom + ">(" + values[1] + ");" + NL;
 				}
 
 			}
@@ -489,5 +469,15 @@ public class Exporter {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	private String manyCardinality(String s) {
+		if (s.contains("..")) {
+			String values[] = s.split("\\.\\.");
+			return values[1];
+		} else {
+			return s;
+		}
+
 	}
 }
