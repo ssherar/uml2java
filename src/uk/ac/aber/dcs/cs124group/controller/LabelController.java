@@ -2,10 +2,7 @@ package uk.ac.aber.dcs.cs124group.controller;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseEvent;
+import java.awt.event.*;
 
 import uk.ac.aber.dcs.cs124group.model.*;
 
@@ -30,6 +27,9 @@ public class LabelController extends DiagramListener implements ActionListener {
 	
 
 	@Override
+	/**
+	 * If the user double clicks the label, calls setEditing(true) in TextLabelModel to enable the user edit the label.
+	 */
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2 && !e.isConsumed() && this.getMode() == ListeningMode.LISTEN_TO_ALL) {
 			e.consume();
@@ -39,6 +39,9 @@ public class LabelController extends DiagramListener implements ActionListener {
 	}
 	
 	@Override 
+	/**
+	 * If the user presses ENTER or ESC while editing a label, this will make it exit editing mode.
+	 */
 	public void keyPressed(KeyEvent e) {
 		if(e.getKeyCode() == KeyEvent.VK_ENTER || e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 			model.setEditing(false);
@@ -48,6 +51,9 @@ public class LabelController extends DiagramListener implements ActionListener {
 	}
 	
 	@Override 
+	/**
+	 * If this is a free label (e.g. not an Attribute or a class name), moves it around.
+	 */
 	public void mouseDragged(MouseEvent e) {
 		if(!this.isNotAttribute() || this.model.isClassName()) return;
 		if(this.getMode() != ListeningMode.DRAGGING) {
@@ -64,6 +70,9 @@ public class LabelController extends DiagramListener implements ActionListener {
 	}
 	
 	@Override
+	/**
+	 * Stops moving the label.
+	 */
 	public void mouseReleased(MouseEvent e){
 		if(this.isNotAttribute()) {
 			if(this.getMode() == ListeningMode.DRAGGING)
@@ -74,11 +83,20 @@ public class LabelController extends DiagramListener implements ActionListener {
 	}
 	
 	@Override
+	/**
+	 * Sets the paintState of a free label to SELECTED.
+	 */
 	public void mousePressed(MouseEvent e){
 		if(!this.isNotAttribute()) return;
 		model.setPaintState(ElementPaintState.SELECTED);
 	}
 	
+	/**
+	 * Checks that the model controlled by this listener is not an Attribute.
+	 * Attributes cannot be moved by the user.
+	 * @return
+	 * 		True if the model is not an instance of Attribute, false otherwise.
+	 */
 	private boolean isNotAttribute() {
 		return (this.model instanceof Attribute) ? false : true;
 	}
@@ -90,18 +108,23 @@ public class LabelController extends DiagramListener implements ActionListener {
 			String c = e.getActionCommand();
 			if(c.equals("Delete")) {
 				this.model.userRemove();
+				
 			} else if(c.equals("Abstract")) {
 				((Attribute)this.model).setNone(true, false);
 				((Attribute)this.model).setAbstract(true, true);
+				
 			} else if(c.equals("Static")) {
 				((Attribute)this.model).setNone(true, false);
 				((Attribute)this.model).setStatic(true, true);
+				
 			} else if(c.equals("Final")) {
 				boolean isSelected = ((Attribute)this.model).isFlagFinal();
 				((Attribute)this.model).setFinal(!(isSelected), true);
+				
 			} else if(c.equals("Transient")) {
 				boolean isSelected = ((Attribute)this.model).isFlagTransient();
 				((Attribute)this.model).setTransient(!(isSelected), true);
+				
 			} else if(c.equals("None")) {
 				((Attribute)this.model).setNone(true, true);
 			}

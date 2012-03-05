@@ -33,7 +33,6 @@ public class Canvas extends JPanel {
 		this.setLayout(new DiagramLayout());
 		
 		this.addMouseListener(manager);
-		this.addKeyListener(manager);
 		
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {

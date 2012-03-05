@@ -172,6 +172,11 @@ public class LabelView extends DocumentElementView {
 	}
 	
 	public void exitEdit() {
+		if(!this.model.exists()) {
+			replacement.setVisible(false);
+			return;
+		}
+		
 		JTextArea a = replacement;
 		suspendedParent.remove(a);
 		suspendedParent.add(this);

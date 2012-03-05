@@ -4,9 +4,9 @@ import java.awt.event.*;
 
 /**
  * An adapter for controllers of elements on the canvas.
- * @authors Daniel Maly, Sam Sherar, Lee Smith
+ * @author Daniel Maly, Sam Sherar, Lee Smith
  */
-public class DiagramListener implements KeyListener, MouseMotionListener, MouseListener, java.io.Serializable {
+public class DiagramListener implements KeyListener, MouseMotionListener, MouseListener {
 	
 	/** The current state of this DiagramListener. Implementations use this to make decisions on how to process events. */
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;

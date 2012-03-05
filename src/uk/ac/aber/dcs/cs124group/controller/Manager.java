@@ -18,11 +18,18 @@ import uk.ac.aber.dcs.cs124group.undo.ExistenceEdit;
 import uk.ac.aber.dcs.cs124group.view.*;
 import uk.ac.aber.dcs.cs124group.export.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
-import uk.ac.aber.dcs.cs124group.gui.MenuBar;
 import uk.ac.aber.dcs.cs124group.gui.*;
 
-public class Manager extends UndoManager implements ActionListener,
-		ChangeListener,  KeyListener, MouseMotionListener, MouseListener, Observer  {
+
+/**
+ * This class is the global GUI listener of the application. 
+ * It handles events that happen in the menu bar, side bar or tool bar.
+ * When placing elements on the canvas, will also register some events from other diagram elements.
+ * This class also acts as the application undo manager - it is added to each and every document element
+ * as an UndoableEditListener to which undoable edits are being sent.
+ * @author Daniel Maly, Sam Sherar, Lee Smith
+ */
+public class Manager extends UndoManager implements ActionListener, ChangeListener,  MouseListener, Observer  {
 
 	private boolean inDebug = true;
 	private ListeningMode mode = ListeningMode.LISTEN_TO_ALL;
@@ -47,7 +54,6 @@ public class Manager extends UndoManager implements ActionListener,
 		window.setTitle(PROGRAM_NAME);
 
 		canvas = window.getCanvas();
-		canvas.addMouseMotionListener(this);
 
 		status = window.getStatus();
 		toolBar = window.getToolbar();
@@ -58,6 +64,10 @@ public class Manager extends UndoManager implements ActionListener,
 		changeFont();
 	}
 
+	/************************************************************************************/
+	//////////////////////////////////EVENT HANDLING\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/************************************************************************************/
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		if (mode == ListeningMode.PLACING_CLASS) {
@@ -70,15 +80,6 @@ public class Manager extends UndoManager implements ActionListener,
 					(int) ((1 / canvas.getZoomFactor()) * e.getY())));
 		} 
 	}
-
-
-	@Override
-	public void mouseDragged(MouseEvent e) {}
-
-	@Override
-	public void mouseMoved(MouseEvent e) {}
-
-
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
@@ -145,14 +146,62 @@ public class Manager extends UndoManager implements ActionListener,
 
 	}
 	
+	
+	@Override
+	public void undoableEditHappened(UndoableEditEvent e) {
+		if (e.getEdit().getPresentationName().length() > 0) 
+			status.setText(e.getEdit().getPresentationName());
+		if(e.getEdit() instanceof ExistenceEdit) {
+			this.mode = ListeningMode.LISTEN_TO_ALL;
+			this.selectionStack.removeAllElements();
+		}
+		
+		super.undoableEditHappened(e);
+	}
+
+
+
+	@Override
+	public void update(Observable o, Object s) {
+		if(!(s instanceof String)) {
+			throw new IllegalArgumentException("String expected");
+		}
+		else if(o instanceof ClassModel && s.equals("paintStateChanged") && ((ClassModel) o).getPaintState() == ElementPaintState.SELECTED) {
+			if(this.mode == ListeningMode.PLACING_RELATIONSHIP) {
+				if(selectionStack.size() == 1 && !((ClassModel)o).equals(selectionStack.peek())) {
+					this.mode = ListeningMode.LISTEN_TO_ALL;
+					this.addNewRelationship((ClassModel) o, (ClassModel) (selectionStack.pop()));
+				}
+				else if(selectionStack.size() == 0) {
+					selectionStack.push((ClassModel) o);
+					status.setText("Now click on the class you want the relationship to go to.");
+				}
+			}
+		}
+		else if (o instanceof ClassModel && s.equals("relationshipRequested")) {
+			selectionStack.removeAllElements();
+			selectionStack.push((ClassModel) o);
+			this.mode = ListeningMode.PLACING_RELATIONSHIP;
+			status.setText("Now click on the class you want the relationship to go to.");
+		}
+		
+	}
+	
+	
+	
+	/*****************************************************************************************/
+	////////////////////////////////////FILE MANAGEMENT\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/*****************************************************************************************/
+	
 	private void export() {
 		document.cleanUp();
 		this.discardAllEdits();
 		Exporter exp = new Exporter(document, this);
 		try {
 			exp.exportCode();
+			status.setText("Exported successfully!");
 		} catch (IOException e1) {
-			e1.printStackTrace();
+			status.setText("Could not export into Java code.");
 		}
 	}
 
@@ -172,103 +221,7 @@ public class Manager extends UndoManager implements ActionListener,
 		status.setText("Opened a brand new class diagram");
 
 	}
-
-	private void addNewClass(Point p) {
-		mode = ListeningMode.LISTEN_TO_ALL;
-		ClassModel c = new ClassModel(p);
-		document.addElement(c);
-		
-		ExistenceEdit edit = new ExistenceEdit(c, true, "New class created");
-		this.undoableEditHappened(new UndoableEditEvent(c, edit));
-
-		ClassRectangle view = new ClassRectangle(c, true);
-		c.addObserver(view);
-		c.addObserver(this);
-		c.addUndoableEditListener(this);
-
-		//this.undoableEditHappened(new UndoableEditEvent(canvas, c));
-		document.getPreferences().addObserver(view);
-		canvas.add(view);
-		view.setFont(document.getPreferences().getFont());
-		view.repaint();
-
-		canvas.repaint();
-	}
-
-	private void addNewLabel(Point p) {
-		mode = ListeningMode.LISTEN_TO_ALL;
-		TextLabelModel mod = new TextLabelModel(p);
-		
-		ExistenceEdit edit = new ExistenceEdit(mod, true, "New label created");
-		this.undoableEditHappened(new UndoableEditEvent(mod, edit));
-		
-		LabelView view = new LabelView(mod);
-		view.setFont(document.getPreferences().getFont());
-
-		mod.addObserver(view);
-		mod.addUndoableEditListener(this);
-		document.getPreferences().addObserver(view);
-		
-		document.addElement(mod);
-
-		canvas.add(view);
-		view.enableEdit();
-
-		canvas.repaint();
-	}
 	
-	public void addNewRelationship() {
-		selectionStack.removeAllElements();
-		status.setText("Click on the class you want the relationship to go from");
-		this.mode = ListeningMode.PLACING_RELATIONSHIP;
-	}
-	
-	private void addNewRelationship(ClassModel to, ClassModel from) {
-		
-		Relationship r = new Relationship(from, to);
-		
-		from.addRelationship(r);
-		from.addObserver(r);
-		to.addRelationship(r);
-		to.addObserver(r);
-			
-		ExistenceEdit edit = new ExistenceEdit(r, true, "New relationship created");
-		this.undoableEditHappened(new UndoableEditEvent(r, edit));
-		
-		RelationshipArrow arrow = new RelationshipArrow(r);
-		r.addObserver(arrow);
-		document.getPreferences().addObserver(arrow);
-		r.addUndoableEditListener(this);
-		document.addElement(r);
-		
-		canvas.add(arrow);
-		canvas.repaint();
-	}
-
-	private void openAboutWindow() {
-		JFrame aboutWindow = new JFrame("About " + PROGRAM_NAME);
-		aboutWindow.setSize(450, 250);
-		aboutWindow.setMaximumSize(new Dimension(450, 250));
-		aboutWindow.setLocationRelativeTo(window);
-		aboutWindow.setVisible(true);
-
-		aboutWindow.add(new JPanel() {
-			public void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.drawString(
-						"This program is being developed by Sam Sherar, Daniel Maly and Lee Smith.",
-						50, 150);
-				g.drawString(
-						"You are advised to stay well away from it until it is finished.",
-						50, 165);
-				g.setFont(new Font("Arial Black", Font.PLAIN, 50));
-				g.drawString("UML2JAVA", 50, 50);
-			}
-		});
-
-		aboutWindow.setSize(450, 250);
-	}
-
 	private void save() {
 		if (document.getPreferences().getFilename() == null) {
 			saveAs();
@@ -374,6 +327,83 @@ public class Manager extends UndoManager implements ActionListener,
 
 		}
 	}
+	
+	/*******************************************************************************************/
+	///////////////////////////////DOCUMENT MANIPULATION\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/*******************************************************************************************/
+
+	private void addNewClass(Point p) {
+		mode = ListeningMode.LISTEN_TO_ALL;
+		ClassModel c = new ClassModel(p);
+		document.addElement(c);
+		
+		ExistenceEdit edit = new ExistenceEdit(c, true, "New class created");
+		this.undoableEditHappened(new UndoableEditEvent(c, edit));
+
+		ClassRectangle view = new ClassRectangle(c, true);
+		c.addObserver(view);
+		c.addObserver(this);
+		c.addUndoableEditListener(this);
+
+		//this.undoableEditHappened(new UndoableEditEvent(canvas, c));
+		document.getPreferences().addObserver(view);
+		canvas.add(view);
+		view.setFont(document.getPreferences().getFont());
+		view.repaint();
+
+		canvas.repaint();
+	}
+
+	private void addNewLabel(Point p) {
+		mode = ListeningMode.LISTEN_TO_ALL;
+		TextLabelModel mod = new TextLabelModel(p);
+		
+		ExistenceEdit edit = new ExistenceEdit(mod, true, "New label created");
+		this.undoableEditHappened(new UndoableEditEvent(mod, edit));
+		
+		LabelView view = new LabelView(mod);
+		view.setFont(document.getPreferences().getFont());
+
+		mod.addObserver(view);
+		mod.addUndoableEditListener(this);
+		document.getPreferences().addObserver(view);
+		
+		document.addElement(mod);
+
+		canvas.add(view);
+		view.enableEdit();
+
+		canvas.repaint();
+	}
+	
+	public void addNewRelationship() {
+		selectionStack.removeAllElements();
+		status.setText("Click on the class you want the relationship to go from");
+		this.mode = ListeningMode.PLACING_RELATIONSHIP;
+	}
+	
+	private void addNewRelationship(ClassModel to, ClassModel from) {
+		
+		Relationship r = new Relationship(from, to);
+		
+		from.addRelationship(r);
+		from.addObserver(r);
+		to.addRelationship(r);
+		to.addObserver(r);
+			
+		ExistenceEdit edit = new ExistenceEdit(r, true, "New relationship created");
+		this.undoableEditHappened(new UndoableEditEvent(r, edit));
+		
+		RelationshipArrow arrow = new RelationshipArrow(r);
+		r.addObserver(arrow);
+		document.getPreferences().addObserver(arrow);
+		r.addUndoableEditListener(this);
+		document.addElement(r);
+		
+		canvas.add(arrow);
+		canvas.repaint();
+	}
+	
 
 	private void changeFont() {
 		Font font = new Font(toolBar.getFontName(), Font.PLAIN,
@@ -422,6 +452,36 @@ public class Manager extends UndoManager implements ActionListener,
 		canvas.setPreferredSize(new Dimension(maxX, maxY));
 		canvas.getParent().doLayout();
 	}
+	
+	
+	/**********************************************************************/
+	//////////////////////////MISCELLANEOUS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/**********************************************************************/
+	
+	private void openAboutWindow() {
+		JFrame aboutWindow = new JFrame("About " + PROGRAM_NAME);
+		aboutWindow.setSize(450, 250);
+		aboutWindow.setMaximumSize(new Dimension(450, 250));
+		aboutWindow.setLocationRelativeTo(window);
+		aboutWindow.setVisible(true);
+
+		aboutWindow.add(new JPanel() {
+			public void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				g.drawString(
+						"This program is being developed by Sam Sherar, Daniel Maly and Lee Smith.",
+						50, 150);
+				g.drawString(
+						"You are advised to stay well away from it until it is finished.",
+						50, 165);
+				g.setFont(new Font("Arial Black", Font.PLAIN, 50));
+				g.drawString("UML2JAVA", 50, 50);
+			}
+		});
+
+		aboutWindow.setSize(450, 250);
+	}
+
 
 	public void setWaitCursor(boolean value) {
 		if (value) {
@@ -454,65 +514,22 @@ public class Manager extends UndoManager implements ActionListener,
 			System.exit(0);
 		}
 	}
+
+	/***************************************************************************************/
+	//////////////////////////////UNWANTED METHODS\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/***************************************************************************************/
 	
 	@Override
-	public void undoableEditHappened(UndoableEditEvent e) {
-		if (e.getEdit().getPresentationName().length() > 0) 
-			status.setText(e.getEdit().getPresentationName());
-		if(e.getEdit() instanceof ExistenceEdit) {
-			this.mode = ListeningMode.LISTEN_TO_ALL;
-			this.selectionStack.removeAllElements();
-		}
-		
-		super.undoableEditHappened(e);
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mouseClicked(MouseEvent e) {	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {	}
+	public void mouseExited(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {	}
-
-	@Override
-	public void keyPressed(KeyEvent arg0) {	}
-
-	@Override
-	public void keyReleased(KeyEvent arg0) {	}
-
-	@Override
-	public void keyTyped(KeyEvent arg0) {	}
-
-	@Override
-	public void update(Observable o, Object s) {
-		if(!(s instanceof String)) {
-			throw new IllegalArgumentException("String expected");
-		}
-		else if(o instanceof ClassModel && s.equals("paintStateChanged") && ((ClassModel) o).getPaintState() == ElementPaintState.SELECTED) {
-			if(this.mode == ListeningMode.PLACING_RELATIONSHIP) {
-				if(selectionStack.size() == 1 && !((ClassModel)o).equals(selectionStack.peek())) {
-					this.mode = ListeningMode.LISTEN_TO_ALL;
-					this.addNewRelationship((ClassModel) o, (ClassModel) (selectionStack.pop()));
-				}
-				else if(selectionStack.size() == 0) {
-					selectionStack.push((ClassModel) o);
-					status.setText("Now click on the class you want the relationship to go to.");
-				}
-			}
-		}
-		else if (o instanceof ClassModel && s.equals("relationshipRequested")) {
-			selectionStack.removeAllElements();
-			selectionStack.push((ClassModel) o);
-			this.mode = ListeningMode.PLACING_RELATIONSHIP;
-			status.setText("Now click on the class you want the relationship to go to.");
-		}
-		
-	}
+	public void mouseReleased(MouseEvent e) {}
 	
 
 
