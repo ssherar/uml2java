@@ -52,9 +52,17 @@ public class ClassRectangle extends DocumentElementView {
 				LabelView l = m.getDataFields().get(i).getView();
 				m.getDataFields().get(i).addObserver(l);
 				m.getDataFields().get(i).addUndoableEditListener(this.model.getUndoableEditListener());
+				
 				this.add(l);
 				l.setFont(this.getFont());
+				
+				m.getDataFields().get(i).setStatic(m.getDataFields().get(i).isFlagStatic(), false);
+				m.getDataFields().get(i).setFinal(m.getDataFields().get(i).isFlagFinal(), false);
+				m.getDataFields().get(i).setTransient(m.getDataFields().get(i).isFlagTransient(), false);
+				
 				this.dataFieldViews.add(l);
+				
+				
 			}
 
 			for (int i = 0; m.getMethods() != null
@@ -64,6 +72,11 @@ public class ClassRectangle extends DocumentElementView {
 				m.getMethods().get(i).addUndoableEditListener(this.model.getUndoableEditListener());
 				l.setFont(this.getFont());
 				this.add(l);
+				
+				m.getDataFields().get(i).setStatic(m.getDataFields().get(i).isFlagStatic(), false);
+				m.getDataFields().get(i).setFinal(m.getDataFields().get(i).isFlagFinal(), false);
+				m.getDataFields().get(i).setAbstract(m.getDataFields().get(i).isFlagAbstract(), false);
+				
 				this.methodViews.add(l);
 			}
 
