@@ -49,7 +49,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	private StatusBar status;
 	private ToolBar toolBar;
 
+	/** The DocumentModel object currently loaded into the application. */
 	private DocumentModel document;
+	
+	/** If false, indicates that upon exiting, a dialog asking the user if he wants to save his changes should be brought up. */
+	private boolean justSaved = true;
 
 	/** A collection holding currently selected items. At present, only one element is ever contained here. */
 	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
@@ -163,6 +167,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	 *  that require the presence of an element that might now be non-existent.
 	 */ 
 	public void undoableEditHappened(UndoableEditEvent e) {
+		this.justSaved = false;
 		if (e.getEdit().getPresentationName().length() > 0) 
 			status.setText(e.getEdit().getPresentationName());
 		if(e.getEdit() instanceof ExistenceEdit) {
@@ -299,6 +304,8 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			out.close();
 			status.setText("Document saved successfully");
 			window.setTitle(fileName + " - " + PROGRAM_NAME);
+			this.justSaved = true;
+			
 		} catch (Exception e) {
 			status.setText("Could not write your document into the file. Sorry!");
 			e.printStackTrace();
@@ -542,7 +549,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	/** Exits the program. If any undoable events are present, brings up a dialog asking the user to save their work. */
 	public void exit() {
 
-		if ((this.canUndo() || this.canRedo()) && !this.inDebug) {
+		if (!justSaved && !this.inDebug) {
 			Object[] options = { "Save", "Don't Save", "Cancel" };
 			int n = JOptionPane
 					.showOptionDialog(window,"Would you like to save your changes? Any unsaved changes will be lost.",

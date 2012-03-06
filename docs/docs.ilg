@@ -1,6 +1,6 @@
-This is makeindex, version 2.15 [TeX Live 2009] (kpathsea + Thai support).
-Scanning input file docs.idx....done (16 entries accepted, 0 rejected).
-Sorting entries....done (63 comparisons).
-Generating output file docs.ind....done (35 lines written, 0 warnings).
+This is C:\Program Files (x86)\MiKTeX 2.9\miktex\bin\makeindex.EXE, version 2.15 [MiKTeX 2.9] (kpathsea + Thai support).
+Scanning input file docs.idx....done (24 entries accepted, 0 rejected).
+Sorting entries....done (120 comparisons).
+Generating output file docs.ind....done (43 lines written, 0 warnings).
 Output written in docs.ind.
 Transcript written in docs.ilg.

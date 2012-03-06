@@ -24,7 +24,8 @@
 \begin{center}\huge{UML2Java Graphical Designer}
 \end{center}
 
-\texttt{UML2Java} is a Graphic User Interface program that allows a user to create UML2 class diagrams. The program will then output the class files from the created class diagram including all relevant fields, methods and relationships to other classes. The UML designer was created as a requirement for our first year group project. 
+\texttt{UML2Java} is a Graphic User Interface program that allows a user to create UML2 class diagrams. The program will then output the class files from the created class diagram including all relevant fields, methods and relationships to
+other classes. The UML designer was created as a requirement for our first year group project.
 
 \newpage
 \tableofcontents 
@@ -32,14 +33,14 @@
 
 \section{File Menu} 
 
-\subsection{Create new Class Diagram} \index{File!Create new diagram}
+\subsection{Create new Class Diagram} \index{File!Create New diagram}
 To create a new Class Diagram, go to the top menu bar and press \texttt{File $\rightarrow$ New}
 \begin{figure}[H] \begin{center} 
-	\fbox{\includegraphics[trim = 0pt 200pt 0pt 0pt, clip, scale=1.2]{./images/file-new.png}}
-	\caption{Creating a new Diagram} \vspace{-20pt}
+\fbox{\includegraphics[trim = 0pt 200pt 0pt 0pt, clip, scale=1.2]{./images/file-new.png}}
+\caption{Creating a new Diagram} \vspace{-20pt}
 \end{center} \end{figure}
 
-\subsection{Open an existing diagram} \index{File!Open existing diagram}
+\subsection{Open an existing diagram} \index{File!Open Saved diagram}
 To open a previously saved diagram, go to the top menu bar and press \texttt{File $\rightarrow$ Open...} or simply press \texttt{CTRL+O}
 This will open up a new window asking for the location of the file you wish to open
 
@@ -51,7 +52,7 @@ This will open up a new window asking for the location of the file you wish to o
 \vspace{-20pt}
  \end{figure} \end{center}
 
-\subsection{Saving a diagram} \index{File!Save a Diagram}
+\subsection{Saving a diagram} \index{File!Saving}
 To save a diagram, go to the top menu bar and press \texttt{File $\rightarrow$ Save/Save as...} or simply press \texttt{CTRL+S}
 
 \begin{center} \begin{figure}[H]
@@ -61,7 +62,7 @@ To save a diagram, go to the top menu bar and press \texttt{File $\rightarrow$ S
 \caption{Saving a diagram} \vspace{-20pt} 
 \end{figure} \end{center}
 
-\subsection{Printing a Diagram} \index{File!Printing a diagram}
+\subsection{Printing a Diagram} \index{File!Printing}
 To print a created diagram, go to the top bar and press \texttt{File $\rightarrow$ Print} or simply press \texttt{CTRL+P} and select the desired printer from the open window
 
 \begin{figure}[H] \begin{center} 
@@ -103,12 +104,13 @@ If you require a different canvas size , you can do this from the top menu, pres
 
  \begin{figure}[H] \begin{center}
 \subfloat[Canvas $\rightarrow$ Resize...] {\label{fig:resizeOption}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/canvas-resize1.png}}\imagespace} 
-%\subfloat[Select resize options]{\label{fig:resizeSet}\fbox{\includegraphics[scale=1]{./images/canvas-resize2.png}}}
+\subfloat[Select resize options]{\label{fig:resizeSet}\fbox{\includegraphics[scale=1]{./images/canvas-resize2.png}}}
 \caption{Printing a diagram} \vspace{-20pt} 
 \end{center} \end{figure} 
 
 \subsection{Fitting to Diagram} \index{Canvas Settings!Fit to Diagram}
-The canvas menu option also allows you to resize the canvas to a state where all of the current contents of the diagram will be able to be seen with little white space around the resulting design, to achieve this press \texttt{Canvas $\rightarrow$ Fit to Diagram}
+The canvas menu option also allows you to resize the canvas to a state where all of the current contents of the diagram will be able to be seen with little white space around the resulting design, to achieve this press \texttt{Canvas
+$\rightarrow$ Fit to Diagram}
 \begin{figure}[H] \begin{center}
 
 \label{fig:fitDiagram}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/canvas-fit.png}}
@@ -118,7 +120,8 @@ The canvas menu option also allows you to resize the canvas to a state where all
 \newpage
 \section{Exporting}
 \subsection{Export to Code} \index{Exporting!Code}
-To create the code files of your created diagram, go to the top bar and select \texttt{Export $\rightarrow$ Code} this will generate the .java files of your created diagram, it will take into account any relationships you have created between classes, any variable declarations you have made, and methods you have created. Or you can go to the left menu bar and select \texttt{Export to Java} from the list there
+To create the code files of your created diagram, go to the top bar and select \texttt{Export $\rightarrow$ Code} this will generate the .java files of your created diagram, it will take into account any relationships you have created
+between classes, any variable declarations you have made, and methods you have created. Or you can go to the left menu bar and select \texttt{Export to Java} from the list there
 
 \begin{figure}[H] \begin{center}
 \subfloat[Export $\rightarrow$ Code] {\label{fig:exportcode}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.075]{./images/export-code1.png}}} \imagespace
@@ -132,11 +135,12 @@ You will then be asked to select a directory to save the code files to, you can 
 \end{figure}
 
 \subsection{Export Image of Diagram}\index{Exporting!Image}
-To create an image file of the class diagram you have created, go to \texttt{Export $\rightarrow$ Image} and an save box will appear, where you can select the location of where you wish to save the file and also the file type, either \texttt{.png} or \texttt{.jpg}
+To create an image file of the class diagram you have created, go to \texttt{Export $\rightarrow$ Image} and an save box will appear, where you can select the location of where you wish to save the file and also the file type, either
+\texttt{.png} or \texttt{.jpg}
 \begin{figure}[H]
 \begin{center}
-	\subfloat[Export $\rightarrow$ Image] {\label{fig:exportImage}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/export-image1.png}}} \imagespace
-	\subfloat[Choose Directory to save image] {\label{fig:exportImageLoc}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.5]{./images/export-image2.png}}}
+\subfloat[Export $\rightarrow$ Image] {\label{fig:exportImage}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.2]{./images/export-image1.png}}} \imagespace
+\subfloat[Choose Directory to save image] {\label{fig:exportImageLoc}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.5]{./images/export-image2.png}}}
 \caption{Export Diagram as Image}
 \end{center}
 \end{figure}
@@ -144,7 +148,7 @@ To create an image file of the class diagram you have created, go to \texttt{Exp
 \newpage
 
 \section{Adding Elements to the Class Diagram}
-\subsection{Adding a new class}\index{Adding to diagram!Add new Class}
+\subsection{Adding a new class}\index{Adding to diagram!Classes}
 To create a new class on the diagram, go to the left-hand menu and select \texttt{New Class}
 \begin{figure}[H]
 \begin{center}
@@ -166,7 +170,7 @@ You will recieve confirmation via the status bar at the bottom of the screen, gi
 \vspace{-10pt}
 \end{figure}
 \newpage
-\subsubsection{Adding Data fields to the new Class}
+\subsubsection{Adding Data fields to the new Class}\index{Adding to diagram!Data Fields/Variables}
 To add a new Data field to the Created Class, \texttt{Right Click} on the class, and select \texttt{Add data field}, the new data field will then be added to the diagram.
 \begin{figure}[H]
 \begin{center}
@@ -176,7 +180,7 @@ To add a new Data field to the Created Class, \texttt{Right Click} on the class,
 \end{center}
 \end{figure}
 
-\subsubsection{Adding Methods to the new Class}
+\subsubsection{Adding Methods to the new Class}\index{Adding to diagram!Methods}
 to add a new method to the class, \texttt{Right Click} on the class, and select \texttt{Add method}, the new method will then be added to the diagram
 
 \begin{figure}[H]
@@ -189,11 +193,31 @@ to add a new method to the class, \texttt{Right Click} on the class, and select 
 
 \newpage
 
-\subsection{Adding a new Relationship between classes}\index{Adding to diagram!Add new Relationship}
-To add a relationship between two classes, press \texttt{New Relationship} from the left-hand menu
+\subsection{Adding a new Relationship between classes}\index{Adding to diagram!Relationships}
+To add a relation\textbf{}ship between two classes, press \texttt{New Relationship} from the left-hand menu, or right click on a class to bring up a popup menu
+\begin{figure}[H]
+\begin{center}
+\subfloat[Press New Relationship] {\label{fig:addRelationship1}\fbox{\includegraphics[trim = 0pt 200pt 250pt 0pt, clip, scale=1.075]{./images/addRelationship1.png}}} \imagespace
+\subfloat[Right-Click $\rightarrow$ Add Relationship] {\label{fig:addRelationship2}\fbox{\includegraphics[trim = 60pt 120pt 140pt 80pt, clip, scale=1.075]{./images/addRelationship2.png}}}\\*
+\end{center}
+
+If you selected option a) then you will be required to press the inital class and the linking class. Option b) will automatically assume the class you used to \texttt{Add Relationship} is the inital class. The current state of
+what needs to be selected will be displayed in the status bar at the bottom of the window.
+\begin{center}
+
+\subfloat[1st Class] {\label{fig:addRelationship3}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.55]{./images/addRelationship3.png}}} \imagespace
+\subfloat[2nd Class] {\label{fig:addRelationship4}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.55]{./images/addRelationship4.png}}}\\*
+\end{center}
+A arrow will then be drawn linking the two classes\\*
+\begin{center}
+\subfloat[Relationship Drawn] {\label{fig:addRelationship5}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.8]{./images/addRelationship5.png}}}
+\caption{Adding a realtionship between classes}
+\end{center}
+\end{figure}
+
 
 \section{Editing}
-\subsection{Changing the Class Name}\index{Editing!Edit class Name}
+\subsection{Changing the Class Name}\index{Editing!Class Name}
 To change the class name of a class added to the diagram \emph{(see Adding new Class)} and Double-Click the class name, the text should highlight and you can then enter the new name, press return to confirm your new Class Name
 
 \begin{figure}[H]
@@ -204,8 +228,20 @@ To change the class name of a class added to the diagram \emph{(see Adding new C
 \end{center}
 \end{figure}
 
-\subsection{Editing a Data Field}\index{Editing!Edit data field}
-To change a data field in a class added to the diagram \emph{(see Adding new Class \& Adding data fields)} Double-Click the data field you wish to change, the text should highlight and you can then edit the data field, your edit \textbf{MUST} be in the format\\*
+\subsection{Moving a Class}\index{Editing!Moving the Classes}
+To move the classes simply click and hold onto a class and move it to the desired new location on the screen
+\begin{figure}[H]
+\begin{center}
+\subfloat[Click and Hold a class] {\label{fig:editMoveClass1}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.6]{./images/edit-moveClass1.png}}} \imagespace
+\subfloat[Release at desired location] {\label{fig:editMoveClass2}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.6]{./images/edit-moveClass2.png}}}
+\caption{Editing a data field in a class}
+\end{center}
+\end{figure}
+\newpage
+
+\subsection{Editing a Data Field}\index{Editing!Data Fields/Variables}
+To change a data field in a class added to the diagram \emph{(see Adding new Class \& Adding data fields)} Double-Click the data field you wish to change, the text should highlight and you can then edit the data field, your edit
+\textbf{MUST} be in the format\\*
 \tab \tab \textbf{(+,-,\#) dataFieldName : DataType}\\*
 or if initialised\\* 
 \tab \tab \textbf{(+,-,\#) dataFieldName : DataType = initialisation}\\*
@@ -218,10 +254,9 @@ Press Return $\hookleftarrow$ to confirm your new Class Name
 \end{center}
 \end{figure}
 
-\newpage
-
-\subsection{Editing a Method in a Class}\index{Editing!Edit Method}
-To change a method in a class added to the diagram \emph{(see Adding new Class \& Adding Methods)} Double-Click the method you wish to change, the text should highlight and you can then edit the method definition, you edit \emph{MUST} be in the format \\*
+\subsection{Editing a Method in a Class}\index{Editing!Methods}
+To change a method in a class added to the diagram \emph{(see Adding new Class \& Adding Methods)} Double-Click the method you wish to change, the text should highlight and you can then edit the method definition, you edit \emph{MUST} be in
+the format \\*
 \tab \tab \textbf{(+,-,\#) methodName() : Return Type}\\* 
 or if arguments are to be passed into the method\\* 
 \tab \tab \textbf{(+,-,\#) methodName(arg1 : Arg1Type, arg2 : Arg2Type...) : ReturnType}\\*
@@ -234,8 +269,66 @@ Press Return $\hookleftarrow$ to confirm your new Class Name
 \caption{Editing a method in a class}
 \end{center}
 \end{figure}
+\newpage
+\subsection{Editing a Relationship}\index{Editing!Relationships}
+
+\subsubsection{Editing the Relationship Type}\index{Editing!Relationships!Relationship Type}
+To change the type of relationship between 2 classes, \texttt{Right-Click} on the relationship arrow and hover over \texttt{Change Relationship} and a sub-menu should appear. From this menu you can change the type of relationship, these include: \texttt{Aggregation, Composition, Inheritance, Uses, and Implements}
+\vspace{-10pt}
+\begin{figure}[H]
+\begin{center}
+\subfloat[Changing Relationship Type] {\label{fig:changeRelationTyped}\fbox{\includegraphics[trim = 200pt 110pt 65pt 110pt, clip, scale=1.3]{./images/edit-relationshiptype1.png}}} \imagespace
+\subfloat[Relationship Types] {\label{fig:RelationTypes}\fbox{\includegraphics[scale=0.6]{./images/edit-relationshiptype2.png}}}
+\caption{Changing Relationship Types}
+\end{center}
+\end{figure}
+\vspace{-20pt}
+\subsubsection{Moving Relationship Points}\index{Editing!Relationships!Moving Relationship Points}
+You can edit how the relationships look, as by default they snap to the top-left of the class. Simply hover over the end point of a realtionship and green circles will appear over the ends, these will allow you to move the realtionship.
+\vspace{-5pt}
+\begin{figure}[H]
+\begin{center}
+\subfloat[Hover over relationship end] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.55]{./images/edit-relationshippoint1.png}}} \imagespace
+\subfloat[Move to new position] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.55]{./images/edit-relationshippoint2.png}}}
+\end{center}
+\vspace{-5pt}
+You can also add more points to a relationship, allowing them to change direction to move around other classes where necessary. To do this click and hold at a point on the line and drag to t a new location. This will create a new point that will have a green circle and allow you to move points on the line.
+\begin{center}
+\subfloat[Creating a new Point] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.55]{./images/edit-relationshippoint3.png}}} \imagespace
+\subfloat[The new line] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.55]{./images/edit-relationshippoint4.png}}}
+\vspace{-5pt}
+\caption{Moving Relationships and Editing points on the line}
+\end{center}
+\end{figure}\vspace{-30pt}
 
 \newpage
+
+\subsubsection{Adding a Label to a Relationship}\index{Editing!Relationships!Adding Label}
+To add a label to a relationship, \texttt{Right-Click} and select \texttt{Add/Edit Label}. This will allow you to add or edit the current label on the relationship. These are important, as when creating the code files these are used. You can not create labels on Inheritance and Implements relationships \\*
+\begin{figure}[H]
+\begin{center}
+\subfloat[Add/Edit Label] {\label{fig:changeRelationTyped}\fbox{\includegraphics[trim = 200pt 110pt 65pt 110pt, clip, scale=1.3]{./images/edit-relationshiplabeladd.png}}} \imagespace
+\subfloat[Editing the Label Name] {\label{fig:changeRelationTyped}\fbox{\includegraphics[trim = 200pt 110pt 65pt 110pt, clip, scale=1.3]{./images/edit-relationshiplabeledit.png}}}
+\caption{Adding labels to relationships}
+\end{center}
+\end{figure}
+
+\subsubsection{Adding Cardinalities to the Line}\index{Edit!Adding Cardinalities}
+You can add cardinalities to relationships. These include, Zero-to-Many, Many-to-Many and fixed cardinalities. To do this, Right-Click on the relationship and hover over Cardinalities, a sub-menu will appear with 2 options, \texttt{Cardinality From} and \texttt{Cardinality To}. Cardinality From will create the cardinality at the Arrow head side, and Cardinality To will create the open end cardinality. 
+
+\begin{figure}[H]
+\begin{center}
+\subfloat[Add Cardinalities] {\label{fig:changeRelationTyped}\fbox{\includegraphics[trim = 200pt 110pt 55pt 90pt, clip, scale=1.3]{./images/edit-addCardinality1.png}}} \imagespace
+\subfloat[Created Cardinality] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.6]{./images/edit-addCardinality2.png}}}
+\end{center}
+To edit the text, simply double click and this will allow you to edit the text. You will not be able to export the code if cardinalities contain erroneous data, such as words. must either be Whole Numbers or in the form \texttt{\textbf{(\#..\#, or \#..*)}}
+\begin{center}
+\caption{Adding Cardinalities to relationships}
+\end{center}
+\end{figure}
+
+\newpage
+
 \listoffigures
 \printindex
 \end{document}
