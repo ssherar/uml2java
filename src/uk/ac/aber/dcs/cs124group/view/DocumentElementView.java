@@ -7,7 +7,7 @@ import javax.swing.*;
 
 /**
  * The abstract class for all the views to inherit generic methods
- * to keep consistancy across the board
+ * to keep consistency across the board
  * 
  * @see javax.swing.JPanel
  * @see java.util.Observer
@@ -52,10 +52,11 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	}
 	
 	/**
-	 * Overloaded with a boolean to check if you want to override the
-	 * generic style from the canvas
-	 * @param font
-	 * @param overrideStyle
+	 * Set the font with a boolean <code>overrideStyle</code> which forces
+	 * the new font style onto the component.
+	 * 
+	 * @param font				The font to be set
+	 * @param overrideStyle 	<code>True</code> if you want to force the font, <code>false</code> otherwise.
 	 */
 	public void setFont(Font font, boolean overrideStyle) {
 		if(!overrideStyle && this.font != null) 
