@@ -41,17 +41,17 @@ public class Exporter {
 
 	private Manager manager;
 
-	private boolean errorCheck = false;
-
 	/**
 	 * Creates a <code>Exporter</code> instance with the specified DocumentModel
 	 * and Manager. This constructor is used to complete exporting the diagram
 	 * and creating the resulting code
 	 * 
 	 * @param model
-	 *            The current state of the {@link #DocumentModel()}
+	 *            The current state of the DocumentModel
 	 * @param manager
-	 *            The diagram {@link #Manager}
+	 *            The diagram Manager
+	 * @see uk.ac.aber.dcs.cs124group.model.DocumentModel DocumentModel
+	 * @see uk.ac.aber.dcs.cs124group.controller.Manager Manager
 	 */
 
 	public Exporter(DocumentModel model, Manager manager) {
@@ -135,6 +135,7 @@ public class Exporter {
 	 */
 
 	public void exportCode() throws IOException {
+
 		for (int i = 0; i < model.getElements().size(); i++) {
 			if (model.getElements().get(i).getClass() == (ClassModel.class)) {
 				outputFiles.add(createClassFileContents((ClassModel) model
@@ -178,300 +179,31 @@ public class Exporter {
 	 *         files that are to be created.
 	 */
 
-	private String createClassFileContents(ClassModel classModel) throws IOException {
+	private String createClassFileContents(ClassModel classModel)
+			throws IOException {
 		classModel.cleanUp();
+		ClassModel codeModel = classModel;
 
-		fileNames.add(classModel.getClassName() + ".java");
+		if (fileNames.contains(classModel.getClassName() + ".java")) {
+			throw new IOException("Export Error, Duplicate Class Names");
+		} else {
+			fileNames.add(classModel.getClassName() + ".java");
 
-		String contents = "";
-		switch (classModel.getVisibility()) {
-		case PUBLIC:
-			contents = "public ";
-			break;
-		case PRIVATE:
-			contents = "private ";
-			break;
-		case PROTECTED:
-			contents = "protected ";
-			break;
-		case PACKAGE:
-			contents = "package ";
-			break;
+			String contents = "";
+
+			contents = getHeaderString(codeModel);
+
+			// --------------------Attributes/Fields----------------------------
+			contents = contents + getAttributesString(codeModel);
+
+			// ----------------------Cardinalities------------------------
+			contents = contents + getCardinalitiesString(codeModel);
+
+			// ------------------------Methods---------------------------
+			contents = contents + getMethodsString(codeModel);
+
+			return contents;
 		}
-
-		if (classModel.isAbstract() && !classModel.isFinal()) {
-			contents = (contents + "abstract ");
-		}
-
-		if (classModel.isStatic()) {
-			contents = (contents + "static ");
-		}
-
-		contents = (contents + "class "); // can amend this to include interface
-		// and
-		// enums etc if we decide to implement them
-		contents = (contents + classModel.getClassName() + " ");
-
-		String eXtends = "";
-		String iMplements = "";
-
-		int implementsNum = 0;
-		for (int j = 0; j < classModel.getRelationships().size(); j++) {
-			if (classModel.getRelationships().get(j).getType() == RelationshipType.IMPLEMENTS) {
-				implementsNum++;
-
-			}
-		}
-
-		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
-			switch (classModel.getRelationships().get(l).getType()) {
-			case IMPLEMENTS:
-				if (classModel.getClassName() != classModel.getRelationships()
-				.get(l).getGoingFrom().getClassName()) {
-					iMplements = (iMplements + classModel.getRelationships()
-							.get(l).getGoingFrom().getClassName());
-				}
-				if (implementsNum > 1) {
-					iMplements = iMplements + ", ";
-					implementsNum--;
-				}
-
-				iMplements = (iMplements + ", " + classModel.getRelationships()
-						.get(l).getGoingFrom().getClassName());
-
-				break;
-
-			case INHERITANCE:
-				if (classModel.getClassName() != classModel.getRelationships()
-				.get(l).getGoingFrom().getClassName()) {
-					eXtends = (eXtends
-							+ classModel.getRelationships().get(l)
-							.getGoingFrom().getClassName() + " ");
-				}
-				break;
-			}
-		}
-
-		if (!eXtends.isEmpty()) {
-			contents = (contents + "extends " + eXtends);
-		}
-		if (!iMplements.isEmpty()) {
-			iMplements = iMplements.substring(2);
-			contents = (contents + "implements " + iMplements + " ");
-		}
-
-		contents = (contents + "{" + NL + NL);
-
-		// --------------------Attributes/Fields----------------------------
-		for (int variables = 0; variables <= classModel.getAttributes().size() - 1; variables++) {
-
-			boolean isAttributeFinal = false;
-
-			// Is it actually valid??
-			if(!classModel.getAttributes().get(variables).isValid()) continue;
-
-			if (classModel.getAttributes().get(variables).getType() == AttributeType.DATA_FIELD) {
-				switch (classModel.getAttributes().get(variables)
-						.getVisibility()) {
-						case PUBLIC:
-							contents = (contents + TB + "public ");
-							break;
-						case PRIVATE:
-							contents = (contents + TB + "private ");
-							break;
-						case PROTECTED:
-							contents = (contents + TB + "protected ");
-							break;
-				}
-
-				if (classModel.getAttributes().get(variables).isFlagStatic()) {
-					contents = (contents + "static ");
-				}
-
-				if (classModel.getAttributes().get(variables).isFlagFinal()) {
-					contents = (contents + "final ");
-					isAttributeFinal = true;
-				}
-
-				if (classModel.getAttributes().get(variables).isFlagTransient()) {
-					contents = (contents + "transistent ");
-				}
-
-				contents = (contents
-						+ classModel.getAttributes().get(variables)
-						.getAttributeType() + " ");
-
-				if (isAttributeFinal) {
-					contents = (contents
-							+ classModel.getAttributes().get(variables)
-							.getAttributeName().toUpperCase());
-				} else {
-					contents = (contents
-							+ classModel.getAttributes().get(variables)
-							.getAttributeName());
-				}
-				if (!(classModel.getAttributes().get(variables).getAttribDefault() == null)){
-					contents = contents + " = " + classModel.getAttributes().get(variables).getAttribDefault();
-				}
-				contents = contents + ";" + NL;
-				
-			}
-		}
-		contents = contents + NL;
-		// ----------------------Cardinalities------------------------
-
-
-		for (int cardinalities = 0; cardinalities < classModel
-				.getRelationships().size(); cardinalities++) {
-
-			String cardinalityFrom = classModel.getRelationships()
-					.get(cardinalities).getCardinalityFrom().getText();
-
-			String cardinalityTo = classModel.getRelationships()
-					.get(cardinalities).getCardinalityTo().getText();
-
-			String goingFrom = classModel.getRelationships().get(cardinalities)
-					.getGoingFrom().getClassName();
-
-			String goingTo = classModel.getRelationships().get(cardinalities)
-					.getGoingTo().getClassName();
-
-			String cardinalityLabel = classModel.getRelationships()
-					.get(cardinalities).getLabel().getText();
-
-			// ----------- Many to One -------------
-			if ((manyCardinality(cardinalityTo).equals("*") && !cardinalityTo.equals("1"))
-					&& goingTo != classModel.getClassName()) {
-				System.out.println("Check 1");
-				contents = contents + TB + "private ArrayList<" + goingTo
-						+ "> " + cardinalityLabel + "; " + NL;
-
-			} else if ((manyCardinality(cardinalityFrom).equals("*") && !cardinalityFrom.equals("1"))
-					&& goingFrom != classModel.getClassName()) {
-				System.out.println("Check 2");
-				contents = contents + TB + "private ArrayList<" + goingFrom
-						+ "> " + cardinalityLabel + "; " + NL;
-				// Fixed Size
-			} else if (isInteger(cardinalityTo)
-					&& goingTo != classModel.getClassName() && !cardinalityTo.equals("1")) {
-				System.out.println("Check 3");
-				contents = contents + TB + "private ArrayList<" + goingTo
-						+ "> " + cardinalityLabel + " = new ArrayList<"
-						+ goingTo + ">(" + cardinalityTo + ");" + NL;
-
-			} else if (isInteger(cardinalityFrom)
-					&& goingFrom != classModel.getClassName() && !cardinalityFrom.equals("1")) {
-				System.out.println("Check 4");
-				contents = contents + TB + "private ArrayList<" + goingFrom
-						+ "> " + cardinalityLabel + " = new ArrayList<"
-						+ goingFrom + ">(" + cardinalityFrom + ");" + NL;
-				//Erroneous Input
-
-			} else if (!cardinalityTo.equals("0..*")
-					&& !cardinalityTo.equals("1")
-					&& goingTo != classModel.getClassName()) {
-				System.out.println("Check 5");
-				String[] values = cardinalityTo.split("\\.\\.");
-
-				if (!isInteger(values[1].toString())) {
-					JOptionPane.showMessageDialog(null,
-							"Error, invalid cardinality.",
-							"Error in Cardinalities",
-							JOptionPane.WARNING_MESSAGE);
-					throw new IOException("Export failed");
-
-				} else {
-					contents = contents + TB + "private ArrayList<" + goingTo
-							+ "> " + cardinalityLabel + " = new ArrayList<"
-							+ goingTo + ">(" + values[1] + ");" + NL;
-				}
-
-			} else if (!cardinalityFrom.equals("0..*")
-					&& !cardinalityFrom.equals("1")
-					&& goingFrom != classModel.getClassName()) {
-				System.out.println("Check 6");
-				String[] values = cardinalityFrom.split("\\.\\.");
-
-				if (!isInteger(values[1].toString())) {
-					JOptionPane.showMessageDialog(null,
-							"Error, invalid cardinality.",
-							"Error in Cardinalities",
-							JOptionPane.WARNING_MESSAGE);
-					throw new IOException("Export failed");
-
-				} else {
-					contents = contents + TB + "private ArrayList<" + goingFrom
-							+ "> " + cardinalityLabel + " = new ArrayList<"
-							+ goingFrom + ">(" + values[1] + ");" + NL;
-				}
-
-			}
-			
-		}
-		contents = contents + NL;
-		// ------------------------Methods---------------------------
-		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
-
-			Attribute a = classModel.getAttributes().get(methods);
-
-			if(!a.isValid()) continue;
-			if (a.getType() == AttributeType.METHOD) {
-					switch (a.getVisibility()) {
-					case PUBLIC:
-						contents = (contents + TB + "public ");
-						break;
-					case PRIVATE:
-						contents = (contents + TB + "private ");
-						break;
-					case PROTECTED:
-						contents = (contents + TB + "protected ");
-						break;
-					}
-
-					boolean isMethodAbstract = false;
-					if (a.isFlagAbstract()) {
-						contents = (contents + "abstract");
-						isMethodAbstract = true;
-					}
-
-					if (a.isFlagStatic()) {
-						contents = (contents + "static ");
-					}
-
-					if (a.isFlagFinal()) {
-						contents = (contents + "final ");
-					}
-
-					if(!a.getReturnType().equals("init")) {
-						contents = (contents + a.getReturnType() + " ");
-					}
-
-					contents = (contents + a.getAttributeName() + "(");
-
-					int numOfArgs = a.getArgs().size();
-
-					for (int k = 0; k < numOfArgs; k++) {
-						if (!(k == 0)) {
-							contents = (contents + ", ");
-						}
-						contents = (contents + a.getArgs().get(k));
-
-					}
-					contents = (contents + ")");
-					if (isMethodAbstract) {
-						contents = (contents + ";");
-					} else {
-
-						contents = (contents + " {" + NL + NL + TB + "}" + NL + NL);
-					}
-
-				}
-
-			}
-		
-		contents = (contents + "}");
-		return contents;
-
 	}
 
 	private boolean isInteger(String s) {
@@ -492,5 +224,318 @@ public class Exporter {
 			return s;
 		}
 
+	}
+
+	private String getHeaderString(ClassModel classModel) {
+		String header = "";
+
+		switch (classModel.getVisibility()) {
+		case PUBLIC:
+			header = "public ";
+			break;
+		case PRIVATE:
+			header = "private ";
+			break;
+		case PROTECTED:
+			header = "protected ";
+			break;
+		case PACKAGE:
+			header = "package ";
+			break;
+		}
+
+		if (classModel.isAbstract() && !classModel.isFinal()) {
+			header = (header + "abstract ");
+		}
+
+		if (classModel.isStatic()) {
+			header = (header + "static ");
+		}
+
+		header = (header + "class "); // can amend this to include interface
+		// and
+		// enums etc if we decide to implement them
+		header = (header + classModel.getClassName() + " ");
+
+		String eXtends = "";
+		String iMplements = "";
+
+		int implementsNum = 0;
+		for (int j = 0; j < classModel.getRelationships().size(); j++) {
+			if (classModel.getRelationships().get(j).getType() == RelationshipType.IMPLEMENTS) {
+				implementsNum++;
+
+			}
+		}
+
+		for (int l = 0; l <= classModel.getRelationships().size() - 1; l++) {
+			switch (classModel.getRelationships().get(l).getType()) {
+			case IMPLEMENTS:
+				if (classModel.getClassName() != classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName()) {
+					iMplements = (iMplements + classModel.getRelationships()
+							.get(l).getGoingFrom().getClassName());
+				}
+				if (implementsNum > 1) {
+					iMplements = iMplements + ", ";
+					implementsNum--;
+				}
+
+				iMplements = (iMplements + ", " + classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName());
+
+				break;
+
+			case INHERITANCE:
+				if (classModel.getClassName() != classModel.getRelationships()
+						.get(l).getGoingFrom().getClassName()) {
+					eXtends = (eXtends
+							+ classModel.getRelationships().get(l)
+									.getGoingFrom().getClassName() + " ");
+				}
+				break;
+			}
+		}
+
+		if (!eXtends.isEmpty()) {
+			header = (header + "extends " + eXtends);
+		}
+		if (!iMplements.isEmpty()) {
+			iMplements = iMplements.substring(2);
+			header = (header + "implements " + iMplements + " ");
+		}
+
+		header = (header + "{" + NL + NL);
+		return header;
+	}
+
+	private String getAttributesString(ClassModel classModel) {
+		String attribute = "";
+		for (int variables = 0; variables <= classModel.getAttributes().size() - 1; variables++) {
+
+			boolean isAttributeFinal = false;
+
+			// Is it actually valid??
+			if (!classModel.getAttributes().get(variables).isValid())
+				continue;
+
+			if (classModel.getAttributes().get(variables).getType() == AttributeType.DATA_FIELD) {
+				switch (classModel.getAttributes().get(variables)
+						.getVisibility()) {
+				case PUBLIC:
+					attribute = (attribute + TB + "public ");
+					break;
+				case PRIVATE:
+					attribute = (attribute + TB + "private ");
+					break;
+				case PROTECTED:
+					attribute = (attribute + TB + "protected ");
+					break;
+				}
+
+				if (classModel.getAttributes().get(variables).isFlagStatic()) {
+					attribute = (attribute + "static ");
+				}
+
+				if (classModel.getAttributes().get(variables).isFlagFinal()) {
+					attribute = (attribute + "final ");
+					isAttributeFinal = true;
+				}
+
+				if (classModel.getAttributes().get(variables).isFlagTransient()) {
+					attribute = (attribute + "transistent ");
+				}
+
+				attribute = (attribute
+						+ classModel.getAttributes().get(variables)
+								.getAttributeType() + " ");
+
+				if (isAttributeFinal) {
+					attribute = (attribute + classModel.getAttributes()
+							.get(variables).getAttributeName().toUpperCase());
+				} else {
+					attribute = (attribute + classModel.getAttributes()
+							.get(variables).getAttributeName());
+				}
+				if (!(classModel.getAttributes().get(variables)
+						.getAttribDefault() == null)) {
+					attribute = attribute
+							+ " = "
+							+ classModel.getAttributes().get(variables)
+									.getAttribDefault();
+				}
+				attribute = attribute + ";" + NL;
+			}
+		}
+		attribute = attribute + NL;
+		return attribute;
+	}
+
+	private String getCardinalitiesString(ClassModel classModel)
+			throws IOException {
+		String cardialitiesString = "";
+
+		for (int cardinalities = 0; cardinalities < classModel
+				.getRelationships().size(); cardinalities++) {
+
+			String cardinalityFrom = classModel.getRelationships()
+					.get(cardinalities).getCardinalityFrom().getText();
+
+			String cardinalityTo = classModel.getRelationships()
+					.get(cardinalities).getCardinalityTo().getText();
+
+			String goingFrom = classModel.getRelationships().get(cardinalities)
+					.getGoingFrom().getClassName();
+
+			String goingTo = classModel.getRelationships().get(cardinalities)
+					.getGoingTo().getClassName();
+
+			String cardinalityLabel = classModel.getRelationships()
+					.get(cardinalities).getLabel().getText();
+
+			// ----------- Many to One -------------
+			if ((manyCardinality(cardinalityTo).equals("*") && !cardinalityTo
+					.equals("1")) && goingTo != classModel.getClassName()) {
+				System.out.println("Check 1");
+				cardialitiesString = cardialitiesString + TB
+						+ "private ArrayList<" + goingTo + "> "
+						+ cardinalityLabel + "; " + NL;
+
+			} else if ((manyCardinality(cardinalityFrom).equals("*") && !cardinalityFrom
+					.equals("1")) && goingFrom != classModel.getClassName()) {
+				System.out.println("Check 2");
+				cardialitiesString = cardialitiesString + TB
+						+ "private ArrayList<" + goingFrom + "> "
+						+ cardinalityLabel + "; " + NL;
+				// Fixed Size
+			} else if (isInteger(cardinalityTo)
+					&& goingTo != classModel.getClassName()
+					&& !cardinalityTo.equals("1")) {
+				System.out.println("Check 3");
+				cardialitiesString = cardialitiesString + TB
+						+ "private ArrayList<" + goingTo + "> "
+						+ cardinalityLabel + " = new ArrayList<" + goingTo
+						+ ">(" + cardinalityTo + ");" + NL;
+
+			} else if (isInteger(cardinalityFrom)
+					&& goingFrom != classModel.getClassName()
+					&& !cardinalityFrom.equals("1")) {
+				System.out.println("Check 4");
+				cardialitiesString = cardialitiesString + TB
+						+ "private ArrayList<" + goingFrom + "> "
+						+ cardinalityLabel + " = new ArrayList<" + goingFrom
+						+ ">(" + cardinalityFrom + ");" + NL;
+				// Erroneous Input
+
+			} else if (!cardinalityTo.equals("0..*")
+					&& !cardinalityTo.equals("1")
+					&& goingTo != classModel.getClassName()) {
+				System.out.println("Check 5");
+				String[] values = cardinalityTo.split("\\.\\.");
+
+				if (!isInteger(values[1].toString())) {
+					JOptionPane.showMessageDialog(null,
+							"Error, invalid cardinality.",
+							"Error in Cardinalities",
+							JOptionPane.WARNING_MESSAGE);
+					throw new IOException("Export failed");
+
+				} else {
+					cardialitiesString = cardialitiesString + TB
+							+ "private ArrayList<" + goingTo + "> "
+							+ cardinalityLabel + " = new ArrayList<" + goingTo
+							+ ">(" + values[1] + ");" + NL;
+				}
+
+			} else if (!cardinalityFrom.equals("0..*")
+					&& !cardinalityFrom.equals("1")
+					&& goingFrom != classModel.getClassName()) {
+				System.out.println("Check 6");
+				String[] values = cardinalityFrom.split("\\.\\.");
+
+				if (!isInteger(values[1].toString())) {
+					JOptionPane.showMessageDialog(null,
+							"Error, invalid cardinality.",
+							"Error in Cardinalities",
+							JOptionPane.WARNING_MESSAGE);
+					throw new IOException("Export failed");
+
+				} else {
+					cardialitiesString = cardialitiesString + TB
+							+ "private ArrayList<" + goingFrom + "> "
+							+ cardinalityLabel + " = new ArrayList<"
+							+ goingFrom + ">(" + values[1] + ");" + NL;
+				}
+			}
+		}
+
+		cardialitiesString = cardialitiesString + NL;
+		return cardialitiesString;
+	}
+
+	private String getMethodsString(ClassModel classModel) {
+		String methodString = "";
+
+		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
+
+			Attribute a = classModel.getAttributes().get(methods);
+
+			if (!a.isValid())
+				continue;
+			if (a.getType() == AttributeType.METHOD) {
+				switch (a.getVisibility()) {
+				case PUBLIC:
+					methodString = (methodString + TB + "public ");
+					break;
+				case PRIVATE:
+					methodString = (methodString + TB + "private ");
+					break;
+				case PROTECTED:
+					methodString = (methodString + TB + "protected ");
+					break;
+				}
+
+				boolean isMethodAbstract = false;
+				if (a.isFlagAbstract()) {
+					methodString = (methodString + "abstract");
+					isMethodAbstract = true;
+				}
+
+				if (a.isFlagStatic()) {
+					methodString = (methodString + "static ");
+				}
+
+				if (a.isFlagFinal()) {
+					methodString = (methodString + "final ");
+				}
+
+				if (!a.getReturnType().equals("init")) {
+					methodString = (methodString + a.getReturnType() + " ");
+				}
+
+				methodString = (methodString + a.getAttributeName() + "(");
+
+				int numOfArgs = a.getArgs().size();
+
+				for (int k = 0; k < numOfArgs; k++) {
+					if (!(k == 0)) {
+						methodString = (methodString + ", ");
+					}
+					methodString = (methodString + a.getArgs().get(k));
+
+				}
+				methodString = (methodString + ")");
+				if (isMethodAbstract) {
+					methodString = (methodString + ";");
+				} else {
+
+					methodString = (methodString + " {" + NL + NL + TB + "}"
+							+ NL + NL);
+				}
+			}
+		}
+
+		methodString = (methodString + "}");
+		return methodString;
 	}
 }
