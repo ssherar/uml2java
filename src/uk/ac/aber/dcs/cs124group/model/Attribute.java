@@ -142,12 +142,16 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		args.add(argType + " " + argName);
 	}
 	
-	@Override
+	
 	/**
 	 * Set the text and reset the variables to validate the new representation
+	 * 
+	 * @see uk.ac.aber.dcs.cs124group.model.TextLabelModel#setText() TextLabelModel.setText()
+	 * 
 	 * @param text		The UML representation
 	 * @param undoable	a boolean to check if you want to fire an undoable event
 	 */
+	@Override
 	public void setText(String text, boolean undoable) {
 		valid = true;
 		super.setText(text, undoable);
@@ -278,14 +282,27 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		else this.visibility = IVisibility.PACKAGE;
 	}
 	
+	/**
+	 * Using the regex created in the functions CheckArguments(), checkMethods()
+	 * and checkAttributes() we can take out values from the representation and check if
+	 * the code keeps to the a strict validation
+	 * 
+	 */
 	private void initializeFields() {
 		String uml = this.representation;
 		Matcher m;
 		
+		/*
+		 * Need to distinguish between DataFields and Methods, as we handle both here
+		 * REMEMBER: Wash your hands before handling raw data!
+		 */
 		if(this.type == AttributeType.DATA_FIELD) {
 			m = this.checkAttribute(uml);
 			if(m.find() && m.groupCount() > 0) {
 				// Attribute has 3 main variables and 4th is optional
+				/*
+				 * Check if we do conform to UML and not some silly stuff!
+				 */
 				if(m.groupCount() < 3) {
 					this.valid = false;
 					return;
@@ -299,7 +316,9 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			}
 		} else if(this.type == AttributeType.METHOD) {
 			m = this.checkMethodShell(uml);
-			
+			/*
+			 * Check if we do conform to UML and not some silly stuff!
+			 */
 			if(m.groupCount() > 3) {
 				this.valid = false;
 				return;
@@ -314,7 +333,10 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 						this.addArgsElement(args.group(3),args.group(1));
 					}
 				}
-				
+				/*
+				 * As my lovely regex hates return types, here is some
+				 * lovely code which does pretty much the same!
+				 */
 				String tmp = uml.substring(uml.lastIndexOf(")"));
 				if(tmp.lastIndexOf(":") > 0) {
 					this.returnType = uml.substring(uml.lastIndexOf(":") + 2, uml.length());
@@ -325,8 +347,11 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		}
 	}
 	
+	/**
+	 * To check if it's a constructor or if it's an imposter
+	 * @param className		Classname to take the first character of.
+	 */
 	private void checkConstructor(String className) {
-		System.out.println("HelloWorld");
 		char c = className.charAt(0);
 		if(Character.isUpperCase(c)) {
 			this.returnType = "init";
@@ -418,5 +443,9 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	
 	public boolean isValid() {
 		return this.valid;
+	}
+	
+	public String getAttribDefault() {
+		return this.attribDefault;
 	}
 }
