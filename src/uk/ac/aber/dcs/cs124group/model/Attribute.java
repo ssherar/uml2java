@@ -20,7 +20,7 @@ import uk.ac.aber.dcs.cs124group.undo.FlagEdit;
 public class Attribute extends TextLabelModel implements java.io.Serializable {
 	
 	/**
-	 * Serialisable ID for saving
+	 * Serializable ID for saving
 	 */
 	private static final long serialVersionUID = -2402890557766473597L;
 	
