@@ -4,7 +4,14 @@ import java.awt.event.*;
 
 /**
  * An adapter for controllers of elements on the canvas.
- * @author Daniel Maly, Sam Sherar, Lee Smith
+ * @see ClassController
+ * @see LabelController
+ * @see RelationshipController
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
  */
 public class DiagramListener implements KeyListener, MouseMotionListener, MouseListener {
 	

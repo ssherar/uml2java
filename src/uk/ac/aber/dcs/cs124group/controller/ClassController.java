@@ -8,6 +8,9 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 /**
  * An all-purpose listener controlling class models. Is added as a listener to ClassRectangles.
+ * @see uk.ac.aber.dcs.cs124group.model.ClassModel ClassModel
+ * @see uk.ac.aber.dcs.cs124group.view.ClassRectangle ClassRectangle
+ * 
  * @author Daniel Maly
  * @author Sam Sherar
  * @author Lee Smith

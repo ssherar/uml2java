@@ -28,6 +28,10 @@ import uk.ac.aber.dcs.cs124group.gui.*;
  * This class also acts as the application undo manager - it is added to each and every document element
  * as an UndoableEditListener to which undoable edits are being sent.
  * 
+ * @see javax.swing.UndoManager
+ * @see uk.ac.aber.dcs.cs124group.model.DocumentElementModel#addUndoableEditListener(UndoableEditListener) DocumentElementmodel.addUndoableEditListener()
+ * @see uk.ac.aber.dcs.cs124group.model.DocumentElementModel#fireUndoableEvent(UndoableEdit) DocumentElementModel.fireUndoableEvent(UndoableEdit e)
+ * 
  * @author Daniel Maly
  * @author Sam Sherar
  * @author Lee Smith
@@ -254,7 +258,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	/**
 	 * If the document has been changed since the last save, brings up a "do you want to save?" dialog.
 	 * Then, empties the UndoableEdit stack, removes all components from the canvas, discards 
-	 * the current DocumentModel in favor of a new one, resets font and canvas size
+	 * the current DocumentModel in favour of a new one, resets font and canvas size
 	 * and notifies the user that a new document has been opened. 
 	 */
 	private void openNewDocument() {
