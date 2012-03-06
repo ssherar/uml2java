@@ -70,7 +70,7 @@ public class Canvas extends JPanel {
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
-		//g.scale(zoomFactor, zoomFactor);
+
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
@@ -78,12 +78,8 @@ public class Canvas extends JPanel {
 				RenderingHints.KEY_ANTIALIASING, 
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(
-				RenderingHints.KEY_FRACTIONALMETRICS,
-				RenderingHints.VALUE_FRACTIONALMETRICS_ON);
-		g.setRenderingHint(
 				RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);
-				
+				RenderingHints.VALUE_RENDER_QUALITY);		
 
 	}
 			

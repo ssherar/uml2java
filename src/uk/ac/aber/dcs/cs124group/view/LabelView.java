@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs124group.view;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.Map;
 import java.util.Observable;
 
@@ -153,6 +154,7 @@ public class LabelView extends DocumentElementView {
 		labelTextArea.setLineWrap(true);
 		labelTextArea.setWrapStyleWord(true);
 		labelTextArea.repaint();
+		
 		
 		labelTextArea.setText(this.getText());
 		labelTextArea.addKeyListener(this.getKeyListeners()[0]);
