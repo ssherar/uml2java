@@ -10,8 +10,9 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 
 	private static final long serialVersionUID = -2402890557766473597L;
 	private final String REGEX_ATTRIB = "^([+#-]) ([a-z][a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
-	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-zA-Z]*)\\((.*)\\)(( \\: [a-zA-Z]*)?)$";
-	private final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([A-Za-z0-9]*)";
+	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-zA-Z]*)\\((.*)\\)";
+	private final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([a-zA-Z0-9]*)";
+	private final String REGEX_RETURN_TYPE = "(( \\: [a-zA-Z]*)?)";
 	
 	private IVisibility visibility;
 	private AttributeType type;
@@ -59,6 +60,11 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		Pattern p = Pattern.compile(REGEX_METHOD_SHELL);
 		Matcher m = p.matcher(var);
 		return m;
+	}
+	
+	private Matcher checkReturnType(String var) {
+		Pattern p = Pattern.compile(REGEX_RETURN_TYPE);
+		return p.matcher(var);
 	}
 	
 	/** Block of Get/Set */
@@ -157,7 +163,9 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			}
 		} else if(this.type == AttributeType.METHOD) {
 			m = this.checkMethodShell(uml);
+			
 			if(m.groupCount() > 3) {
+				System.out.println(m.groupCount());
 				this.valid = false;
 				return;
 			}
@@ -165,13 +173,25 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				if(m.group(3) != null) {
-					
+					for(int i = 0; i < m.groupCount(); i++) {
+						System.out.println(m.group(i));
+					}
 					Matcher args = this.checkArguements(m.group(3));
 					while(args.find()) {
 						this.addArgsElement(args.group(3),args.group(1));
+						for(int i = 0; i <= args.groupCount(); i++) {
+							System.out.println(i + " " +args.group(i));
+						}
 					}
 				}
-				this.returnType = m.group(4).substring(3);
+				/*if(m.groupCount() == 5)
+					this.returnType = m.group(4).substring(3);*/
+				/*Matcher ret = this.checkReturnType(uml);
+				if(ret.find() && m.groupCount() > 0) {
+					System.out.println("ReturnType hit: " + ret.group(0));
+					//this.returnType = ret.group(0).substring(3);
+				}*/
+				
 			}
 		}
 	}
