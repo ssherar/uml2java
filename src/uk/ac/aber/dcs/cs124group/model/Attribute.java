@@ -9,10 +9,18 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 
 
 	private static final long serialVersionUID = -2402890557766473597L;
-	private final String REGEX_ATTRIB = "^([+#-]) ([a-z][a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
-	private final String REGEX_METHOD_SHELL = "^([+#-]) ([a-zA-Z]*)\\((.*)\\)";
-	private final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([a-zA-Z0-9]*)";
-	private final String REGEX_RETURN_TYPE = "(( \\: [a-zA-Z]*)?)";
+	private static final String REGEX_ATTRIB = "^([+#-]) ([a-z][a-zA-Z]*) \\: ([A-Za-z]*)( [=] [a-zA-Z0-9]{1,9})?$";
+	private static final String REGEX_METHOD_SHELL = "^([+#-]) ([a-zA-Z]*)\\((.*)\\)";
+	private static final String REGEX_METHOD_ARGS = "([a-z][a-zA-Z]*(\\[\\])?) \\: ([a-zA-Z0-9]*)";
+	//private final String REGEX_RETURN_TYPE = "(( \\: [a-zA-Z]*)?)";
+	
+	//Fancy pants sort of stuff!
+	// ...mainly because we are lazy people!
+	static {
+		REGEX_ATTRIB.replace(" ", "\\s*");
+		REGEX_METHOD_SHELL.replace(" ", "\\s*");
+		REGEX_METHOD_ARGS.replace(" ", "\\s*");
+	}
 	
 	private IVisibility visibility;
 	private AttributeType type;
@@ -36,6 +44,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		this.type = type;
 		initializeFields();		
 		this.setText(representation, false);
+		//clean up whitespace
 	}
 	
 	public void addArgsElement(String argType, String argName){
@@ -62,10 +71,10 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		return m;
 	}
 	
-	private Matcher checkReturnType(String var) {
+	/*private Matcher checkReturnType(String var) {
 		Pattern p = Pattern.compile(REGEX_RETURN_TYPE);
 		return p.matcher(var);
-	}
+	}*/
 	
 	/** Block of Get/Set */
 	
@@ -182,15 +191,15 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 				String tmp = uml.substring(uml.lastIndexOf(")"));
 				if(tmp.lastIndexOf(":") > 0) {
 					this.returnType = uml.substring(uml.lastIndexOf(":") + 2, uml.length());
+				} else
 					this.checkConstructor(m.group(2));
-				}
-				
 				
 			}
 		}
 	}
 	
 	private void checkConstructor(String className) {
+		System.out.println("HelloWorld");
 		char c = className.charAt(0);
 		if(Character.isUpperCase(c)) {
 			this.returnType = "init";
