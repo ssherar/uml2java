@@ -11,19 +11,59 @@ import javax.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.LabelController;
 import uk.ac.aber.dcs.cs124group.model.*;
-
+/**
+ * This Class handles the general methods of the textareas
+ * on the class diagrams, including editing, removing and updating
+ * the label.
+ * 
+ * @author Daniel Maly
+ * @author Samuel B Sherar
+ * @author Lee Smith
+ * @version v.1.0.0
+ */
 public class LabelView extends DocumentElementView {
-
+	/**
+	 * The constant from the {@link java.uo.Serailizable} interface so we can 
+	 * save attributes
+	 */
 	private static final long serialVersionUID = -7388262736446472023L;
+	
+	/**
+	 * The value of the label to show/edit
+	 */
 	private String text;
+	
+	/**
+	 * A Class to manipulate the fonts.
+	 */
 	private FontMetrics metrics;
+	
+	/**
+	 * A dummy TextArea to replace the Label for editing
+	 */
 	private JTextArea replacement;
+	
+	/**
+	 * A reference to the model class for data manipulation
+	 */
 	private TextLabelModel model;
 	
+	/**
+	 * To initialise variables with default values and grab data from
+	 * the Model class
+	 * @see TextLabelModel
+	 * @param m		
+	 */
 	public LabelView(TextLabelModel m) {
-
+		/*
+		 * Initialise the global variables
+		 */
 		this.model = m;
 		this.text = m.getText();
+		
+		/*
+		 * ... and manipulate the textarea according to the model
+		 */
 		this.setLocation(m.getLocation());
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension(56,12));
@@ -33,10 +73,17 @@ public class LabelView extends DocumentElementView {
 		this.resizeToText();
 		this.setLayout(null);
 		
+		/*
+		 * Add all the various listeners for the functionality of moving
+		 * and right clicking.
+		 */
 		LabelController listener = new LabelController(this.model);
 		this.addMouseListener(listener);
 		this.addMouseMotionListener(listener);
 		this.addKeyListener(listener);
+		/*
+		 * Only attributes need a rightclick method for modifying
+		 */
 		if(this.model instanceof Attribute) {
 			if(((Attribute) this.model).getType() == AttributeType.DATA_FIELD)
 				this.setComponentPopupMenu(new AttributePopup(listener, true));
@@ -46,42 +93,82 @@ public class LabelView extends DocumentElementView {
 
 	}
 	
+	/**
+	 * Brings back the model which is associated with this
+	 * Label
+	 * @return		The TextLabelModel
+	 */
 	public TextLabelModel getModel() {
 		return this.model;
 	}
 	
+	/**
+	 * Draws the string to the component with scaling
+	 * and font styles through FontMetrics
+	 * @see FontMetrics
+	 * @see DocumentElementView#setFont(font)
+	 * @param g		Graphics of the JPanel for drawing
+	 */
 	public void paintComponent(Graphics d) {
 		super.paintComponent(d);
 		Graphics2D g = (Graphics2D) d;
+		// Deprecated
 		g.scale(this.getZoomFactor(), this.getZoomFactor());
 		g.setFont(getFont());
 		metrics = g.getFontMetrics();
 		
 		int textX = 0;
+		//Deprecated 
 		double scaleY = this.getZoomFactor() < 1 ? 2 : 2 * this.getZoomFactor();
 		int textY = (int) ((this.getPreferredSize().height + metrics.getAscent()) / scaleY);
 		g.drawString(text, textX, textY);
 	}
 	
+	/**
+	 * Aligns the Label in the parent according to the constants in
+	 * JTextField
+	 * @see JTextField#LEFT
+	 * @see JTextField#CENTER
+	 * @see JTextField#RIGHT
+	 * 
+	 * @param alignment		Set through JTextField.LEFT, .CENTER or .RIGHT
+	 */
 	public void setAlignmentInParent(int alignment) {
 		this.model.setAlignmentInParent(alignment);
 	}
 	
+	/**
+	 * Manual realignment according to {@link LabelView#setAlignmentInParent(alignment) setAlignmentInParent(alignment)}
+	 * @see LabelView#setAlignmentInParent(alignment) 
+	 */
 	public void realign() {
 		if(model.getAlignmentInParent() == JTextField.CENTER) {
 			model.setLocation(new Point((getParent().getPreferredSize().width - getPreferredSize().width) / 2, model.getLocation().y), false);
 		}
 	}
-
+	
+	/**
+	 * Set the text and resize the Model to the new length
+	 * @param text		The new text of the label
+	 */
 	private void setText(String text) {
 		this.text = text;
 		resizeToText();		
 	}
 	
+	/**
+	 * Returns the text held in the label (which is also in the model)
+	 * @return
+	 */
 	public String getText() {
 		return this.text;
 	}
 	
+	/**
+	 * Set the font of the label, and resizes if both
+	 * Graphics and FontMetrics are available
+	 * @param f		The new font to apply
+	 */
 	@Override
 	public void setFont(Font f) {
 		super.setFont(f);
@@ -90,14 +177,24 @@ public class LabelView extends DocumentElementView {
 		}
 	}
 	
+	/**
+	 * Set the zoom factor of the label and resize to the new height
+	 * and width of the label
+	 * @deprecated v0.9
+	 */
 	@Override
 	public void setZoomFactor(double zoom) {
 		super.setZoomFactor(zoom);
 		resizeToText();
 	}
 	
+	/**
+	 * 
+	 */
 	private void resizeToText() {
-		
+		/*
+		 * Try resizing
+		 */
 		try {
 			metrics = getGraphics().getFontMetrics();
 			int width = metrics.stringWidth(text);
@@ -109,7 +206,9 @@ public class LabelView extends DocumentElementView {
 			realign();
 		}
 		catch(NullPointerException ex) {
-		
+			/*
+			 * If it throws an error, do it at the end of the thread
+			 */
 			SwingUtilities.invokeLater(new Runnable() {
 			
 				@Override
@@ -118,6 +217,10 @@ public class LabelView extends DocumentElementView {
 						metrics = getGraphics().getFontMetrics();
 					}
 					catch(NullPointerException ex) {
+						/*
+						 * And we give up if we can't do it at the end of the
+						 * thread
+						 */
 						return;
 					}
 					int width = metrics.stringWidth(text);
@@ -134,7 +237,9 @@ public class LabelView extends DocumentElementView {
 		}
 
 	}
-	
+	/**
+	 * 
+	 */
 	public void enableEdit() {
 		this.suspendedParent = this.getParent();
 		this.getParent().remove(this);

@@ -43,7 +43,7 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	}
 	
 	/**
-	 * Set the font with no overridden style
+	 * Set the font with no overridding style
 	 * @param font		the font of type {@link java.awt.Font}
 	 */
 	@Override
