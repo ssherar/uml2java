@@ -171,6 +171,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			if(m.find() && m.groupCount() > 0) {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
+				
 				if(m.group(3) != null) {
 					Matcher args = this.checkArguements(m.group(3));
 					while(args.find()) {
@@ -181,9 +182,18 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 				String tmp = uml.substring(uml.lastIndexOf(")"));
 				if(tmp.lastIndexOf(":") > 0) {
 					this.returnType = uml.substring(uml.lastIndexOf(":") + 2, uml.length());
+					this.checkConstructor(m.group(2));
 				}
 				
+				
 			}
+		}
+	}
+	
+	private void checkConstructor(String className) {
+		char c = className.charAt(0);
+		if(Character.isUpperCase(c)) {
+			this.returnType = "init";
 		}
 	}
 	
@@ -236,10 +246,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	}
 	
 	public void setNone(boolean set, boolean undo) {
-		/*if(undo) {
-			FlagEdit edit = new FlagEdit(this, "flagNone", this.flagNone, set);
-			this.fireUndoableEvent(edit);
-		}*/
 		cleanFlags(undo);
 		setChanged();
 		notifyObservers("flagChanged");
