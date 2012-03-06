@@ -1,0 +1,35 @@
+\documentclass[a4paper]{article}
+\usepackage[top=1.5cm, bottom=1.5cm, left=1.5cm, right=1.5cm]{geometry}
+\newcommand{\tab}{\hspace*{2em}}
+
+\begin{document}
+\input{./title.tex}
+\newpage
+\tableofcontents 
+\newpage
+
+\section{Analysis}
+	\input{./analysis.tex}
+\section{Design}
+	\subsection{Use-case Diagrams}
+		% \input{./usecase.tex}
+	\subsection{Class Diagrams}
+		% \input{./classdiagram.tex}
+	\subsection{Class Descriptions}
+		\subsubsection{Model}
+			% \input{./modeldesc.tex}
+		\subsubsection{View}
+			% \input{./viewdesc.tex}
+		\subsubsection{GUI}
+			% \input{./guidesc.tex}
+		\subsubsection{Controller}
+			% \input{./controllerdesc.tex}
+		\subsubsection{Edit}
+			% \input{./editdesc.tex}
+		\subsubsection{Exporter}
+			% \input{./exporterDesc.tex}
+\section{Testing}
+	% \input{./testtable.tex}
+\section{Evaluation}
+	% \input{./evaluation.tex}
+\end{document}
