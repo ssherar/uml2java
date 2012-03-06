@@ -15,18 +15,20 @@
   \indexspace
 
   \item Edit
-    \subitem Adding Cardinalities, 13
+    \subitem Adding Cardinalities, 14
     \subitem Redo, 5
     \subitem Undo, 4
   \item Editing
     \subitem Class Name, 10
     \subitem Data Fields/Variables, 11
-    \subitem Methods, 11
+    \subitem Methods, 12
     \subitem Moving the Classes, 10
     \subitem Relationships, 12
-      \subsubitem Adding Label, 13
-      \subsubitem Moving Relationship Points, 12
+      \subsubitem Adding Label, 14
+      \subsubitem Moving Relationship Points, 13
       \subsubitem Relationship Type, 12
+      \subsubitem Removing Relationship Points, 13
+    \subitem Resizing the Classes, 11
   \item Exporting
     \subitem Code, 6
     \subitem Image, 6

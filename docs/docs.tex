@@ -238,7 +238,15 @@ To move the classes simply click and hold onto a class and move it to the desire
 \end{center}
 \end{figure}
 \newpage
-
+\subsection{Resizing a Class}\index{Editing!Resizing the Classes}
+To resize a class, hover over the bottom right corner of the class and a double-ended arrow like this should appear, $\Leftrightarrow$. When this appears click and hold the mouse and drag to the new desired location. the box should now be resized.
+\begin{figure}[H]
+\begin{center}
+\subfloat[Click and hold the corner of a class] {\label{fig:editMoveClass1}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.6]{./images/edit-resizeClass1.png}}} \imagespace
+\subfloat[Release at desired location] {\label{fig:editMoveClass2}\fbox{\includegraphics[trim = 0pt 0pt 0pt 0pt, clip, scale=0.6]{./images/edit-resizeClass2.png}}}
+\caption{Resizing a Class}
+\end{center}
+\end{figure}
 \subsection{Editing a Data Field}\index{Editing!Data Fields/Variables}
 To change a data field in a class added to the diagram \emph{(see Adding new Class \& Adding data fields)} Double-Click the data field you wish to change, the text should highlight and you can then edit the data field, your edit
 \textbf{MUST} be in the format\\*
@@ -253,7 +261,7 @@ Press Return $\hookleftarrow$ to confirm your new Class Name
 \caption{Editing a data field in a class}
 \end{center}
 \end{figure}
-
+\newpage
 \subsection{Editing a Method in a Class}\index{Editing!Methods}
 To change a method in a class added to the diagram \emph{(see Adding new Class \& Adding Methods)} Double-Click the method you wish to change, the text should highlight and you can then edit the method definition, you edit \emph{MUST} be in
 the format \\*
@@ -269,7 +277,6 @@ Press Return $\hookleftarrow$ to confirm your new Class Name
 \caption{Editing a method in a class}
 \end{center}
 \end{figure}
-\newpage
 \subsection{Editing a Relationship}\index{Editing!Relationships}
 
 \subsubsection{Editing the Relationship Type}\index{Editing!Relationships!Relationship Type}
@@ -282,7 +289,7 @@ To change the type of relationship between 2 classes, \texttt{Right-Click} on th
 \caption{Changing Relationship Types}
 \end{center}
 \end{figure}
-\vspace{-20pt}
+\newpage
 \subsubsection{Moving Relationship Points}\index{Editing!Relationships!Moving Relationship Points}
 You can edit how the relationships look, as by default they snap to the top-left of the class. Simply hover over the end point of a realtionship and green circles will appear over the ends, these will allow you to move the realtionship.
 \vspace{-5pt}
@@ -301,7 +308,18 @@ You can also add more points to a relationship, allowing them to change directio
 \end{center}
 \end{figure}\vspace{-30pt}
 
-\newpage
+\subsubsection{Removing Relationship Points}\index{Editing!Relationships!Removing Relationship Points}
+You can delete points you have added to the lines to make them change direction, to do this double click on a point that has been created, the points will turn into a green circle and then a double-click will delete them and the line will return to a state without that point
+\vspace{-5pt}
+\begin{figure}[H]
+\begin{center}
+\subfloat[Removing a point] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.55]{./images/edit-relationshippoint4.png}}} \imagespace
+\subfloat[The new line] {\label{fig:changeRelationTyped}\fbox{\includegraphics[scale=0.55]{./images/edit-relationshippoint3.png}}}
+\vspace{-5pt}
+\caption{Removing points on the line}
+\end{center}
+\end{figure}\vspace{-30pt}
+
 
 \subsubsection{Adding a Label to a Relationship}\index{Editing!Relationships!Adding Label}
 To add a label to a relationship, \texttt{Right-Click} and select \texttt{Add/Edit Label}. This will allow you to add or edit the current label on the relationship. These are important, as when creating the code files these are used. You can not create labels on Inheritance and Implements relationships \\*
