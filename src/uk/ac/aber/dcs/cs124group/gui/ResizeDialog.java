@@ -6,11 +6,28 @@ import java.text.NumberFormat;
 
 import javax.swing.*;
 
-
+/**
+ * A small dialog window that allows the user to resize the canvas.
+ * @see MainFrame
+ * @see Canvas
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class ResizeDialog extends JFrame {
 	
+	/**
+	 * The Canvas object to be resized.
+	 */
 	private Canvas canvas;
 	
+	/**
+	 * Initialises the resize window and adds appropriate listeners.
+	 * @param c
+	 * 		The Canvas object to be resized.
+	 */
 	public ResizeDialog(Canvas c) {
 		this.canvas = c;
 		
@@ -18,6 +35,7 @@ public class ResizeDialog extends JFrame {
 		this.setResizable(false);
 		this.setTitle("Resizing");
 		
+		/* Lays out two panels - one for the input fields and another one for the confirm and cancel buttons. */
 		JPanel inputPanel = new JPanel();
 		inputPanel.setLayout(new GridLayout(2,2,10,10));
 		
@@ -40,6 +58,10 @@ public class ResizeDialog extends JFrame {
 		
 		final JButton okButton = new JButton("Confirm");
 		buttonPanel.add(okButton);
+		
+		/* On clicking confirm, this listener will resize the canvas and close the resize dialog
+		 * but only if there are no parsing errors when getting input from the JTextFields.
+		 */
 		okButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -58,6 +80,10 @@ public class ResizeDialog extends JFrame {
 		
 		JButton cancelButton = new JButton("Cancel");
 		buttonPanel.add(cancelButton);
+		
+		/*
+		 * Upon clicking cancel, this listener closes the window. 
+		 */
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);

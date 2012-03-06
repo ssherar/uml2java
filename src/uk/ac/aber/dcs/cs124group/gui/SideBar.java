@@ -6,17 +6,39 @@ import uk.ac.aber.dcs.cs124group.controller.Manager;
 
 import java.awt.*;
 
+/**
+ * The BlueJ-like sidebar containing buttons for adding classes,
+ * relationships, labels and exporting to java code.
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
+
+
 public class SideBar extends JPanel {
 	
 	private final int SIDE_PADDING = 10;
 	private final int TOP_PADDING = 10;
 	private final int VERT_PADDING = 5;
+	
+	/** The buttons on the sidebar */
 	private JButton newClass, newRelationship, newTextLabel, export;
+	
+	/** The layout manager used for this component. */
 	private SpringLayout layout;
+	
+	/** The listener that acts upon receiving events from the buttons. */
 	private Manager manager;
 	
+	/**
+	 * Constructs a sidebar for the application.
+	 * 
+	 * @param manager
+	 * 		The listener for the sidebar buttons.
+	 */
 	public SideBar(Manager manager) {
-		super();
 		this.manager = manager;
 		layout = new SpringLayout();
 		this.setLayout(layout);
