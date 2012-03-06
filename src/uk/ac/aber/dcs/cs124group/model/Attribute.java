@@ -310,8 +310,17 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
 				this.attributeType = m.group(3);
-				if(m.groupCount() == 5 && m.group(4) == null) {
+				
+				/*if(m.groupCount() == 5 && m.group(4) == null) {
 					this.attribDefault = m.group(4).substring(3);
+					System.out.println(this.attribDefault);
+				}*/
+				
+				/*
+				 * Regex is burning up all around us! Help! Help!
+				 */
+				if(uml.indexOf("=") > 0) {
+					this.attribDefault = uml.substring(uml.indexOf("=")+ 2, uml.length());
 				}
 			}
 		} else if(this.type == AttributeType.METHOD) {
@@ -358,8 +367,14 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 		}
 	}
 	
-	
+	/**
+	 * Clean up the flags for when we want to set it to none
+	 * @param undo
+	 */
 	private void cleanFlags(boolean undo) {
+		/*
+		 * Clean up on Aisle #3! 
+		 */
 		if(this.flagAbstract == true) {
 			this.setAbstract(false, undo);
 		}
@@ -377,10 +392,17 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	
 /** Block of Get/Set */
 	
+	/**
+	 * @see Attribute#args this.args
+	 * @return		the ArrayList of all the Method Arguments. Can return with a empty set if a datafield!
+	 */
 	public ArrayList<String> getArgs(){
 		return args;
 	}
 	
+	/**
+	 * @return
+	 */
 	public String getRepresentation() {
 		return representation;
 	}
