@@ -206,26 +206,18 @@ public class Exporter {
 		}
 	}
 
-	private boolean isInteger(String s) {
-		try {
-			System.out.println(Integer.parseInt(s));
-			Integer.parseInt(s);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
-	private String manyCardinality(String s) {
-		if (s.contains("..")) {
-			String values[] = s.split("\\.\\.");
-			return values[1];
-		} else {
-			return s;
-		}
-
-	}
-
+	/**
+	 * Creates the main header for the Java document. This will declare the
+	 * class name, any modifiers added to the class, such as
+	 * <code>abstract, static and final</code> and any classes it extends or
+	 * implements.
+	 * 
+	 * @param classModel
+	 *            - The ClassModel containing information on the visibility of
+	 *            the class, and modifiers applied to the class
+	 * @return String - String containing the code to be written for the class
+	 *         header in the final code.
+	 */
 	private String getHeaderString(ClassModel classModel) {
 		String header = "";
 
@@ -309,6 +301,18 @@ public class Exporter {
 		return header;
 	}
 
+	/**
+	 * Creates a String containing the Attributes entered into each class,
+	 * including <code>Visibility, AttributeName, and Type</code> and any
+	 * default values that the user has assigned to the variables.
+	 * 
+	 * @param classModel
+	 *            - The ClassModel, containing Attributes for each class on the
+	 *            diagram
+	 * @return String - String containing the code to be written for the
+	 *         attributes section of the final code, related to Attributes
+	 */
+
 	private String getAttributesString(ClassModel classModel) {
 		String attribute = "";
 		for (int variables = 0; variables <= classModel.getAttributes().size() - 1; variables++) {
@@ -371,10 +375,22 @@ public class Exporter {
 		return attribute;
 	}
 
+	/**
+	 * Creates a String containing the ArrayLists created from relationships and
+	 * cardinalities
+	 * 
+	 * @param classModel
+	 *            - The ClassModel containing required relationships and
+	 *            cardinalities
+	 * @return String - String containing the cardinalities section of the final
+	 *         code, related to Relationships creating ArrayLists
+	 * @throws IOException
+	 *             - If the user enters a cardinality that contains illegal
+	 *             characters
+	 */
 	private String getCardinalitiesString(ClassModel classModel)
 			throws IOException {
 		String cardialitiesString = "";
-		System.out.println(classModel.getRelationships().size());
 
 		for (int cardinalities = 0; cardinalities < classModel
 				.getRelationships().size(); cardinalities++) {
@@ -483,6 +499,64 @@ public class Exporter {
 		return cardialitiesString;
 	}
 
+	/**
+	 * Checks whether the cardinality passed to the method is an integer, linked
+	 * with {@link #manyCardinality(String))} to get the required information
+	 * from cardinalities that may have many instances of the class
+	 * 
+	 * @param s
+	 *            - A String containing the cardinality or part of (drawn from
+	 *            {@link #manyCardinality(String)})
+	 * @return - <code>true</code> if the parameter is a valid integer,
+	 *         <code>false</code> if the parameter is not a valid integer.
+	 */
+	private boolean isInteger(String s) {
+		try {
+			System.out.println(Integer.parseInt(s));
+			Integer.parseInt(s);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	/**
+	 * Splits cardinalities up if they are in the form
+	 * <code>(#..#, or #..*)</code> and returns the latter value if try, if the
+	 * parameter is not in the form <code>(#..#, or #..*)</code> then the method
+	 * will return the initial parameter
+	 * 
+	 * @param s
+	 *            - String containing the cardinality to be checked/split
+	 * @return String - either the initial parameter if is already an integer,
+	 *         or the final value if the string contains ".."
+	 */
+	private String manyCardinality(String s) {
+		if (s.contains("..")) {
+			String values[] = s.split("\\.\\.");
+			return values[1];
+		} else {
+			return s;
+		}
+
+	}
+
+	/**
+	 * Creates a String containing the methods the user has entered into the
+	 * class diagram. Including Visibility, method modifiers, return types and any
+	 * parameters that the user has specified will be passed into the method
+	 * 
+	 * @param classModel
+	 *            - The ClassModel containing required relationships and
+	 *            cardinalities
+	 * @return String - String containing the cardinalities section of the final
+	 *         code, related to Relationships creating ArrayLists
+	 * @throws IOException
+	 *             If the user enters a cardinality that contains illegal
+	 *             characters
+	 *             @see uk.ac.aber.dcs.cs124group.model.Relationship Relationship
+	 * 
+	 */
 	private String getMethodsString(ClassModel classModel) {
 		String methodString = "";
 
