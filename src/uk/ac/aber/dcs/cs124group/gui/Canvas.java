@@ -9,7 +9,12 @@ import javax.swing.*;
 /**
  * A JPanel displaying all visible DocumentElementViews. 
  * Represents the actual class diagram that's being created.
- * @author Daniel Maly, Sam Sherar, Lee Smith
+ * @see uk.ac.aber.dcs.cs124group.view.DocumentElementView DocumentElementView
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
  */
 
 public class Canvas extends JPanel {
@@ -57,7 +62,7 @@ public class Canvas extends JPanel {
 	/**
 	 * NOTE: The zoom feature is currently disabled due to not being fully implemented. Future releases may enable it.
 	 * @return
-	 * 		The curent zoom factor
+	 * 		The current zoom factor
 	 */
 	public double getZoomFactor() {
 		return zoomFactor;
@@ -65,7 +70,7 @@ public class Canvas extends JPanel {
 	
 	@Override
 	/**
-	 * Overriden only to set rendering hints for all the children that will be painted later.
+	 * Overridden only to set rendering hints for all the children that will be painted later.
 	 */
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
@@ -86,7 +91,7 @@ public class Canvas extends JPanel {
 	
 	@Override
 	/**
-	 * Overriden to correctly layer components on top of one another so that the added components are displayed in a stack-like fashion.
+	 * Overridden to correctly layer components on top of one another so that the added components are displayed in a stack-like fashion.
 	 */
 	public Component add(Component c){
 		super.add(c);

@@ -1,12 +1,23 @@
 package uk.ac.aber.dcs.cs124group.export;
 
 import java.awt.*;
-import java.awt.print.PageFormat;
-import java.awt.print.Printable;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
+import java.awt.print.*;
 
 import javax.swing.RepaintManager;
+
+/**
+ * This class allows the user to print their class diagram directly to an external printer
+ * 
+ * @see Printable
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ * 
+ * 
+ * 
+ */
 
 public class PrinterDriver extends Object implements Printable {
 
