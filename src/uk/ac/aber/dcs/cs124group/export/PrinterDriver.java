@@ -8,6 +8,20 @@ import java.awt.print.PrinterJob;
 
 import javax.swing.RepaintManager;
 
+/**
+ * This class allows the user to print their class diagram directly to an external printer
+ * 
+ * @see Printable
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ * 
+ * 
+ * 
+ */
+
 public class PrinterDriver extends Object implements Printable {
 
 	private Component canvas;
