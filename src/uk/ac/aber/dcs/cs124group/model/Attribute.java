@@ -401,72 +401,137 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	}
 	
 	/**
-	 * @return
+	 * @see Attribute#representation this.representation
+	 * @return		the UML representation
 	 */
 	public String getRepresentation() {
 		return representation;
 	}
 	
+	/**
+	 * @see Attribute#representation this.representation
+	 * @param representation	set the global representation
+	 */
 	public void setRepresentation(String representation) {
 		this.representation = representation;
 	}
 	
+	/**
+	 * @see Attribute#attributeName this.attributeName
+	 * @param name		set the global name of the attribute
+	 */
 	public void setAttributeName(String name) {
 		this.attributeName = name;
 	}
 	
+	/**
+	 * @see Attribute#attrinuteName this.attributeName
+	 * @return	the global name of the attribute
+	 */
 	public String getAttributeName() {
 		return attributeName;
 	}
-
+	
+	/**
+	 * @see Attribute#attributeType
+	 * @return		the string representation of the type
+	 */
 	public String getAttributeType(){
 		return attributeType;
 	}
 	
+	/**
+	 * @see Attribute#attributeType
+	 * @param type	the string representation of the type
+	 */
 	public void setAttributeType(String type) {
 		this.attributeType = type;
 	}
 	
+	/**
+	 * @see Attribute#returnType
+	 * @return returnType	the string representation of the return type
+	 */
 	public String getReturnType() {
 		return returnType;
 	}
-
+	
+	/**
+	 * @see Attribute#flagStatic
+	 * @return flagStatic	boolean of the global flag <code>static</code>
+	 */
 	public boolean isFlagStatic() {
 		return flagStatic;
 	}
-
+	
+	/**
+	 * @see Attribute#flagAbstract
+	 * @return 		boolean of the global flag <code>abstract</code>
+	 */
 	public boolean isFlagAbstract() {
 		return flagAbstract;
 	}
-
+	
+	/**
+	 * @see Attribute#flagTransient
+	 * @return 		boolean of the global flag <code>transient</code>
+	 */
 	public boolean isFlagTransient() {
 		return flagTransient;
 	}
 	
+	/**
+	 * @see Attribute#flagFinal
+	 * @return		boolean of the global flag <code>final</code>
+	 */
 	public boolean isFlagFinal() {
 		return flagFinal;
 	}
-
+	
+	/**
+	 * @see Attribute#visibility
+	 * @return		returns the Enum visibility 
+	 */
 	public IVisibility getVisibility() {
 		return visibility;
 	}
 	
+	/**
+	 * @see Attribute#visibility
+	 * @param visibility	set the visibility of the attribute
+	 */
 	public void setVisibility(IVisibility visibility) {
 		this.visibility = visibility;
 	}
-
+	
+	/**
+	 * @see Attribute#type
+	 * @return		return the Enum type
+	 */
 	public AttributeType getType() {
 		return type;
 	}
-
+	
+	/**
+	 * @see Attribute#type
+	 * @param type			set the type of the attribute (DATAFIELD or METHOD)
+	 */
 	public void setType(AttributeType type) {
 		this.type = type;
 	}
 	
+	/**
+	 * @see Attribute#valid
+	 * @return			if the attribute is valid
+	 */
 	public boolean isValid() {
 		return this.valid;
 	}
 	
+	/**
+	 * @see Attribute#attribDefault
+	 * @return		The attribute default (can return null)
+	 */
 	public String getAttribDefault() {
 		return this.attribDefault;
 	}
