@@ -20,3 +20,10 @@ Thumbs.db
 Icon?
 ehthumbs.db
 .DS_Store*
+
+#TeX files
+*.aux
+*.dvi
+*.log
+*.pdf
+*.toc

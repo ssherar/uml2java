@@ -189,7 +189,10 @@ public class LabelView extends DocumentElementView {
 	}
 	
 	/**
-	 * 
+	 * Resize the text to the new width and height, plus a margin around
+	 * for cosmetic reasons.
+	 * @see FontMetrics
+	 * @see Model#setSize(size)
 	 */
 	private void resizeToText() {
 		/*
@@ -237,10 +240,17 @@ public class LabelView extends DocumentElementView {
 		}
 
 	}
+	
 	/**
-	 * 
+	 * Enable the edit of a label when the {@link LabelController} fires on a double
+	 * click. <p> We extract the text from the label, set it invisible and place the new
+	 * value into a JTextArea for ease of editing.
+	 * @see LabelView#replacement
 	 */
 	public void enableEdit() {
+		/*
+		 * Get all the variables from the label
+		 */
 		this.suspendedParent = this.getParent();
 		this.getParent().remove(this);
 		
@@ -252,6 +262,9 @@ public class LabelView extends DocumentElementView {
 		int diagramWidth = suspendedParent.getPreferredSize().width;
 		int diagramHeight = suspendedParent.getPreferredSize().height;
 		
+		/*
+		 * ... and apply to the TextArea.
+		 */
 		labelTextArea.setPreferredSize(new Dimension(diagramWidth - x, diagramHeight - y));
 		labelTextArea.setLocation(new Point(x,y));
 		labelTextArea.setOpaque(false);
@@ -266,11 +279,19 @@ public class LabelView extends DocumentElementView {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				/*
+				 * As there is a problem requesting focus while doing
+				 * the rest of the creation, we have to run the requestFocus()
+				 * and SelectAll at the end of the queue.
+				 */
 				labelTextArea.requestFocus();
 				labelTextArea.selectAll();
 			}
 			
 		});
+		 /*
+		  * Add to the JPanel and start editing!
+		  */
 		suspendedParent.add(labelTextArea);
 		((JPanel)(suspendedParent)).revalidate();
 		suspendedParent.repaint();
@@ -278,12 +299,23 @@ public class LabelView extends DocumentElementView {
 		replacement = labelTextArea;
 	}
 	
+	/**
+	 * Exits the editing phase when fired from the {@link LabelController}. 
+	 * This does the opposite of {@link LabelView#enableEdit()} and returns the
+	 * new values to the label
+	 */
 	public void exitEdit() {
+		/*
+		 * Clean up if something has been deleted in the meantime
+		 */
 		if(!this.model.exists()) {
 			replacement.setVisible(false);
 			return;
 		}
 		
+		/*
+		 * Remove the TextArea and replace it with {@link LabelView} instance
+		 */
 		JTextArea a = replacement;
 		suspendedParent.remove(a);
 		suspendedParent.add(this);
@@ -304,7 +336,10 @@ public class LabelView extends DocumentElementView {
 	}
 	
 	
-
+	/*
+	 * Similar to the Superclass "Update", this handles DocumentPreferences and TextLabelModel
+	 * @see uk.ac.aber.dcs.cs124group.view.DocumentElementView#update(java.util.Observable, java.lang.Object)
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		super.update(o, arg);
@@ -321,7 +356,13 @@ public class LabelView extends DocumentElementView {
 		
 	}
 	
+	/**
+	 * Update the model with the new values from the {@link TextLabelModel}
+	 * @param o			The new values for the label
+	 * @param arg		The command we want to do
+	 */
 	private void updateModel(TextLabelModel o, String arg) {
+		//TextChanged
 		if(arg.equals("textChanged")) {
 			this.setText(model.getText());
 		}
@@ -329,16 +370,17 @@ public class LabelView extends DocumentElementView {
 		else if(arg.equals("locationChanged")) {
 			this.setLocation(o.getLocation());
 		}
-		//editing
+		//Editing the label
 		else if(arg.equals("editingChanged")) {
 			if(o.isEditing()) {
-				//true
 				this.enableEdit();
 			} else {
 				this.exitEdit();
 			}
-			
-		} else if(arg.equals("flagChanged")) {
+		
+		} 
+		//Changing the flag means changing the font!
+		else if(arg.equals("flagChanged")) {
 			
 			/* Reference: http://stackoverflow.com/questions/325840/what-is-the-constant-value-of-the-underline-font-in-java */
 			Map<TextAttribute, Integer> underlineFont = new HashMap<TextAttribute, Integer>();
@@ -375,20 +417,42 @@ public class LabelView extends DocumentElementView {
 		//setFont
 		if(arg.equals("fontChanged")) {
 			this.setFont(o.getFont());
-		} else if(arg.equals("zoomLevelChanged")) {
+		} 
+		//Change the Scalarfactor
+		else if(arg.equals("zoomLevelChanged")) {
 			this.setZoomFactor(o.getZoomLevel());
 		}
 			
 	}
 
-	
+	/**
+	 * A Rightclick Popup menu for the Attribute labels for editing
+	 * deleting and adding modifiers with ease.
+	 * <p>A private class only used by LabelView - it doesn't
+	 * need scope of any other class.
+	 * @author Daniel Maly
+	 * @author Samuel B Sherar
+	 * @author Lee Smith
+	 * @version 1.0.0
+	 */
 	public class AttributePopup extends JPopupMenu {
-		
+		/**
+		 * The main listener for the actionEvents thrown
+		 */
 		private LabelController listener;
+		
+		/**
+		 * Constants for the modifiers. One for Data and one for Methods
+		 */
 		private String[] dataModifiers = {"Final", "Static", "Transient", "None"};
 		private String[] methodModifiers = {"Static", "Abstract", "Final", "None"};
 		JMenu modifers = new JMenu("Modifiers...");
 		
+		/**
+		 * Construct the new popup menu
+		 * @param l			the actionListener for the events
+		 * @param data		<code> true</code> if its a datafield, <code>false</code> if its a method
+		 */
 		public AttributePopup(LabelController l, boolean data) {
 			this.listener = l;
 			
@@ -420,6 +484,9 @@ public class LabelView extends DocumentElementView {
 			this.add(delete);
 		}
 		
+		/**
+		 * Check if the option "None" is set. If so, unset it!
+		 */
 		public void checkIfSet() {
 			boolean set = false;
 			int none = -1;
@@ -437,6 +504,10 @@ public class LabelView extends DocumentElementView {
 				this.modifers.getItem(none).setSelected(!(set));
 		}
 		
+		/**
+		 * Cycle through all the different options setting them to false
+		 * and set None to <code>True</code>
+		 */
 		public void setNone() {
 			for(int i = 0; i < this.modifers.getItemCount(); i++) {
 				if(this.modifers.getItem(i).isSelected()) {
@@ -447,10 +518,15 @@ public class LabelView extends DocumentElementView {
 			}
 		}
 		
+		/**
+		 * Set the flag specified in the parameter as true
+		 * @param s		The flag in question
+		 */
 		public void setFlag(String s) {
 			for(int i = 0; i < this.modifers.getItemCount(); i++) {
 				if(this.modifers.getItem(i).getText().equals(s))
 					this.modifers.getItem(i).setSelected(true);
+					break;
 			}
 		}
 	}

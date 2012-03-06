@@ -596,6 +596,8 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		
 		canvas.setPreferredSize(new Dimension(maxX, maxY));
 		canvas.getParent().doLayout();
+
+		
 	}
 	
 	
