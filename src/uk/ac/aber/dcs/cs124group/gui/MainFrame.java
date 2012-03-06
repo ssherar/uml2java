@@ -45,7 +45,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    dummyPanel.setLayout(new DiagramLayout());
 	    dummyPanel.add(canvas);
 	    dummyPanel.setOpaque(true);
-	    //dummyPanel.setPreferredSize(new Dimension(2000,2000));
+
 	    scroll.setViewportView(dummyPanel);  
 	   
 	    this.addComponentListener(new ComponentAdapter() {
@@ -112,41 +112,26 @@ public class MainFrame extends JFrame implements WindowListener {
 		
 	}
 
-	/** Unwanted methods */
-	@Override
-	public void windowDeactivated(WindowEvent e) {
-		
-		
-	}
-
-	@Override
-	public void windowDeiconified(WindowEvent e) {
-		
-		
-	}
-
-	@Override
-	public void windowIconified(WindowEvent e) {
-		
-		
-	}
-
-	@Override
-	public void windowOpened(WindowEvent e) {
-		
-		
-	}
+	/**************************************************************/
+	////////////////////UNWANTED METHODS\\\\\\\\\\\\\\\\\\\\\\\\\\\
+	/**************************************************************/
 	
 	@Override
-	public void windowActivated(WindowEvent e) {
-		
-		
-	}
+	public void windowDeactivated(WindowEvent e) {}
 
 	@Override
-	public void windowClosed(WindowEvent e) {
-		
-		
-	}
+	public void windowDeiconified(WindowEvent e) {}
+
+	@Override
+	public void windowIconified(WindowEvent e) {}
+
+	@Override
+	public void windowOpened(WindowEvent e) {}
+	
+	@Override
+	public void windowActivated(WindowEvent e) {}
+
+	@Override
+	public void windowClosed(WindowEvent e) {}
 
 }
