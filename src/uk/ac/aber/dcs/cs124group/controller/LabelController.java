@@ -15,9 +15,15 @@ import uk.ac.aber.dcs.cs124group.model.*;
  */
 public class LabelController extends DiagramListener implements ActionListener {
 	
-	/** The label model this controller is assigned to. */
+	/** 
+	 * The label model this controller is assigned to. 
+	 */
 	private TextLabelModel model;
 	
+	/**
+	 * The starting mouse position to compare to the current mouse position later on in the 
+	 * event
+	 */
 	private Point startingMousePos;
 	
 	/** Constructs a controller for the specified label. 
@@ -29,10 +35,13 @@ public class LabelController extends DiagramListener implements ActionListener {
 	}
 	
 
-	@Override
+	
 	/**
 	 * If the user double clicks the label, calls setEditing(true) in TextLabelModel to enable the user edit the label.
+	 * @see java.awt.event.MouseListener#mouseClicked()
+	 * @param e		The event fired when the label is clicked
 	 */
+	@Override
 	public void mouseClicked(MouseEvent e) {
 		if(e.getClickCount() == 2 && !e.isConsumed() && this.getMode() == ListeningMode.LISTEN_TO_ALL) {
 			e.consume();
@@ -72,10 +81,12 @@ public class LabelController extends DiagramListener implements ActionListener {
 		}
 	}
 	
-	@Override
 	/**
 	 * Stops moving the label.
+	 * @see java.awt.event.MouseListener#mouseReleased()
+	 * @param		The mouse event when released
 	 */
+	@Override
 	public void mouseReleased(MouseEvent e){
 		if(this.isNotAttribute()) {
 			if(this.getMode() == ListeningMode.DRAGGING)
@@ -85,28 +96,29 @@ public class LabelController extends DiagramListener implements ActionListener {
 		}
 	}
 	
-	@Override
 	/**
 	 * Sets the paintState of a free label to SELECTED.
+	 * @see java.awt.event.MouseListener#mousePressed()
+	 * @param e		The mouseEvent when pressed
 	 */
+	@Override
 	public void mousePressed(MouseEvent e){
 		if(!this.isNotAttribute()) return;
 		model.setPaintState(ElementPaintState.SELECTED);
 	}
-	
+
 	/**
-	 * Checks that the model controlled by this listener is not an Attribute.
-	 * Attributes cannot be moved by the user.
-	 * @return
-	 * 		True if the model is not an instance of Attribute, false otherwise.
+	 * Handles all the clicks for modifiers
+	 * @see java.awt.event.ActionListner#actionPerformed()
+	 * @see uk.ac.aber.dcs.cs124group.model.Attribute
+	 * @see uk.ac.aber.dcs.cs124group.model.TextLabelModel
+	 * @param 	The click event
 	 */
-	private boolean isNotAttribute() {
-		return (this.model instanceof Attribute) ? false : true;
-	}
-
-
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		/*
+		 * Naughty naughty, only attribute TextLabelModels can be used
+		 */
 		if(this.model instanceof Attribute) {
 			String c = e.getActionCommand();
 			if(c.equals("Delete")) {
@@ -133,6 +145,18 @@ public class LabelController extends DiagramListener implements ActionListener {
 			}
 
 		}
+	}
+	
+	/** Private Methods */
+	
+	/**
+	 * Checks that the model controlled by this listener is not an Attribute.
+	 * Attributes cannot be moved by the user.
+	 * @return
+	 * 		<code>True</code> if the model is not an instance of Attribute, <code>false</code> otherwise.
+	 */
+	private boolean isNotAttribute() {
+		return (this.model instanceof Attribute) ? false : true;
 	}
 	
 }
