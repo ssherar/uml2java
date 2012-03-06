@@ -337,27 +337,27 @@ public class Exporter {
 					.get(cardinalities).getLabel().getText();
 			
 		// ----------- Many to One -------------
-			if ((manyCardinality(cardinalityTo).equals("*") || cardinalityTo.equals("1"))
+			if ((manyCardinality(cardinalityTo).equals("*") && !cardinalityTo.equals("1"))
 					&& goingTo != classModel.getClassName()) {
 				System.out.println("Check 1");
 				contents = contents + TB + "private ArrayList<" + goingTo
 						+ "> " + cardinalityLabel + "; " + NL;
 
-			} else if ((manyCardinality(cardinalityFrom).equals("*") || cardinalityTo.equals("1"))
+			} else if ((manyCardinality(cardinalityFrom).equals("*") && !cardinalityFrom.equals("1"))
 					&& goingFrom != classModel.getClassName()) {
 				System.out.println("Check 2");
 				contents = contents + TB + "private ArrayList<" + goingFrom
 						+ "> " + cardinalityLabel + "; " + NL;
 				// Fixed Size
 			} else if (isInteger(cardinalityTo)
-					&& goingTo != classModel.getClassName()) {
+					&& goingTo != classModel.getClassName() && !cardinalityTo.equals("1")) {
 				System.out.println("Check 3");
 				contents = contents + TB + "private ArrayList<" + goingTo
 						+ "> " + cardinalityLabel + " = new ArrayList<"
 						+ goingTo + ">(" + cardinalityTo + ");" + NL;
 
 			} else if (isInteger(cardinalityFrom)
-					&& goingFrom != classModel.getClassName()) {
+					&& goingFrom != classModel.getClassName() && !cardinalityFrom.equals("1")) {
 				System.out.println("Check 4");
 				contents = contents + TB + "private ArrayList<" + goingFrom
 						+ "> " + cardinalityLabel + " = new ArrayList<"
