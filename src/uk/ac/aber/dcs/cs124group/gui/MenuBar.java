@@ -9,17 +9,47 @@ import java.awt.event.KeyEvent;
 import java.util.*;
 import java.awt.event.*;
 
+/**
+ * The menu bar at the top of the application window. 
+ * Contains some of the program controls.
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class MenuBar extends JMenuBar {
 	
+	/**
+	 * The individual menus in the menu bar.
+	 */
 	private JMenu file = new JMenu("File"), 
 			      edit = new JMenu("Edit"), 
 			      canvas = new JMenu("Canvas"), 
 			      export = new JMenu("Export"), 
 			      help = new JMenu("Help");
+	
+	/**
+	 * A linked list for each menu containing individual menu items.
+	 */
 	private LinkedList<JMenuItem> fileItems, editItems, canvasItems, exportItems, helpItems;
+	
+	/**
+	 * The Manager object listening to clicks on the menu items.
+	 */
 	private Manager manager;
+	
+	/**
+	 * The system default shortcut key.
+	 */
 	int shortCutKey = Toolkit.getDefaultToolkit().getMenuShortcutKeyMask();
 	
+	/**
+	 * Constructs a new menu bar for the application with the specified manager.
+	 * 
+	 * @param manager
+	 * 		The listener that takes action in response to user clicks in the menu bar.
+	 */
 	public MenuBar(Manager manager) {
 		super();
 		this.manager = manager;
@@ -37,6 +67,9 @@ public class MenuBar extends JMenuBar {
 		this.addHelpItems();
 	}
 	
+	/**
+	 * Adds and sets accelerators for menu items in the "File" menu.
+	 */
 	private void addFileItems() {
 		fileItems = new LinkedList<JMenuItem>();
 		fileItems.add(new JMenuItem("New"));
@@ -61,6 +94,10 @@ public class MenuBar extends JMenuBar {
 		
 	}
 	
+	/**
+	 * Adds and sets accelerators for menu items in the "Edit" menu.
+	 * Assigns the manager as ActionListener to these menu items.
+	 */
 	private void addEditItems() {
 		editItems = new LinkedList<JMenuItem>();
 		editItems.add(new JMenuItem("Undo"));
@@ -75,6 +112,10 @@ public class MenuBar extends JMenuBar {
 		}
 	}
 	
+	/**
+	 * Adds and sets accelerators for menu items in the "Canvas" menu.
+	 * Assigns the manager as ActionListener to these menu items.
+	 */
 	private void addCanvasItems() {
 		canvasItems = new LinkedList<JMenuItem>();
 		canvasItems.add(new JMenuItem("Resize..."));
@@ -86,6 +127,10 @@ public class MenuBar extends JMenuBar {
 		}
 	}
 	
+	/**
+	 * Adds and sets accelerators for menu items in the "Export" menu.
+	 * Assigns the manager as ActionListener to these menu items.
+	 */
 	private void addExportItems() {
 		exportItems = new LinkedList<JMenuItem>();
 		exportItems.add(new JMenuItem("Code"));
@@ -97,6 +142,10 @@ public class MenuBar extends JMenuBar {
 		}
 	}
 	
+	/**
+	 * Adds and sets accelerators for menu items in the "Help" menu.
+	 * Assigns the manager as ActionListener to these menu items.
+	 */
 	private void addHelpItems() {
 		helpItems = new LinkedList<JMenuItem>();
 		helpItems.add(new JMenuItem("Documentation"));

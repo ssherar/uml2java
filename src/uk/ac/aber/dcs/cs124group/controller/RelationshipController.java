@@ -7,6 +7,13 @@ import java.util.ArrayList;
 import uk.ac.aber.dcs.cs124group.model.*;
 import uk.ac.aber.dcs.cs124group.view.RelationshipEndPoint;
 
+/**
+ * An all-purpose listener controlling relationships. Is added as a listener to RelationshipArrows.
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class RelationshipController extends DiagramListener implements ActionListener {
 	
 	private Relationship model;

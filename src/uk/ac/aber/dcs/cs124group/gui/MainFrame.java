@@ -92,6 +92,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    	@Override
 			public void componentResized(ComponentEvent e) {
 	    		dummyPanel.setPreferredSize(canvas.getSize());
+	    		scroll.revalidate();
 	    	}
 	    });
 	    

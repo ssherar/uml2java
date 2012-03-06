@@ -7,18 +7,41 @@ import uk.ac.aber.dcs.cs124group.controller.Manager;
 
 import java.awt.*;
 
+/**
+ * The application Toolbar, currently containing global font selection and zoom slider.
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class ToolBar extends JToolBar {
 	
+	/** The available font families. */
 	private String[] fonts = {"Arial", "Helvetica", "Trebuchet MS", "Courier New"};
+	
+	/** The combo box containing available font names. */
 	private JComboBox fontList;
+	
+	/** A JSpinner allowing the user to set the font size. */
 	private JSpinner fontSize;
+	
+	/**
+	 * Zoom slider.
+	 * @deprecated v0.9
+	 */
 	private JSlider zoom;
+	
+	/** A helpful label next to the zoom slider */
 	private JLabel zoomLabel = new JLabel("Zoom: ");
 	
-	private Manager manager;
-	
+	/**
+	 * Constructs a new ToolBar for the application.
+	 * 
+	 * @param manager
+	 * 		The listener taking action in response to user clicks.
+	 */
 	public ToolBar(Manager manager) {
-		this.manager = manager;
 		
 		SpringLayout layout = new SpringLayout();
 		
@@ -33,6 +56,7 @@ public class ToolBar extends JToolBar {
 		
 		this.add(fontList);
 		
+		/* Defining the JSpinner for font sizes */
 		fontSize = new JSpinner(new SpinnerNumberModel() {
 			
 			/* Set minimum and maximum font sizes */
@@ -76,7 +100,7 @@ public class ToolBar extends JToolBar {
 		zoom.setMinorTickSpacing(25);
 		zoom.setPaintTicks(true);
 		zoom.addChangeListener(manager);
-		//layout.putConstraint(SpringLayout.WEST, zoom, 0, SpringLayout.EAST, fontSize);
+
 		layout.putConstraint(SpringLayout.EAST, zoom, 2, SpringLayout.EAST, this);
 		layout.putConstraint(SpringLayout.NORTH, zoom, 0, SpringLayout.NORTH, this);
 		
@@ -92,18 +116,35 @@ public class ToolBar extends JToolBar {
 		this.setPreferredSize(new Dimension(0, zoom.getPreferredSize().height));
 	}
 	
+	/**
+	 * @return The name of the font currently selected in the JComboBox.
+	 * @see Manager#changeFont()
+	 */
 	public String getFontName() {
 		return (String) (fontList.getSelectedItem());	
 	}
 	
+	/**
+	 * @return The number currently selected in the font size JSpinner.
+	 * @see Manager#changeFont()
+	 */
 	public int getFontSize() {
 		return (Integer) (fontSize.getValue());
 	}
 	
+	/**
+	 * @return The current value of the zoom slider
+	 * @deprecated v0.9
+	 */
 	public int getZoom() {
 		return zoom.getValue();
 	}
 	
+	/**
+	 * Sets the name and size of the specified font into the ToolBar.
+	 * @param f
+	 * 		The overriding font
+	 */
 	public void overrideFont(Font f) {
 		fontList.setSelectedItem(f.getFontName());
 		fontSize.setValue(f.getSize());
