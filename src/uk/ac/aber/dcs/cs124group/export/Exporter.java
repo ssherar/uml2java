@@ -379,7 +379,7 @@ public class Exporter {
 		for (int cardinalities = 0; cardinalities < classModel
 				.getRelationships().size(); cardinalities++) {
 			if (classModel.getRelationships().get(cardinalities)
-					.getCardinalityFrom().exists()) {
+					.getCardinalityFrom() != null) {
 				String cardinalityFrom = classModel.getRelationships()
 						.get(cardinalities).getCardinalityFrom().getText();
 				String goingFrom = classModel.getRelationships()
@@ -426,7 +426,7 @@ public class Exporter {
 				}
 
 				if (classModel.getRelationships().get(cardinalities)
-						.getCardinalityTo().exists()) {
+						.getCardinalityTo() != null) {
 					String cardinalityTo = classModel.getRelationships()
 							.get(cardinalities).getCardinalityTo().getText();
 
