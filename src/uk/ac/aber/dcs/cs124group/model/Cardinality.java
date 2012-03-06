@@ -61,7 +61,7 @@ public class Cardinality extends TextLabelModel {
 	
 	
 	/**
-	 * Reallign the cardinality to the relationship's end point based on the
+	 * Realign the cardinality to the relationship's end point based on the
 	 * {@link Cardinality#toPoint vector}.
 	 * 
 	 */
