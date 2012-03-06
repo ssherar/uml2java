@@ -408,10 +408,12 @@ public class Exporter {
 		// ------------------------Methods---------------------------
 		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
 			
-			if(!classModel.getAttributes().get(methods).isValid()) continue;
+			Attribute a = classModel.getAttributes().get(methods);
+			
+			if(!a.isValid()) continue;
 
-			if (classModel.getAttributes().get(methods).getType() == AttributeType.METHOD) {
-				switch (classModel.getAttributes().get(methods).getVisibility()) {
+			if (a.getType() == AttributeType.METHOD) {
+				switch (a.getVisibility()) {
 				case PUBLIC:
 					contents = (contents + TB + "public ");
 					break;
@@ -424,36 +426,32 @@ public class Exporter {
 				}
 
 				boolean isMethodAbstract = false;
-				if (classModel.getAttributes().get(methods).isFlagAbstract()) {
+				if (a.isFlagAbstract()) {
 					contents = (contents + "abstract");
 					isMethodAbstract = true;
 				}
 
-				if (classModel.getAttributes().get(methods).isFlagStatic()) {
+				if (a.isFlagStatic()) {
 					contents = (contents + "static ");
 				}
 
-				if (classModel.getAttributes().get(methods).isFlagFinal()) {
+				if (a.isFlagFinal()) {
 					contents = (contents + "final ");
 				}
 
-				contents = (contents
-						+ classModel.getAttributes().get(methods)
-								.getReturnType() + " ");
+				if(!a.getReturnType().equals("init")) {
+					contents = (contents + a.getReturnType() + " ");
+				}
+					
+				contents = (contents + a.getAttributeName() + "(");
 
-				contents = (contents
-						+ classModel.getAttributes().get(methods)
-								.getAttributeName() + "(");
-
-				int numOfArgs = classModel.getAttributes().get(methods)
-						.getArgs().size();
+				int numOfArgs = a.getArgs().size();
 
 				for (int k = 0; k < numOfArgs; k++) {
 					if (!(k == 0)) {
 						contents = (contents + ", ");
 					}
-					contents = (contents + classModel.getAttributes()
-							.get(methods).getArgs().get(k));
+					contents = (contents + a.getArgs().get(k));
 					
 				}
 				contents = (contents + ")");
