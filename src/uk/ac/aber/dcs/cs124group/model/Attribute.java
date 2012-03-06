@@ -165,31 +165,21 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			m = this.checkMethodShell(uml);
 			
 			if(m.groupCount() > 3) {
-				System.out.println(m.groupCount() + " failed");
 				this.valid = false;
 				return;
 			}
 			if(m.find() && m.groupCount() > 0) {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
-				System.out.println(this.visibility + "\t "+ this.attributeName);
 				if(m.group(3) != null) {
-					for(int i = 0; i < m.groupCount(); i++) {
-						System.out.println(m.group(i));
-					}
 					Matcher args = this.checkArguements(m.group(3));
 					while(args.find()) {
 						this.addArgsElement(args.group(3),args.group(1));
-						for(int i = 0; i <= args.groupCount(); i++) {
-							System.out.println(i + " " +args.group(i));
-						}
 					}
 				}
 				
-				/*if(m.groupCount() == 5)
-					this.returnType = m.group(4).substring(3);*/
-				Matcher ret = this.checkReturnType(uml);
-				if(ret.find() && m.groupCount() > 0) {
+				String tmp = uml.substring(uml.lastIndexOf(")"));
+				if(tmp.lastIndexOf(":") > 0) {
 					this.returnType = uml.substring(uml.lastIndexOf(":") + 2, uml.length());
 				}
 				
