@@ -304,14 +304,17 @@ public class Exporter {
 				if (isAttributeFinal) {
 					contents = (contents
 							+ classModel.getAttributes().get(variables)
-							.getAttributeName().toUpperCase() + ";");
+							.getAttributeName().toUpperCase());
 				} else {
 					contents = (contents
 							+ classModel.getAttributes().get(variables)
-							.getAttributeName() + ";");
+							.getAttributeName());
 				}
-				contents = contents + NL;
-
+				if (!(classModel.getAttributes().get(variables).getAttribDefault() == null)){
+					contents = contents + " = " + classModel.getAttributes().get(variables).getAttribDefault();
+				}
+				contents = contents + ";" + NL;
+				
 			}
 		}
 		contents = contents + NL;
@@ -412,17 +415,7 @@ public class Exporter {
 			Attribute a = classModel.getAttributes().get(methods);
 
 			if(!a.isValid()) continue;
-			if (a.getType() == AttributeType.METHOD && a.getAttributeName().equals(classModel.getClassName())){
-				contents = contents + TB + "public " + a.getAttributeName() + "(";
-				for (int k = 0; k < a.getArgs().size(); k++){
-					if (!(k == 0)){
-						contents = contents + ", ";
-					}
-					contents = contents + a.getArgs().get(k);
-				}
-				contents = contents + ") {" + NL + NL + TB + "}" + NL + NL;
-			} else { 
-				if (a.getType() == AttributeType.METHOD) {
+			if (a.getType() == AttributeType.METHOD) {
 					switch (a.getVisibility()) {
 					case PUBLIC:
 						contents = (contents + TB + "public ");
@@ -475,7 +468,7 @@ public class Exporter {
 				}
 
 			}
-		}
+		
 		contents = (contents + "}");
 		return contents;
 
