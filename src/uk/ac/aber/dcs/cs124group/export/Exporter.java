@@ -374,101 +374,111 @@ public class Exporter {
 	private String getCardinalitiesString(ClassModel classModel)
 			throws IOException {
 		String cardialitiesString = "";
+		System.out.println(classModel.getRelationships().size());
 
 		for (int cardinalities = 0; cardinalities < classModel
 				.getRelationships().size(); cardinalities++) {
+			if (classModel.getRelationships().get(cardinalities)
+					.getCardinalityFrom().exists()) {
+				String cardinalityFrom = classModel.getRelationships()
+						.get(cardinalities).getCardinalityFrom().getText();
+				String goingFrom = classModel.getRelationships()
+						.get(cardinalities).getGoingFrom().getClassName();
+				String cardinalityLabelFrom = classModel.getRelationships()
+						.get(cardinalities).getLabel().getText();
 
-			String cardinalityFrom = classModel.getRelationships()
-					.get(cardinalities).getCardinalityFrom().getText();
-
-			String cardinalityTo = classModel.getRelationships()
-					.get(cardinalities).getCardinalityTo().getText();
-
-			String goingFrom = classModel.getRelationships().get(cardinalities)
-					.getGoingFrom().getClassName();
-
-			String goingTo = classModel.getRelationships().get(cardinalities)
-					.getGoingTo().getClassName();
-
-			String cardinalityLabel = classModel.getRelationships()
-					.get(cardinalities).getLabel().getText();
-
-			// ----------- Many to One -------------
-			if ((manyCardinality(cardinalityTo).equals("*") && !cardinalityTo
-					.equals("1")) && goingTo != classModel.getClassName()) {
-				System.out.println("Check 1");
-				cardialitiesString = cardialitiesString + TB
-						+ "private ArrayList<" + goingTo + "> "
-						+ cardinalityLabel + "; " + NL;
-
-			} else if ((manyCardinality(cardinalityFrom).equals("*") && !cardinalityFrom
-					.equals("1")) && goingFrom != classModel.getClassName()) {
-				System.out.println("Check 2");
-				cardialitiesString = cardialitiesString + TB
-						+ "private ArrayList<" + goingFrom + "> "
-						+ cardinalityLabel + "; " + NL;
-				// Fixed Size
-			} else if (isInteger(cardinalityTo)
-					&& goingTo != classModel.getClassName()
-					&& !cardinalityTo.equals("1")) {
-				System.out.println("Check 3");
-				cardialitiesString = cardialitiesString + TB
-						+ "private ArrayList<" + goingTo + "> "
-						+ cardinalityLabel + " = new ArrayList<" + goingTo
-						+ ">(" + cardinalityTo + ");" + NL;
-
-			} else if (isInteger(cardinalityFrom)
-					&& goingFrom != classModel.getClassName()
-					&& !cardinalityFrom.equals("1")) {
-				System.out.println("Check 4");
-				cardialitiesString = cardialitiesString + TB
-						+ "private ArrayList<" + goingFrom + "> "
-						+ cardinalityLabel + " = new ArrayList<" + goingFrom
-						+ ">(" + cardinalityFrom + ");" + NL;
-				// Erroneous Input
-
-			} else if (!cardinalityTo.equals("0..*")
-					&& !cardinalityTo.equals("1")
-					&& goingTo != classModel.getClassName()) {
-				System.out.println("Check 5");
-				String[] values = cardinalityTo.split("\\.\\.");
-
-				if (!isInteger(values[1].toString())) {
-					JOptionPane.showMessageDialog(null,
-							"Error, invalid cardinality.",
-							"Error in Cardinalities",
-							JOptionPane.WARNING_MESSAGE);
-					throw new IOException("Export failed");
-
-				} else {
-					cardialitiesString = cardialitiesString + TB
-							+ "private ArrayList<" + goingTo + "> "
-							+ cardinalityLabel + " = new ArrayList<" + goingTo
-							+ ">(" + values[1] + ");" + NL;
-				}
-
-			} else if (!cardinalityFrom.equals("0..*")
-					&& !cardinalityFrom.equals("1")
-					&& goingFrom != classModel.getClassName()) {
-				System.out.println("Check 6");
-				String[] values = cardinalityFrom.split("\\.\\.");
-
-				if (!isInteger(values[1].toString())) {
-					JOptionPane.showMessageDialog(null,
-							"Error, invalid cardinality.",
-							"Error in Cardinalities",
-							JOptionPane.WARNING_MESSAGE);
-					throw new IOException("Export failed");
-
-				} else {
+				if ((manyCardinality(cardinalityFrom).equals("*") && !cardinalityFrom
+						.equals("1")) && goingFrom != classModel.getClassName()) {
+					System.out.println("Check 2");
 					cardialitiesString = cardialitiesString + TB
 							+ "private ArrayList<" + goingFrom + "> "
-							+ cardinalityLabel + " = new ArrayList<"
-							+ goingFrom + ">(" + values[1] + ");" + NL;
+							+ cardinalityLabelFrom + "; " + NL;
+					// Fixed Size
+				} else if (isInteger(cardinalityFrom)
+						&& goingFrom != classModel.getClassName()
+						&& !cardinalityFrom.equals("1")) {
+					System.out.println("Check 4");
+					cardialitiesString = cardialitiesString + TB
+							+ "private ArrayList<" + goingFrom + "> "
+							+ cardinalityLabelFrom + " = new ArrayList<"
+							+ goingFrom + ">(" + cardinalityFrom + ");" + NL;
+					// Erroneous Input
+
+				} else if (!cardinalityFrom.equals("0..*")
+						&& !cardinalityFrom.equals("1")
+						&& goingFrom != classModel.getClassName()) {
+					System.out.println("Check 6");
+					String[] values = cardinalityFrom.split("\\.\\.");
+
+					if (!isInteger(values[1].toString())) {
+						JOptionPane.showMessageDialog(null,
+								"Error, invalid cardinality.",
+								"Error in Cardinalities",
+								JOptionPane.WARNING_MESSAGE);
+						throw new IOException("Export failed");
+
+					} else {
+						cardialitiesString = cardialitiesString + TB
+								+ "private ArrayList<" + goingFrom + "> "
+								+ cardinalityLabelFrom + " = new ArrayList<"
+								+ goingFrom + ">(" + values[1] + ");" + NL;
+					}
+				}
+
+				if (classModel.getRelationships().get(cardinalities)
+						.getCardinalityTo().exists()) {
+					String cardinalityTo = classModel.getRelationships()
+							.get(cardinalities).getCardinalityTo().getText();
+
+					String goingTo = classModel.getRelationships()
+							.get(cardinalities).getGoingTo().getClassName();
+
+					String cardinalityLabelTo = classModel.getRelationships()
+							.get(cardinalities).getLabel().getText();
+
+					// ----------- Many to One -------------
+					if ((manyCardinality(cardinalityTo).equals("*") && !cardinalityTo
+							.equals("1"))
+							&& goingTo != classModel.getClassName()) {
+						System.out.println("Check 1");
+						cardialitiesString = cardialitiesString + TB
+								+ "private ArrayList<" + goingTo + "> "
+								+ cardinalityLabelTo + "; " + NL;
+
+					} else if (isInteger(cardinalityTo)
+							&& goingTo != classModel.getClassName()
+							&& !cardinalityTo.equals("1")) {
+						System.out.println("Check 3");
+						cardialitiesString = cardialitiesString + TB
+								+ "private ArrayList<" + goingTo + "> "
+								+ cardinalityLabelTo + " = new ArrayList<"
+								+ goingTo + ">(" + cardinalityTo + ");" + NL;
+
+					} else if (!cardinalityTo.equals("0..*")
+							&& !cardinalityTo.equals("1")
+							&& goingTo != classModel.getClassName()) {
+						System.out.println("Check 5");
+						String[] values = cardinalityTo.split("\\.\\.");
+
+						if (!isInteger(values[1].toString())) {
+							JOptionPane.showMessageDialog(null,
+									"Error, invalid cardinality.",
+									"Error in Cardinalities",
+									JOptionPane.WARNING_MESSAGE);
+							throw new IOException("Export failed");
+
+						} else {
+							cardialitiesString = cardialitiesString + TB
+									+ "private ArrayList<" + goingTo + "> "
+									+ cardinalityLabelTo + " = new ArrayList<"
+									+ goingTo + ">(" + values[1] + ");" + NL;
+						}
+
+					}
 				}
 			}
-		}
 
+		}
 		cardialitiesString = cardialitiesString + NL;
 		return cardialitiesString;
 	}
