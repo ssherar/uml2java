@@ -1,30 +1,62 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
-import java.awt.BorderLayout;
-
 import java.awt.*;
 import java.awt.event.*;
-
 import javax.swing.*;
-
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.view.DiagramLayout;
 
+/**
+ * The main window of the application. 
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class MainFrame extends JFrame implements WindowListener {
 	
+	/**
+	 * The sidebar containing the buttons to create new elements.
+	 */
 	private SideBar sideBar;
+	
+	/**
+	 * The JPanel on which the class diagram is being drawn.
+	 */
 	private Canvas canvas;
+	
+	/**
+	 * The top menu bar.
+	 */
 	private MenuBar menu;
+	
+	/**
+	 * The toolbar containing font configuration selection and the zoom slider.
+	 */
 	private ToolBar toolbar;
+	
+	/**
+	 * A small JPanel at the bottom of the window informing the user of the current status.
+	 */
 	private StatusBar status;
+	
+	/**
+	 * The Manager controlling this window.
+	 */
 	private Manager manager;
 	
+	/**
+	 * Constructs a new window for the application and lays out the GUI within the window.
+	 * @param manager
+	 * 		The application Manager.
+	 */
 	public MainFrame(Manager manager) {
 		this.manager = manager;
 		
 		addWindowListener(this);
 		
-		/** Layout the GUI */
+		/* Layout the GUI */
 		try {
 			UIManager.setLookAndFeel(
 					UIManager.getSystemLookAndFeelClassName());
@@ -32,6 +64,7 @@ public class MainFrame extends JFrame implements WindowListener {
 			
 		}
 		
+		/* The dummy panel holds the canvas to ensure the JScrollPane is never smaller than the space assigned to it. */
 		final JPanel dummyPanel = new JPanel();
 	
 		
@@ -49,13 +82,15 @@ public class MainFrame extends JFrame implements WindowListener {
 	    scroll.setViewportView(dummyPanel);  
 	   
 	    this.addComponentListener(new ComponentAdapter() {
-	    	public void componentResized(ComponentEvent e) {
+	    	@Override
+			public void componentResized(ComponentEvent e) {
 	    		dummyPanel.setSize(new Dimension(scroll.getSize().width - 30, scroll.getSize().height - 30));
 	    	}
 	    });
 	    
 	    canvas.addComponentListener(new ComponentAdapter() {
-	    	public void componentResized(ComponentEvent e) {
+	    	@Override
+			public void componentResized(ComponentEvent e) {
 	    		dummyPanel.setPreferredSize(canvas.getSize());
 	    	}
 	    });
@@ -81,35 +116,55 @@ public class MainFrame extends JFrame implements WindowListener {
 
 	    
 	}
-	
-	public void setManager(Manager manager) {
-		this.manager = manager;
-	}
 
+	/** 
+	 * Used by the Manager to obtain the SideBar created within this MainFrame.
+	 * @return
+	 * 		The SideBar of this window.
+	 */
 	public SideBar getSideBar() {
 		return sideBar;
 	}
 
+	/** 
+	 * Used by the Manager to obtain the Canvas created within this MainFrame.
+	 * @return
+	 * 		The Canvas of this window.
+	 */
 	public Canvas getCanvas() {
 		return canvas;
 	}
 
-	public MenuBar getMenu() {
-		return menu;
-	}
-
+	/** 
+	 * Used by the Manager to obtain the ToolBar created within this MainFrame.
+	 * @return
+	 * 		The ToolBar of this window.
+	 */
 	public ToolBar getToolbar() {
 		return toolbar;
 	}
 
+	/** 
+	 * Used by the Manager to obtain the StatusBar created within this MainFrame.
+	 * @return
+	 * 		The StatusBar of this window.
+	 */
 	public StatusBar getStatus() {
 		return status;
 	}
 
+	
+	/**
+	 * Whenever the window is about to be closed, calls Manager.exit() to handle the situation.
+	 * 
+	 * param e
+	 * 		The event created as a result of the user closing the window.
+	 * 
+	 * @see uk.ac.aber.dcs.cs124group.controller.Manager#exit() Manager.exit()
+	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
-		manager.exit();
-		
+		manager.exit();	
 	}
 
 	/**************************************************************/
