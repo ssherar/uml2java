@@ -27,7 +27,11 @@ import uk.ac.aber.dcs.cs124group.gui.*;
  * When placing elements on the canvas, will also register some events from other diagram elements.
  * This class also acts as the application undo manager - it is added to each and every document element
  * as an UndoableEditListener to which undoable edits are being sent.
- * @author Daniel Maly, Sam Sherar, Lee Smith
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
  */
 public class Manager extends UndoManager implements ActionListener, ChangeListener,  MouseListener, Observer  {
 
@@ -162,14 +166,21 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	
 	
 	@Override
-	/** Called from individual document elements whenever the user makes an undoable action. 
+	/** 
+	 *  Called from individual document elements whenever the user makes an undoable action. 
 	 *  If an element has been added or removed, resets the listening mode to avoid creation of elements 
 	 *  that require the presence of an element that might now be non-existent.
+	 *  This method also updates the status bar based on the presentation name of the UndoableEdit.
 	 */ 
 	public void undoableEditHappened(UndoableEditEvent e) {
+		
+		/* Indicates that a change has been made to the document model. 
+		 * If the user exits now, a dialog box asking him to save will appear. */
 		this.justSaved = false;
+		
 		if (e.getEdit().getPresentationName().length() > 0) 
 			status.setText(e.getEdit().getPresentationName());
+		
 		if(e.getEdit() instanceof ExistenceEdit) {
 			this.mode = ListeningMode.LISTEN_TO_ALL;
 			this.selectionStack.removeAllElements();
@@ -191,10 +202,14 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		}
 		else if(o instanceof ClassModel && s.equals("paintStateChanged") && ((ClassModel) o).getPaintState() == ElementPaintState.SELECTED) {
 			if(this.mode == ListeningMode.PLACING_RELATIONSHIP) {
+				
+				/* Calls the second addNewRelationshipMethod with the class on the stack as its first argument and the most recently selected class as the second. */
 				if(selectionStack.size() == 1 && !((ClassModel)o).equals(selectionStack.peek())) {
 					this.mode = ListeningMode.LISTEN_TO_ALL;
 					this.addNewRelationship((ClassModel) o, (ClassModel) (selectionStack.pop()));
 				}
+				
+				/* Pushes the selected class onto the selection stack. */
 				else if(selectionStack.size() == 0) {
 					selectionStack.push((ClassModel) o);
 					status.setText("Now click on the class you want the relationship to go to.");
@@ -236,7 +251,28 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		}
 	}
 
+	/**
+	 * If the document has been changed since the last save, brings up a "do you want to save?" dialog.
+	 * Then, empties the UndoableEdit stack, removes all components from the canvas, discards 
+	 * the current DocumentModel in favor of a new one, resets font and canvas size
+	 * and notifies the user that a new document has been opened. 
+	 */
 	private void openNewDocument() {
+		
+		if(!this.justSaved) {
+			Object[] options = { "Save", "Don't Save", "Cancel" };
+			int n = JOptionPane
+					.showOptionDialog(window,"Would you like to save your changes? Any unsaved changes will be lost.",
+							"Warning!", JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.WARNING_MESSAGE, null, options,options[2]);
+		
+			switch(n) {
+				case JOptionPane.CANCEL_OPTION : return;
+				case JOptionPane.YES_OPTION : save();
+				default : break;
+			}
+		}
+		
+		
 		this.discardAllEdits();
 		document = new DocumentModel();
 		canvas.removeAll();
@@ -248,19 +284,33 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 				.getFontSize()));
 		canvas.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar
 				.getFontSize()));
+		canvas.setPreferredSize(preferences.getCanvasDefaultSize());
 
 		status.setText("Opened a brand new class diagram");
 
 	}
 	
+	/**
+	 * If a filename is already set for this document, calls serialise() 
+	 * which will write the DocumentModel to the file.
+	 * @see #serialize(String filename)
+	 */
 	private void save() {
 		if (document.getPreferences().getFilename() == null) {
 			saveAs();
 		} else {
-			serialise(document.getPreferences().getFilename());
+			serialize(document.getPreferences().getFilename());
 		}
 	}
 
+	/**
+	 * Brings up a JFileChooser that lets the user select where the file should be saved to.
+	 * NOTE: Due to an internal bug in Java, the dialog window may take a few seconds to load.
+	 * If a filename and directory are selected, the path is saved in DocumentPreferences and 
+	 * serialize() is called.
+	 * 
+	 * @see #serialize(String filename)
+	 */
 	private void saveAs() {
 		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
@@ -287,14 +337,21 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 
 			}
 			document.getPreferences().setFilename(saveFile.getAbsoluteFile().getPath());
-			serialise(saveFile.getAbsoluteFile().getPath());
+			serialize(saveFile.getAbsoluteFile().getPath());
 			
 
 		}
 
 	}
-
-	private void serialise(String fileName) {
+	
+	/**
+	 * Writes the current DocumentModel into the file specified  in the argument.
+	 * Updates the status bar to notify the user of the result.
+	 * 
+	 * @param fileName
+	 * 			The path to the file that the current DocumentModel should be saved to.
+	 */
+	private void serialize(String fileName) {
 		try {
 			document.getPreferences().setCanvasDefaultSize(canvas.getPreferredSize());
 			
@@ -312,6 +369,15 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		}
 	}
 
+	/**
+	 * Brings up a JFileChooser letting the user select a previously saved file to open.
+	 * NOTE: Due to an internal bug in java, this dialog may take a few seconds to appear.
+	 * Once a file is selected, resets the UndoableEdit stack, empties the canvas and replaces
+	 * the current DocumentModel with one loaded from the file. Calls cleanUp() on the model
+	 * to get rid of removed elements. Then, reassigns views to DocumentElementModels, adds them to 
+	 * the canvas and links all the appropriate Observable - Observer pairs. Last, DocumentPreferences
+	 * are loaded and set up.
+	 */
 	private void openExisting() {
 		setWaitCursor(true);
 		JFileChooser fc = new JFileChooser();
@@ -354,9 +420,9 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 				
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
-			} catch (Exception e) {
+			}
+			catch (Exception e) {
 				status.setText("Could not open file " + openFile);
-				e.printStackTrace();
 			}
 
 		}
@@ -366,6 +432,13 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	///////////////////////////////DOCUMENT MANIPULATION\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	/*******************************************************************************************/
 
+	/**
+	 * Adds a new ClassModel to the document and sets all the appropriate new dependencies,
+	 * including creating a view and adding it to the canvas.
+	 * 
+	 * @param p
+	 * 		The location of the new ClassModel on the diagram.
+	 */
 	private void addNewClass(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		ClassModel c = new ClassModel(p);
@@ -387,6 +460,13 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		canvas.repaint();
 	}
 
+	/**
+	 * Adds a new TextLabelModel to the document and sets all the appropriate new dependencies,
+	 * including creating a view and adding it to the canvas.
+	 * 
+	 * @param p
+	 * 		The location of the new text label on the diagram.
+	 */
 	private void addNewLabel(Point p) {
 		mode = ListeningMode.LISTEN_TO_ALL;
 		TextLabelModel mod = new TextLabelModel(p);
@@ -409,12 +489,27 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		canvas.repaint();
 	}
 	
+	/**
+	 * Called before any classes are selected for a new relationship, simply
+	 * empties the selection stack and alerts this listener to receive selection
+	 * events from ClassModels. Also updates the status bar to guide the user.
+	 */
 	public void addNewRelationship() {
 		selectionStack.removeAllElements();
 		status.setText("Click on the class you want the relationship to go from");
 		this.mode = ListeningMode.PLACING_RELATIONSHIP;
 	}
 	
+	/**
+	 * Adds a new Relationship between the two specified classes to the document
+	 * and sets all appropriate new dependencies, including creating a view and 
+	 * adding it to the canvas.
+	 * 
+	 * @param to
+	 * 		The ClassModel the new Relationship is to go to.
+	 * @param from
+	 * 		The ClassModel the new Relationship is to go from.
+	 */
 	private void addNewRelationship(ClassModel to, ClassModel from) {
 		
 		Relationship r = new Relationship(from, to);
