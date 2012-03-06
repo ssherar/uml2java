@@ -165,13 +165,14 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 			m = this.checkMethodShell(uml);
 			
 			if(m.groupCount() > 3) {
-				System.out.println(m.groupCount());
+				System.out.println(m.groupCount() + " failed");
 				this.valid = false;
 				return;
 			}
 			if(m.find() && m.groupCount() > 0) {
 				this.checkVisibility(m.group(1));
 				this.attributeName = m.group(2);
+				System.out.println(this.visibility + "\t "+ this.attributeName);
 				if(m.group(3) != null) {
 					for(int i = 0; i < m.groupCount(); i++) {
 						System.out.println(m.group(i));
@@ -184,13 +185,13 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 						}
 					}
 				}
+				
 				/*if(m.groupCount() == 5)
 					this.returnType = m.group(4).substring(3);*/
-				/*Matcher ret = this.checkReturnType(uml);
+				Matcher ret = this.checkReturnType(uml);
 				if(ret.find() && m.groupCount() > 0) {
-					System.out.println("ReturnType hit: " + ret.group(0));
-					//this.returnType = ret.group(0).substring(3);
-				}*/
+					this.returnType = uml.substring(uml.lastIndexOf(":") + 2, uml.length());
+				}
 				
 			}
 		}
