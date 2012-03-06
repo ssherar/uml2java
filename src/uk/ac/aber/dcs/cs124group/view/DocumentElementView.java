@@ -5,24 +5,58 @@ import java.util.Observable;
 
 import javax.swing.*;
 
+/**
+ * The abstract class for all the views to inherit generic methods
+ * to keep consistancy across the board
+ * 
+ * @see javax.swing.JPanel
+ * @see java.util.Observer
+ * 
+ * @author Daniel Maly
+ * @author Samuel B Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public abstract class DocumentElementView extends JPanel implements java.util.Observer {
-
-	
-	
+	/**
+	 * The standardised font from the canvas
+	 */
 	private Font font;
+	
+	/**
+	 * The zoom factor of the element
+	 * @deprecated from v0.1
+	 */
 	private double zoomFactor = 1;
 	
+	/**
+	 * TODO comment
+	 */
 	protected Container suspendedParent;
 	
+	
+	/**
+	 * Placeholder Constructor
+	 */
 	protected DocumentElementView() {
 		
 	}
 	
+	/**
+	 * Set the font with no overridden style
+	 * @param font		the font of type {@link java.awt.Font}
+	 */
 	@Override
 	public void setFont(Font font) {
 		this.setFont(font, false);
 	}
 	
+	/**
+	 * Overloaded with a boolean to check if you want to override the
+	 * generic style from the canvas
+	 * @param font
+	 * @param overrideStyle
+	 */
 	public void setFont(Font font, boolean overrideStyle) {
 		if(!overrideStyle && this.font != null) 
 			this.font = new Font(font.getName(), this.font.getStyle(), font.getSize());
@@ -32,14 +66,28 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 		doLayout();
 	}
 	
+	/**
+	 * @see java.awt.Font
+	 * @return		returns the font
+	 */
 	public Font getFont() {
 		return font;
 	}
 	
+	/**
+	 * 
+	 * @return		the zoom factor as a double
+	 * @deprecated v0.9
+	 */
 	public double getZoomFactor() {
 		return zoomFactor;
 	}
 
+	/**
+	 * 
+	 * @param zoomFactor the zoom factor which needs to be set
+	 * @deprecated v0.9
+	 */
 	public void setZoomFactor(double zoomFactor) {
 		this.zoomFactor = zoomFactor;
 		
@@ -50,12 +98,19 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	}
 	
 
-
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 	}
 	
+	/**
+	 * Called from an notifyObserver(), this methods works out where it comes from and acts upon
+	 * it if the second parameter is a STRING, as Observer params are (Observable o, Object obj)
+	 * <p> 
+	 * @see java.util.Oberserver#update()
+	 * @param o		Where the notifyObserver was called from
+	 * @param s		The string object of which we want to do
+	 */
 	@Override
 	public void update(Observable o, Object s) {
 		if(!(s instanceof String))
