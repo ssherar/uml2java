@@ -281,13 +281,13 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	
 	@Override
 	public void cleanUp() {
-		if(!cardinalityFrom.exists())
+		if(cardinalityFrom != null && !cardinalityFrom.exists())
 			cardinalityFrom = null;
 		
-		if(!cardinalityTo.exists())
+		if(cardinalityTo != null && !cardinalityTo.exists())
 			cardinalityTo = null;
 		
-		if(!label.exists())
+		if(label != null && !label.exists())
 			label = null;
 	}
 	

@@ -25,6 +25,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * @author Daniel Maly 
  * @author Sam Sherar
  * @author Lee Smith
+ * @version 1.0.0
  */
 
 public class Exporter {
@@ -447,24 +448,20 @@ public class Exporter {
 				int numOfArgs = classModel.getAttributes().get(methods)
 						.getArgs().size();
 
-				for (int k = 0; k <= numOfArgs - 1; k++) {
-					contents = (contents + classModel.getAttributes()
-							.get(methods).getArgs().get(k));
-					if (k < numOfArgs - 2) {
+				for (int k = 0; k < numOfArgs; k++) {
+					if (!(k == 0)) {
 						contents = (contents + ", ");
 					}
+					contents = (contents + classModel.getAttributes()
+							.get(methods).getArgs().get(k));
+					
 				}
 				contents = (contents + ")");
 				if (isMethodAbstract) {
 					contents = (contents + ";");
 				} else {
-					if (classModel.getAttributes().get(methods).getReturnType()
-							.equals("void")) {
-						contents = (contents + "{" + NL + NL + TB + "}" + NL + NL);
-					} else {
-						contents = (contents + "{" + NL + TB + TB
-								+ "return null;" + NL + TB + "}" + NL + NL);
-					}
+
+					contents = (contents + " {" + NL + NL + TB + "}" + NL + NL);
 				}
 
 			}
