@@ -22,7 +22,7 @@ import javax.swing.filechooser.FileNameExtensionFilter;
  * fields, methods and the basic outline of the class. It will also add any
  * relationships to other classes.
  * 
- * @author Daniel Maly 
+ * @author Daniel Maly
  * @author Sam Sherar
  * @author Lee Smith
  * @version 1.0.0
@@ -31,16 +31,16 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 public class Exporter {
 
 	private DocumentModel model;
-	
+
 	private Canvas canvas;
 	private ArrayList<String> outputFiles = new ArrayList<String>();
 	private ArrayList<String> fileNames = new ArrayList<String>();
-	
+
 	private final static String NL = "\n";
 	private final static String TB = "\t";
-	
+
 	private Manager manager;
-	
+
 	private boolean errorCheck = false;
 
 	/**
@@ -141,7 +141,7 @@ public class Exporter {
 						.getElements().get(i)));
 			}
 		}
-		
+
 		manager.setWaitCursor(true);
 		JFileChooser fcCode = new JFileChooser();
 		fcCode.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -151,12 +151,11 @@ public class Exporter {
 		manager.setWaitCursor(false);
 
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
-			String chosenDirectory = fcCode.getSelectedFile().getPath()
-					+ "/";
+			String chosenDirectory = fcCode.getSelectedFile().getPath() + "/";
 			for (int j = fileNames.size() - 1; j >= 0; j--) {
-				PrintWriter fileOut = new PrintWriter(
-						new OutputStreamWriter(new FileOutputStream(
-								chosenDirectory + "" + fileNames.get(j))));
+				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
+						new FileOutputStream(chosenDirectory + ""
+								+ fileNames.get(j))));
 
 				fileOut.println(outputFiles.get(j));
 				fileOut.close();
@@ -209,7 +208,7 @@ public class Exporter {
 		}
 
 		contents = (contents + "class "); // can amend this to include interface
-											// and
+		// and
 		// enums etc if we decide to implement them
 		contents = (contents + classModel.getClassName() + " ");
 
@@ -228,7 +227,7 @@ public class Exporter {
 			switch (classModel.getRelationships().get(l).getType()) {
 			case IMPLEMENTS:
 				if (classModel.getClassName() != classModel.getRelationships()
-						.get(l).getGoingFrom().getClassName()) {
+				.get(l).getGoingFrom().getClassName()) {
 					iMplements = (iMplements + classModel.getRelationships()
 							.get(l).getGoingFrom().getClassName());
 				}
@@ -244,10 +243,10 @@ public class Exporter {
 
 			case INHERITANCE:
 				if (classModel.getClassName() != classModel.getRelationships()
-						.get(l).getGoingFrom().getClassName()) {
+				.get(l).getGoingFrom().getClassName()) {
 					eXtends = (eXtends
 							+ classModel.getRelationships().get(l)
-									.getGoingFrom().getClassName() + " ");
+							.getGoingFrom().getClassName() + " ");
 				}
 				break;
 			}
@@ -265,24 +264,24 @@ public class Exporter {
 
 		// --------------------Attributes/Fields----------------------------
 		for (int variables = 0; variables <= classModel.getAttributes().size() - 1; variables++) {
-			
+
 			boolean isAttributeFinal = false;
-			
+
 			// Is it actually valid??
 			if(!classModel.getAttributes().get(variables).isValid()) continue;
-			
+
 			if (classModel.getAttributes().get(variables).getType() == AttributeType.DATA_FIELD) {
 				switch (classModel.getAttributes().get(variables)
 						.getVisibility()) {
-				case PUBLIC:
-					contents = (contents + TB + "public ");
-					break;
-				case PRIVATE:
-					contents = (contents + TB + "private ");
-					break;
-				case PROTECTED:
-					contents = (contents + TB + "protected ");
-					break;
+						case PUBLIC:
+							contents = (contents + TB + "public ");
+							break;
+						case PRIVATE:
+							contents = (contents + TB + "private ");
+							break;
+						case PROTECTED:
+							contents = (contents + TB + "protected ");
+							break;
 				}
 
 				if (classModel.getAttributes().get(variables).isFlagStatic()) {
@@ -300,21 +299,22 @@ public class Exporter {
 
 				contents = (contents
 						+ classModel.getAttributes().get(variables)
-								.getAttributeType() + " ");
+						.getAttributeType() + " ");
 
 				if (isAttributeFinal) {
 					contents = (contents
 							+ classModel.getAttributes().get(variables)
-									.getAttributeName().toUpperCase() + ";");
+							.getAttributeName().toUpperCase() + ";");
 				} else {
 					contents = (contents
 							+ classModel.getAttributes().get(variables)
-									.getAttributeName() + ";");
+							.getAttributeName() + ";");
 				}
 				contents = contents + NL;
 
 			}
 		}
+		contents = contents + NL;
 		// ----------------------Cardinalities------------------------
 
 
@@ -335,8 +335,8 @@ public class Exporter {
 
 			String cardinalityLabel = classModel.getRelationships()
 					.get(cardinalities).getLabel().getText();
-			
-		// ----------- Many to One -------------
+
+			// ----------- Many to One -------------
 			if ((manyCardinality(cardinalityTo).equals("*") && !cardinalityTo.equals("1"))
 					&& goingTo != classModel.getClassName()) {
 				System.out.println("Check 1");
@@ -363,7 +363,7 @@ public class Exporter {
 						+ "> " + cardinalityLabel + " = new ArrayList<"
 						+ goingFrom + ">(" + cardinalityFrom + ");" + NL;
 				//Erroneous Input
-				
+
 			} else if (!cardinalityTo.equals("0..*")
 					&& !cardinalityTo.equals("1")
 					&& goingTo != classModel.getClassName()) {
@@ -376,7 +376,7 @@ public class Exporter {
 							"Error in Cardinalities",
 							JOptionPane.WARNING_MESSAGE);
 					throw new IOException("Export failed");
-					
+
 				} else {
 					contents = contents + TB + "private ArrayList<" + goingTo
 							+ "> " + cardinalityLabel + " = new ArrayList<"
@@ -388,14 +388,14 @@ public class Exporter {
 					&& goingFrom != classModel.getClassName()) {
 				System.out.println("Check 6");
 				String[] values = cardinalityFrom.split("\\.\\.");
-				
+
 				if (!isInteger(values[1].toString())) {
 					JOptionPane.showMessageDialog(null,
 							"Error, invalid cardinality.",
 							"Error in Cardinalities",
 							JOptionPane.WARNING_MESSAGE);
 					throw new IOException("Export failed");
-					
+
 				} else {
 					contents = contents + TB + "private ArrayList<" + goingFrom
 							+ "> " + cardinalityLabel + " = new ArrayList<"
@@ -403,67 +403,78 @@ public class Exporter {
 				}
 
 			}
+			
 		}
-
+		contents = contents + NL;
 		// ------------------------Methods---------------------------
 		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
-			
+
 			Attribute a = classModel.getAttributes().get(methods);
-			
+
 			if(!a.isValid()) continue;
-
-			if (a.getType() == AttributeType.METHOD) {
-				switch (a.getVisibility()) {
-				case PUBLIC:
-					contents = (contents + TB + "public ");
-					break;
-				case PRIVATE:
-					contents = (contents + TB + "private ");
-					break;
-				case PROTECTED:
-					contents = (contents + TB + "protected ");
-					break;
-				}
-
-				boolean isMethodAbstract = false;
-				if (a.isFlagAbstract()) {
-					contents = (contents + "abstract");
-					isMethodAbstract = true;
-				}
-
-				if (a.isFlagStatic()) {
-					contents = (contents + "static ");
-				}
-
-				if (a.isFlagFinal()) {
-					contents = (contents + "final ");
-				}
-
-				if(!a.getReturnType().equals("init")) {
-					contents = (contents + a.getReturnType() + " ");
-				}
-					
-				contents = (contents + a.getAttributeName() + "(");
-
-				int numOfArgs = a.getArgs().size();
-
-				for (int k = 0; k < numOfArgs; k++) {
-					if (!(k == 0)) {
-						contents = (contents + ", ");
+			if (a.getType() == AttributeType.METHOD && a.getAttributeName().equals(classModel.getClassName())){
+				contents = contents + TB + "public " + a.getAttributeName() + "(";
+				for (int k = 0; k < a.getArgs().size(); k++){
+					if (!(k == 0)){
+						contents = contents + ", ";
 					}
-					contents = (contents + a.getArgs().get(k));
-					
+					contents = contents + a.getArgs().get(k);
 				}
-				contents = (contents + ")");
-				if (isMethodAbstract) {
-					contents = (contents + ";");
-				} else {
+				contents = contents + ") {" + NL + NL + TB + "}" + NL + NL;
+			} else { 
+				if (a.getType() == AttributeType.METHOD) {
+					switch (a.getVisibility()) {
+					case PUBLIC:
+						contents = (contents + TB + "public ");
+						break;
+					case PRIVATE:
+						contents = (contents + TB + "private ");
+						break;
+					case PROTECTED:
+						contents = (contents + TB + "protected ");
+						break;
+					}
 
-					contents = (contents + " {" + NL + NL + TB + "}" + NL + NL);
+					boolean isMethodAbstract = false;
+					if (a.isFlagAbstract()) {
+						contents = (contents + "abstract");
+						isMethodAbstract = true;
+					}
+
+					if (a.isFlagStatic()) {
+						contents = (contents + "static ");
+					}
+
+					if (a.isFlagFinal()) {
+						contents = (contents + "final ");
+					}
+
+					if(!a.getReturnType().equals("init")) {
+						contents = (contents + a.getReturnType() + " ");
+					}
+
+					contents = (contents + a.getAttributeName() + "(");
+
+					int numOfArgs = a.getArgs().size();
+
+					for (int k = 0; k < numOfArgs; k++) {
+						if (!(k == 0)) {
+							contents = (contents + ", ");
+						}
+						contents = (contents + a.getArgs().get(k));
+
+					}
+					contents = (contents + ")");
+					if (isMethodAbstract) {
+						contents = (contents + ";");
+					} else {
+
+						contents = (contents + " {" + NL + NL + TB + "}" + NL + NL);
+					}
+
 				}
 
 			}
-
 		}
 		contents = (contents + "}");
 		return contents;
