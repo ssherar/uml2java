@@ -3,29 +3,79 @@ package uk.ac.aber.dcs.cs124group.view;
 import uk.ac.aber.dcs.cs124group.controller.*;
 import uk.ac.aber.dcs.cs124group.gui.*;
 import uk.ac.aber.dcs.cs124group.model.*;
+
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.font.TextAttribute;
 import javax.swing.*;
 import java.util.*;
 
-public class ClassRectangle extends DocumentElementView {
+/**
+ * A view associated to the ClassModel Element.
+ * It creates a new Rectangle on the canvas, and 
+ * makes sure that all Attributes are positioned 
+ * correctly 
+ * 
+ * @see ClassModel
+ * 
+ * @author Daniel Maly
+ * @author Samuel B Sherar
+ * @author Lee Smith
+ * @version v1.0.0
+ */
 
+public class ClassRectangle extends DocumentElementView {
+	
+	/**
+	 * A constant for the background colour for the ClassRectangle when drawn.
+	 */
 	private static final Color RECTANGLE_BACKGROUND = new Color(255, 255, 190);
 
+	/**
+	 * The name of the class.
+	 * @see LabelView
+	 */
 	private LabelView name;
+	
+	/**
+	 * The data manipulation class
+	 * @see ClassModel
+	 */
 	private ClassModel model;
+	
+	/**
+	 * A list of all Data Fields as LabelViews
+	 * @see LabelView
+	 */
 	private ArrayList<LabelView> dataFieldViews = new ArrayList<LabelView>();
+	
+	/**
+	 * A list of all Data Fields as LabelViews
+	 * @see LabelView
+	 */
 	private ArrayList<LabelView> methodViews = new ArrayList<LabelView>();
 
+	/**
+	 * Constructor: creates a new view for the chosen
+	 * ClassModel and initialises all the appropriate listeners
+	 * Observers and Models and makes sure if it is correctly
+	 * Bootstrapped
+	 * 
+	 * @param m			The ClassModel to create a view for
+	 * @param isNew		<code>True</code> if associating with a newly created class
+	 * 					<code>False</code> otherwise.
+	 */
 	public ClassRectangle(ClassModel m, boolean isNew) {
+
 		this.model = m;
-		
 		this.setLocation(m.getLocation());
 		this.setPreferredSize(m.getSize());
 		this.setOpaque(false);
 		this.setLayout(new DiagramLayout());
-
+		
+		/*
+		 * If the model is a newly created class
+		 */
 		if (isNew) {
 			TextLabelModel nameLabel = new TextLabelModel(new Point(0, 0),
 					"NewClass", true);
@@ -37,7 +87,11 @@ public class ClassRectangle extends DocumentElementView {
 			m.setNameLabel(nameLabel);
 			this.add(name);
 			name.enableEdit();
-		} else {
+		} 
+		/*
+		 * Otherwise clean up the variables/methods
+		 */
+		else {
 			m.cleanUp();
 			
 			name = new LabelView(m.getNameLabel());
@@ -84,17 +138,24 @@ public class ClassRectangle extends DocumentElementView {
 
 		name.setAlignmentInParent(JTextField.CENTER);
 
-		
+		/*
+		 * Add all the listeners
+		 */
 		ClassController listener = new ClassController(this.model);
 		this.addMouseListener(listener);
 		this.addKeyListener(listener);
 		this.addMouseMotionListener(listener);
-
+		
+		/*
+		 * Create a popup menu for editing
+		 */
 		RectanglePopupMenu popupMenu = new RectanglePopupMenu(listener);
 		this.setComponentPopupMenu(popupMenu);
 		
-		
-
+		/*
+		 * As we can't modify the flag now, we have to do
+		 * it at the end.
+		 */
 		SwingUtilities.invokeLater(new Runnable() {
 			public void run() {
 				repositionAttributes();
@@ -104,6 +165,17 @@ public class ClassRectangle extends DocumentElementView {
 		});
 	}
 
+	/**
+	 * Adds the component from the view.
+	 * If the component happened to be a TextArea, the Attributes needs
+	 * to be repositioned
+	 * 
+	 * @see DocumentElementView#add(Component)
+	 * 
+	 * @param c		The Component to be added
+	 * @return		The Container which the Component has been
+	 * 				added to
+	 */
 	@Override
 	public Container add(Component c) {
 		super.add(c);
@@ -114,6 +186,15 @@ public class ClassRectangle extends DocumentElementView {
 	}
 	
 	
+	/**
+	 * Removes the component from the view.
+	 * If the component happened to be a TextArea, the Attributes needs
+	 * to be repositioned
+	 * 
+	 * @see DocumentElementView#remove(Component)
+	 * 
+	 * @param c		The Component to be removed
+	 */
 	@Override
 	public void remove(Component c) {
 		super.remove(c);
@@ -123,6 +204,13 @@ public class ClassRectangle extends DocumentElementView {
 		}
 	}
 
+	/**
+	 * Set the font for the Name label as well as for all
+	 * the Components
+	 * @see DocumentElementView#setFont(Font)
+	 * 
+	 * @param f		The new font to be applied
+	 */
 	@Override
 	public void setFont(Font f) {
 		super.setFont(f);
@@ -137,6 +225,14 @@ public class ClassRectangle extends DocumentElementView {
 		this.doLayout();
 	}
 
+	/**
+	 * Reposition all the Attributes to stop overlapping
+	 * and making them adhere to a correct UML notation.
+	 * 
+	 * @see Attribute#setLocation(Point, boolean)
+	 * @see #getNextDataFieldPoint(int)
+	 * @see #getNextMethodPoint(int)
+	 */
 	private void repositionAttributes() {
 		ArrayList<Attribute> dataFields = this.model.getDataFields();
 		ArrayList<Attribute> methods = this.model.getMethods();
@@ -153,8 +249,17 @@ public class ClassRectangle extends DocumentElementView {
 
 	}
 
+	/**
+	 * Called when the model requests an Attribute to be added to it.
+	 * Creates a new LabelView with a default values, adds the observers, then
+	 * adds the view to this component and bootstraps everything.
+	 * 
+	 * @param from Whether or not the requested cardinality is on the "from" end.
+	 * 
+	 * @see Relationship#requestCardinality(String)
+	 */
 	private void addAttributeToModel(AttributeType type) {
-		String defaultRepresentation = type == AttributeType.METHOD ? "+ method() : void"
+		String defaultRepresentation = (type == AttributeType.METHOD) ? "+ method() : void"
 				: "- dataField : Type";
 		Attribute newAttribute = new Attribute(this.getNextDataFieldPoint(-1),
 				defaultRepresentation, type);
@@ -174,7 +279,12 @@ public class ClassRectangle extends DocumentElementView {
 		this.repaint();
 	}
 
-
+	/**
+	 * Paints the ClassRectangle onto the Canvas with a predefined separator
+	 * between Datafields and Methods
+	 * 
+	 * @param gg	The graphics object needed to paint the rectangle
+	 */
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
@@ -197,6 +307,12 @@ public class ClassRectangle extends DocumentElementView {
 
 	}
 
+	/**
+	 * Calculates the Y coordinate depending on if there are any Datafields are initialised.
+	 * 
+	 * @return	If none, it finds the size of the name label with an added constant
+	 * 			If there are some, it finds out the next point on the diagram
+	 */
 	private int getSeparatorCoordinate() {
 		int numberOfExistingDataFields = 0;
 		for(int i = 0; i < this.model.getDataFields().size(); i++) {
@@ -258,6 +374,13 @@ public class ClassRectangle extends DocumentElementView {
 		return new Point(4, y);
 	}
 
+	/**
+	 * Update the {@link ClassModel} according to what has been called in
+	 * the "arg" parameters
+	 * 
+	 * @param o		The new values for the {@link ClassModel}
+	 * @param arg	What are we changing
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		super.update(o, arg);
@@ -270,25 +393,36 @@ public class ClassRectangle extends DocumentElementView {
 
 	}
 
+	/**
+	 * Update the model with the new values from the {@link ClassModel}
+	 * @param o			The new values for the label
+	 * @param arg		The command we want to do
+	 */
 	private void updateModel(ClassModel o, String arg) {
+		// Location Changed
 		if (arg.equals("locationChanged")) {
 			this.setLocation(o.getLocation());
 			this.getParent().doLayout();
-
-		} else if (arg.equals("paintStateChanged")) {
+		} 
+		//Paint State Changed
+		else if (arg.equals("paintStateChanged")) {
 			if (model.getPaintState().toString().contains("RESIZE"))
 				this.setResizeCursor();
 			else
 				this.setDefaultCursor();
 
-		} else if (arg.equals("sizeChanged")) {
+		} 
+		// Size changed
+		else if (arg.equals("sizeChanged")) {
 			this.setPreferredSize(o.getSize());
 			this.name.realign();
 			this.getParent().doLayout();
-
-		} else if (arg.equals("attributeChanged")) {
-
-		} else if (arg.equals("flagChanged")) {
+		} 
+		// Flag Changed
+		else if (arg.equals("flagChanged")) {
+			/*
+			 * Set up the different type of font styles
+			 */
 			Font abstractChanged = new Font(this.getFont().getName(), Font.ITALIC, this.getFont().getSize());
 			
 			/* Reference: http://stackoverflow.com/questions/325840/what-is-the-constant-value-of-the-underline-font-in-java */
@@ -297,6 +431,9 @@ public class ClassRectangle extends DocumentElementView {
 			
 			Font staticChanged = new Font(this.getFont().getName(), Font.PLAIN, this.getFont().getSize()).deriveFont(underlineFont);
 			
+			/*
+			 * And apply these new font styles!
+			 */
 			if (o.isStatic()) {
 				this.name.setFont(staticChanged, true);
 				((RectanglePopupMenu)(this.getComponentPopupMenu())).setStatic();
@@ -317,19 +454,29 @@ public class ClassRectangle extends DocumentElementView {
 				this.repaint();
 			}
 
-		} else if (arg.equals("nameChanged")) {
+		} 
+		// Name Changed
+		else if (arg.equals("nameChanged")) {
 			this.setName(o.getClassName());
 
-		} else if (arg.equals("addDataFieldRequested")) {
+		} 
+		// New Data Field Requested
+		else if (arg.equals("addDataFieldRequested")) {
 			this.addAttributeToModel(AttributeType.DATA_FIELD);
 
-		} else if (arg.equals("addMethodRequested")) {
+		} 
+		// New Method Requested
+		else if (arg.equals("addMethodRequested")) {
 			this.addAttributeToModel(AttributeType.METHOD);
-
 		}
 
 	}
 
+	/**
+	 * Update the preferences with the new values from the {@link TextLabelModel}
+	 * @param o			The new values for the label
+	 * @param arg		The command we want to do
+	 */
 	private void updatePreferences(DocumentPreferences o, String arg) {
 		if (arg.equals("fontChanged")) {
 			this.setFont(o.getFont());
@@ -338,6 +485,10 @@ public class ClassRectangle extends DocumentElementView {
 		}
 	}
 
+	/**
+	 * Change the cursor to show that the user is in a resizable
+	 * hotspot of the ClassRectangle
+	 */
 	private void setResizeCursor() {
 		try {
 			this.setCursor(Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR));
@@ -346,24 +497,55 @@ public class ClassRectangle extends DocumentElementView {
 		}
 	}
 
+	/**
+	 * Change the cursor to default
+	 */
 	private void setDefaultCursor() {
 		this.setCursor(Cursor.getDefaultCursor());
 	}
 
+	/**
+	  * A Rightclick Popup menu for the Class Rectangle for editing
+	 * deleting and adding modifiers, as well as adding Attributes with ease
+	 * <p>A private class only used by ClassRectangle - it doesn't
+	 * need scope from any other class.
+	 * @author Daniel Maly
+	 * @author Samuel B Sherar
+	 * @author Lee Smith
+	 * @version v1.0.0
+	 */
 	private class RectanglePopupMenu extends JPopupMenu {
-
+		
+		/**
+		 * The Action Listener for the menu
+		 */
 		private ClassController listener;
+		
+		/**
+		 * The default types of modifiers of the class
+		 */
 		private String[] modTypes = {"Abstract", "Final", "Static", "None"};
 		
+		/**
+		 * The submenu for the modifiers
+		 */
 		private JMenu addModifiers;
 		
+		/**
+		 * Constructor: Create the menu items and make sure they are
+		 * Bootstrapped
+		 * @param listener		The action listener
+		 */
 		public RectanglePopupMenu(ClassController listener) {
 			
 			this.listener = listener;
-			
 			addModifiers = new JMenu("Class Modifiers");
 			JMenuItem modMenu;
 			
+			/*
+			 * Loop through the modifiers and add them to the parent
+			 * menu
+			 */
 			ButtonGroup bg = new ButtonGroup();
 			for (String s : modTypes){
 				modMenu = new JRadioButtonMenuItem(s, s.equals("None"));
@@ -372,6 +554,9 @@ public class ClassRectangle extends DocumentElementView {
 				addModifiers.add(modMenu);
 			}
 			
+			/*
+			 * Add the rest of the Parent menu items
+			 */
 			JMenuItem addRelationship = new JMenuItem("Add Relationship");
 			addRelationship.addActionListener(listener);
 
@@ -393,6 +578,10 @@ public class ClassRectangle extends DocumentElementView {
 
 		}
 		
+		/**
+		 * Loops through all the modifiers in the menu and sets the Abstract option
+		 * to selected
+		 */
 		public void setAbstract() {
 			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
 				if(this.addModifiers.getItem(i).getText().equals("Abstract")) {
@@ -401,6 +590,10 @@ public class ClassRectangle extends DocumentElementView {
 			}
 		}
 		
+		/**
+		 * Loops through all the modifiers in the menu and sets the Final option
+		 * to selected
+		 */
 		public void setFinal() {
 			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
 				if(this.addModifiers.getItem(i).getText().equals("Final")) {
@@ -410,6 +603,10 @@ public class ClassRectangle extends DocumentElementView {
 			
 		}
 		
+		/**
+		 * Loops through all the modifiers in the menu and sets the Static option
+		 * to selected
+		 */
 		public void setStatic() {
 			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
 				if(this.addModifiers.getItem(i).getText().equals("Static")) {
@@ -419,6 +616,10 @@ public class ClassRectangle extends DocumentElementView {
 			
 		}
 		
+		/**
+		 * Loops through all the modifiers in the menu and sets the None option
+		 * to selected
+		 */
 		public void setNone() {
 			for(int i = 0; i < this.addModifiers.getItemCount(); i++) {
 				if(this.addModifiers.getItem(i).getText().equals("None")) {
