@@ -18,21 +18,44 @@ import java.awt.Dimension;
  *
  */
 public class SizeEdit extends AbstractUndoableEdit {
-	
+	/**
+	 * A resizable DocumentElementModel
+	 */
 	private Resizeable editedObject;
+	/**
+	 * The previous size of the Element
+	 */
 	private Dimension formerSize;
+	/**
+	 * The current size of the Element
+	 */
 	private Dimension latterSize;
 	
+	/**
+	 * Constructor:	Assigns the parameters to global
+	 * variables	
+	 * @param o		The resizeable object
+	 * @param f		The private size
+	 * @param l		The current size
+	 */
 	public SizeEdit(Resizeable o, Dimension f, Dimension l) {
 		this.editedObject = o;
 		this.formerSize = f;
 		this.latterSize = l;
 	}
 	
+	/**
+	 * Overrides the AbstractUndoableEdit's undo method.<p>
+	 * Changes the size to the previous size of the Element
+	 */
 	public void undo() {
 		editedObject.setSize(formerSize, false);
 	}
 	
+	/**
+	 * Overrides the AbstractUndoableEdit's undo method.<p>
+	 * Changes the size to the current size of the Element
+	 */
 	public void redo() {
 		editedObject.setSize(latterSize, false);
 		

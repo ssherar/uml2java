@@ -16,21 +16,42 @@ import uk.ac.aber.dcs.cs124group.model.Relationship;
  *
  */
 public class RelationshipStateEdit extends AbstractUndoableEdit {
-	
+	/**
+	 * The previous state of the relationship
+	 */
 	private Relationship previousState;
+	/**
+	 * The current state of the relationship
+	 */
 	private Relationship currentState;
 	
+	/**
+	 * Constructor: Assign the parameters to the global
+	 * variables
+	 * @param p
+	 * @param c
+	 */
 	public RelationshipStateEdit(Relationship p, Relationship c) {
 		this.previousState = p;
 		this.currentState = c;
 	}
 	
+	/**
+	 * Overrides the AbstractUndoableEdit's undo method.<p>
+	 * Restores the current state with the previous state and swaps
+	 * the global variables around.
+	 * @see Relationship#restoreFromPrevious(previous)
+	 */
 	public void undo() {
 		Relationship tmp = this.previousState;
 		this.previousState = this.currentState.clone();
 		this.currentState.restoreFromPrevious(tmp);
 	}
 	
+	/**
+	 * Overrides the AbstractUndoableEdit's redo method.<p>
+	 * Calls the {RelationshipStateEdit#undo()} method.
+	 */
 	public void redo() {
 		this.undo();
 	}

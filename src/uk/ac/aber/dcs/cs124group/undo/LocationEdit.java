@@ -20,21 +20,45 @@ import uk.ac.aber.dcs.cs124group.model.*;
  */
 public class LocationEdit extends AbstractUndoableEdit {
 	
+	/**
+	 * A movable DocumentElementModel
+	 */
 	private Moveable editedObject;
+	/**
+	 * The previous location of the Element
+	 */
 	private Point formerLocation;
+	/**
+	 * The current location of the Element
+	 */
 	private Point latterLocation;
 	
+	/**
+	 * Constructor: Assigning the parameters to the 
+	 * global variables
+	 * @param o		The Movable Object in question
+	 * @param f		The previous location
+	 * @param l		The current location
+	 */
 	public LocationEdit(Moveable o, Point f, Point l) {
 		this.editedObject = o;
 		this.formerLocation = f;
 		this.latterLocation = l;
 	}
 	
+	/**
+	 * Overrides the AbstractUndoableEdit's undo method.<p>
+	 * Undo the object to the previous location
+	 */
 	public void undo() {
 		editedObject.setLocation(formerLocation, false);
 
 	}
 	
+	/**
+	 * Overrides the AbstractUndoableEdit's redo method.<p>
+	 * Redos the object to the previous location
+	 */
 	public void redo() {
 		editedObject.setLocation(latterLocation, false);
 	}
