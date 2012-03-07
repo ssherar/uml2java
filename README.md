@@ -2,8 +2,8 @@
 
 ## Links
 
-[Invitation to the Class Diagram](https://www.lucidchart.com/documents/edit#4e8f-e254-4f424514-8773-0ece0abeb66a?page=0&branch=157324fa-fb2f-47cf-a28d-f0c742dbcb9c)
-[Invitation to Interfacing Class Diagram] (http://www.lucidchart.com/invitations/accept/4f416ec7-8bfc-4c0e-a2bf-3e120a5acd28)
+[Invitation to the Model Class Diagram](http://www.lucidchart.com/invitations/accept/4f57911d-520c-46bd-90ab-7bb00a7c6148)
+
 
 ## Feature List:
 
