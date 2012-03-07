@@ -23,7 +23,7 @@ public class LocationEdit extends AbstractUndoableEdit {
 	/**
 	 * A movable DocumentElementModel
 	 */
-	private Moveable editedObject;
+	private Movable editedObject;
 	/**
 	 * The previous location of the Element
 	 */
@@ -40,7 +40,7 @@ public class LocationEdit extends AbstractUndoableEdit {
 	 * @param f		The previous location
 	 * @param l		The current location
 	 */
-	public LocationEdit(Moveable o, Point f, Point l) {
+	public LocationEdit(Movable o, Point f, Point l) {
 		this.editedObject = o;
 		this.formerLocation = f;
 		this.latterLocation = l;

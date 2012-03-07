@@ -22,7 +22,7 @@ import uk.ac.aber.dcs.cs124group.view.ClassRectangle;
  * @version v1.0.0
  *
  */
-public class ClassModel extends DocumentElementModel implements Moveable, Resizeable {
+public class ClassModel extends DocumentElementModel implements Movable, Resizable {
 	
 	/**
 	 * A unique SerialVersion identifier.

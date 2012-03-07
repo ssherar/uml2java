@@ -21,7 +21,7 @@ public class SizeEdit extends AbstractUndoableEdit {
 	/**
 	 * A resizable DocumentElementModel
 	 */
-	private Resizeable editedObject;
+	private Resizable editedObject;
 	/**
 	 * The previous size of the Element
 	 */
@@ -38,7 +38,7 @@ public class SizeEdit extends AbstractUndoableEdit {
 	 * @param f		The private size
 	 * @param l		The current size
 	 */
-	public SizeEdit(Resizeable o, Dimension f, Dimension l) {
+	public SizeEdit(Resizable o, Dimension f, Dimension l) {
 		this.editedObject = o;
 		this.formerSize = f;
 		this.latterSize = l;

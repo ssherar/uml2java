@@ -24,7 +24,7 @@ import uk.ac.aber.dcs.cs124group.view.LabelView;
  * @author Lee Smith
  * @version 1.0.0
  */
-public class TextLabelModel extends DocumentElementModel implements Moveable {
+public class TextLabelModel extends DocumentElementModel implements Movable {
 	
 	/** The text contained in this label. */
 	private String text = "New Label";
@@ -130,14 +130,14 @@ public class TextLabelModel extends DocumentElementModel implements Moveable {
 	}
 
 	/**
-	 * @see Moveable#getLocation()
+	 * @see Movable#getLocation()
 	 */
 	public Point getLocation() {
 		return location;
 	}
 
 	/**
-	 * @see Moveable#setLocation(Point, boolean)
+	 * @see Movable#setLocation(Point, boolean)
 	 */
 	public void setLocation(Point location, boolean undoable) {
 		if(undoable) {
