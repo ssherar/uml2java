@@ -154,12 +154,19 @@ public class Exporter {
 		if (fcReturnVal == JFileChooser.APPROVE_OPTION) {
 			String chosenDirectory = fcCode.getSelectedFile().getPath() + "/";
 			for (int j = fileNames.size() - 1; j >= 0; j--) {
-				PrintWriter fileOut = new PrintWriter(new OutputStreamWriter(
-						new FileOutputStream(chosenDirectory + ""
-								+ fileNames.get(j))));
+				
+				File outFile = new File(chosenDirectory + fileNames.get(j));
+				
+				try {
+					PrintWriter fileOut = new PrintWriter(outFile);
+					fileOut.println(outputFiles.get(j));
+					fileOut.close();
+				}
+				catch (FileNotFoundException ex) {
+					throw new IOException("Export failed due to invalid class name or insufficient privileges");
+				}
 
-				fileOut.println(outputFiles.get(j));
-				fileOut.close();
+				
 
 			}
 		}
@@ -185,7 +192,7 @@ public class Exporter {
 		ClassModel codeModel = classModel;
 
 		if (fileNames.contains(classModel.getClassName() + ".java")) {
-			throw new IOException("Export Error, Duplicate Class Names");
+			throw new IOException("Export failed due to duplicate class names");
 		} else {
 			fileNames.add(classModel.getClassName() + ".java");
 
@@ -431,7 +438,7 @@ public class Exporter {
 								"Error, invalid cardinality.",
 								"Error in Cardinalities",
 								JOptionPane.WARNING_MESSAGE);
-						throw new IOException("Export failed");
+						throw new IOException("Export failed due to an invalid cardinality");
 
 					} else {
 						cardialitiesString = cardialitiesString + TB
@@ -481,7 +488,7 @@ public class Exporter {
 									"Error, invalid cardinality.",
 									"Error in Cardinalities",
 									JOptionPane.WARNING_MESSAGE);
-							throw new IOException("Export failed");
+							throw new IOException("Export failed due to an invalid cardinality");
 
 						} else {
 							cardialitiesString = cardialitiesString + TB

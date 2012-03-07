@@ -250,8 +250,13 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			exp.exportCode();
 			status.setText("Exported successfully!");
 		} catch (IOException e1) {
-			status.setText("Could not export into Java code.");
-			e1.printStackTrace();
+			
+			if(e1.getMessage() != null) {
+				status.setText(e1.getMessage());
+			}
+			else {
+				status.setText("Could not export into Java code due to an unforeseen error.");
+			}
 		}
 	}
 
