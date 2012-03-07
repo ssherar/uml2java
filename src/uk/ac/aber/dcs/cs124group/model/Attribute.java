@@ -149,7 +149,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	 * @see uk.ac.aber.dcs.cs124group.model.TextLabelModel#setText() TextLabelModel.setText()
 	 * 
 	 * @param text		The UML representation
-	 * @param undoable	a boolean to check if you want to fire an undoable event
+	 * @param undoable	<code>True</code> if you want to register
 	 */
 	@Override
 	public void setText(String text, boolean undoable) {
@@ -162,7 +162,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	/**
 	 * Set the abstract flag in the attribute, then tells the observer to act upon this new information
 	 * @param set		To set the flag directly
-	 * @param undo		<code>true</code> if you want to make an undoableEdit, <code>false</code> for none
+	 * @param undo		<code>true</code> if this is an user action which wants to be undone, <code>false</code> otherwise
 	 */
 	public void setAbstract(boolean set, boolean undo) {
 		if(undo) {
@@ -177,7 +177,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	/**
 	 * Set the static flag in the attribute, then tells the observer to act upon this new information
 	 * @param set		To set the flag directly
-	 * @param undo		<code>true</code> if you want to make an undoableEdit, <code>false</code> for none
+	 * @param undo		<code>true</code> if this is an user action which wants to be undone, <code>false</code> otherwise
 	 */
 	public void setStatic(boolean set, boolean undo) {
 		if(undo) {
@@ -192,7 +192,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	/**
 	 * Set the final flag in the attribute, then tells the observer to act upon this new information
 	 * @param set		To set the flag directly
-	 * @param undo		<code>true</code> if you want to make an undoableEdit, <code>false</code> for none
+	 * @param undo		<code>true</code> if this is an user action which wants to be undone, <code>false</code> otherwise
 	 */
 	public void setFinal(boolean set, boolean undo) {
 		if(undo) {
@@ -207,7 +207,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	/**
 	 * Set the transient flag in the attribute, then tells the observer to act upon this new information
 	 * @param set		To set the flag directly
-	 * @param undo		<code>true</code> if you want to make an undoableEdit, <code>false</code> for none
+	 * @param undo		<code>true</code> if this is an user action which wants to be undone, <code>false</code> otherwise
 	 */
 	public void setTransient(boolean set, boolean undo) {
 		if(undo) {
@@ -222,7 +222,7 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 	/**
 	 * Remove ALL the flags in the attribute, then tells the observer to act upon this new information
 	 * @param set		To set the flag directly
-	 * @param undo		<code>true</code> if you want to make an undoableEdit, <code>false</code> for none
+	 * @param undo		<code>true</code> if this is an user action which wants to be undone, <code>false</code> otherwise
 	 */
 	public void setNone(boolean set, boolean undo) {
 		cleanFlags(undo);
