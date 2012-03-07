@@ -2,11 +2,25 @@ package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
 
-public class DiagramLayout implements LayoutManager, java.io.Serializable {
+/**
+ * A custom LayoutManager used on the diagram canvas that respects 
+ * the preferred size and location of components. Works very similarly
+ * to absolute positioning.
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
+public class DiagramLayout implements LayoutManager {
 
 
 
 	@Override
+	/** 
+	 * Sets bounds on every contained component according to the latter's own
+	 * preferred size and location.
+	 */
 	public void layoutContainer(Container canvas) {
 		
 		int numberOfElements = canvas.getComponentCount();
