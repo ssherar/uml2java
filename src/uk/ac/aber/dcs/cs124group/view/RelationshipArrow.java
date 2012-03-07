@@ -5,32 +5,58 @@ import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.util.Observable;
 
-import javax.swing.ButtonGroup;
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
-import javax.swing.JRadioButtonMenuItem;
+import javax.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
 import uk.ac.aber.dcs.cs124group.model.*;
 
+/**
+ * The view associated to Relationship elements. 
+ * This JComponent spans usually a very big portion of the canvas but only receives
+ * mouse events when the mouse is close to the actual arrow, one of its points
+ * or one of its Labels. 
+ * 
+ * @see Relationship
+ * 
+ * @author DanielMaly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class RelationshipArrow extends DocumentElementView {
 	
+	/**
+	 * The Relationship this view is displaying.
+	 */
 	private Relationship model;
 	
+	/**
+	 * Constructs a new view for the specified Relationship
+	 * and makes sure all appropriate observers, listeners and
+	 * model objects are properly bootstrapped.
+	 *
+	 * @param model
+	 * 		The Relationship this view will be displaying.
+	 */
 	public RelationshipArrow(Relationship model) {
+		
 		this.model = model;
 		this.setLocation(new Point(0,0));
 		this.setPreferredSize(new Dimension(100000,100000));
 		this.setOpaque(false);
+		
+		/* Associates a RelationshipController with the model and this view. */
 		RelationshipController controller = new RelationshipController(this.model);
 		RelationshipPopup menu = new RelationshipPopup(controller);
 		this.setComponentPopupMenu(menu);
-		this.setLayout(new DiagramLayout());
-		
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
 		
+		
+		this.setLayout(new DiagramLayout());
+		
+		
+		/* Bootstraps all sub-elements of the model (the label and the two cardinalities, if present). */
 		if(this.model.getLabel() != null) {
 			LabelView view = this.model.getLabel().getView();
 			this.model.getLabel().addUndoableEditListener(this.model.getUndoableEditListener());
@@ -62,6 +88,27 @@ public class RelationshipArrow extends DocumentElementView {
 		this.model.getGoingTo().addObserver(this.model);
 	}
 	
+	/**
+	 * Overrides the default JComponent method that tests whether a specific point
+	 * lies within the boundaries of this component. This lets us define the actual
+	 * shape of the component arbitrarily, as opposed to it having to be rectangular.
+	 * <p>
+	 * The method uses two-dimensional vectors to test first whether the orthogonal projection 
+	 * of the tested point onto the line in the direction of any given segment lies
+	 * on the segment, then whether that projection is within 10px of the line. 
+	 * If both conditions are satisfied, returns true.
+	 * <p>
+	 * The method will also return true if the tested point is within 10px of any user-defined
+	 * Point (appearing as a visible circle on the screen) or if the tested point lies 
+	 * within the boundaries of any sub-elements (labels, cardinalities...).
+	 * 
+	 * @see Vector2D
+	 * @see RelationshipEndPoint
+	 * @see java.awt.Point
+	 * 
+	 * @param p The point to be tested.
+	 * @return True if the point should be considered as lying inside this JComponent, false otherwise.
+	 */
 	@Override
 	public boolean contains(Point p) {
 		
@@ -94,11 +141,17 @@ public class RelationshipArrow extends DocumentElementView {
 	}
 	
 	@Override
+	/**
+	 * @see #contains(Point)
+	 */
 	public boolean contains(int x, int y) {		
 		return this.contains(new Point(x,y));		
 	}
 	
 	@Override
+	/**
+	 * Updates the view in response to changes in the model.
+	 */
 	public void update(Observable o, Object s) {
 		super.update(o, s);
 		if(s.equals("typeChanged") || s.equals("restored")) {
@@ -121,6 +174,15 @@ public class RelationshipArrow extends DocumentElementView {
 
 	}
 	
+	/**
+	 * Called when the model requests a cardinality to be added to it.
+	 * Creates a new Cardinality, adds it to the model, creates a view for it, 
+	 * adds the view to this component and bootstraps everything.
+	 * 
+	 * @param from Whether or not the requested cardinality is on the "from" end.
+	 * 
+	 * @see Relationship#requestCardinality(String)
+	 */
 	private void addCardinalityToModel(boolean from) {
 		RelationshipEndPoint point = (RelationshipEndPoint) 
 				(from ? this.model.getPoints().get(0) : this.model.getPoints().get(this.model.getPoints().size() - 1));
@@ -143,6 +205,13 @@ public class RelationshipArrow extends DocumentElementView {
 		this.repaint();
 	}
 	
+	/**
+	 * Called when the model requests a label to be added to it.
+	 * Creates a new RelationshipLabel, adds it to the model, creates a view for it, 
+	 * adds the view to this component and bootstraps everything.
+	 * 
+	 * @see Relationship#requestLabel()
+	 */
 	private void addLabelToModel() {
 		
 		RelationshipLabel label = new RelationshipLabel(this.model.getLabelReferencePoint(),this.model);
@@ -163,17 +232,28 @@ public class RelationshipArrow extends DocumentElementView {
 	}
 	
 	@Override
+	/**
+	 * Overrides the superclass setFont() method to set the font of any sub-element views.
+	 */
 	public void setFont(Font f) {
 		super.setFont(f);
 		for(int i = 0; i < this.getComponentCount(); i++)
 			this.getComponent(i).setFont(f);
 	}
 	
+	/**
+	 * Paints the relationship arrow based on user-defined points,
+	 * the relationship type and the paint state. Also sets appropriate
+	 * bounds on this component.
+	 * 
+	 * @see Vector2D
+	 */
 	public void paintComponent(Graphics gg) {
 		Graphics2D g = (Graphics2D) gg;
 		
 		ArrayList<Point> points = this.model.getPoints();
 		
+		/* Obtain points for the polyline */
 		int[] xpoints = new int[points.size()];
 		int[] ypoints = new int[points.size()];
 		
@@ -182,18 +262,20 @@ public class RelationshipArrow extends DocumentElementView {
 			ypoints[i] = points.get(i).y;
 		}
 		
+		/* Save the current Stroke so we can reset it later */
 		Stroke tmp = g.getStroke();
 		
 		//We are drawing the arrows at the fromPoint!!!
 		Point fromPoint = points.get(0);
 		Point toPoint   = points.get(1);
 		
+		/* Work out the reference point for the arrow/diamond */
 		Vector2D firstSegmentVector = new Vector2D(toPoint.x - fromPoint.x, toPoint.y - fromPoint.y); 
 		Vector2D referencePointVector = firstSegmentVector.multiplyByScalar(19.0 / firstSegmentVector.length());
 		
 		Point referencePoint = new Point(fromPoint.x + referencePointVector.x, fromPoint.y + referencePointVector.y);
 		
-		
+		/* Rotate the reference point to get the outlying arrow/diamond points */
 		AffineTransform rotation = new AffineTransform();
 		rotation.rotate(Math.PI / 6, fromPoint.x, fromPoint.y);
 		
@@ -205,7 +287,7 @@ public class RelationshipArrow extends DocumentElementView {
 		rotation.transform(referencePoint, arrowPoint2);
 		
 		
-		
+		/* Draw the INHERITANCE / IMPLEMENTS arrowhead */
 		if(this.model.getType() == RelationshipType.INHERITANCE || this.model.getType() == RelationshipType.IMPLEMENTS) {
 			g.drawLine(arrowPoint1.x, arrowPoint1.y, fromPoint.x, fromPoint.y);
 			g.drawLine(arrowPoint2.x, arrowPoint2.y, fromPoint.x, fromPoint.y);
@@ -214,11 +296,13 @@ public class RelationshipArrow extends DocumentElementView {
 			ypoints[0] = referencePoint.y;
 		}
 		
+		/* Draw the simple USES arrowhead */
 		else if(this.model.getType() == RelationshipType.USES) {
 			g.drawLine(arrowPoint1.x, arrowPoint1.y, fromPoint.x, fromPoint.y);
 			g.drawLine(arrowPoint2.x, arrowPoint2.y, fromPoint.x, fromPoint.y);
 		}
 		
+		/* Draw or fill the AGGREGATION/COMPOSITION diamond */
 		else if(this.model.getType() == RelationshipType.COMPOSITION || this.model.getType() == RelationshipType.AGGREGATION) {
 			Vector2D doubleReferenceVector = referencePointVector.multiplyByScalar(2 * (Math.cos(Math.PI / 6)));
 			Point doubleReferencePoint = new Point(fromPoint.x + doubleReferenceVector.x, fromPoint.y + doubleReferenceVector.y);
@@ -240,13 +324,16 @@ public class RelationshipArrow extends DocumentElementView {
 			
 		}
 		
+		/* Set the stroke to a dashed line if the type is IMPLEMENTS */
 		if(this.model.getType() == RelationshipType.IMPLEMENTS) {
 			g.setStroke(new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 1.0f, new float[] {10}, 0));
 		}
 		g.drawPolyline(xpoints, ypoints, points.size());
 	
+		/* Reset the Stroke we saved earlier */
 		g.setStroke(tmp);
 		
+		/* If moused over, draw visible circles around user-defined points */
 		if(this.model.getPaintState() == ElementPaintState.MOUSED_OVER || this.model.getPaintState() == ElementPaintState.SELECTED) {
 			g.setColor(Color.GREEN);
 			for(int i = 0; i < points.size(); i++) {
@@ -275,11 +362,33 @@ public class RelationshipArrow extends DocumentElementView {
 		this.getParent().doLayout();
 	}
 	
+	/**
+	 * The popup menu that appears when the user right-clicks on the 
+	 * relationship arrow.
+	 * 
+	 * @author Daniel Maly
+	 * @author Sam Sherar
+	 * @author Lee Smith
+	 * @version 1.0.0
+	 */
 	private class RelationshipPopup extends JPopupMenu {
+		
+		/** The listener to this popup menu. */
 		private RelationshipController listener;
+		
+		/** The change relationship type submenu. */
 		private JMenu changeRelationship;
 		
+		/** Relationship types available for selection. */
 		private String[] rTypes = {"Aggregation","Composition","Inheritance","Uses","Implements"};
+		
+		/** 
+		 * Constructs a new Relationship popup menu with the specified
+		 * RelationshipController as ActionListener.
+		 * 
+		 * @param l
+		 * 		The associated RelationshipController
+		 */
 		public RelationshipPopup(RelationshipController l) {
 			this.listener = l;
 			changeRelationship = new JMenu("Change Relationship");
@@ -319,6 +428,12 @@ public class RelationshipArrow extends DocumentElementView {
 			add(delete);
 		}
 		
+		/** 
+		 * Override the selected relationship type in the submenu .
+		 * 
+		 * @param t
+		 * 		The type that has been set and is supposed to be displayed as such.
+		 */
 		public void setSelectedType(String t) {
 			String type = t.toLowerCase();
 			for(int i = 0; i < changeRelationship.getItemCount(); i++) {
