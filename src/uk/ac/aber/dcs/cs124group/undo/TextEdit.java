@@ -4,6 +4,18 @@ import javax.swing.undo.AbstractUndoableEdit;
 
 import uk.ac.aber.dcs.cs124group.model.TextLabelModel;
 
+/**
+ * An edit which manages the different text entered into
+ * a edited TextLabel adhering to the {@link AbsractUndoableEdit}
+ * constraints
+ * 
+ * @author Daniel Maly
+ * @author Samuel B Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ *
+ */
+@SuppressWarnings("serial")
 public class TextEdit extends AbstractUndoableEdit {
 	
 	private TextLabelModel editedObject;

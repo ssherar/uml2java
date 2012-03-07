@@ -135,6 +135,7 @@ public class RelationshipArrow extends DocumentElementView {
 		LabelView l = c.getView();
 		l.setFont(this.getFont());
 		this.add(l);
+		this.setPreferredSize(this.getParent().getPreferredSize());
 		c.addObserver(l);
 		c.addUndoableEditListener(this.model.getUndoableEditListener());
 		l.enableEdit();
@@ -154,9 +155,11 @@ public class RelationshipArrow extends DocumentElementView {
 		
 		this.model.addLabel(label);
 		this.add(view);
+		this.setPreferredSize(this.getParent().getPreferredSize());
 		view.enableEdit();
 
 		this.repaint();
+		
 	}
 	
 	@Override

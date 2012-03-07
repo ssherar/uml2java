@@ -6,6 +6,17 @@ import uk.ac.aber.dcs.cs124group.model.*;
 
 import java.awt.Dimension;
 
+/**
+ * An edit which manages the size of a single
+ * DocumentElement adhering to the {@link AbsractUndoableEdit}
+ * constraints
+ * 
+ * @author Daniel Maly
+ * @author Samuel B Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ *
+ */
 public class SizeEdit extends AbstractUndoableEdit {
 	
 	private Resizeable editedObject;

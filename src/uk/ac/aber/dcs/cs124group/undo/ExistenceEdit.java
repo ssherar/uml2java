@@ -4,6 +4,14 @@ import javax.swing.undo.AbstractUndoableEdit;
 
 import uk.ac.aber.dcs.cs124group.model.DocumentElementModel;
 
+/**
+ * 
+ * @author Daniel Maly
+ * @author Samuel B Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ *
+ */
 public class ExistenceEdit extends AbstractUndoableEdit {
 	
 	private DocumentElementModel toBeOrNotToBe;

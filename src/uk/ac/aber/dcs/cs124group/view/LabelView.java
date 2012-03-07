@@ -273,7 +273,6 @@ public class LabelView extends DocumentElementView {
 		labelTextArea.setWrapStyleWord(true);
 		labelTextArea.repaint();
 		
-		
 		labelTextArea.setText(this.getText());
 		labelTextArea.addKeyListener(this.getKeyListeners()[0]);
 		SwingUtilities.invokeLater(new Runnable() {
@@ -331,7 +330,7 @@ public class LabelView extends DocumentElementView {
 		}
 		
 		model.setText(a.getText(), true);
-		
+
 		this.getParent().repaint();
 	}
 	
