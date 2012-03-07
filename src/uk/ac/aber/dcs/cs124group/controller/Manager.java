@@ -621,14 +621,20 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		aboutWindow.add(new JPanel() {
 			public void paintComponent(Graphics g) {
 				super.paintComponent(g);
+				g.setFont(new Font(g.getFont().getName(), Font.PLAIN, 20));
 				g.drawString(
-						"This program is being developed by Sam Sherar, Daniel Maly and Lee Smith.",
+						"A simple, easy-to-use Java design tool",
+						40, 85);
+				
+				g.setFont(new Font("Arial", Font.PLAIN, 12));
+				g.drawString(
+						"Developped by Daniel Maly, Samuel B Sherar and Lee Smith.",
 						50, 150);
 				g.drawString(
-						"You are advised to stay well away from it until it is finished.",
-						50, 165);
+						"Version: 1.0.0.  (CS12420 group project release)",
+						50, 175);
 				g.setFont(new Font("Arial Black", Font.PLAIN, 50));
-				g.drawString("UML2JAVA", 50, 50);
+				g.drawString("UML2JAVA", 55, 50);
 			}
 		});
 
