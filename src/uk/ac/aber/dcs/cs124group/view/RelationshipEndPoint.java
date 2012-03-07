@@ -1,9 +1,21 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import uk.ac.aber.dcs.cs124group.model.*;
 
-import uk.ac.aber.dcs.cs124group.model.Relationship;
-
+/**
+ * A class defining the endpoint of a relationship
+ * based on the side of the class rectangle and the 
+ * distance from the corner.
+ * 
+ * @see Relationship
+ * @see RelationshipArrow#update(java.util.Observable, Object)
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class RelationshipEndPoint extends Point {
 	
 	private static final int NORTH = 0;
@@ -11,13 +23,27 @@ public class RelationshipEndPoint extends Point {
 	private static final int SOUTH = 2;
 	private static final int WEST = 3;
 	
+	/** The side of the class rectangle this endpoint is on. */
 	private int side = NORTH;
+	
+	/** The distance of this endpoint from the corner of the class rectangle. */
 	private int pixelsFromStart;
 	
+	/** The geometrical representation of the associated class rectangle. */
 	private Rectangle rect;
 	
+	/** The relationship this endpoint is on. */
 	private Relationship relationship;
 	
+	/**
+	 * Constructs a new relationship endpoint at the specified location,
+	 * attached to the specified Rectangle, belonging to the specified
+	 * relationship.
+	 * 
+	 * @param p The initial location of this RelationshipEndPoint
+	 * @param r The rectangle this endpoint is attached to.
+	 * @param relationship The relationship this endpoint belongs to.
+	 */
 	public RelationshipEndPoint(Point p, Rectangle r, Relationship relationship) {
 		this.x = p.x;
 		this.y = p.y;
@@ -27,6 +53,13 @@ public class RelationshipEndPoint extends Point {
 		wrapFromCoordinates(r);
 	}
 	
+	/**
+	 * Update the (x,y) coordinates of this RelationshipEndPoint
+	 * to fit a new Rectangle based on the current set of (side, distance)
+	 * coordinates.
+	 * 
+	 * @param r The updated Rectangle
+	 */
 	public void updateTo(Rectangle r) {
 		this.rect = r;
 		
@@ -69,6 +102,12 @@ public class RelationshipEndPoint extends Point {
 
 	}
 	
+	/**
+	 * Initialise the (side, distance) coordinates based on the current (x,y) coordinates
+	 * and the specified Rectangle.
+	 * 
+	 * @param r The Rectangle around which this RelationshipEndPoint is to be wrapped.
+	 */
 	private void wrapFromCoordinates(Rectangle r) {
 		if (this.x == r.x) {
 			this.side = WEST;
@@ -91,6 +130,9 @@ public class RelationshipEndPoint extends Point {
 	}
 	
 	@Override
+	/**
+	 * Moves this RelationshipEndPoint so that it stays on its associated Rectangle.
+	 */
 	public void move(int x, int y) {
 		if (this.side == NORTH || this.side == SOUTH) {
 			if(this.side == NORTH && y > 30) {
@@ -131,10 +173,16 @@ public class RelationshipEndPoint extends Point {
 		
 	}
 	
+	/**
+	 * Changes the side coordinate of this RelationshipEndPoint clockwise by one step.
+	 */
 	private void flipClockwise() {
 		this.side = (this.side + 1) % 3;
 	}
 	
+	/**
+	 * Changes the side coordinate of this RelationshipEndPoint anti-clockwise by one step.
+	 */
 	private void flipAntiClockwise() {
 		this.side = this.side == 0 ? 3 : (this.side - 1);
 	}
