@@ -169,7 +169,7 @@ public class RelationshipEndPoint extends Point {
 		}
 		
 		this.updateTo(this.rect);
-		relationship.realignCardinalities();
+		relationship.realignSubelements();
 		
 	}
 	

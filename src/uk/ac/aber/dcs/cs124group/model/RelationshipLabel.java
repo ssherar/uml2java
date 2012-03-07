@@ -5,17 +5,44 @@ import java.util.*;
 
 import uk.ac.aber.dcs.cs124group.view.Vector2D;
 
+/**
+ * The label that is being placed on Relationships.
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public class RelationshipLabel extends TextLabelModel {
 	
+	/** The Relationship this label is attached to. */
 	private Relationship associatedRelationship;
+	
+	/**
+	 * The vector defining the relative position of this label 
+	 * to the label reference point.
+	 * 
+	 * @see Relationship#getLabelReferencePoint()
+	 * @see uk.ac.aber.dcs.cs124group.view.Vector2D Vector2D
+	 */
 	private Vector2D toReferencePoint;
 	
+	/**
+	 * Constructs a new RelationshipLabel attached to the specified Relationship.
+	 * 
+	 * @param p The point at which the label is to be located.
+	 * @param r The associated relationship.
+	 */
 	public RelationshipLabel(Point p, Relationship r) {
 		super(p);
 		this.associatedRelationship = r;
 		this.toReferencePoint = new Vector2D(0,0);
 	}
 	
+	/**
+	 * Overridden to ensure that the centre of the label is never moved further
+	 * than 50px away from a segment belonging to the associated relationship.
+	 */
 	@Override
 	public void setLocation(Point p, boolean undoable) {
 		
@@ -45,7 +72,9 @@ public class RelationshipLabel extends TextLabelModel {
 		
 	}
 	
-		
+	/**
+	 * @return The Attribute the associated relationship represents, if there is one.
+	 */
 	public Attribute getAttribute() {
 		Attribute a = new Attribute(new Point(0,0), this.getText(), AttributeType.DATA_FIELD);
 		if(this.getText().charAt(0) == '-')
@@ -66,6 +95,9 @@ public class RelationshipLabel extends TextLabelModel {
 		return a;
 	}	
 	
+	/**
+	 * Sets the location of this RelationshipLabel based on the {@link #toReferencePoint} vector. 
+	 */
 	public void realign() {
 		super.setLocation(new Point(associatedRelationship.getLabelReferencePoint().x + toReferencePoint.x, 
 									associatedRelationship.getLabelReferencePoint().y + toReferencePoint.y), false);

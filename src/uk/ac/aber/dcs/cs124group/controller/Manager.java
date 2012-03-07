@@ -689,6 +689,4 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	@Override
 	public void mouseReleased(MouseEvent e) {}
 	
-
-
 }

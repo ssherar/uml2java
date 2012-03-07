@@ -1,11 +1,17 @@
 package uk.ac.aber.dcs.cs124group.model;
 
+/**
+ * Defines the five possible UML relationship types
+ * 
+ * @author Daniel Maly
+ * @author Sam Sherar
+ * @author Lee Smith
+ * @version 1.0.0
+ */
 public enum RelationshipType {
 	AGGREGATION,
 	COMPOSITION,
 	INHERITANCE,
 	USES,
 	IMPLEMENTS;
-	
-	// http://docs.oracle.com/javase/1.5.0/docs/guide/language/enums.html <-- Data manipulation in enumerated types... Might come useful.
 }

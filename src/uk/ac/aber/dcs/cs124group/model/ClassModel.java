@@ -183,7 +183,7 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 	}
 	
 	/**
-	 * Notifies the observer to add a new Data Field to the ClassModel.
+	 * Notifies the view to add a new Data Field to the ClassModel.
 	 * @see ClassRectangle#update(object, argument)
 	 */
 	public void requestNewDataField() {
@@ -192,7 +192,7 @@ public class ClassModel extends DocumentElementModel implements Moveable, Resize
 	}
 	
 	/**
-	 * Notifies the observer to add a new Method to the ClassModel.
+	 * Notifies the view to add a new Method to the ClassModel.
 	 * @see ClassRectangle#update(object, argument)
 	 */
 	public void requestNewMethod() {
