@@ -44,23 +44,29 @@
 \contentsline {figure}{\numberline {17}{\ignorespaces Editing a data field in a class\relax }}{10}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Click and Hold a class}}}{10}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Release at desired location}}}{10}
-\contentsline {figure}{\numberline {18}{\ignorespaces Editing a data field in a class\relax }}{11}
+\contentsline {figure}{\numberline {18}{\ignorespaces Resizing a Class\relax }}{11}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Click and hold the corner of a class}}}{11}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Release at desired location}}}{11}
+\contentsline {figure}{\numberline {19}{\ignorespaces Editing a data field in a class\relax }}{11}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Double-Click the Class Name}}}{11}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Changed Name}}}{11}
-\contentsline {figure}{\numberline {19}{\ignorespaces Editing a method in a class\relax }}{11}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Double-Click the Class Name}}}{11}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Changed Name}}}{11}
-\contentsline {figure}{\numberline {20}{\ignorespaces Changing Relationship Types\relax }}{12}
+\contentsline {figure}{\numberline {20}{\ignorespaces Editing a method in a class\relax }}{12}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Double-Click the Class Name}}}{12}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Changed Name}}}{12}
+\contentsline {figure}{\numberline {21}{\ignorespaces Changing Relationship Types\relax }}{12}
 \contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Changing Relationship Type}}}{12}
 \contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Relationship Types}}}{12}
-\contentsline {figure}{\numberline {21}{\ignorespaces Moving Relationships and Editing points on the line\relax }}{12}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Hover over relationship end}}}{12}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Move to new position}}}{12}
-\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Creating a new Point}}}{12}
-\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {The new line}}}{12}
-\contentsline {figure}{\numberline {22}{\ignorespaces Adding labels to relationships\relax }}{13}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Add/Edit Label}}}{13}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Editing the Label Name}}}{13}
-\contentsline {figure}{\numberline {23}{\ignorespaces Adding Cardinalities to relationships\relax }}{13}
-\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Add Cardinalities}}}{13}
-\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Created Cardinality}}}{13}
+\contentsline {figure}{\numberline {22}{\ignorespaces Moving Relationships and Editing points on the line\relax }}{13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Hover over relationship end}}}{13}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Move to new position}}}{13}
+\contentsline {subfigure}{\numberline {(c)}{\ignorespaces {Creating a new Point}}}{13}
+\contentsline {subfigure}{\numberline {(d)}{\ignorespaces {The new line}}}{13}
+\contentsline {figure}{\numberline {23}{\ignorespaces Removing points on the line\relax }}{13}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Removing a point}}}{13}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {The new line}}}{13}
+\contentsline {figure}{\numberline {24}{\ignorespaces Adding labels to relationships\relax }}{14}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Add/Edit Label}}}{14}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Editing the Label Name}}}{14}
+\contentsline {figure}{\numberline {25}{\ignorespaces Adding Cardinalities to relationships\relax }}{14}
+\contentsline {subfigure}{\numberline {(a)}{\ignorespaces {Add Cardinalities}}}{14}
+\contentsline {subfigure}{\numberline {(b)}{\ignorespaces {Created Cardinality}}}{14}

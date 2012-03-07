@@ -66,9 +66,11 @@ public class Exporter {
 	 * creating the resulting code
 	 * 
 	 * @param model
-	 *            The current state of the {@link #Canvas()} and what is on it
+	 *            The current state of the canvas and what is on it
 	 * @param manager
-	 *            The diagram {@link #Manager}
+	 *            The diagram Manager
+	 * @see uk.ac.aber.dcs.cs124group.controller.Manager Manager
+	 * @see uk.ac.aber.dcs.cs124group.gui.Canvas Canvas
 	 * 
 	 */
 	public Exporter(Canvas c, Manager manager) {
@@ -81,6 +83,8 @@ public class Exporter {
 	 * Allows Image export, to create a .png, .jpg, or .gif file from the canvas
 	 * image. and allows the user to select where to place the file in their
 	 * directory
+	 * 
+	 * 
 	 */
 
 	public void exportImage() throws IIOException {

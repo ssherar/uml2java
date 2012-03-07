@@ -15,10 +15,12 @@
 \indexentry{Adding to diagram!Relationships}{9}
 \indexentry{Editing!Class Name}{10}
 \indexentry{Editing!Moving the Classes}{10}
+\indexentry{Editing!Resizing the Classes}{11}
 \indexentry{Editing!Data Fields/Variables}{11}
-\indexentry{Editing!Methods}{11}
+\indexentry{Editing!Methods}{12}
 \indexentry{Editing!Relationships}{12}
 \indexentry{Editing!Relationships!Relationship Type}{12}
-\indexentry{Editing!Relationships!Moving Relationship Points}{12}
-\indexentry{Editing!Relationships!Adding Label}{13}
-\indexentry{Edit!Adding Cardinalities}{13}
+\indexentry{Editing!Relationships!Moving Relationship Points}{13}
+\indexentry{Editing!Relationships!Removing Relationship Points}{13}
+\indexentry{Editing!Relationships!Adding Label}{14}
+\indexentry{Edit!Adding Cardinalities}{14}
