@@ -359,7 +359,7 @@ public class Exporter {
 				}
 
 				if (classModel.getAttributes().get(variables).isFlagTransient()) {
-					attribute = (attribute + "transistent ");
+					attribute = (attribute + "transient ");
 				}
 
 				attribute = (attribute

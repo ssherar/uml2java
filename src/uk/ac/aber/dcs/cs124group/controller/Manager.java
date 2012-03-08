@@ -164,6 +164,23 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		} else if (c.equals("Redo")) {
 			try {this.redo();}
 			catch(Exception ex) {}
+		} else if (c.equals("Documentation")) {
+			String dir = System.getProperty("user.dir");
+			String dirSep = (System.getProperty("file.seperator") == null) ? "\\" : System.getProperty("file.seperator");
+			File docs = new File(dir + dirSep + "docs" + dirSep + "docs.pdf");
+			System.out.println(dir + dirSep + "docs" + dirSep + "docs.pdf");
+			if(docs.exists()) {
+				if(Desktop.isDesktopSupported()) {
+					try {
+						Desktop.getDesktop().open(docs);
+					} catch (Exception ex) {
+						status.setText("Cannot load the documentation pdf");
+					}
+				}
+			} else {
+				status.setText("Cannot load the documentation pdf");
+			}
+			
 		}
 
 	}
