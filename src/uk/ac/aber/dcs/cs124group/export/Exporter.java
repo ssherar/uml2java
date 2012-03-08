@@ -568,7 +568,7 @@ public class Exporter {
 				}
 				methodString = (methodString + ")");
 				if (isMethodAbstract) {
-					methodString = (methodString + ";");
+					methodString = (methodString + "{};" + NL);
 				} else {
 
 					methodString = (methodString + " {" + NL + NL + TB + "}"
