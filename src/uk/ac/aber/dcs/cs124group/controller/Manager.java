@@ -554,7 +554,6 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 
 		canvas.setFont(font);
 		canvas.repaint();
-		status.setText("Font changed to " + font);
 	}
 
 	/**
@@ -566,7 +565,6 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	 */
 	private void changeZoom(double zoom) {
 		canvas.setZoomFactor(zoom);
-		status.setText("Zoom factor is " + canvas.getZoomFactor());
 		canvas.repaint();
 
 		document.getPreferences().setZoomLevel(zoom);
