@@ -428,7 +428,15 @@ public class Exporter {
 				cardinalityFrom = r.getCardinalityFrom();
 			}
 			
-			if(m.getRelationships().get(i).getLabel() == null) throw new IOException("Export failed: No label on relationship!");
+			
+			if(cardinalityTo == null || cardinalityFrom == null){
+				if(r.getLabel() == null) 
+					continue;
+				else
+					throw new IOException("Export failed: Missing cardinality");
+			}
+			
+			if(r.getLabel() == null) throw new IOException("Export failed: No label on relationship!");
 			
 			
 			Attribute a = m.getRelationships().get(i).getLabel().getAttribute();
