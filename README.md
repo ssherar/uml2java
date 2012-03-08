@@ -3,7 +3,7 @@
 ## Links
 
 [Invitation to the Model Class Diagram](http://www.lucidchart.com/invitations/accept/4f57911d-520c-46bd-90ab-7bb00a7c6148)
-
+[Invitation to the View Class Diagram] (http://www.lucidchart.com/invitations/accept/4f58a5e3-bf58-464a-8b04-636d0a7c9325)
 
 ## Feature List:
 
