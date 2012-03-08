@@ -311,11 +311,6 @@ public class Attribute extends TextLabelModel implements java.io.Serializable {
 				this.attributeName = m.group(2);
 				this.attributeType = m.group(3);
 				
-				/*if(m.groupCount() == 5 && m.group(4) == null) {
-					this.attribDefault = m.group(4).substring(3);
-					System.out.println(this.attribDefault);
-				}*/
-				
 				/*
 				 * Regex is burning up all around us! Help! Help!
 				 */

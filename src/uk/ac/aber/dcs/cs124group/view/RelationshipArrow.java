@@ -51,7 +51,7 @@ public class RelationshipArrow extends DocumentElementView {
 		this.setComponentPopupMenu(menu);
 		this.addMouseListener(controller);
 		this.addMouseMotionListener(controller);
-		
+		menu.setSelectedType(model.getType().toString());
 		
 		this.setLayout(new DiagramLayout());
 		
