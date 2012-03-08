@@ -5,6 +5,8 @@ import java.awt.print.PrinterException;
 import java.awt.*;
 import java.util.*;
 
+import java.net.*;
+
 import javax.imageio.*;
 import javax.swing.*;
 import javax.swing.event.*;
@@ -165,22 +167,27 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			try {this.redo();}
 			catch(Exception ex) {}
 		} else if (c.equals("Documentation")) {
-			String dir = System.getProperty("user.dir");
-			String dirSep = (System.getProperty("file.seperator") == null) ? "\\" : System.getProperty("file.seperator");
-			File docs = new File(dir + dirSep + "docs" + dirSep + "docs.pdf");
-			System.out.println(dir + dirSep + "docs" + dirSep + "docs.pdf");
-			if(docs.exists()) {
-				if(Desktop.isDesktopSupported()) {
-					try {
-						Desktop.getDesktop().open(docs);
-					} catch (Exception ex) {
-						status.setText("Cannot load the documentation pdf");
-					}
+			if(Desktop.isDesktopSupported()) {
+				try {
+					URI docs = new URI("http://www.samsherar.co.uk/umldesigner/userdocs.pdf");
+					Desktop.getDesktop().browse(docs);
+				} catch (Exception ex) {
+					status.setText("Cannot load the user documentaion!");
 				}
 			} else {
-				status.setText("Cannot load the documentation pdf");
+				status.setText("Cannot load the user documentaion!");
 			}
-			
+		} else if (c.equals("Browse Javadoc")) {
+			if(Desktop.isDesktopSupported()) {
+				try {
+					URI docs = new URI("http://www.samsherar.co.uk/umldesigner/docs/");
+					Desktop.getDesktop().browse(docs);
+				} catch (Exception ex) {
+					status.setText("Cannot load the javadoc!");
+				}
+			} else {
+				status.setText("Cannot load the javadoc!");
+			}
 		}
 
 	}

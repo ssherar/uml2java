@@ -149,6 +149,7 @@ public class MenuBar extends JMenuBar {
 	private void addHelpItems() {
 		helpItems = new LinkedList<JMenuItem>();
 		helpItems.add(new JMenuItem("Documentation"));
+		helpItems.add(new JMenuItem("Browse Javadoc"));
 		helpItems.add(new JMenuItem("About"));
 		
 		for(JMenuItem i : helpItems) {
