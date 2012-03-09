@@ -468,7 +468,7 @@ public class ClassModel extends DocumentElementModel implements Movable, Resizab
 	}
 	
 	/**
-	 * Resurrect this and all the dead relationships when called. Used for undos and redos
+	 * Resurrect this and all relationships that died with this. Used for undos and redos
 	 * @see RelationshipStateEdit
 	 */
 	@Override
