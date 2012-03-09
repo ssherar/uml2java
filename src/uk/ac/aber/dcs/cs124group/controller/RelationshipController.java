@@ -51,10 +51,10 @@ public class RelationshipController extends DiagramListener implements ActionLis
 		else if (c.equals("Add/edit label")) {
 			model.requestLabel();
 		}
-		else if (c.equals("Cardinality from")) {
+		else if (c.equals("Cardinality at arrowhead")) {
 			model.requestCardinality("from");
 		}
-		else if (c.equals("Cardinality to")) {
+		else if (c.equals("Cardinality at plain end")) {
 			model.requestCardinality("to");
 		}
 		

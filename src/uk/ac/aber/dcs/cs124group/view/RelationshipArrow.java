@@ -408,9 +408,9 @@ public class RelationshipArrow extends DocumentElementView {
 			label.addActionListener(listener);
 			
 			JMenu cardinalities = new JMenu("Cardinalities");
-			JMenuItem cardFrom = new JMenuItem("Cardinality from");
+			JMenuItem cardFrom = new JMenuItem("Cardinality at arrowhead");
 			cardFrom.addActionListener(listener);
-			JMenuItem cardTo = new JMenuItem("Cardinality to");
+			JMenuItem cardTo = new JMenuItem("Cardinality at plain end");
 			cardTo.addActionListener(listener);
 			cardinalities.add(cardFrom);
 			cardinalities.add(cardTo);
