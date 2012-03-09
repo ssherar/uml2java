@@ -145,7 +145,6 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			try {
 				exp.exportImage();
 			} catch (IIOException e1) {
-				e1.printStackTrace();
 			}
 		} else if (c.equals("Code") || c.equals("Export to Java...")) {
 				this.export();
@@ -398,7 +397,6 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			
 		} catch (Exception e) {
 			status.setText("Could not write your document into the file. Sorry!");
-			e.printStackTrace();
 		}
 	}
 
