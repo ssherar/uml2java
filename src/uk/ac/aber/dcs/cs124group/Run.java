@@ -14,7 +14,6 @@ public class Run {
 
 	/** Launches the program. */
 	public static void main(String[] args) {
-		System.out.println(Run.class.getResource("./"));
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {
 	            new Manager();
