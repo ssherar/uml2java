@@ -254,9 +254,10 @@ public class ClassRectangle extends DocumentElementView {
 	 * Creates a new LabelView with a default values, adds the observers, then
 	 * adds the view to this component and bootstraps everything.
 	 * 
-	 * @param from Whether or not the requested cardinality is on the "from" end.
+	 * @param type DATA_FIELD or METHOD.
 	 * 
-	 * @see Relationship#requestCardinality(String)
+	 * @see ClassModel#requestNewDataField()
+	 * @see ClassModel#requestNewMethod()
 	 */
 	private void addAttributeToModel(AttributeType type) {
 		String defaultRepresentation = (type == AttributeType.METHOD) ? "+ method() : void"
