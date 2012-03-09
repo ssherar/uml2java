@@ -50,6 +50,15 @@ public class PrinterDriver implements Printable {
 	}
 
 	@Override
+	 /**
+	 * Converts the graphics parameter into a 2D image to be passed to the
+	 * printer.
+	 * 
+	 * @param graphics		The graphics of the Canvas
+	 * @param pageFormat	The page layout from the Printer Driver
+	 * @param pageIndex		The index of the page
+	 * @return				An Enumerated type for returning if it has printed
+	 */
 	public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
 			throws PrinterException {
 

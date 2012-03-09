@@ -1,0 +1,24 @@
+\paragraph{\small{\tab Creating a new document\\*}}
+
+\hspace{-10pt}The command to open a new blank document is issued from the menu bar or when the application is launched. When the user clicks the appropriate menu item, the event gets sent to the Manager which calls its own openNewDocument() method. If any unsaved, user-initiated actions have been performed on the current document, a .do you want to save?. dialog appears. If the operation isn.t cancelled by the user (possibly after having saved), the canvas is emptied, the current DocumentModel loaded in the Manager is disposed of in favour of a new one, all undoable edits are discarded and new DocumentPreferences are set into the DocumentModel. Finally, the status bar is updated.
+
+\paragraph{\small{\tab Saving a document\\*}}
+
+\hspace{-10pt} Again, the command to save a document is initiated in the menu bar. Depending on the exact menu item clicked, save() or saveAs() is called in the Manager. If a filename is not associated with the document in the DocumentPreferences object, saveAs() is called anyway. This method brings up a JFileChooser letting the user select where the document should be saved to. Once a filename is obtained, serialize() is called and the DocumentModel currently in the Manager is simply written to that file using default Java serialization.
+
+\paragraph{\small{\tab Loading a document from a file\\*}}
+
+\hspace{-10pt} Loading a document is slightly trickier. We need to recreate views and controllers for all model objects and couple Observable-Observer pairs properly. When the command is issued by the user, the openExisting() method is called in the Manager. First, we need to dispose of the current document (see [section number] Creating a new document). The second stage is simply reading the DocumentModel object from the file the user selected (again by means of a JFileChooser). It is loaded into the Manager which then: calls cleanUp() on the DocumentModel which will cause it to discard all non-existent elements, calls getView() on each DocumentElementModel, adds the returned DocumentElementViews to the Canvas, ties up Observers with Observables, reads DocumentPreferences on the loaded object and sets the document properties accordingly. The individual DocumentElementView constructors do very much the same for sub-elements (e.g. views are created and added for Attributes and so on). They also create and assign controllers.
+
+\paragraph{\small{\tab Exporting a document\\*}}
+
+\hspace{-10pt}Exporting to code can be triggered from two locations, either from the MenuBar under Export or from the SideBar under .Export to Java... This calls the Exporter constructor using DocumentModel that contains all the objects and information needed to create the code. Within the Exporter class there are five private methods which will create the code sections, createClassFileContents(), which pulls the following four methods together into one string to be used within the exportCode() method. getHeaderString() creates the class header along with any classes that will be extended or implemented, getAttributeString() will take all the variables written into the class to be created, get the visibility, name, type and any modifiers that will be added to it. getCardinalitiesString(),  depending on the type of cardinalities and relationships, will create fixed or open arrays or ArrayLists, respectively with the ClassName as the type. getMethodsString() will take methods that the user enters, again taking visibility, name, any parameters and their types, and the return type of the method. The exportCode() method will then run through an ArrayList of all the filenames and Strings created and output each file as a .java filetype. The selection of output directory is facilitated by a JFileChooser.
+
+\paragraph{\small{\tab Exporting to an image\\*}}
+
+\hspace{-10pt}Another Exporter Constructor will take the canvas and render it into a BufferedImage, and create a graphic from this. A JFileChooser will allow the user to change the image type of .png, .gif or .jpg. and save the file accordingly.
+
+\paragraph{\small{\tab Printing a Diagram\\*}}
+
+\hspace{-10pt} This will be fairly similar to exporting an image, using the canvas a Constructor parameter. A print() method will again create a graphic to be used, but will be scaled depending on the default paper size from PageFormat before printing to the selected printer.
+

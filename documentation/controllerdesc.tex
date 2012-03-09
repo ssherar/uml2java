@@ -1,0 +1,16 @@
+\paragraph{\small{\tab The multi-listener adapter: DiagramListener\\*}}
+
+\hspace{-10pt}Due to the huge amount of methods listeners have to implement that we don.t always want, we defined our own adapter class implementing KeyListener, MouseMotionListener and MouseListener. Listeners extending this class will override only those methods that are relevant to their operation.
+
+\paragraph{\small{\tab The controller triad: ClassController, LabelController, RelationshipController\\*}}
+
+\hspace{-10pt}As with views, each of the three controllers has an associated model class. The controllers are added to views as listeners and when events happen on the views (such as the user clicking on a menu item in the right-click popup menu), they call the appropriate model methods. The controllers cannot access views directly . every single user action has to go straight through the model. Views are then updated in the usual Observable-Observer way. This ensures no user actions are .lost. in the views but it does require some additional overhead when the user requests the addition of a sub-element that only the view can perform. Methods in the model starting with .request.. are parts of this overhead.
+
+\paragraph{\small{\tab Manager \\* }}
+
+\hspace{-10pt}Originally, the Manager class was meant to be the only controller in the program. As the program grew, many of its duties had to be delegated to the elements themselves to avoid it growing into ridiculous size. It still retains, however, the task of listening to all of the events that occur in the GUI classes.  These events are interpreted and appropriate methods are called. In general, the Manager controls anything that is global to the current document. It also manages adding top-level elements to the document. The heart of the undo functionality also resides in the Manager as undos must be global to the document. 
+
+\paragraph{\small{\tab ListeningMode: Turning a deaf ear on unwanted events\\*}}
+
+\hspace{-10pt}A controller will not always want to react to events in the same way. The ListeningMode enum defines possible states in which a controller might be. Events will then be reacted to according to the mode currently set on the controller. 
+

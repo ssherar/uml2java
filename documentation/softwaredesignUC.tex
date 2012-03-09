@@ -1,0 +1,35 @@
+\paragraph{\small{\tab Creating a class (includes setting class name)\\* }}
+
+\hspace{-10pt} When the .New Class. button is clicked on the side bar, the Manager receives the event and sets ListeningMode.PLACING\_CLASS on itself. The coordinates of the next mouse event that will be received from the canvas will be sent to the addNewClass() method in the Manager. This method resets the listening mode, creates a new ClassModel, assigns a view (ClassRectangle) to it, bootstraps Observer-Observable pairs and adds the view to the canvas. It also creates a new ExistenceEdit holding the new ClassModel (more on undoable edits in the section about undo functionality). As soon as the class is created, the TextLabelModel that acts as the name label is asked to enable editing on itself so the user can type in the name of the class immediately (this happens in the ClassRectangle constructor which also creates and assigns a ClassController).
+
+\paragraph{\small{\tab Adding attributes to a class\\*}}
+
+\hspace{-10pt} This use case is not handled by the Manager as the request does not come from the GUI or the canvas. The request to add a new attribute comes from a class rectangle right-click menu and so the appropriate ClassController will receive the event. The ClassController then calls requestNewDataField() or requestNewMethod(), as appropriate and the ClassModel.s view (ClassRectangle) is notified. addAttributeToModel() is called in the ClassRectangle which creates the Attribute object, assigns a LabelView object to it, adds the LabelView to itself, adds the Attribute to the ClassModel , couples the Attribute with the LabelView and immediately enables editing on the new Attribute. An ExistenceEdit is also created and sent to the Manager.
+
+\paragraph{\small{\tab Behind the scenes: Derive attributes from UML representation\\*}}
+
+\hspace{-10pt}Instead of using standard String manipulations, we decided to match them against a Regex pattern, as some people enter UML notation differently and a lot of the notation is not mandatory. Therefore we created 3 different Regular Expressions: one for matching Data fields; another for the .shell. of the method (the method without any parameters); and finally one for the method parameters. Then using Java.s incredibly powerful Regex engine, which automatically splits the up the matched string into specified groups, we can individually pull out parts of the string to test them against UML patterns and set the variables accordingly. If the Attribute representation doesn.t conform to UML, the whole Attribute is flagged as invalid.
+
+\paragraph{\small{\tab Editing modifiers and flags\\*}}
+
+\hspace{-10pt}Modifiers and flags can be set or unset through right-click menus on class rectangles or attributes. The appropriate ClassController (or LabelController for Attributes) receives the event, sets the appropriate modifier or flag (or combination thereof) by calling a setter in the model. This creates a FlagEdit and sends it to the Manager. The font style is overridden accordingly on the name label of the class or on the attribute string, whichever is applicable.
+
+\paragraph{\small{\tab Adding relationships\\*}}
+
+\hspace{-10pt}Adding a relationship between two classes is a three-stage process. It can be triggered either from the sidebar or from a class right-click menu. Either way, the Manager (which implements Observer only for this purpose) receives the request and sets ListeningMode.PLACING\_RELATIONSHIP on itself. If the request comes from a class, that ClassModel is added to the selectionStack in the Manager. If it comes from the sidebar, addNewRelationship() with no arguments is called in the Manager. The Manager will now listen to changes in the paint state of ClassModels. Once any one ClassModel passes into SELECTED state (as set by a ClassController), it is added to the selectionStack and from this point, both ways of the process follow the same path. The listening mode does not change, and the Manager waits for a second class to be selected. Once that happens, addNewRelationship() is called with both ClassModels and a new Relationship along with a RelationshipArrow is created in much the same way as a class.  Listening mode is set back to LISTEN\_TO\_ALL, the selectionStack is emptied and an ExistenceEdit is created.
+
+\paragraph{\small{\tab Changing the relationship type\\*}}
+
+\hspace{-10pt}The type of the relationship can be changed in the relationship right-click menu. The appropriate RelationshipController receives the event, creates a RelationshipStateEdit to store the current state of the Relationship and changes the type of the model. The view is then repainted.
+
+\paragraph{\small{\tab Adding cardinalities / labels to relationships\\*}}
+
+\hspace{-10pt} See section on adding Attributes to ClassModels. The process of adding sub-elements to Relationships follows exactly the same process, especially since Attribute, Cardinality and RelationshipLabel all inherit from TextLabelModel.
+
+\paragraph{\small{\tab Removing elements \\*}}
+
+\hspace{-10pt}Removing elements is simple. A class or a relationship may only be removed through the right-click menu but any textual element may also be removed by deleting all text and pressing ENTER. Both produce the same result . the userRemove() method is called on the appropriate DocumentElementModel which sets the .exists. variable to false and creates an ExistenceEdit, sending it to the Manager. Observers are notified and when a view learns that its model has been removed, it sets itself to invisible, removes itself from the parent container but keeps a reference to it in the .suspendedParent. variable. It is important to note that the whole MVC triad of the element remains in the program and the DocumentElementModel remains in the document until cleanUp() is called on DocumentModel. This is so that undoing a remove can easily bring back an element into existence. 
+
+\paragraph{\small{\tab Editing textual elements\\*}}
+
+\hspace{-10pt} Whenever the user double-clicks a LabelView, the LabelController will set editing to true in the model. Through update(), this will call enableEdit() in LabelView. This method removes the whole view from its parent, replaces it with a JTextArea at the same location, requests immediate focus for the JTextArea and selects all the text within it. The LabelController assigned to this LabelView will now listen to the JTextArea as well. Once the user presses ENTER, this process is rolled back by the exitEdit() method. The text of the label is set to the text of the JTextArea and the label is re-added to the parent component. Also, a TextEdit is created and sent to the Manager. If no text is in the JTextArea as it is validated, the model is userRemove().d.

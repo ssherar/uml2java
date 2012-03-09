@@ -468,14 +468,15 @@ public class ClassModel extends DocumentElementModel implements Movable, Resizab
 	}
 	
 	/**
-	 * Resurrect this and all the dead relationships when called. Used for undos and redos
+	 * Resurrect this and all relationships that died with this. Used for undos and redos
 	 * @see RelationshipStateEdit
 	 */
 	@Override
 	public void resurrect() {
 		super.resurrect();
 		for(int i = 0; i < this.relationships.size(); i++) {
-			this.relationships.get(i).resurrect();
+			if(this.relationships.get(i).getDestinyBond() != null && this.relationships.get(i).getDestinyBond().equals(this))
+				this.relationships.get(i).resurrect();
 		}
 	}
 

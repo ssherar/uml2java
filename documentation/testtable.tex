@@ -1,13 +1,70 @@
 
- \begin{landscape}
+\begin{landscape}
 \section{Testing}
-\begin{tabular}{| p{3cm} | p{7cm} | p{7cm} | p{6cm} | }
+\begin{tabular}{| p{3cm} | p{7cm} | p{7cm} | p{8cm} | }
 	\hline
 	Test Done & Expected Result & Actual Result & Comments \\ \hline
-	Adding class & Class drawn on the canvas & What was expected & \\ \hline
-	Zooming the elements & When zoomed, relational spacing keeps the same and everything still keeps functionality & Nothing is editable, but relational space between elements are correct & Will be fixed later before released \\ \hline
+	\multicolumn{4}{|c|}{Drawing} \\ \hline
+
+	Adding a new class rectangle & New class rectangle created at where the mouse is clicked with default values& As expected & \\ \hline
+
+	Adding a second class to the canvas & Creating a new class rectangle at a different location to the first & As expected & \\ \hline
+
+	Adding a class on top of an existing class & Will not do anything & As expected & It will not dispose of the event, so if you click on some white space with no class rectangles on, it shall create a new class rectangle\\ \hline
+		
+	 Adding an independent label to the diagram & Creating a note to the diagram which isn't a part of the UML & As expected & There is no reference to them in the exported code \\ \hline
+
+	 Drawing a relationship between two classes & Create a relationship between two classes with default values (A uses type and no cardinalities)& As expected & Later functionality might be adding it to the closest corner, as it defaults to the top left, to make it look nicer and easier to edit. \\ \hline
+
+	 \multicolumn{4}{|c|}{Class Rectangles} \\ \hline
+	
+	  Adding a new class name & Changing the name of the class from the standard "NewClass" to the "HelloWorld" & As expected & \\ \hline
+
+	 Adding a Data Field & Rightclick on the class diagram and click on Data Field, An editable version of the label comes up. Change to "- test : String" and press enter & As expected & \\ \hline
+	
+	 Adding a Method & Similar to Data field, but in a section below with the method UML syntax & As expected & \\ \hline
+
+	 Adding a second Data Field & Should place a new data field below the existing data field & As expected & \\ \hline
+
+	 Changing the class modifier to "Abstract" & Right clicking the Rectangle and choosing "Abstract" from the modifiers menu & As expected & However choosing the "Final" option will not show any difference in the font, as UML defines no notation. \\ \hline
+
+	\multicolumn{4}{|c|}{Attributes} \\ \hline
+	Double click to edit &  Makes the label editable and hitting ESC or Return will stop editing & As expected & Doesn.t lose focus when mouse is clicked somewhere else, and is still editable if we place a new class rectangle, for instance. \\ \hline
+
+	Changing the Modifier to both static and final & Right clicking on the attribute brings up the modifier menu. Do this twice and choose static and final. (Doesn.t matter which order) & When choosing static, the text changes and the option shows, but when final is chosen, it reverts to the option none but the text keeps the same. & This is a simple bug to fix . as it.s just cosmetic option in the popup. \\ \hline
+
+	Removing the Attribute	& Right click and select remove on an attribute will delete it & As expected & Can also be done by deleting all text and pressing the return key \\ \hline
+	
+	%\multicolumn{4}{|c|}{Relationships} \\ \hline
+	
+\end{tabular}
+\newpage
+
+\hspace{-19pt}
+\begin{tabular}{| p{3cm} | p{7cm} | p{7cm} | p{8cm} |}
+	\hline	
+	\multicolumn{4}{|c|}{Relationships} \\ \hline
+
+	Moving a point around a rectangle & Move a point from the top left to botom right & As Expected & The point doesn't move off the side of the rectangle, and cannot be pulled off. \\ \hline
+
+	Creating a cardinality from one class to another & Make the value of the cardinality 0..* & As expected & The cardinality starts off on top of the class rectangle, but is a cosmetic bug which can be fixed at a later time \\ \hline
+
+	Change the Relationship type from Uses to Implements  & Draws a filled in arrow at the start class & As expected & \\ \hline
+
+	Add a label & Create a new label on the relationship which simulates a data field on the class diagram & As expected & \\ \hline
+
+	Adding a new point onto the relationship & Click and drag a new point off the relationship to move the line & As expected & All labels (cardinalities and attribute label) still keep relational positioning and not able to delete the point. \\ \hline
+
+	\multicolumn{4}{|c|}{Exporting} \\ \hline
+	Exporting a UML Class Diagram & Two classes have been created Monster (with a private variable scariness and a public method scare), and abstract class Evil (with a final static variable .markOfTheBeast. and abstract function Burn) Monster inherits Evil & Code shows everything there & \\ \hline
+
+	Exporting a UML Class Diagram with cardinalities & Two classes have been created (Duck and Pond) with no variables or methods. A composition relationship has been drawn with a cardinality on duck being 0..* (as there can be many ducks on a pond). A label has been created on the relationship called -ducks. & Code shows everything which we designed. & \\ \hline
+
 \end{tabular}
 
  \end{landscape}
 \newpage
-%Hello World!
+
+
+
+

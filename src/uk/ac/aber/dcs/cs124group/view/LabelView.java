@@ -523,9 +523,10 @@ public class LabelView extends DocumentElementView {
 		 */
 		public void setFlag(String s) {
 			for(int i = 0; i < this.modifers.getItemCount(); i++) {
-				if(this.modifers.getItem(i).getText().equals(s))
+				if(this.modifers.getItem(i).getText().equals(s)) {
 					this.modifers.getItem(i).setSelected(true);
 					break;
+				}
 			}
 		}
 	}

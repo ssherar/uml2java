@@ -25,12 +25,13 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	
 	/**
 	 * The zoom factor of the element
-	 * @deprecated from v0.1
+	 * @deprecated from v0.9
 	 */
 	private double zoomFactor = 1;
 	
 	/**
-	 * TODO comment
+	 * If this view is removed from it's parent due to the model
+	 * not existing, this is a way to access it.
 	 */
 	protected Container suspendedParent;
 	

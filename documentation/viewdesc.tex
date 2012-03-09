@@ -1,0 +1,9 @@
+\tab Each top-level model element (ClassModel, Relationship, TextLabelModel) has an associated view class: \textbf{ClassRectangle}, \textbf{RelationshipArrow} or \textbf{LabelView}, respectively. These all act as Observers to their associated models. They all contain methods that relate to painting and laying out the elements on the canvas. They also perform some controller duties, mainly while loading an existing document from a file and when adding sub-elements to their model as model classes cannot do this themselves.  All three inherit from the abstract class \textbf{DocumentElementView} which extends JPanel. This lets views be added to the diagram canvas as regular components. More information about what these classes do when the program runs can be found in descriptions of the implementation of individual use cases.
+
+\paragraph{\small{\tab Diagram Layout\\*}}
+
+\hspace{-10px}We actually had to define our own LayoutManager for the task of laying out components on the canvas. DiagramLayout works very similarly to absolute positioning . it polls the preferred size and location of the component in question and simply obeys its wishes.  No other LayoutManager in the Java API was appropriate for this task, however.
+
+\paragraph{\small{\tab Geometry aides: Vector2D and RelationshipEndPoint\\*}}
+
+\hspace{-10px}The Vector2D class is used heavily where relationships are concerned . we are not dealing with rectangular shapes anymore but lines. This requires some rather complicated geometry which would be impossible without the use of vectors. The RelationshipEndPoint class restricts the movability of java.awt.Point so that the endpoints of a relationship are unable to leave their assigned class rectangle. 
