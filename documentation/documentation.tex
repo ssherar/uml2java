@@ -16,11 +16,9 @@
 \section{Analysis}
 	\input{./analysis.tex}
 \section{Design}
-	\subsection{Use-case Diagrams}
-		% \input{./usecase.tex}
-	\subsection{Class Diagrams}
-		% \input{./classdiagram.tex}
-	\subsection{Class Descriptions}
+	\subsection{Class Descriptions and Diagrams}
+		\tab The application is built according to the model-view-controller architecture. The actual class diagram the user is making in the application window consists of individual MVC triplets of classes. The source code packages are split up into model, view and controller classes with two more packages for classes assuring the undo functionality and the export functionality. Below are brief descriptions of all
+the packages and their class diagrams. Making a global class diagram for the whole application proved to be an impossible task (we would need a few more dimensions than paper could provide us with), so we did our best to make a class diagram for each individual package while showing most of the relationships linking packages together. Classes that do not belong to the package in question are denoted by their full package name.
 		\subsubsection{Model}
 			\input{./modeldesc.tex}
 		\subsubsection{View}
