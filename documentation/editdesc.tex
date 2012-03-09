@@ -1,0 +1,3 @@
+\tab The classes in the undo package closely follow the Java API specification for in-built undo support. Each of these classes represents a type of undoable edit. The edits store information about the former state and the latter state of an object and toggle between the states as requested by the user. The undo manager, the Manager class in our case, stores these edits and calls their undo() or redo() methods as needed (this is implemented in javax.swing.UndoManager which our Manager class extends). This architecture is based on the Commander design pattern. The presentation name attribute of these edits is used to update the status bar at the bottom of the application window.
+
+
