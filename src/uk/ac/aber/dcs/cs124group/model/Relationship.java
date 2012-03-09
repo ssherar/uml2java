@@ -36,6 +36,11 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 	private ArrayList<Point> points = new ArrayList<Point>();
 	
 	/**
+	 * If this Relationship was removed along with a ClassModel, stores the ClassModel here.
+	 */
+	private ClassModel destinyBond;
+	
+	/**
 	 * Constructs a new Relationship joining the two specified classes.
 	 * 
 	 * @param from
@@ -354,6 +359,7 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 			this.realignSubelements();
 		}
 		else if(s.equals("wasRemoved")) {
+			this.destinyBond = (ClassModel) o;
 			this.remove();
 		}
 		
@@ -424,6 +430,13 @@ public class Relationship extends DocumentElementModel implements Observer, Clon
 		
 		this.setChanged();
 		this.notifyObservers("restored");
+	}
+	
+	/**
+	 * @return The class this relationship was removed with, if any.
+	 */
+	public ClassModel getDestinyBond() {
+		return destinyBond;
 	}
 	
 	/**

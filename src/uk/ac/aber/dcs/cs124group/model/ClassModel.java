@@ -475,7 +475,8 @@ public class ClassModel extends DocumentElementModel implements Movable, Resizab
 	public void resurrect() {
 		super.resurrect();
 		for(int i = 0; i < this.relationships.size(); i++) {
-			this.relationships.get(i).resurrect();
+			if(this.relationships.get(i).getDestinyBond() != null && this.relationships.get(i).getDestinyBond().equals(this))
+				this.relationships.get(i).resurrect();
 		}
 	}
 
