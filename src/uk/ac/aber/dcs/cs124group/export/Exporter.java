@@ -529,7 +529,7 @@ public class Exporter {
 		for (int methods = 0; methods < classModel.getAttributes().size(); methods++) {
 
 			Attribute a = classModel.getAttributes().get(methods);
-
+			
 			if (!a.isValid())
 				continue;
 			if (a.getType() == AttributeType.METHOD) {
@@ -584,8 +584,21 @@ public class Exporter {
 				}
 			}
 		}
-
-		methodString = (methodString + "}");
+		for (int getSet = 0; getSet < classModel.getAttributes().size(); getSet++) {
+			Attribute b = classModel.getAttributes().get(getSet);
+			
+			methodString = methodString + TB +"public " + b.getAttributeType() + " get";
+			String attribNameUpFirst = b.getAttributeName().substring(0, 1).toUpperCase() + b.getAttributeName().substring(1);
+			methodString = methodString + attribNameUpFirst + "(){" + NL + TB;
+			methodString = methodString + TB + "return " + b.getAttributeName() + ";" + NL + TB + "}" + NL + NL;
+			
+			methodString = methodString + TB +"public void set";
+			methodString = methodString + attribNameUpFirst + "(" + b.getAttributeType() + " arg0){" + NL + TB;
+			methodString = methodString + TB +"this." + b.getAttributeName() + " = " + "arg0;";
+			methodString = methodString + NL + TB +"}" + NL + NL;
+			
+		}
+		methodString = (methodString + NL + "}");
 		return methodString;
 	}
 }
