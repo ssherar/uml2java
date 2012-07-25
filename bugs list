@@ -1,6 +1,0 @@
-Known bugs:
-
-Zoom doesn't work
-StatusBar is not updated from anywhere except the manager (could be fixed with undos)
-Loading is broken... again. We need to work out how we manage canvas size.
-Deleting Classes with Relationships - not deleting relationships. (We are? Relationship.java line 140; please clarify)

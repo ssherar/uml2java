@@ -1,4 +1,4 @@
-# CS124 Group Project: UML2Java
+# The ambitious future of the CS124 group project
 
 ## Links
 
@@ -8,39 +8,10 @@
 [Invitation to the Undo Class Diagram] (http://www.lucidchart.com/invitations/accept/4f58e0f6-1d60-4b16-a1f1-69ec0a7c6148)
 [Invitation to the Export Class Diagram] (http://www.lucidchart.com/invitations/accept/4f58e62e-b694-40f4-ab6b-51300a7c6148)
 
-## Feature List:
+## WORK STARTS ON VERSION 1.1:
 
-### Main Feature List:
+If you are interested in working on this, please contact me on Facebook. I finally worked up the courage to look at the code again, got some new ideas and I really think we should push this to a fully usable, native application before abandoning it completely. The program's got promise, it's only a few missing features away from being a great UML tool.
 
-* Create a new blank document
-* Automatic resize/scroll of canvas
-* Add a class rectangle
-	* Move
-	* Resize
-	* Delete
-	* Add and delete methods/attributes
-	* Automatic resizing
-* Labelling
-	* Moving/creating/deleting
-	* Add on relationships
-	* Add on Canvas
-* Relationship
-	* Add/Delete
-	* Modify type
-	* Add cardinalities
-	* Change direction
-* Management
-	* Save
-	* Load
-	* Export
-		* Image
-		* Code
-	* Print
-	* Undo/Redo
-	* Right Click Functionality
+The new feature list is on my ProjectPier, I'll add you if you contact me. I did hope we could start work on this version earlier, but it took me a whole four months to get over the exhaustion from the original project. I'd like to get this done before mid-September, if that's possible.  
 
-
-### Possible extra features:
-* Modify direction of arrows manually modify appearance
-* Change font and font size
-* Support for abstract/static/final in diagrams
+I'll be updating this readme as I go along.
