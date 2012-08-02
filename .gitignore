@@ -20,6 +20,8 @@ Thumbs.db
 Icon?
 ehthumbs.db
 .DS_Store*
+.project
+.classpath
 
 #TeX files
 *.aux
