@@ -24,7 +24,7 @@ public class SideBar extends JPanel {
 	private final int VERT_PADDING = 5;
 	
 	/** The buttons on the sidebar */
-	private JButton newClass, newRelationship, newTextLabel, export;
+	private JButton newClass, newInterface, newEnum, newRelationship, newTextLabel, export;
 	
 	/** The layout manager used for this component. */
 	private SpringLayout layout;
@@ -44,24 +44,36 @@ public class SideBar extends JPanel {
 		this.setLayout(layout);
 		
 		newClass = new JButton("New Class");
+		newInterface = new JButton("New Interface");
+		newEnum = new JButton("New Enumeration");
 		newRelationship = new JButton("New Relationship");
 		newTextLabel = new JButton("New label");
 		export = new JButton("Export to Java...");
 		
 		newClass.addActionListener(manager);
+		newInterface.addActionListener(manager);
+		newEnum.addActionListener(manager);
 		newRelationship.addActionListener(manager);
 		newTextLabel.addActionListener(manager);
 		export.addActionListener(manager);
 		
 		newClass.setPreferredSize(newRelationship.getPreferredSize());
+		newInterface.setPreferredSize(newRelationship.getPreferredSize());
+		newEnum.setPreferredSize(newRelationship.getPreferredSize());
 		newTextLabel.setPreferredSize(newRelationship.getPreferredSize());
 		export.setPreferredSize(newRelationship.getPreferredSize());
 		
 		layout.putConstraint(SpringLayout.WEST, newClass, SIDE_PADDING, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.NORTH, newClass, TOP_PADDING, SpringLayout.NORTH, this);
 		
+		layout.putConstraint(SpringLayout.WEST, newInterface, SIDE_PADDING, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, newInterface, VERT_PADDING, SpringLayout.SOUTH, newClass);
+		
+		layout.putConstraint(SpringLayout.WEST, newEnum, SIDE_PADDING, SpringLayout.NORTH, this);
+		layout.putConstraint(SpringLayout.NORTH, newEnum, VERT_PADDING, SpringLayout.SOUTH, newInterface);
+		
 		layout.putConstraint(SpringLayout.WEST, newRelationship, SIDE_PADDING, SpringLayout.NORTH, this);
-		layout.putConstraint(SpringLayout.NORTH, newRelationship, VERT_PADDING, SpringLayout.SOUTH, newClass);
+		layout.putConstraint(SpringLayout.NORTH, newRelationship, VERT_PADDING, SpringLayout.SOUTH, newEnum);
 		
 		layout.putConstraint(SpringLayout.WEST, newTextLabel, SIDE_PADDING, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.NORTH, newTextLabel, VERT_PADDING, SpringLayout.SOUTH, newRelationship);
@@ -70,6 +82,8 @@ public class SideBar extends JPanel {
 		layout.putConstraint(SpringLayout.NORTH, export, VERT_PADDING, SpringLayout.SOUTH, newTextLabel);
 		
 		this.add(newClass);
+		this.add(newInterface);
+		this.add(newEnum);
 		this.add(newRelationship);
 		this.add(newTextLabel);
 		this.add(export);

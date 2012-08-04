@@ -67,9 +67,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 
 	/** A collection holding currently selected items. At present, only one element is ever contained here. */
 	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
+	
+	private static Manager instance = new Manager();
 
 	/** Invoked as the entry point of the application, constructs a Manager object and all the GUI components in the window, including the window itself. */
-	public Manager() {
+	private Manager() {
 		super();
 		window = new MainFrame(this);
 		window.setTitle(PROGRAM_NAME);
@@ -83,6 +85,10 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		status.setText("Welcome!");
 
 		changeFont();
+	}
+	
+	public static Manager getInstance() {
+		return instance;
 	}
 
 	/************************************************************************************/
