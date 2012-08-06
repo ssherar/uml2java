@@ -9,6 +9,8 @@ import java.util.Observable;
 
 import javax.swing.*;
 
+import com.jidesoft.swing.StyledLabel;
+
 import uk.ac.aber.dcs.cs124group.controller.LabelController;
 import uk.ac.aber.dcs.cs124group.model.*;
 /**
@@ -34,19 +36,17 @@ public class LabelView extends DocumentElementView {
 	private String text;
 	
 	/**
-	 * A Class to manipulate the fonts.
-	 */
-	private FontMetrics metrics;
-	
-	/**
 	 * A dummy TextArea to replace the Label for editing
 	 */
 	private JTextArea replacement;
+	private StyledLabel label;
 	
 	/**
 	 * A reference to the model class for data manipulation
 	 */
 	private TextLabelModel model;
+	
+	private CardLayout layout = new CardLayout();
 	
 	/**
 	 * To initialise variables with default values and grab data from
@@ -60,18 +60,24 @@ public class LabelView extends DocumentElementView {
 		 */
 		this.model = m;
 		this.text = m.getText();
+		label = new StyledLabel(this.text);
+		label.setVerticalAlignment(SwingConstants.TOP);
+		label.setLineWrap(true);
+		replacement = new JTextArea(this.text);
 		
 		/*
 		 * ... and manipulate the textarea according to the model
 		 */
 		this.setLocation(m.getLocation());
 		this.setOpaque(false);
-		this.setPreferredSize(new Dimension(56,12));
+		this.setPreferredSize(new Dimension(56,50));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		this.setName("label");
 		model.setSize(this.getPreferredSize());
-		this.resizeToText();
-		this.setLayout(null);
+		this.setLayout(layout);
+		
+		this.add(label, "label");
+		this.add(replacement, "replacement");
 		
 		/*
 		 * Add all the various listeners for the functionality of moving
@@ -81,6 +87,7 @@ public class LabelView extends DocumentElementView {
 		this.addMouseListener(listener);
 		this.addMouseMotionListener(listener);
 		this.addKeyListener(listener);
+		replacement.addKeyListener(listener);
 		/*
 		 * Only attributes need a rightclick method for modifying
 		 */
@@ -110,7 +117,7 @@ public class LabelView extends DocumentElementView {
 	 * @param g		Graphics of the JPanel for drawing
 	 */
 	public void paintComponent(Graphics d) {
-		super.paintComponent(d);
+		/*super.paintComponent(d);
 		Graphics2D g = (Graphics2D) d;
 		// Deprecated
 		g.scale(this.getZoomFactor(), this.getZoomFactor());
@@ -121,7 +128,7 @@ public class LabelView extends DocumentElementView {
 		//Deprecated 
 		double scaleY = this.getZoomFactor() < 1 ? 2 : 2 * this.getZoomFactor();
 		int textY = (int) ((this.getPreferredSize().height + metrics.getAscent()) / scaleY);
-		g.drawString(text, textX, textY);
+		g.drawString(text, textX, textY); */
 	}
 	
 	/**
@@ -152,8 +159,14 @@ public class LabelView extends DocumentElementView {
 	 * @param text		The new text of the label
 	 */
 	private void setText(String text) {
+		text = text.replaceAll("\\{", "\\{");
+		text = text.replaceAll("\\}", "\\}");
+		text = text.replaceAll("\\(", "\\(");
+		text = text.replaceAll("\\)", "\\)");
+		text = text.replaceAll("#", "\\#");
 		this.text = text;
-		resizeToText();		
+		label.setText(text);
+		replacement.setText(text);
 	}
 	
 	/**
@@ -172,9 +185,8 @@ public class LabelView extends DocumentElementView {
 	@Override
 	public void setFont(Font f) {
 		super.setFont(f);
-		if(this.getGraphics() != null && metrics != null) {
-			resizeToText();
-		}
+		if(label != null) label.setFont(f);
+		if(replacement != null) replacement.setFont(f);
 	}
 	
 	/**
@@ -185,61 +197,9 @@ public class LabelView extends DocumentElementView {
 	@Override
 	public void setZoomFactor(double zoom) {
 		super.setZoomFactor(zoom);
-		resizeToText();
 	}
 	
-	/**
-	 * Resize the text to the new width and height, plus a margin around
-	 * for cosmetic reasons.
-	 * @see FontMetrics
-	 * @see Model#setSize(size)
-	 */
-	private void resizeToText() {
-		/*
-		 * Try resizing
-		 */
-		try {
-			metrics = getGraphics().getFontMetrics();
-			int width = metrics.stringWidth(text);
-			setPreferredSize(new Dimension(
-					(int) (getZoomFactor() * 1.1 * width + 1), 
-					(int) (getZoomFactor() * metrics.getHeight())));
-			model.setSize(this.getPreferredSize());
-			getParent().doLayout();
-			realign();
-		}
-		catch(NullPointerException ex) {
-			/*
-			 * If it throws an error, do it at the end of the thread
-			 */
-			SwingUtilities.invokeLater(new Runnable() {
-			
-				@Override
-				public void run() {
-					try {
-						metrics = getGraphics().getFontMetrics();
-					}
-					catch(NullPointerException ex) {
-						/*
-						 * And we give up if we can't do it at the end of the
-						 * thread
-						 */
-						return;
-					}
-					int width = metrics.stringWidth(text);
-					setPreferredSize(new Dimension(
-							(int) (getZoomFactor() * 1.1 * width + 1), 
-							(int) (getZoomFactor() * metrics.getHeight())));
-					model.setSize(getPreferredSize());
-					getParent().doLayout(); 
-					
-					realign();
-				}
-			
-			});
-		}
-
-	}
+	
 	
 	/**
 	 * Enable the edit of a label when the {@link LabelController} fires on a double
@@ -248,33 +208,15 @@ public class LabelView extends DocumentElementView {
 	 * @see LabelView#replacement
 	 */
 	public void enableEdit() {
-		/*
-		 * Get all the variables from the label
-		 */
-		this.suspendedParent = this.getParent();
-		this.getParent().remove(this);
 		
-		final JTextArea labelTextArea = new JTextArea();
-		
-		int x = this.getLocation().x;
-		int y = this.getLocation().y;
-		
-		int diagramWidth = suspendedParent.getPreferredSize().width;
-		int diagramHeight = suspendedParent.getPreferredSize().height;
-		
-		/*
-		 * ... and apply to the TextArea.
-		 */
-		labelTextArea.setPreferredSize(new Dimension(diagramWidth - x, diagramHeight - y));
-		labelTextArea.setLocation(new Point(x,y));
-		labelTextArea.setOpaque(false);
-		labelTextArea.setFont(this.getFont());
-		labelTextArea.setLineWrap(true);
-		labelTextArea.setWrapStyleWord(true);
-		labelTextArea.repaint();
-		
-		labelTextArea.setText(this.getText());
-		labelTextArea.addKeyListener(this.getKeyListeners()[0]);
+		replacement.setPreferredSize(label.getSize());
+		replacement.setLocation(label.getLocation());
+		replacement.setOpaque(false);
+		replacement.setFont(this.getFont());
+		replacement.setLineWrap(true);
+		replacement.setWrapStyleWord(true);
+		replacement.repaint();
+
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
@@ -283,19 +225,13 @@ public class LabelView extends DocumentElementView {
 				 * the rest of the creation, we have to run the requestFocus()
 				 * and SelectAll at the end of the queue.
 				 */
-				labelTextArea.requestFocus();
-				labelTextArea.selectAll();
+				replacement.requestFocus();
+				replacement.selectAll();
 			}
 			
 		});
-		 /*
-		  * Add to the JPanel and start editing!
-		  */
-		suspendedParent.add(labelTextArea);
-		((JPanel)(suspendedParent)).revalidate();
-		suspendedParent.repaint();
 		
-		replacement = labelTextArea;
+		layout.next(this);
 	}
 	
 	/**
@@ -312,12 +248,9 @@ public class LabelView extends DocumentElementView {
 			return;
 		}
 		
-		/*
-		 * Remove the TextArea and replace it with {@link LabelView} instance
-		 */
+	
 		JTextArea a = replacement;
-		suspendedParent.remove(a);
-		suspendedParent.add(this);
+
 		
 		if(a.getText().length() < 1) {
 			if(this.model.isClassName()) {
@@ -330,7 +263,8 @@ public class LabelView extends DocumentElementView {
 		}
 		
 		model.setText(a.getText(), true);
-
+		setText(a.getText());
+		layout.next(this);
 		this.getParent().repaint();
 	}
 	
