@@ -1,13 +1,19 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import java.awt.font.FontRenderContext;
+import java.awt.font.LineBreakMeasurer;
 import java.awt.font.TextAttribute;
+import java.text.AttributedCharacterIterator;
+import java.text.AttributedString;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 import java.util.Observable;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.jidesoft.swing.StyledLabel;
 
@@ -23,7 +29,7 @@ import uk.ac.aber.dcs.cs124group.model.*;
  * @author Lee Smith
  * @version v.1.0.0
  */
-public class LabelView extends DocumentElementView {
+public class LabelView extends DocumentElementView implements DocumentListener {
 	/**
 	 * The constant from the {@link java.uo.Serailizable} interface so we can 
 	 * save attributes
@@ -63,14 +69,15 @@ public class LabelView extends DocumentElementView {
 		label = new StyledLabel(this.text);
 		label.setVerticalAlignment(SwingConstants.TOP);
 		label.setLineWrap(true);
-		replacement = new JTextArea(this.text);
+		replacement = new JTextArea(this.text + " ");
+		replacement.getDocument().addDocumentListener(this);
 		
 		/*
 		 * ... and manipulate the textarea according to the model
 		 */
 		this.setLocation(m.getLocation());
 		this.setOpaque(false);
-		this.setPreferredSize(new Dimension(56,50));
+		this.setPreferredSize(new Dimension(150,50));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
 		this.setName("label");
 		model.setSize(this.getPreferredSize());
@@ -159,6 +166,7 @@ public class LabelView extends DocumentElementView {
 	 * @param text		The new text of the label
 	 */
 	private void setText(String text) {
+		text = text.trim();
 		text = text.replaceAll("\\{", "\\{");
 		text = text.replaceAll("\\}", "\\}");
 		text = text.replaceAll("\\(", "\\(");
@@ -167,6 +175,7 @@ public class LabelView extends DocumentElementView {
 		this.text = text;
 		label.setText(text);
 		replacement.setText(text);
+		this.adjust();
 	}
 	
 	/**
@@ -187,6 +196,7 @@ public class LabelView extends DocumentElementView {
 		super.setFont(f);
 		if(label != null) label.setFont(f);
 		if(replacement != null) replacement.setFont(f);
+		adjust();
 	}
 	
 	/**
@@ -209,13 +219,18 @@ public class LabelView extends DocumentElementView {
 	 */
 	public void enableEdit() {
 		
+		
+		
 		replacement.setPreferredSize(label.getSize());
 		replacement.setLocation(label.getLocation());
-		replacement.setOpaque(false);
+		replacement.setOpaque(true);
+		replacement.setBackground(Color.yellow);
 		replacement.setFont(this.getFont());
 		replacement.setLineWrap(true);
 		replacement.setWrapStyleWord(true);
 		replacement.repaint();
+		replacement.getDocument().addDocumentListener(this);
+		
 
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
@@ -264,6 +279,7 @@ public class LabelView extends DocumentElementView {
 		
 		model.setText(a.getText(), true);
 		setText(a.getText());
+		label.setPreferredSize(a.getPreferredSize());
 		layout.next(this);
 		this.getParent().repaint();
 	}
@@ -464,4 +480,61 @@ public class LabelView extends DocumentElementView {
 			}
 		}
 	}
+
+	@Override
+	public void changedUpdate(DocumentEvent e) {
+		adjust();
+		
+	}
+
+	@Override
+	public void insertUpdate(DocumentEvent e) {
+		adjust();
+		
+	}
+
+	@Override
+	public void removeUpdate(DocumentEvent e) {
+		adjust();
+		
+	}
+	
+	private void adjust() {
+		if(replacement == null || label == null) return;
+		
+		int height = replacement.getPreferredSize().height;
+		Dimension currentSize = replacement.getPreferredSize();
+		
+		int fontSizeDif = replacement.getFont().getSize() - 11;
+		int properSize = (int) (countLines(replacement) * (Math.pow(replacement.getFont().getSize(), 1.08 + fontSizeDif/65.0)));
+		
+		
+		if(height < properSize || height > properSize) {
+			replacement.setPreferredSize(new Dimension(currentSize.width, properSize));
+			this.setPreferredSize(replacement.getPreferredSize());
+			this.doLayout();
+			if(this.getParent() != null) this.getParent().doLayout();
+			this.model.setSize(this.getPreferredSize());
+		}
+	}
+	
+	private int countLines(JTextArea textArea) {
+		if(textArea.getText().length() == 0) return 1;
+		
+	    AttributedString text = new AttributedString(textArea.getText());
+	    FontRenderContext frc = textArea.getFontMetrics(textArea.getFont())
+	        .getFontRenderContext();
+	    AttributedCharacterIterator charIt = text.getIterator();
+	    LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(charIt, frc);
+	    float formatWidth = (float) textArea.getSize().width;
+	    lineMeasurer.setPosition(charIt.getBeginIndex());
+
+	    int noLines = 0;
+	    while (lineMeasurer.getPosition() < charIt.getEndIndex()) {
+	      lineMeasurer.nextLayout(formatWidth);
+	      noLines++;
+	    }
+	    if(label.isTruncated()) noLines++;
+	    return noLines;
+	  }
 }
