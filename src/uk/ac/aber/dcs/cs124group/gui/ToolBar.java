@@ -28,7 +28,6 @@ public class ToolBar extends JToolBar {
 	
 	/**
 	 * Zoom slider.
-	 * @deprecated v0.9
 	 */
 	private JSlider zoom;
 	
@@ -105,9 +104,6 @@ public class ToolBar extends JToolBar {
 		layout.putConstraint(SpringLayout.NORTH, zoom, 0, SpringLayout.NORTH, this);
 		
 		this.add(zoom);
-		
-		/*Zoom is intentionally disabled here */
-		zoom.setEnabled(false);
 		
 		layout.putConstraint(SpringLayout.NORTH, zoomLabel, 5, SpringLayout.NORTH, this);
 		layout.putConstraint(SpringLayout.EAST, zoomLabel, -9, SpringLayout.WEST, zoom);

@@ -3,6 +3,7 @@ package uk.ac.aber.dcs.cs124group.gui;
 import java.awt.*;
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.view.DiagramLayout;
+import uk.ac.aber.dcs.cs124group.view.Zoom;
 
 import javax.swing.*;
 
@@ -23,10 +24,7 @@ public class Canvas extends JPanel {
 	/** The global GUI listener that manages adding objects to this canvas. */
 	private Manager manager;
 	
-	/** The zoom factor currently set on the document. 
-	 * NOTE: The zoom feature is currently disabled due to not being fully implemented. Future releases may enable it.
-	 */
-	private double zoomFactor = 1;
+	private Zoom zoom;
 
 
 	/**
@@ -44,28 +42,10 @@ public class Canvas extends JPanel {
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {
 	        	 setLocation(new Point(0,0));
-	        	 setPreferredSize(new Dimension(2000,2000));
+	        	 setPreferredSize(Manager.DEFAULT_CANVAS_SIZE);
 	         }
 	      });
 		
-	}
-	
-	/**
-	 * NOTE: The zoom feature is currently disabled due to not being fully implemented. Future releases may enable it.
-	 * @param zoomFactor
-	 */
-	public void setZoomFactor(double zoomFactor) {
-		this.zoomFactor = zoomFactor;
-		
-	}
-	
-	/**
-	 * NOTE: The zoom feature is currently disabled due to not being fully implemented. Future releases may enable it.
-	 * @return
-	 * 		The current zoom factor
-	 */
-	public double getZoomFactor() {
-		return zoomFactor;
 	}
 	
 	@Override
@@ -75,6 +55,8 @@ public class Canvas extends JPanel {
 	public void paintComponent(Graphics gg) {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
+		
+		g.transform(zoom.getAffineTransform());
 
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
@@ -84,7 +66,7 @@ public class Canvas extends JPanel {
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		g.setRenderingHint(
 				RenderingHints.KEY_RENDERING,
-				RenderingHints.VALUE_RENDER_QUALITY);		
+				RenderingHints.VALUE_RENDER_QUALITY);
 
 	}
 			
@@ -97,6 +79,31 @@ public class Canvas extends JPanel {
 		super.add(c);
 		this.setComponentZOrder(c, 0);
 		return c;
+	}
+	
+	public void setZoom(Zoom zoom) {
+		this.zoom = zoom;
+	}
+	
+	public Zoom getZoom() {
+		return zoom;
+	}
+	
+	public void center(Rectangle r) {
+
+		if(r.width > this.getPreferredSize().width && r.height > this.getPreferredSize().height) {
+			
+			int x = (r.width / 2) - (this.getPreferredSize().width / 2);
+			int y = (r.height / 2) - (this.getPreferredSize().height / 2);
+			
+			this.setLocation(new Point(x, y));
+			
+			this.getParent().doLayout();
+		}
+		else {
+			this.setLocation(new Point(0,0));
+			this.getParent().doLayout();
+		}
 	}
 	
  }

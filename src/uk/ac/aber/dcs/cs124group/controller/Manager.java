@@ -69,6 +69,8 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	private Stack<DocumentElementModel> selectionStack = new Stack<DocumentElementModel> ();
 	
 	private static Manager instance = new Manager();
+	
+	public static final Dimension DEFAULT_CANVAS_SIZE = new Dimension(2000, 2000);
 
 	/** Invoked as the entry point of the application, constructs a Manager object and all the GUI components in the window, including the window itself. */
 	private Manager() {
@@ -100,12 +102,12 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	public void mousePressed(MouseEvent e) {
 		if (mode == ListeningMode.PLACING_CLASS) {
 			addNewClass(new Point(
-					(int) ((1 / canvas.getZoomFactor()) * e.getX()),
-					(int) ((1 / canvas.getZoomFactor()) * e.getY())));
+					e.getX(),
+					e.getY()));
 		} else if (mode == ListeningMode.PLACING_TEXT) {
 			addNewLabel(new Point(
-					(int) ((1 / canvas.getZoomFactor()) * e.getX()),
-					(int) ((1 / canvas.getZoomFactor()) * e.getY())));
+					e.getX(),
+					e.getY()));
 		} 
 	}
 
@@ -308,16 +310,19 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 				case JOptionPane.YES_OPTION : save();
 				default : break;
 			}
-		}
+		} 
 		
 		
 		this.discardAllEdits();
 		document = new DocumentModel();
 		canvas.removeAll();
+		canvas.setPreferredSize(DEFAULT_CANVAS_SIZE);
 		canvas.repaint();
 		window.setTitle("Unsaved class diagram - " + PROGRAM_NAME);
 
 		DocumentPreferences preferences = document.getPreferences();
+		this.setNewZoom();
+		preferences.setZoom(canvas.getZoom());
 		preferences.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar
 				.getFontSize()));
 		canvas.setFont(new Font(toolBar.getFontName(), Font.PLAIN, toolBar
@@ -436,6 +441,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 				ObjectInputStream in = new ObjectInputStream(fos);
 				document = (DocumentModel) in.readObject();
 				document.cleanUp();
+				canvas.setZoom(document.getPreferences().getZoom());
 				
 				for (int i = 0; i < document.getElements().size(); i++) {
 					DocumentElementModel e = document.getElements().get(i);
@@ -453,7 +459,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 			
-				canvas.setZoomFactor(document.getPreferences().getZoomLevel()); 
+				//canvas.setZoomFactor(document.getPreferences().getZoomLevel()); 
 				
 				status.setText("File " + openFile + " opened successfully");
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
@@ -592,10 +598,10 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	 * 			The zoom factor to be set.
 	 */
 	private void changeZoom(double zoom) {
-		canvas.setZoomFactor(zoom);
+		document.getPreferences().getZoom().setLevel(zoom);
+		canvas.doLayout();
 		canvas.repaint();
 
-		document.getPreferences().setZoomLevel(zoom);
 	}
 	
 	/** Brings up a small dialog allowing the user to resize the canvas.
@@ -665,6 +671,10 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		});
 
 		aboutWindow.setSize(450, 250);
+	}
+	
+	public void setNewZoom() {
+		window.setNewZoom();
 	}
 
 	/**

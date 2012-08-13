@@ -404,6 +404,7 @@ public class ClassRectangle extends DocumentElementView {
 		if (arg.equals("locationChanged")) {
 			this.setLocation(o.getLocation());
 			this.getParent().doLayout();
+			this.getParent().repaint();
 		} 
 		//Paint State Changed
 		else if (arg.equals("paintStateChanged")) {
@@ -481,9 +482,7 @@ public class ClassRectangle extends DocumentElementView {
 	private void updatePreferences(DocumentPreferences o, String arg) {
 		if (arg.equals("fontChanged")) {
 			this.setFont(o.getFont());
-		} else if (arg.equals("zoomLevelChanged")) {
-			this.setZoomFactor(o.getZoomLevel());
-		}
+		} 
 	}
 
 	/**

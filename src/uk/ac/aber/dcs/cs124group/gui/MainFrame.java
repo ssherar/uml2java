@@ -5,6 +5,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.view.DiagramLayout;
+import uk.ac.aber.dcs.cs124group.view.Zoom;
 
 /**
  * The main window of the application. 
@@ -46,6 +47,8 @@ public class MainFrame extends JFrame implements WindowListener {
 	 */
 	private Manager manager;
 	
+	private JScrollPane scroll;
+	
 	/**
 	 * Constructs a new window for the application and lays out the GUI within the window.
 	 * @param manager
@@ -69,7 +72,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	
 		
 	    canvas = new Canvas(manager);
-	    final JScrollPane scroll = new JScrollPane();
+	    scroll = new JScrollPane();
 	   
 	    
 	
@@ -85,6 +88,15 @@ public class MainFrame extends JFrame implements WindowListener {
 	    	@Override
 			public void componentResized(ComponentEvent e) {
 	    		dummyPanel.setSize(new Dimension(scroll.getSize().width - 30, scroll.getSize().height - 30));
+	    		SwingUtilities.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						canvas.center(dummyPanel.getBounds());
+						
+					}
+	    			
+	    		});
 	    	}
 	    });
 	    
@@ -92,6 +104,15 @@ public class MainFrame extends JFrame implements WindowListener {
 	    	@Override
 			public void componentResized(ComponentEvent e) {
 	    		dummyPanel.setPreferredSize(canvas.getSize());
+	    		SwingUtilities.invokeLater(new Runnable() {
+
+					@Override
+					public void run() {
+						canvas.center(dummyPanel.getBounds());
+						
+					}
+	    			
+	    		});
 	    		scroll.revalidate();
 	    	}
 	    });
@@ -114,8 +135,8 @@ public class MainFrame extends JFrame implements WindowListener {
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 		this.setMinimumSize(new Dimension(1024,600));
-
-	    
+		
+		setNewZoom();
 	}
 
 	/** 
@@ -153,6 +174,15 @@ public class MainFrame extends JFrame implements WindowListener {
 	public StatusBar getStatus() {
 		return status;
 	}
+	
+	public void setNewZoom() {
+		Dimension scrollPaneSize = scroll.getViewport().getSize();
+		Point centerPoint = new Point(scrollPaneSize.width / 2, scrollPaneSize.height / 2);
+		
+		Zoom newZoom = new Zoom(centerPoint);
+		canvas.setZoom(newZoom);
+		scroll.getViewport().addChangeListener(newZoom);
+	}
 
 	
 	/**
@@ -167,7 +197,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	public void windowClosing(WindowEvent e) {
 		manager.exit();	
 	}
-
+	
 	/**************************************************************/
 	////////////////////UNWANTED METHODS\\\\\\\\\\\\\\\\\\\\\\\\\\\
 	/**************************************************************/

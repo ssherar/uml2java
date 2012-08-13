@@ -23,11 +23,6 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	 */
 	private Font font;
 	
-	/**
-	 * The zoom factor of the element
-	 * @deprecated from v0.9
-	 */
-	private double zoomFactor = 1;
 	
 	/**
 	 * If this view is removed from it's parent due to the model
@@ -76,28 +71,7 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 		return font;
 	}
 	
-	/**
-	 * 
-	 * @return		the zoom factor as a double
-	 * @deprecated v0.9
-	 */
-	public double getZoomFactor() {
-		return zoomFactor;
-	}
 
-	/**
-	 * 
-	 * @param zoomFactor the zoom factor which needs to be set
-	 * @deprecated v0.9
-	 */
-	public void setZoomFactor(double zoomFactor) {
-		this.zoomFactor = zoomFactor;
-		
-		int width = getPreferredSize().width;
-		int height = getPreferredSize().height;
-		this.setBounds(this.getLocation().x, this.getLocation().y, (int)(zoomFactor * width), (int)(zoomFactor * height));
-
-	}
 	
 
 	@Override

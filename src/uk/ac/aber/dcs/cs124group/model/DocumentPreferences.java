@@ -4,6 +4,8 @@ import java.io.*;
 import java.util.Observable;
 import java.awt.*;
 
+import uk.ac.aber.dcs.cs124group.view.Zoom;
+
 /**
  * A data-holder class that saves user-specified settings for 
  * a DocumentModel.
@@ -27,11 +29,8 @@ public class DocumentPreferences extends Observable implements Serializable {
 	
 	/** The canvas size for the document. */
 	private Dimension canvasDefaultSize;
-	
-	/** 
-	 * @deprecated v0.9
-	 */
-	private double zoomLevel = 1;
+
+	private Zoom zoom;
 	
 	/** The filename associated with saving this document. */
 	private String filename;
@@ -82,21 +81,13 @@ public class DocumentPreferences extends Observable implements Serializable {
 		canvasDefaultSize = newSize;
 	}
 	
-	/**
-	 * @deprecated v0.9
-	 * @return The current zoom level
-	 */
-	public double getZoomLevel() {
-		return zoomLevel;
+
+	public Zoom getZoom() {
+		return zoom;
 	}
 	
-	/**
-	 * @deprecated v0.9
-	 * @param zoomLevel
-	 * 		The zoom level to be set.
-	 */
-	public void setZoomLevel(double zoomLevel) {
-		this.zoomLevel = zoomLevel;
+	public void setZoom(Zoom zoom) {
+		this.zoom = zoom;
 	}
 
 	/**

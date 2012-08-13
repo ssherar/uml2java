@@ -14,8 +14,9 @@ import java.util.Observable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.Element;
 
-import com.jidesoft.swing.StyledLabel;
+import com.jidesoft.swing.*;
 
 import uk.ac.aber.dcs.cs124group.controller.LabelController;
 import uk.ac.aber.dcs.cs124group.model.*;
@@ -117,28 +118,6 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 	}
 	
 	/**
-	 * Draws the string to the component with scaling
-	 * and font styles through FontMetrics
-	 * @see FontMetrics
-	 * @see DocumentElementView#setFont(font)
-	 * @param g		Graphics of the JPanel for drawing
-	 */
-	public void paintComponent(Graphics d) {
-		/*super.paintComponent(d);
-		Graphics2D g = (Graphics2D) d;
-		// Deprecated
-		g.scale(this.getZoomFactor(), this.getZoomFactor());
-		g.setFont(getFont());
-		metrics = g.getFontMetrics();
-		
-		int textX = 0;
-		//Deprecated 
-		double scaleY = this.getZoomFactor() < 1 ? 2 : 2 * this.getZoomFactor();
-		int textY = (int) ((this.getPreferredSize().height + metrics.getAscent()) / scaleY);
-		g.drawString(text, textX, textY); */
-	}
-	
-	/**
 	 * Aligns the Label in the parent according to the constants in
 	 * JTextField
 	 * @see JTextField#LEFT
@@ -198,17 +177,6 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 		if(replacement != null) replacement.setFont(f);
 		adjust();
 	}
-	
-	/**
-	 * Set the zoom factor of the label and resize to the new height
-	 * and width of the label
-	 * @deprecated v0.9
-	 */
-	@Override
-	public void setZoomFactor(double zoom) {
-		super.setZoomFactor(zoom);
-	}
-	
 	
 	
 	/**
@@ -367,10 +335,7 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 		if(arg.equals("fontChanged")) {
 			this.setFont(o.getFont());
 		} 
-		//Change the Scalarfactor
-		else if(arg.equals("zoomLevelChanged")) {
-			this.setZoomFactor(o.getZoomLevel());
-		}
+		
 			
 	}
 
@@ -504,9 +469,10 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 		
 		int height = replacement.getPreferredSize().height;
 		Dimension currentSize = replacement.getPreferredSize();
+		int lines = countLines(replacement);
 		
 		int fontSizeDif = replacement.getFont().getSize() - 11;
-		int properSize = (int) (countLines(replacement) * (Math.pow(replacement.getFont().getSize(), 1.08 + fontSizeDif/65.0)));
+		int properSize = (int) (lines * (Math.pow(replacement.getFont().getSize(), 1.08 + fontSizeDif/65.0)));
 		
 		
 		if(height < properSize || height > properSize) {
@@ -526,7 +492,7 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 	        .getFontRenderContext();
 	    AttributedCharacterIterator charIt = text.getIterator();
 	    LineBreakMeasurer lineMeasurer = new LineBreakMeasurer(charIt, frc);
-	    float formatWidth = (float) textArea.getSize().width;
+	    float formatWidth = (float) (textArea.getSize().width);
 	    lineMeasurer.setPosition(charIt.getBeginIndex());
 
 	    int noLines = 0;
@@ -534,7 +500,9 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 	      lineMeasurer.nextLayout(formatWidth);
 	      noLines++;
 	    }
-	    if(label.isTruncated()) noLines++;
+
 	    return noLines;
 	  }
+	
+	
 }
