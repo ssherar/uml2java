@@ -7,6 +7,7 @@ import uk.ac.aber.dcs.cs124group.view.Zoom;
 
 import javax.swing.*;
 
+
 /**
  * A JPanel displaying all visible DocumentElementViews. 
  * Represents the actual class diagram that's being created.
@@ -87,6 +88,14 @@ public class Canvas extends JPanel {
 	
 	public Zoom getZoom() {
 		return zoom;
+	}
+	
+	public boolean isBiggerThanViewport() {
+		Dimension parentSize = this.getParent().getSize();
+		
+		return (this.getPreferredSize().width  >= parentSize.width
+			 && this.getPreferredSize().height >= parentSize.height);
+				
 	}
 	
 	public void center(Rectangle r) {

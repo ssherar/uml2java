@@ -120,5 +120,10 @@ public class ClassController extends DiagramListener implements ActionListener {
 			model.setSize(r.getSize(), true);
 		}
 	}
+	
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		//System.out.println("Mouse entered");
+	}
 
 }

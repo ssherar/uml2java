@@ -79,6 +79,13 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 		super.paintComponent(g);
 	}
 	
+	@Override
+	public void repaint() {
+		if(this.getParent() != null)
+			this.getParent().repaint();
+		super.repaint();
+	}
+	
 	/**
 	 * Called from an notifyObserver(), this methods works out where it comes from and acts upon
 	 * it if the second parameter is a STRING, as Observer params are (Observable o, Object obj)

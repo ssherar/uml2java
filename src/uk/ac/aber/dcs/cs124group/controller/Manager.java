@@ -39,7 +39,7 @@ import uk.ac.aber.dcs.cs124group.gui.*;
  * @author Lee Smith
  * @version 1.0.0
  */
-public class Manager extends UndoManager implements ActionListener, ChangeListener,  MouseListener, Observer  {
+public class Manager extends UndoManager implements ActionListener, ChangeListener,  MouseListener, MouseMotionListener, Observer  {
 
 	/** A convenience variable that is set to true during testing so that annoying dialogs don't appear when exiting the application */
 	private boolean inDebug = false;
@@ -100,6 +100,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	@Override
 	/** If the user is currently placing an element on the canvas, gets the appropriate point for it from the mouse event. */
 	public void mousePressed(MouseEvent e) {
+		
 		if (mode == ListeningMode.PLACING_CLASS) {
 			addNewClass(new Point(
 					e.getX(),
@@ -693,6 +694,18 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 			window.setCursor(Cursor.getDefaultCursor());
 	}
 	
+	public void setStatusText(String text) {
+		status.setText(text);
+	}
+	
+	public Zoom getZoom() {
+		return document.getPreferences().getZoom();
+	}
+	
+	public Canvas getCanvas() {
+		return canvas;
+	}
+	
 
 	/** Exits the program. If any undoable events are present, brings up a dialog asking the user to save their work. */
 	public void exit() {
@@ -730,5 +743,13 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 
 	@Override
 	public void mouseReleased(MouseEvent e) {}
+
+	@Override
+	public void mouseDragged(MouseEvent arg0) {}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		status.setText("Mouse at " + arg0.getPoint());
+	}
 	
 }

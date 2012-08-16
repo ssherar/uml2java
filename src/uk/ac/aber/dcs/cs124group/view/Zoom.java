@@ -10,6 +10,9 @@ import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import uk.ac.aber.dcs.cs124group.controller.Manager;
+import uk.ac.aber.dcs.cs124group.gui.Canvas;
+
 public class Zoom implements ChangeListener {
 	
 	private double zoomLevel;
@@ -34,6 +37,7 @@ public class Zoom implements ChangeListener {
 	}
 	
 	public void setLevel(double level) {
+		Manager.getInstance().setStatusText("Viewpoint center is at " + viewportCenter);
 		this.zoomLevel = level;
 	}
 	
@@ -41,39 +45,29 @@ public class Zoom implements ChangeListener {
 		this.viewportCenter = center;
 	}
 	
-	public MouseEvent convertMouseEvent(MouseEvent e) {
+	public Point2D convertPoint(Point2D p) {
 		try {
-			Point2D newPoint = getAffineTransform().inverseTransform(e.getPoint(), e.getPoint());
-		} catch (NoninvertibleTransformException e1) {
+			return this.getAffineTransform().inverseTransform(p, null);
+		} catch (NoninvertibleTransformException e) {
 			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			e.printStackTrace();
+			return null;
 		}
-		//int x = (int) newPoint.getX();
-		//int y = (int) newPoint.getY();
-		
-		
-		return e;
-		
-		/*int id = e.getID();
-		Component source = (Component) e.getSource();
-		long when = e.getWhen();
-		int modifiers = e.getModifiers();
-		int clickCount = e.getClickCount();
-		boolean popupTrigger = e.isPopupTrigger();
-		int button = e.getButton();
-		
-		return new MouseEvent(source, id, when, modifiers, x, y, clickCount, popupTrigger, button); */
 	}
 
 	@Override
 	public void stateChanged(ChangeEvent e) {
 		JViewport viewport = (JViewport) e.getSource();
 		Point offset = viewport.getViewPosition();
+		Canvas canvas = Manager.getInstance().getCanvas();
 		
-		this.setViewportCenter(new Point(offset.x + (viewport.getSize().width / 2),
-										 offset.y + (viewport.getSize().height / 2)));
+		Dimension size = canvas.isBiggerThanViewport() ? viewport.getSize() : canvas.getSize(); 
 		
-		System.out.println(viewportCenter);
+		this.setViewportCenter(new Point(offset.x + (size.width / 2),
+										 offset.y + (size.height / 2)));
+		
+		canvas.repaint();
+		
 	}
 	
 	
