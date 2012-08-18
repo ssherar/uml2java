@@ -79,7 +79,7 @@ public class MainFrame extends JFrame implements WindowListener {
 	    
 	    dummyPanel.setBackground(Color.GRAY);
 	    dummyPanel.setLayout(new DiagramLayout());
-	    dummyPanel.add(canvas);
+	    dummyPanel.add(canvas.getLayer());
 	    dummyPanel.setOpaque(true);
 
 	    scroll.setViewportView(dummyPanel);  

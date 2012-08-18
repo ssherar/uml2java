@@ -62,6 +62,7 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 	 * @param m		
 	 */
 	public LabelView(TextLabelModel m) {
+		
 		/*
 		 * Initialise the global variables
 		 */

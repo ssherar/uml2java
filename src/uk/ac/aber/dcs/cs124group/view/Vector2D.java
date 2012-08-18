@@ -19,6 +19,10 @@ public class Vector2D extends Point {
 	public Vector2D(int x, int y) {
 		super(x,y);	
 	}
+	
+	public Vector2D(Point p1, Point p2) {
+		super(p2.x - p1.x, p2.y - p1.y);
+	}
 
 	/**
 	 * @return The length of this vector

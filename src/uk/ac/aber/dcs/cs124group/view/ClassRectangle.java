@@ -295,15 +295,15 @@ public class ClassRectangle extends DocumentElementView {
 		int width = getPreferredSize().width;
 		int height = getPreferredSize().height;
 
-		g.drawRoundRect(0, 0, width - 1, height - 1, 10, 10);
+		g.drawRoundRect(0, 0, width - 2, height - 2, 10, 10);
 		g.setColor(RECTANGLE_BACKGROUND);
-		g.fillRoundRect(1, 1, width - 2, height - 2, 10, 10);
+		g.fillRoundRect(1, 1, width - 3, height - 3, 10, 10);
 
 		int nameFieldHeight = name.getPreferredSize().height;
 		g.setColor(Color.BLACK);
-		g.drawLine(0, nameFieldHeight, width - 1, nameFieldHeight);
+		g.drawLine(0, nameFieldHeight, width - 2, nameFieldHeight);
 
-		g.drawLine(0, this.getSeparatorCoordinate(), width - 1,
+		g.drawLine(0, this.getSeparatorCoordinate(), width - 2,
 				this.getSeparatorCoordinate());
 
 	}

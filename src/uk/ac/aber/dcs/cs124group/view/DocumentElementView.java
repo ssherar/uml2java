@@ -1,9 +1,12 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.Observable;
 
 import javax.swing.*;
+
+import uk.ac.aber.dcs.cs124group.controller.Manager;
 
 /**
  * The abstract class for all the views to inherit generic methods
@@ -71,6 +74,18 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 		return font;
 	}
 	
+	
+	
+	public Point getZoomOrigin() {
+		Component parent = this.getParent();
+		if(parent instanceof DocumentElementView) {
+			int x = this.getLocation().x + ((DocumentElementView) parent).getZoomOrigin().x;
+			int y = this.getLocation().y + ((DocumentElementView) parent).getZoomOrigin().y;
+			
+			return new Point(x, y);
+		}
+		else return this.getLocation();
+	}
 
 	
 

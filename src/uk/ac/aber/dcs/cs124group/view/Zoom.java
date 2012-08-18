@@ -36,6 +36,13 @@ public class Zoom implements ChangeListener {
 		return new AffineTransform(k, 0, 0, k, offsetX, offsetY);
 	}
 	
+	public AffineTransform getInternalTransform(Point origin) {
+		Point2D newOrigin = this.getAffineTransform().transform(origin, null);
+		int newX = (int) newOrigin.getX();
+		int newY = (int) newOrigin.getY();
+		return new AffineTransform(zoomLevel, 0, 0, zoomLevel, newX - origin.x, newY - origin.y);
+	}
+	
 	public void setLevel(double level) {
 		Manager.getInstance().setStatusText("Viewpoint center is at " + viewportCenter);
 		this.zoomLevel = level;
@@ -45,9 +52,12 @@ public class Zoom implements ChangeListener {
 		this.viewportCenter = center;
 	}
 	
-	public Point2D convertPoint(Point2D p) {
+	public Point2D convertPoint(Point2D p, boolean internal, Point origin) {
 		try {
-			return this.getAffineTransform().inverseTransform(p, null);
+			if(internal) {
+				return this.getInternalTransform(origin).inverseTransform(p, null);
+			}
+			else return this.getAffineTransform().inverseTransform(p, null);
 		} catch (NoninvertibleTransformException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

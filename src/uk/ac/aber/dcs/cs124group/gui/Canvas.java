@@ -1,11 +1,17 @@
 package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.geom.Point2D;
+
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.view.DiagramLayout;
+import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
+import uk.ac.aber.dcs.cs124group.view.Vector2D;
 import uk.ac.aber.dcs.cs124group.view.Zoom;
 
 import javax.swing.*;
+import javax.swing.plaf.LayerUI;
 
 
 /**
@@ -26,6 +32,7 @@ public class Canvas extends JPanel {
 	private Manager manager;
 	
 	private Zoom zoom;
+	
 
 
 	/**
@@ -113,6 +120,49 @@ public class Canvas extends JPanel {
 			this.setLocation(new Point(0,0));
 			this.getParent().doLayout();
 		}
+	}
+	
+	public JLayer<JPanel> getLayer() {
+		
+		LayerUI<JComponent> layerUI = new LayerUI<JComponent>() {
+
+            public void installUI(JComponent c) {
+                super.installUI(c);
+                // enable mouse motion events for the layer's subcomponents
+                ((JLayer) c).setLayerEventMask(AWTEvent.MOUSE_MOTION_EVENT_MASK |
+                							   AWTEvent.MOUSE_EVENT_MASK);
+            }
+
+            public void uninstallUI(JComponent c) {
+                super.uninstallUI(c);
+                // reset the layer event mask
+                ((JLayer) c).setLayerEventMask(0);
+            }
+
+            // overridden method which catches MouseMotion events
+            public void eventDispatched(AWTEvent e, JLayer<? extends JComponent> l) {
+                if(e instanceof MouseEvent) {
+                	MouseEvent ee = (MouseEvent) e;
+                	Point2D convertedPoint;
+                	if(e.getSource() instanceof DocumentElementView) {
+                		DocumentElementView dev = (DocumentElementView) e.getSource();
+                		convertedPoint = zoom.convertPoint(ee.getPoint(), true, dev.getZoomOrigin()); 
+                	}
+                	
+                	else {
+                		convertedPoint = zoom.convertPoint(ee.getPoint(), false, null);
+                	}
+                	
+                	Vector2D vector = new Vector2D(ee.getPoint(),
+                			new Point((int)convertedPoint.getX(),
+                			 		  (int)convertedPoint.getY()));
+                	ee.translatePoint(vector.x, vector.y);
+                	Manager.getInstance().setStatusText(ee.getPoint().toString());
+                }
+            }
+        };
+        
+        return new JLayer(this, layerUI);
 	}
 	
  }

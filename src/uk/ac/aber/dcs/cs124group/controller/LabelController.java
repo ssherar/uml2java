@@ -147,6 +147,13 @@ public class LabelController extends DiagramListener implements ActionListener {
 		}
 	}
 	
+	@Override 
+	public void mouseEntered(MouseEvent e) {
+		System.out.println("M");
+		Manager.getInstance().setStatusText("Mouse on label");
+		
+	}
+	
 	/** Private Methods */
 	
 	/**
