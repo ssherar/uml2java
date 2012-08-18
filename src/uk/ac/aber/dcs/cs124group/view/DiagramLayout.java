@@ -1,6 +1,12 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
+
+import uk.ac.aber.dcs.cs124group.controller.Manager;
+import uk.ac.aber.dcs.cs124group.gui.*;
+import uk.ac.aber.dcs.cs124group.gui.Canvas;
+import uk.ac.aber.dcs.cs124group.view.*;
 
 /**
  * A custom LayoutManager used on the diagram canvas that respects 
@@ -32,6 +38,15 @@ public class DiagramLayout implements LayoutManager {
 			Component c = canvas.getComponent(i);
 			Dimension d = c.getPreferredSize();
 			Point p = c.getLocation();
+			
+			if(canvas instanceof Canvas || canvas instanceof DocumentElementView) {
+				Zoom zoom = Manager.getInstance().getZoom();
+				p = zoom.inverseConvertPoint(p);
+				d.height = (int) (d.height * zoom.getZoomLevel());
+				d.width = (int) (d.width * zoom.getZoomLevel());
+			}
+			
+			
 			
 			c.setBounds(p.x + insets.left, p.y + insets.right, d.width, d.height);
 		}

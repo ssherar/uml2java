@@ -65,7 +65,7 @@ public class Canvas extends JPanel {
 		Graphics2D g = (Graphics2D) gg;
 		
 		g.transform(zoom.getAffineTransform());
-
+	
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,
 		        RenderingHints.VALUE_TEXT_ANTIALIAS_LCD_HRGB);
@@ -157,7 +157,7 @@ public class Canvas extends JPanel {
                 			new Point((int)convertedPoint.getX(),
                 			 		  (int)convertedPoint.getY()));
                 	ee.translatePoint(vector.x, vector.y);
-                	Manager.getInstance().setStatusText(ee.getPoint().toString());
+                	Manager.getInstance().setStatusText(ee.getPoint().toString() + " in " + e.getSource().toString());
                 }
             }
         };

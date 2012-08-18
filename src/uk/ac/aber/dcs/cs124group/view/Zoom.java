@@ -48,6 +48,10 @@ public class Zoom implements ChangeListener {
 		this.zoomLevel = level;
 	}
 	
+	public double getZoomLevel() {
+		return zoomLevel;
+	}
+	
 	public void setViewportCenter(Point center) {
 		this.viewportCenter = center;
 	}
@@ -63,6 +67,11 @@ public class Zoom implements ChangeListener {
 			e.printStackTrace();
 			return null;
 		}
+	}
+	
+	public Point inverseConvertPoint(Point p) {
+		Point2D pp = this.getAffineTransform().transform(p, null);
+		return new Point((int) pp.getX(), (int) pp.getY());
 	}
 
 	@Override
