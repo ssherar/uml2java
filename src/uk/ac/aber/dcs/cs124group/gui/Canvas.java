@@ -2,6 +2,7 @@ package uk.ac.aber.dcs.cs124group.gui;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
+import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
 
 import uk.ac.aber.dcs.cs124group.controller.Manager;
@@ -9,6 +10,7 @@ import uk.ac.aber.dcs.cs124group.view.DiagramLayout;
 import uk.ac.aber.dcs.cs124group.view.DocumentElementView;
 import uk.ac.aber.dcs.cs124group.view.Vector2D;
 import uk.ac.aber.dcs.cs124group.view.Zoom;
+import uk.ac.aber.dcs.cs124group.view.Zoomable;
 
 import javax.swing.*;
 import javax.swing.plaf.LayerUI;
@@ -144,13 +146,19 @@ public class Canvas extends JPanel {
                 if(e instanceof MouseEvent) {
                 	MouseEvent ee = (MouseEvent) e;
                 	Point2D convertedPoint;
-                	if(e.getSource() instanceof DocumentElementView) {
-                		DocumentElementView dev = (DocumentElementView) e.getSource();
-                		convertedPoint = zoom.convertPoint(ee.getPoint(), true, dev.getZoomOrigin()); 
+                	if(e.getSource() instanceof Zoomable) {
+                		/*DocumentElementView dev = (DocumentElementView) e.getSource();
+                		convertedPoint = zoom.convertPoint(ee.getPoint(), true, dev.getZoomOrigin());*/
+                		try {
+							convertedPoint = zoom.getScalingOnlyTransform().inverseTransform(ee.getPoint(), null);
+						} catch (NoninvertibleTransformException e1) {
+							// TODO Auto-generated catch block
+							convertedPoint = new Point(0,0);
+						}
                 	}
                 	
                 	else {
-                		convertedPoint = zoom.convertPoint(ee.getPoint(), false, null);
+                		convertedPoint = zoom.convertPoint(ee.getPoint(), false);
                 	}
                 	
                 	Vector2D vector = new Vector2D(ee.getPoint(),

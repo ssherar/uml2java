@@ -24,7 +24,7 @@ import java.util.*;
  * @version v1.0.0
  */
 
-public class ClassRectangle extends DocumentElementView {
+public class ClassRectangle extends DocumentElementView implements Zoomable {
 	
 	/**
 	 * A constant for the background colour for the ClassRectangle when drawn.

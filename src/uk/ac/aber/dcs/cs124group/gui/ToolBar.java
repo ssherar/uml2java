@@ -146,4 +146,7 @@ public class ToolBar extends JToolBar {
 		fontSize.setValue(f.getSize());
 	}
 	
+	public void setZoomSliderAt(double level) {
+		zoom.setValue((int) level * 100);
+	}
 }

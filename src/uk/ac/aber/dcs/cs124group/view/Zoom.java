@@ -5,6 +5,7 @@ import java.awt.event.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
 import java.awt.geom.Point2D;
+import java.io.Serializable;
 
 import javax.swing.JViewport;
 import javax.swing.event.ChangeEvent;
@@ -13,7 +14,7 @@ import javax.swing.event.ChangeListener;
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
 
-public class Zoom implements ChangeListener {
+public class Zoom implements ChangeListener, Serializable {
 	
 	private double zoomLevel;
 	private Point viewportCenter;
@@ -35,12 +36,10 @@ public class Zoom implements ChangeListener {
 		
 		return new AffineTransform(k, 0, 0, k, offsetX, offsetY);
 	}
+
 	
-	public AffineTransform getInternalTransform(Point origin) {
-		Point2D newOrigin = this.getAffineTransform().transform(origin, null);
-		int newX = (int) newOrigin.getX();
-		int newY = (int) newOrigin.getY();
-		return new AffineTransform(zoomLevel, 0, 0, zoomLevel, newX - origin.x, newY - origin.y);
+	public AffineTransform getScalingOnlyTransform() {
+		return new AffineTransform(zoomLevel, 0, 0, zoomLevel, 0, 0);
 	}
 	
 	public void setLevel(double level) {
@@ -56,12 +55,10 @@ public class Zoom implements ChangeListener {
 		this.viewportCenter = center;
 	}
 	
-	public Point2D convertPoint(Point2D p, boolean internal, Point origin) {
+	public Point convertPoint(Point2D p, boolean scaleOnly) {
 		try {
-			if(internal) {
-				return this.getInternalTransform(origin).inverseTransform(p, null);
-			}
-			else return this.getAffineTransform().inverseTransform(p, null);
+			Point2D pp = this.getAffineTransform().inverseTransform(p, null);
+			return new Point((int) pp.getX(), (int) pp.getY());
 		} catch (NoninvertibleTransformException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -69,10 +66,13 @@ public class Zoom implements ChangeListener {
 		}
 	}
 	
-	public Point inverseConvertPoint(Point p) {
-		Point2D pp = this.getAffineTransform().transform(p, null);
+	public Point inverseConvertPoint(Point p, boolean scaleOnly) {
+		AffineTransform a = scaleOnly ? this.getScalingOnlyTransform() : this.getAffineTransform();
+		
+		Point2D pp = a.transform(p, null);
 		return new Point((int) pp.getX(), (int) pp.getY());
 	}
+	
 
 	@Override
 	public void stateChanged(ChangeEvent e) {

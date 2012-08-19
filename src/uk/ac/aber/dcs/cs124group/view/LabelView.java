@@ -30,7 +30,7 @@ import uk.ac.aber.dcs.cs124group.model.*;
  * @author Lee Smith
  * @version v.1.0.0
  */
-public class LabelView extends DocumentElementView implements DocumentListener {
+public class LabelView extends DocumentElementView implements DocumentListener, Zoomable {
 	/**
 	 * The constant from the {@link java.uo.Serailizable} interface so we can 
 	 * save attributes

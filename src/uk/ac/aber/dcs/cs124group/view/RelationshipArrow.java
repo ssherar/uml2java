@@ -24,7 +24,7 @@ import uk.ac.aber.dcs.cs124group.model.*;
  * @author Lee Smith
  * @version 1.0.0
  */
-public class RelationshipArrow extends DocumentElementView {
+public class RelationshipArrow extends DocumentElementView implements Zoomable {
 	
 	/**
 	 * The Relationship this view is displaying.
@@ -113,6 +113,10 @@ public class RelationshipArrow extends DocumentElementView {
 	@Override
 	public boolean contains(Point p) {
 		
+		p.x /= Manager.getInstance().getZoom().getZoomLevel();
+		p.y /= Manager.getInstance().getZoom().getZoomLevel();
+		
+		
 		for(int i = 0; i < model.getPoints().size(); i++) {
 			if(p.distance(model.getPoints().get(i)) < 10)
 				return true;
@@ -138,6 +142,7 @@ public class RelationshipArrow extends DocumentElementView {
 				return true;
 			}
 		}
+		System.out.println("Transformed point is not contained" + "\n");
 		return false;
 	}
 	
@@ -250,10 +255,10 @@ public class RelationshipArrow extends DocumentElementView {
 	 * @see Vector2D
 	 */
 	public void paintComponent(Graphics gg) {
-		
+		super.paintComponent(gg);
 		
 		Graphics2D g = (Graphics2D) gg;
-		g.transform(Manager.getInstance().getZoom().getAffineTransform());
+		//g.transform(Manager.getInstance().getZoom().getAffineTransform());
 		
 		ArrayList<Point> points = this.model.getPoints();
 		

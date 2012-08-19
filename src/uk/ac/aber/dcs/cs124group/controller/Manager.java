@@ -331,6 +331,7 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 		canvas.setPreferredSize(preferences.getCanvasDefaultSize());
 
 		status.setText("Opened a brand new class diagram");
+		toolBar.setZoomSliderAt(1);
 
 	}
 	
@@ -460,9 +461,11 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 				canvas.setFont(document.getPreferences().getFont());
 				toolBar.overrideFont(document.getPreferences().getFont());
 			
-				//canvas.setZoomFactor(document.getPreferences().getZoomLevel()); 
+				canvas.doLayout();
+				canvas.repaint();
 				
 				status.setText("File " + openFile + " opened successfully");
+				toolBar.setZoomSliderAt(canvas.getZoom().getZoomLevel());
 				window.setTitle(openFile + " - " + PROGRAM_NAME);
 			}
 			catch (Exception e) {

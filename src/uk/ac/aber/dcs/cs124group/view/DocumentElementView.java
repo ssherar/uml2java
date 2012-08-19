@@ -21,7 +21,7 @@ import uk.ac.aber.dcs.cs124group.controller.Manager;
  * @author Lee Smith
  * @version 1.0.0
  */
-public abstract class DocumentElementView extends JPanel implements java.util.Observer, Zoomable {
+public abstract class DocumentElementView extends JPanel implements java.util.Observer {
 	/**
 	 * The standardised font from the canvas
 	 */

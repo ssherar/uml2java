@@ -41,9 +41,19 @@ public class DiagramLayout implements LayoutManager {
 			
 			if(canvas instanceof Canvas || canvas instanceof DocumentElementView) {
 				Zoom zoom = Manager.getInstance().getZoom();
-				p = ((Zoomable) c).getPreferredLocation();
-				if(!(c instanceof RelationshipArrow)) {
-					p = zoom.inverseConvertPoint(p);
+				if(c instanceof Zoomable) {
+					p = ((Zoomable) c).getPreferredLocation();
+				}
+				else {
+					p = new Point(0,0);
+				}
+				if(c instanceof Zoomable) {
+					if(canvas instanceof Canvas) {
+						p = zoom.inverseConvertPoint(p, false);
+					}
+					else {
+						p = zoom.inverseConvertPoint(p, true);
+					}
 					d.height = (int) (d.height * zoom.getZoomLevel());
 					d.width = (int) (d.width * zoom.getZoomLevel());
 				}

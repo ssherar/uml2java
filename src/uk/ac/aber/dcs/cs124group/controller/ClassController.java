@@ -121,9 +121,4 @@ public class ClassController extends DiagramListener implements ActionListener {
 		}
 	}
 	
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		//System.out.println("Mouse entered");
-	}
-
 }
