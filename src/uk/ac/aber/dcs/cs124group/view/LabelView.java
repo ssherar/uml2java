@@ -77,7 +77,7 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 		/*
 		 * ... and manipulate the textarea according to the model
 		 */
-		this.setLocation(m.getLocation());
+		this.setPreferredLocation(m.getLocation());
 		this.setOpaque(false);
 		this.setPreferredSize(new Dimension(150,50));
 		this.setBounds(getLocation().x, getLocation().y, getPreferredSize().width, getPreferredSize().height);
@@ -272,6 +272,9 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 			this.updatePreferences((DocumentPreferences)o, (String) arg);
 		}
 		
+		this.getParent().doLayout();
+		this.getParent().repaint();
+		
 	}
 	
 	/**
@@ -286,7 +289,7 @@ public class LabelView extends DocumentElementView implements DocumentListener {
 		}
 		//location
 		else if(arg.equals("locationChanged")) {
-			this.setLocation(o.getLocation());
+			this.setPreferredLocation(o.getLocation());
 		}
 		//Editing the label
 		else if(arg.equals("editingChanged")) {

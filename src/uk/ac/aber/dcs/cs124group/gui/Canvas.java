@@ -64,7 +64,7 @@ public class Canvas extends JPanel {
 		super.paintComponent(gg);
 		Graphics2D g = (Graphics2D) gg;
 		
-		g.transform(zoom.getAffineTransform());
+		//g.transform(zoom.getAffineTransform());
 	
 		g.setRenderingHint(
 		        RenderingHints.KEY_TEXT_ANTIALIASING,

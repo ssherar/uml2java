@@ -7,6 +7,7 @@ import java.util.Observable;
 
 import javax.swing.*;
 
+import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.controller.RelationshipController;
 import uk.ac.aber.dcs.cs124group.model.*;
 
@@ -41,7 +42,7 @@ public class RelationshipArrow extends DocumentElementView {
 	public RelationshipArrow(Relationship model) {
 		
 		this.model = model;
-		this.setLocation(new Point(0,0));
+		this.setPreferredLocation(new Point(0,0));
 		this.setPreferredSize(new Dimension(100000,100000));
 		this.setOpaque(false);
 		
@@ -249,7 +250,10 @@ public class RelationshipArrow extends DocumentElementView {
 	 * @see Vector2D
 	 */
 	public void paintComponent(Graphics gg) {
+		
+		
 		Graphics2D g = (Graphics2D) gg;
+		g.transform(Manager.getInstance().getZoom().getAffineTransform());
 		
 		ArrayList<Point> points = this.model.getPoints();
 		

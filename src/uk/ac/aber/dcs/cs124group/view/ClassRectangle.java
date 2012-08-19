@@ -68,7 +68,7 @@ public class ClassRectangle extends DocumentElementView {
 	public ClassRectangle(ClassModel m, boolean isNew) {
 
 		this.model = m;
-		this.setLocation(m.getLocation());
+		this.setPreferredLocation(m.getLocation());
 		this.setPreferredSize(m.getSize());
 		this.setOpaque(false);
 		this.setLayout(new DiagramLayout());
@@ -402,7 +402,7 @@ public class ClassRectangle extends DocumentElementView {
 	private void updateModel(ClassModel o, String arg) {
 		// Location Changed
 		if (arg.equals("locationChanged")) {
-			this.setLocation(o.getLocation());
+			this.setPreferredLocation(o.getLocation());
 			this.getParent().doLayout();
 			this.getParent().repaint();
 		} 
@@ -629,5 +629,7 @@ public class ClassRectangle extends DocumentElementView {
 			}
 		}
 	}
+	
+	
 
 }

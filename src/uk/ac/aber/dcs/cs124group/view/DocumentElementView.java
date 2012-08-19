@@ -1,6 +1,7 @@
 package uk.ac.aber.dcs.cs124group.view;
 
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.util.Observable;
 
@@ -20,11 +21,13 @@ import uk.ac.aber.dcs.cs124group.controller.Manager;
  * @author Lee Smith
  * @version 1.0.0
  */
-public abstract class DocumentElementView extends JPanel implements java.util.Observer {
+public abstract class DocumentElementView extends JPanel implements java.util.Observer, Zoomable {
 	/**
 	 * The standardised font from the canvas
 	 */
 	private Font font;
+	
+	private Point preferredLocation;
 	
 	
 	/**
@@ -41,6 +44,14 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 		
 	}
 	
+	public Point getPreferredLocation() {
+		return preferredLocation;
+	}
+
+	public void setPreferredLocation(Point preferredLocation) {
+		this.preferredLocation = preferredLocation;
+	}
+
 	/**
 	 * Set the font with no overridding style
 	 * @param font		the font of type {@link java.awt.Font}
@@ -92,6 +103,12 @@ public abstract class DocumentElementView extends JPanel implements java.util.Ob
 	@Override
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
+		double k = Manager.getInstance().getZoom().getZoomLevel();
+
+		Graphics2D gg = (Graphics2D) g;
+		if(gg.getTransform().getScaleX() - 1 < 0.0001) {
+			gg.scale(k, k);
+		}
 	}
 	
 	@Override
