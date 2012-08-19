@@ -109,7 +109,7 @@ public class MainFrame extends JFrame implements WindowListener {
 					@Override
 					public void run() {
 						canvas.center(dummyPanel.getBounds());
-						
+						dummyPanel.doLayout();
 					}
 	    			
 	    		});

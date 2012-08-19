@@ -35,7 +35,7 @@ public class Canvas extends JPanel {
 	
 	private Zoom zoom;
 	
-
+	private Point preferredLocation;
 
 	/**
 	 * Constructs a new blank canvas.
@@ -51,7 +51,7 @@ public class Canvas extends JPanel {
 		
 		SwingUtilities.invokeLater(new Runnable() {
 	         public void run() {
-	        	 setLocation(new Point(0,0));
+	        	 setPreferredLocation(new Point(0,0));
 	        	 setPreferredSize(Manager.DEFAULT_CANVAS_SIZE);
 	         }
 	      });
@@ -108,20 +108,30 @@ public class Canvas extends JPanel {
 	}
 	
 	public void center(Rectangle r) {
+		
 
-		if(r.width > this.getPreferredSize().width && r.height > this.getPreferredSize().height) {
+		if(r.width > this.getSize().width && r.height > this.getSize().height) {
 			
-			int x = (r.width / 2) - (this.getPreferredSize().width / 2);
-			int y = (r.height / 2) - (this.getPreferredSize().height / 2);
+			int x = (r.width / 2) - (this.getSize().width / 2);
+			int y = (r.height / 2) - (this.getSize().height / 2);
 			
-			this.setLocation(new Point(x, y));
-			
+			this.setPreferredLocation(Manager.getInstance().getZoom().inverseConvertPoint(new Point(x, y), false));
+			System.out.println(this.getLocation());
 			this.getParent().doLayout();
 		}
 		else {
-			this.setLocation(new Point(0,0));
+			this.setPreferredLocation(new Point(0,0));
 			this.getParent().doLayout();
 		}
+		
+	}
+	
+	public Point getPreferredLocation() {
+		return this.preferredLocation;
+	}
+	
+	public void setPreferredLocation(Point p) {
+		this.preferredLocation = p;
 	}
 	
 	public JLayer<JPanel> getLayer() {
@@ -147,8 +157,7 @@ public class Canvas extends JPanel {
                 	MouseEvent ee = (MouseEvent) e;
                 	Point2D convertedPoint;
                 	if(e.getSource() instanceof Zoomable) {
-                		/*DocumentElementView dev = (DocumentElementView) e.getSource();
-                		convertedPoint = zoom.convertPoint(ee.getPoint(), true, dev.getZoomOrigin());*/
+                		
                 		try {
 							convertedPoint = zoom.getScalingOnlyTransform().inverseTransform(ee.getPoint(), null);
 						} catch (NoninvertibleTransformException e1) {

@@ -3,6 +3,8 @@ package uk.ac.aber.dcs.cs124group.view;
 import java.awt.*;
 import java.awt.geom.Point2D;
 
+import javax.swing.JLayer;
+
 import uk.ac.aber.dcs.cs124group.controller.Manager;
 import uk.ac.aber.dcs.cs124group.gui.*;
 import uk.ac.aber.dcs.cs124group.gui.Canvas;
@@ -38,6 +40,7 @@ public class DiagramLayout implements LayoutManager {
 			Component c = canvas.getComponent(i);
 			Dimension d = c.getPreferredSize();
 			Point p = c.getLocation();
+			System.out.println(p);
 			
 			if(canvas instanceof Canvas || canvas instanceof DocumentElementView) {
 				Zoom zoom = Manager.getInstance().getZoom();
@@ -45,6 +48,7 @@ public class DiagramLayout implements LayoutManager {
 					p = ((Zoomable) c).getPreferredLocation();
 				}
 				else {
+					System.out.println("Why am I here?");
 					p = new Point(0,0);
 				}
 				if(c instanceof Zoomable) {
@@ -58,6 +62,13 @@ public class DiagramLayout implements LayoutManager {
 					d.width = (int) (d.width * zoom.getZoomLevel());
 				}
 			
+			}
+			else if(c instanceof JLayer && Manager.getInstance() != null) {
+				p = Manager.getInstance().getCanvas().getPreferredLocation();
+				//System.out.println(p);
+				Zoom zoom = Manager.getInstance().getZoom();
+				d.height = (int) (d.height * zoom.getZoomLevel());
+				d.width = (int) (d.width * zoom.getZoomLevel());
 			}
 			
 			

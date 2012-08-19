@@ -603,6 +603,8 @@ public class Manager extends UndoManager implements ActionListener, ChangeListen
 	 */
 	private void changeZoom(double zoom) {
 		document.getPreferences().getZoom().setLevel(zoom);
+		canvas.getParent().revalidate();
+		canvas.center(canvas.getParent().getBounds());
 		canvas.doLayout();
 		canvas.repaint();
 
